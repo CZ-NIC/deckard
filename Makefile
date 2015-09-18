@@ -32,10 +32,8 @@ $(error missing required socket_wrapper)
 endif
 
 # Synchronize submodules
-$(libfaketime_DIR):
-	@git submodule init
-$(libfaketime_DIR)/Makefile: $(libfaketime_DIR)
-	@git submodule update
+$(libfaketime_DIR)/Makefile:
+	@git submodule update --init
 $(libfaketime): $(libfaketime_DIR)/Makefile
 	@CFLAGS="-O2 -g" $(MAKE) -C $(libfaketime_DIR)
 
