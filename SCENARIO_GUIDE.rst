@@ -1,0 +1,195 @@
+Writing scenarios
+=================
+
+
+
+**Rewiev**
+
+Scenario is a text file which must have the extension .rpl.
+It consists of two sequential parts - configuration and scenario.
+Configuration, which contains data with global scope, is always placed first.
+Scenario follows Configuration. This part consists of sequence of datablocks
+of two different types - RANGE and STEP. Generally RANGE datablock contains
+data, used Python fake dns server to make answers to binary's under test
+queries. And STEP datablock defines action will be taken - send next query 
+to binary under test, send reply to binary under test, set faked system time, 
+check the last answer. Each datablock must contain at least one ENTRY block 
+and may contain some extra data. Each ENTRY block contains header data and 
+at least one SECTION or RAW block. SECTION block contains Record Resource 
+Sets like a dns message sections. RAW contains single-line data which will be
+interpreted as raw dns message. Lines started with semicolon (;) are ignored 
+and can be used as comments.
+
+Notice that configuration values, header data or SECTION blocks can contain 
+IP addresses. Despite the fact that socket wrapper can only deal with a range
+of 127.0.0.2-127.0.0.254 (or fd00::5357:5f02 - fd00::5357:5ffE) it's not 
+necessary to use only these ranges. Arbitrary addresses can be used. They 
+will be automatically translated to local addresses.
+
+**Configuration**
+
+Configuration part is a list of "key : value" pairs, one pair per line.
+Configuration have no explicit start, it's assumed it starts immediately at
+scenario file begin. It must be explicitly ended with CONFIG_END statement.
+Next keys can be used
+
+- query-minimization : on
+
+  value "on" means query minimization algorithm will be used; any other value
+  means query minimization algorithm will not be used.
+- stub-addr : ipv4-addr
+
+  address will be translated to default local address, which will be listened 
+  by Python fake dns server immediately after startup.
+
+Example
+::
+    ; config options
+	    query-minimization: on
+	    stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+    CONFIG_END
+
+**Scenario**
+
+Scenario part starts with SCENARIO_BEGIN and ends with SCENARIO_END statements.
+SCENARIO_BEGIN can be followed by scenario description.
+
+Example
+::
+    SCENARIO_BEGIN Test basic query minimization www.example.com.
+    ...
+    SCENARIO_END
+
+**RANGE datablock**
+
+RANGE datablock starts with RANGE_BEGIN and ends with RANGE_END statements.
+This datablock contains data, used Python fake dns server to make answers to 
+binary's under test queries. 
+
+Format: 
+::
+    RANGE_BEGIN n1 n2
+        ADDRESS addr
+    ...
+    RANGE_END
+
+- n1 and n2 respectively minimal or maximal step ids (see below) to which this  
+  range can be applied. 
+- addr - IP address for which RANGE datablock is prepared; this statement can be omitted.
+
+Datablock will be used for fetching reply to query only for these steps, whose identificators greater then or equal n1 and
+lesser then or equal n2. Also one of the next condition must be met : 
+
+- addr is not set
+- addr is set, and query is directed to this addr
+- address, to which query is directed, can not be found within the range addresses list for whole scenario
+
+**STEP datablock**
+
+STEP datablock starts with STEP statement and continues until to next STEP, 
+RANGE or END_SCENARIO statement. This datablock defines action will be taken by 
+testing environment - send next query to binary under test, send reply to binary
+under test, set faked system time or check the last answer. 
+
+Format
+::
+   STEP id type [additional data]
+
+- id - step identificator, positive integer value; all steps must have 
+  different id's. This value used within RANGE datablock, see above.
+- type - step type; can be QUERY | REPLY | CHECK_ANSWER | TIME_PASSES ELAPSE <TIMESTAMP>
+  
+  - QUERY - at this step new query must be sent
+  - REPLY - send answer to last query; steps of this type fired when eligible 
+    RANGE datablock can not be found
+  - CHECK_ANSWER - last received answer must be checked
+  - TIME_PASSES - new time must be passed to binary under test; 
+    TIMESTAMP - POSIX timemestamp.
+
+
+**ENTRY**
+
+ENTRY is an basic informational block, it has a DNS-message based structure. 
+It contains all necessary data to perform action for which it was intended.
+Block starts with ENTRY_BEGIN and ends with ENTRY_END statements.
+
+Format
+::
+    ENTRY_BEGIN
+    MATCH <field list>
+    ADJUST <field list>
+    REPLY <flags>
+    SECTION <type>
+       ...
+    RAW
+       ...
+    ENTRY_END
+
+- MATCH <field list> - space-separated list of ENTRY block elements to be compared
+  with elements of incoming query (answer); when all elements matches, this entry 
+  block will be used, otherwise next entry will be analyzed.
+  <field list> can contain values :
+  
+  - opcode     - check if the incominq query is a standard query (OPCODE is 0) 
+  - qtype      - check if QTYPE fields of both question sections are equal
+  - qname      - check if domain name (QNAME) fields of question sections are equal
+  - subdomain  - check if domain from question section of incoming query (answer) 
+    is a subdomain of domain from question section of this ENTRY block.
+  - flags      - check if set of dns flags (QR AA TC RD RA) is equal
+  - question,
+  - answer,
+  - authority,
+  - additional - check if lists of RR sets for question,answer,authority and 
+    additional section respectively is equal
+  - all        - check if set of dns flags is equal and all sections presented 
+    in entry are equal to ones in incoming query (answer); incoming query 
+    (answer) can contain some extra sections which will not be compared
+    
+- ADJUST <field list> - when ENTRY block is used as a pattern to prepare answer
+  to incoming query, it must be preprocessed; values in <field list> defines
+  actions will be taken:
+
+  - copy_id    - query id and domain name (question section QNAME field) only 
+    will be copied from incoming message
+  - copy_query - whole question section will be copied from incoming message
+
+- REPLY <flags> - space-separated list of flags will be set in reply values
+  can be used:
+
+  - QR, AA, TC, RD, RA - i.e. standard dns flags
+  - NOERROR, FORMERR, SERVFAIL, NXDOMAIN, NOTIMP, REFUSED, YXDOMAIN, YXRRSET, 
+    NXRRSET, NOTAUTH, NOTZONE, BADVERS - standard rcodes
+  - DO - enable 'DNSSEC desired' flag
+              
+- SECTION <type> - defines section of dns message, so <type> can be equal to 
+  QUESTION, ANSWER, AUTHORITY or ADDITIONAL each section contains rr sets like 
+  standard dns message
+Example
+::
+  SECTION QUESTION
+  www.example.com.	IN A
+  SECTION ANSWER
+  www.example.com.	IN A	10.20.30.40
+  SECTION AUTHORITY
+  example.com.	IN NS	ns.example.com.
+  SECTION ADDITIONAL
+  ns.example.com.	IN A	1.2.3.4
+
+- RAW - section used to sending raw dns messages. Contains a single-line data 
+  interpreted as hexadecimal string. This string will be sent to binary under 
+  test without any changes. Raw messages used to sending badly formed queries
+  to binary under test. Queries assumed not be answered, so no waiting for answer
+  is performed.Main goal of this behavior is to check if binary under test is 
+  able to serve valid queries after getting of series badly formed packets. 
+  So using RAW section in conjunction of other sections  is meaningless. 
+  All sections other than RAW will be ignored. Also, ENTRY datablock can contain 
+  only one RAW section.
+Example
+::
+  RAW
+      b5c9ca3d50104320f4120000000000000000
+
+`SCRIPT EXAMPLE`_
+
+.. _`SCRIPT EXAMPLE`: https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_EXAMPLE.rst
+

@@ -1,18 +1,12 @@
-DNS software test harness
-=========================
+DNS software test harness (Deckard)
+===================================
 
-The tests depend on cwrap's `socket_wrapper`_, libfaketime_ and Python.
-The libfaketime is included in ``contrib/libfaketime`` as it depends on rather latest version of it,
-it is automatically synchronised with ``make``.
+Project is intended for dns software testing in your own environment to show 
+that it has desired behavior. All network communications are redirected over 
+UNIX sockets, so you don't need to get test network because dns binaries runs 
+locally at a kind of sandbox.
 
-Execute the tests by:
+See detailed `description`_
 
-.. code-block:: bash
+.. _`description` : https://gitlab.labs.nic.cz/knot/deckard/blob/master/DECKARD.rst
 
-	$ make DAEMON=/usr/local/bin/kresd
-
-.. todo:: Writing tests.
-
-.. _cmocka: https://cmocka.org/
-.. _`socket_wrapper`: https://cwrap.org/socket_wrapper.html
-.. _libfaketime: https://cwrap.org/socket_wrapper.html

@@ -1,6 +1,9 @@
-DAEMON ?= $(abspath kresd)
-TEMPLATE ?= kresd.j2
+# Defaults
 TESTS ?= sets/resolver
+DAEMON ?= kresd
+TEMPLATE ?= kresd.j2
+CONFIG ?= config
+
 LIBEXT := .so
 PLATFORM := $(shell uname -s)
 ifeq ($(PLATFORM),Darwin)
@@ -25,7 +28,7 @@ endif
 # Targets
 ifeq ($(HAS_socket_wrapper), yes)
 all: depend
-	$(preload_syms) ./deckard.py $(TESTS) $(DAEMON) $(TEMPLATE) config
+	$(preload_syms) ./deckard.py $(TESTS) $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
 depend: $(libfaketime) $(libcwrap)
 else
 $(error missing required socket_wrapper)
