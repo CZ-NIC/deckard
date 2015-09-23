@@ -41,6 +41,13 @@ Next keys can be used
 
   address will be translated to default local address, which will be listened 
   by Python fake dns server immediately after startup.
+- **thrust-anchor** : ``string value``
+
+  Delegation Signer record, can be used for DNSSEC-related scenarios
+- **val-override-date** : ``string value``
+
+  POSIX timestamp; the system time will be reported to binary under the test
+
 
 Example
 ::
@@ -48,6 +55,8 @@ Example
     ; config options
 	    query-minimization: on
 	    stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	    trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
+	    val-override-date: "1442323400"
     CONFIG_END
 
 **Scenario**
