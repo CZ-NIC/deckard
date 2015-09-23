@@ -119,17 +119,6 @@ runs tests for Knot DNS Resolver daemon.
 
     #!/bin/bash
 
-    # Python fake root server will be located at 127.0.0.2:53
-    SOCKET_WRAPPER_DEFAULT_IFACE=2 
-
-    # KRESD_WRAPPER_DEFAULT_IFACE is not set,
-    # so Knot DNS Resolver daemon
-    # will bind to 127.0.0.3:53
-
-    # directory which contains socket_wrapper UNIX sockets
-    # also - working directory
-    SOCKET_WRAPPER_DIR=~/work/kresd/wrapsock
-
     # Path to scenario files
     TESTS=sets/resolver 
 
@@ -142,7 +131,7 @@ runs tests for Knot DNS Resolver daemon.
     # Config file name
     CONFIG=config
 
-    export SOCKET_WRAPPER_DEFAULT_IFACE SOCKET_WRAPPER_DIR TESTS DAEMON TEMPLATE CONFIG
+    export TESTS DAEMON TEMPLATE CONFIG
 
     make
 
@@ -179,16 +168,6 @@ Below is a example of script, which tests Power DNS Recursor
 .. code-block:: bash
 
     #!/bin/bash
-
-    # Python fake root server will be located at 127.0.0.2:53
-    SOCKET_WRAPPER_DEFAULT_IFACE=2 
-
-    # Knot DNS Resolver daemon will be bound to 127.0.0.10:53
-    KRESD_WRAPPER_DEFAULT_IFACE=10
-
-    # directory which contains socket_wrapper UNIX sockets
-    # also - working directory
-    SOCKET_WRAPPER_DIR=~/work/pdns/wrapsock
 
     # Path to scenario files
     TESTS=sets/pdns 
