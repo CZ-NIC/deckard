@@ -170,7 +170,7 @@ Below is a example of script, which tests Power DNS Recursor
     #!/bin/bash
 
     # Path to scenario files
-    TESTS=sets/pdns 
+    TESTS=sets/resolver 
 
     # Path to daemon
     DAEMON=pdns_recursor
