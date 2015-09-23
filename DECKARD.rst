@@ -185,7 +185,7 @@ Below is a example of script, which tests Power DNS Recursor
     # it means that configuration file can be found in working directory
     ADDITIONAL=--config-dir=./
 
-    export SOCKET_WRAPPER_DEFAULT_IFACE SOCKET_WRAPPER_DIR TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
+    export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
     make
 
