@@ -6,7 +6,8 @@ Deckard
 
 Deckard is intended for dns software testing in your own environment to show 
 that it has desired behavior. Main part of the project is the python script. 
-Script runs given binary as a subprocess, then sends him some prescripted queries, 
+Script runs given binary as a subprocess, then sends him some prescripted queries,
+gets intermediate queries from this binary and makes answers if necessary, 
 compares answers with referenced data and decides whether test is successful or not. 
 At the moment only UDP transport is supported. All network communications are 
 redirected over UNIX sockets, so you don't need to get test network because dns 
@@ -223,4 +224,3 @@ configuration template example, shown only changed lines of original recursor.co
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
 .. _here: https://git.samba.org/?p=socket_wrapper.git;a=blob;f=doc/socket_wrapper.1.txt;hb=HEAD
 .. _`scenario guide` : https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_GUIDE.rst
-
