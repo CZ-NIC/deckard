@@ -83,6 +83,7 @@ You can use next template variables:
 - **NO_MINIMIZE**  - 'true' of 'false', enables or disables query minimization respectively.
 - **WORKING_DIR**  - working directory, it is a value of **SOCKET_WRAPPER_DIR**
   environment variable.
+- **TRUST_ANCHOR** - value of **trust-anchor** config key, see `scenario guide`_
 
 d) **Setting up your environment**
 
@@ -140,13 +141,15 @@ runs tests for Knot DNS Resolver daemon.
 configuration template example
 ::
 
-    net.listen('{{SELF_ADDR}}',53)
+    net = { '{{SELF_ADDR}}' }
+    modules = {'stats', 'policy', 'hints'}
     cache.size = 1*MB
-    modules = {'stats', 'block', 'hints'}
     hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
     option('NO_MINIMIZE', {{NO_MINIMIZE}})
     option('ALLOW_LOCAL', true)
-
+    trust_anchors.add('{{TRUST_ANCHOR}}')
+    verbose(true)
+    
     -- Self-checks on globals
     assert(help() ~= nil)
     assert(worker.id ~= nil)
@@ -163,7 +166,7 @@ configuration template example
     ev = event.recurrent(1 * sec, function (ev) return 1 end)
     event.cancel(ev)
     ev = event.after(0, function (ev) return 1 end)
-
+    
 Below is a example of script, which tests Power DNS Recursor
 
 .. code-block:: bash
