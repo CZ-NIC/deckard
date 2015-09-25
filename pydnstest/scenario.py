@@ -104,7 +104,9 @@ class Entry:
         answer.use_edns(query.edns, query.ednsflags)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
-            answer.question[0].name = query.question[0].name
+            # Copy letter-case if the template has QD
+            if len(answer.question) > 0:
+                answer.question[0].name = query.question[0].name
         if 'copy_query' in self.adjust_fields:
             answer.question = query.question
         return answer
@@ -392,7 +394,7 @@ class Scenario:
     def play(self, saddr, paddr):
         """ Play given scenario. """
         self.child_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.child_sock.settimeout(1000)
+        self.child_sock.settimeout(2)
         self.child_sock.connect((paddr, 53))
 
         step = None

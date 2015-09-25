@@ -1,14 +1,14 @@
 ; config options
 server:
 	trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
-	val-override-date: "1442323400"
+	val-override-date: "1442489440"
 
 stub-zone:
 	name: "."
 	stub-addr: 127.0.0.1 	# ns.
 CONFIG_END
 
-SCENARIO_BEGIN Test validation of NSEC name error responses.
+SCENARIO_BEGIN Test validation of NSEC wildcard answer response.
 
 ; ns.
 RANGE_BEGIN 0 100
@@ -44,7 +44,7 @@ MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN A
 SECTION AUTHORITY
 example.                3600    IN      NS      ns.example.
 example.                3600    IN      DS      11225 13 4 B4BDAB0B3751300BFB9D0D240649279B4BA0E67A308E1B0BFE2931D9 47F7FD71A2BD807D84CDE24286D955A35752484F
@@ -89,7 +89,7 @@ MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN A
 SECTION AUTHORITY
 nsec.example.           3600    IN      NS      ns.nsec.example.
 nsec.example.           3600    IN      DS      54343 13 4 90ABD4FB9F053CF67F6D838DD2437FB16104B8BF127319706223004F 2ED72AF2872B4E507EB483A303BF60BF08C87364
@@ -132,14 +132,28 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR AA NXDOMAIN
+REPLY QR NOERROR
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN A
+SECTION ANSWER
+aaa.local.nsec.example. 3600    IN      A       127.0.0.3
+aaa.local.nsec.example. 3600    IN      RRSIG   A 13 3 3600 20151017113004 20150917113004 54343 nsec.example. 5hYzdWDetMJ5h9nrbgFBOQliFc+HH7QAsS32CzpXGHd2rpbr3OvzNDqP bvvWD/9BPJ8nVFLnrgh+xfBqtYhUzA==
 SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-mail.nsec.example.      3600    IN      NSEC    multiple.nsec.example. A AAAA RRSIG NSEC
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-mail.nsec.example.      3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20150915124917 54343 nsec.example. kM+Z63RDn377szwbOqPPinkH98BuCljY7hoeM8jGJcnQ90fA3NFi72Jg k/0T1bo4r0cNMn6lm9OUotawa6BOqw==
+*.local.nsec.example.   3600    IN      NSEC    loop.nsec.example. A AAAA RRSIG NSEC
+*.local.nsec.example.   3600    IN      RRSIG   NSEC 13 3 3600 20151017113004 20150917113004 54343 nsec.example. iMTPQUvd9v3W5qOMGZaTHBwjDpnb14S3FwZ2B1ry4G5ZEQzNC/mLGoex XqY2zBLFhs37KKSrmmWQZMOonTcYNw==
+ENTRY_END
+
+; Missing NSEC covering the wildcard.
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+bbb.local.nsec.example. IN A
+SECTION ANSWER
+bbb.local.nsec.example. 3600    IN      A       127.0.0.3
+bbb.local.nsec.example. 3600    IN      RRSIG   A 13 3 3600 20151017113004 20150917113004 54343 nsec.example. 5hYzdWDetMJ5h9nrbgFBOQliFc+HH7QAsS32CzpXGHd2rpbr3OvzNDqP bvvWD/9BPJ8nVFLnrgh+xfBqtYhUzA==
+SECTION AUTHORITY
 ENTRY_END
 
 RANGE_END
@@ -150,7 +164,7 @@ STEP 1 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN A
 ENTRY_END
 
 ; recursion happens here.
@@ -158,10 +172,31 @@ STEP 2 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NXDOMAIN
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN A
+SECTION ANSWER
+aaa.local.nsec.example. 3600    IN      A       127.0.0.3
+aaa.local.nsec.example. 3600    IN      RRSIG   A 13 3 3600 20151017113004 20150917113004 54343 nsec.example. 5hYzdWDetMJ5h9nrbgFBOQliFc+HH7QAsS32CzpXGHd2rpbr3OvzNDqP bvvWD/9BPJ8nVFLnrgh+xfBqtYhUzA==
 SECTION AUTHORITY
+*.local.nsec.example.   3600    IN      NSEC    loop.nsec.example. A AAAA RRSIG NSEC
+*.local.nsec.example.   3600    IN      RRSIG   NSEC 13 3 3600 20151017113004 20150917113004 54343 nsec.example. iMTPQUvd9v3W5qOMGZaTHBwjDpnb14S3FwZ2B1ry4G5ZEQzNC/mLGoex XqY2zBLFhs37KKSrmmWQZMOonTcYNw==
+ENTRY_END
+
+STEP 3 QUERY
+ENTRY_BEGIN
+REPLY RD DO
+SECTION QUESTION
+bbb.local.nsec.example. IN A
+ENTRY_END
+
+STEP 4 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD RA AD SERVFAIL
+SECTION QUESTION
+bbb.local.nsec.example. IN A
 ENTRY_END
 
 SCENARIO_END

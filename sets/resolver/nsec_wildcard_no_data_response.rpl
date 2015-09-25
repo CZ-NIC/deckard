@@ -1,14 +1,14 @@
 ; config options
 server:
 	trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
-	val-override-date: "1442323400"
+	val-override-date: "1442839270"
 
 stub-zone:
 	name: "."
 	stub-addr: 127.0.0.1 	# ns.
 CONFIG_END
 
-SCENARIO_BEGIN Test validation of NSEC name error responses.
+SCENARIO_BEGIN Test validation of NSEC3 name error responses.
 
 ; ns.
 RANGE_BEGIN 0 100
@@ -44,7 +44,7 @@ MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
-aaa.nsec.example. IN MX
+aaa.local.nsec.example. IN CNAME
 SECTION AUTHORITY
 example.                3600    IN      NS      ns.example.
 example.                3600    IN      DS      11225 13 4 B4BDAB0B3751300BFB9D0D240649279B4BA0E67A308E1B0BFE2931D9 47F7FD71A2BD807D84CDE24286D955A35752484F
@@ -89,7 +89,7 @@ MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
-aaa.nsec.example. IN MX
+aaa.local.nsec.example. IN CNAME
 SECTION AUTHORITY
 nsec.example.           3600    IN      NS      ns.nsec.example.
 nsec.example.           3600    IN      DS      54343 13 4 90ABD4FB9F053CF67F6D838DD2437FB16104B8BF127319706223004F 2ED72AF2872B4E507EB483A303BF60BF08C87364
@@ -132,55 +132,38 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR AA NXDOMAIN
+REPLY QR AA NOERROR
 SECTION QUESTION
-aaa.nsec.example. IN MX
+local.nsec.example. IN NS
 SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-nsec.example.           3600    IN      NSEC    alias.nsec.example. A NS SOA MX AAAA RRSIG NSEC DNSKEY
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
+nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 6 60 60 120 3600
+alias.nsec.example.     3600    IN      NSEC    *.local.nsec.example. CNAME RRSIG NSEC
+nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151017113144 20150917113144 54343 nsec.example. /3orb3cezQbBCZsFP9rx6Col9AB2QxHQtzQ32BYe09MfN7YZxtTE/HZJ aSXGWD3D7sLBdEkg8TGP8JPQtbW2yQ==
+alias.nsec.example.     3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20150915124917 54343 nsec.example. isUjSpDPDEYmSdbWzIpU7+m/Xa9S00TruxYv68FwRK1JVlta9OkUXRDb e4UMH9Mz8HsntYIa5NK+uCJr+i+o/g==
 ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR AA NXDOMAIN
+REPLY QR AA NOERROR
 SECTION QUESTION
-missing.nsec.example. IN MX
+aaa.local.nsec.example. IN CNAME
 SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-mail.nsec.example.      3600    IN      NSEC    multiple.nsec.example. A AAAA RRSIG NSEC
-nsec.example.           3600    IN      NSEC    alias.nsec.example. A NS SOA MX AAAA RRSIG NSEC DNSKEY
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-mail.nsec.example.      3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20150915124917 54343 nsec.example. kM+Z63RDn377szwbOqPPinkH98BuCljY7hoeM8jGJcnQ90fA3NFi72Jg k/0T1bo4r0cNMn6lm9OUotawa6BOqw==
-nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
+nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 6 60 60 120 3600
+*.local.nsec.example.   3600    IN      NSEC    loop.nsec.example. A AAAA RRSIG NSEC
+nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151017113144 20150917113144 54343 nsec.example. /3orb3cezQbBCZsFP9rx6Col9AB2QxHQtzQ32BYe09MfN7YZxtTE/HZJ aSXGWD3D7sLBdEkg8TGP8JPQtbW2yQ==
+*.local.nsec.example.   3600    IN      RRSIG   NSEC 13 3 3600 20151017113004 20150917113004 54343 nsec.example. iMTPQUvd9v3W5qOMGZaTHBwjDpnb14S3FwZ2B1ry4G5ZEQzNC/mLGoex XqY2zBLFhs37KKSrmmWQZMOonTcYNw==
 ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR AA NXDOMAIN
+REPLY QR AA NOERROR
 SECTION QUESTION
-missing1.nsec.example. IN MX
+bbb.local.nsec.example. IN CNAME
 SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-nsec.example.           3600    IN      NSEC    alias.nsec.example. A NS SOA MX AAAA RRSIG NSEC DNSKEY
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
-ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR AA NXDOMAIN
-SECTION QUESTION
-missing2.nsec.example. IN MX
-SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-mail.nsec.example.      3600    IN      NSEC    multiple.nsec.example. A AAAA RRSIG NSEC
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-mail.nsec.example.      3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20150915124917 54343 nsec.example. kM+Z63RDn377szwbOqPPinkH98BuCljY7hoeM8jGJcnQ90fA3NFi72Jg k/0T1bo4r0cNMn6lm9OUotawa6BOqw==
+nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 6 60 60 120 3600
+nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151017113144 20150917113144 54343 nsec.example. /3orb3cezQbBCZsFP9rx6Col9AB2QxHQtzQ32BYe09MfN7YZxtTE/HZJ aSXGWD3D7sLBdEkg8TGP8JPQtbW2yQ==
 ENTRY_END
 
 RANGE_END
@@ -191,7 +174,7 @@ STEP 1 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-aaa.nsec.example. IN MX
+aaa.local.nsec.example. IN CNAME
 ENTRY_END
 
 ; recursion happens here.
@@ -199,71 +182,30 @@ STEP 2 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR RD RA AD NXDOMAIN
+REPLY QR RD RA AD NOERROR
 SECTION QUESTION
-aaa.nsec.example. IN MX
+aaa.local.nsec.example. IN CNAME
 SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-nsec.example.           3600    IN      NSEC    alias.nsec.example. A NS SOA MX AAAA RRSIG NSEC DNSKEY
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
+nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 6 60 60 120 3600
+*.local.nsec.example.   3600    IN      NSEC    loop.nsec.example. A AAAA RRSIG NSEC
+nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151017113144 20150917113144 54343 nsec.example. /3orb3cezQbBCZsFP9rx6Col9AB2QxHQtzQ32BYe09MfN7YZxtTE/HZJ aSXGWD3D7sLBdEkg8TGP8JPQtbW2yQ==
+*.local.nsec.example.   3600    IN      RRSIG   NSEC 13 3 3600 20151017113004 20150917113004 54343 nsec.example. iMTPQUvd9v3W5qOMGZaTHBwjDpnb14S3FwZ2B1ry4G5ZEQzNC/mLGoex XqY2zBLFhs37KKSrmmWQZMOonTcYNw==
 ENTRY_END
 
 STEP 3 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-missing.nsec.example. IN MX
+bbb.local.nsec.example. IN CNAME
 ENTRY_END
 
 STEP 4 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
-REPLY QR RD RA AD NXDOMAIN
+REPLY QR RD RA AD SERVFAIL
 SECTION QUESTION
-missing.nsec.example. IN MX
-SECTION AUTHORITY
-nsec.example.           3600    IN      SOA     ns.nsec.example. root.nsec.example. 2 60 60 120 3600
-mail.nsec.example.      3600    IN      NSEC    multiple.nsec.example. A AAAA RRSIG NSEC
-nsec.example.           3600    IN      NSEC    alias.nsec.example. A NS SOA MX AAAA RRSIG NSEC DNSKEY
-nsec.example.           3600    IN      RRSIG   SOA 13 2 3600 20151015124917 20150915124917 54343 nsec.example. AcjIOhRgJMRILo06O2yl/G4Q6gTuA0NIGpnejpgcoVHg8kZy6xmURhTc kYf//qbx/WPB9k+8j+ymmQPe1phJCQ==
-mail.nsec.example.      3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20150915124917 54343 nsec.example. kM+Z63RDn377szwbOqPPinkH98BuCljY7hoeM8jGJcnQ90fA3NFi72Jg k/0T1bo4r0cNMn6lm9OUotawa6BOqw==
-nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
-ENTRY_END
-
-STEP 5 QUERY
-ENTRY_BEGIN
-REPLY RD DO
-SECTION QUESTION
-missing1.nsec.example. IN MX
-ENTRY_END
-
-STEP 6 CHECK_ANSWER
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR RD RA SERVFAIL
-SECTION QUESTION
-missing1.nsec.example. IN MX
-SECTION AUTHORITY
-ENTRY_END
-
-STEP 7 QUERY
-ENTRY_BEGIN
-REPLY RD DO
-SECTION QUESTION
-missing2.nsec.example. IN MX
-ENTRY_END
-
-STEP 8 CHECK_ANSWER
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR RD RA SERVFAIL
-SECTION QUESTION
-missing2.nsec.example. IN MX
-SECTION AUTHORITY
+bbb.local.nsec.example. IN CNAME
 ENTRY_END
 
 SCENARIO_END
