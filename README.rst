@@ -143,8 +143,8 @@ set ``SOCKET_WRAPPER_DIR`` to a custom path for more convenient analysis.
 Acknowledgments
 ---------------
 
-The test scenario design and a lot of tests were written for `NLnetLabs Unbound <unbound>`_ (BSD licensed).
-The original test case format is described in the `Doxygen documentation <unbound-replay>`_.
+The test scenario design and a lot of tests were written for `NLnetLabs Unbound <http://unbound.net/index.html>`_ (BSD licensed).
+The original test case format is described in the `Doxygen documentation <http://unbound.net/documentation/doxygen/replay_8h.html#a6f204646f02cc4debbaf8a9b3fdb59a7>`_.
 
 .. _cwrap: https://cwrap.org/
 .. _`dnspython`: http://www.dnspython.org/
@@ -154,6 +154,4 @@ The original test case format is described in the `Doxygen documentation <unboun
 .. _`Knot DNS Resolver`: https://gitlab.labs.nic.cz/knot/resolver/blob/master/README.md
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
 .. _here: https://git.samba.org/?p=socket_wrapper.git;a=blob;f=doc/socket_wrapper.1.txt;hb=HEAD
-.. _unbound: http://unbound.net/index.html
-.. _unbound-replay: http://unbound.net/documentation/doxygen/replay_8h.html#a6f204646f02cc4debbaf8a9b3fdb59a7
 .. _CSR: http://apple.stackexchange.com/questions/193368/what-is-the-rootless-feature-in-el-capitan-really
