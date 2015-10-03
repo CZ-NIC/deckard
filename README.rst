@@ -50,7 +50,7 @@ then the DNSSEC tests won't work properly).
 - ``NO_MINIMIZE``  - ``'true'`` or ``'false'``, enables or disables query minimization respectively.
 - ``WORKING_DIR``  - working directory, equivalent to the value of a ``SOCKET_WRAPPER_DIR``
   environment variable.
-- ``TRUST_ANCHOR`` - a trust anchor in form of a DS record, see `scenario guide <SCENARIO_GUIDE.rst>`_.
+- ``TRUST_ANCHOR`` - a trust anchor in form of a DS record, see `scenario guide <https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_GUIDE.rst>`_.
 
 Setting up the test
 ^^^^^^^^^^^^^^^^^^^
@@ -121,7 +121,7 @@ For developers
 Writing your own scenario
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-See `scenario guide <SCENARIO_GUIDE.rst>`_
+See `scenario guide <https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_GUIDE.rst>`_
 
 Setting up socket wrapper library (cwrap)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
