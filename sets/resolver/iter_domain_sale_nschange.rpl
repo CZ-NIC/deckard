@@ -1,7 +1,7 @@
 ; config options
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test resolver with a domain sale and NS changes
@@ -11,7 +11,7 @@ SCENARIO_BEGIN Test resolver with a domain sale and NS changes
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 127.0.0.2 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -21,7 +21,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -33,13 +33,13 @@ com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	192.5.6.30
+a.gtld-servers.net.	IN 	A	127.0.0.3
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net. (before sale of domain)
 RANGE_BEGIN 0 20
-	ADDRESS 192.5.6.30
+	ADDRESS 127.0.0.3
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -49,7 +49,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	192.5.6.30
+a.gtld-servers.net.	IN 	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -61,7 +61,7 @@ example.com. IN A
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	1.2.3.4
+ns.example.com.		IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -78,7 +78,7 @@ RANGE_END
 
 ; a.gtld-servers.net. (after sale of domain)
 RANGE_BEGIN 30 200
-	ADDRESS 192.5.6.30
+	ADDRESS 127.0.0.3
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -88,7 +88,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	192.5.6.30
+a.gtld-servers.net.	IN 	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -100,13 +100,13 @@ example.com. IN A
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	8.8.8.8
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 RANGE_END
 
 ; ns.example.com. first owner
 RANGE_BEGIN 0 30
-	ADDRESS 1.2.3.4
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -116,7 +116,7 @@ example.com. IN NS
 SECTION ANSWER
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	1.2.3.4
+ns.example.com.		IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -126,11 +126,11 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 3600 IN A	10.20.30.40
+www.example.com. 3600 IN A	127.0.0.6
 SECTION AUTHORITY
 example.com.	3600 IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	3600 	IN 	A	1.2.3.4
+ns.example.com.	3600 	IN 	A	127.0.0.4
 ENTRY_END
 
 ; nxdomains for any name,type
@@ -147,13 +147,13 @@ SECTION AUTHORITY
 example.com.	3600 IN SOA	a. b. 1 2 3 4 5
 example.com.	3600 IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	3600 	IN 	A	1.2.3.4
+ns.example.com.	3600 	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; ns.example.com. first owner, NS changed
 RANGE_BEGIN 40 200
-	ADDRESS 1.2.3.4
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -163,7 +163,7 @@ example.com. IN NS
 SECTION ANSWER
 example.com.	IN NS	nsb.example.com.
 SECTION ADDITIONAL
-nsb.example.com.		IN 	A	1.2.3.4
+nsb.example.com.		IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -173,11 +173,11 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 3600 IN A	10.20.30.40
+www.example.com. 3600 IN A	127.0.0.6
 SECTION AUTHORITY
 example.com.	3600 IN NS	nsb.example.com.
 SECTION ADDITIONAL
-nsb.example.com.	3600 	IN 	A	1.2.3.4
+nsb.example.com.	3600 	IN 	A	127.0.0.4
 ENTRY_END
 
 ; nxdomains for any name,type
@@ -194,13 +194,13 @@ SECTION AUTHORITY
 example.com.	3600 IN SOA	a. b. 1 2 3 4 5
 example.com.	3600 IN NS	nsb.example.com.
 SECTION ADDITIONAL
-nsb.example.com.	3600 	IN 	A	1.2.3.4
+nsb.example.com.	3600 	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; ns.example.com. new owner
 RANGE_BEGIN 0 200
-	ADDRESS 8.8.8.8
+	ADDRESS 127.0.0.5
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -210,7 +210,7 @@ example.com. IN NS
 SECTION ANSWER
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	8.8.8.8
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -220,11 +220,11 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 3600 IN A	88.88.88.88
+www.example.com. 3600 IN A	127.0.0.7
 SECTION AUTHORITY
 example.com.	3600 IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	3600 	IN 	A	8.8.8.8
+ns.example.com.	3600 	IN 	A	127.0.0.5
 ENTRY_END
 RANGE_END
 
@@ -243,7 +243,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 3600 IN A	10.20.30.40
+www.example.com. 3600 IN A	127.0.0.6
 ;SECTION AUTHORITY
 ;example.com.	3600 IN NS	ns.example.com.
 ;SECTION ADDITIONAL
@@ -270,7 +270,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 1800 IN A	10.20.30.40
+www.example.com. 1800 IN A	127.0.0.6
 ;SECTION AUTHORITY
 ;example.com.	1800 IN NS	ns.example.com.
 ;SECTION ADDITIONAL
@@ -338,7 +338,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 3600 IN A	88.88.88.88
+www.example.com. 3600 IN A	127.0.0.7
 ;SECTION AUTHORITY
 ;example.com.	3600 IN NS	ns.example.com.
 ;SECTION ADDITIONAL

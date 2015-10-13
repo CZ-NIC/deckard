@@ -1,0 +1,63 @@
+	stub-addr: 127.0.0.2
+CONFIG_END
+
+SCENARIO_BEGIN Simple knotd query.
+
+RANGE_BEGIN 0 100
+ADDRESS 127.0.0.2
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.com. IN AXFR
+SECTION ANSWER
+example.com.		3600	IN	SOA	dns1.example.com. hostmaster.example.com. 2010111213 21600 3600 604800 86400
+example.com.		3600	IN	NS	dns1.example.com.
+example.com.		3600	IN	NS	dns2.example.com.
+example.com.		3600	IN	MX	10 mail.example.com.
+dns1.example.com.	3600	IN	A	127.0.0.10
+dns1.example.com.	3600	IN	AAAA	fd00::5357:5f0A
+dns2.example.com.	3600	IN	A	127.0.0.11
+dns2.example.com.	3600	IN	AAAA	fd00::5357:5f0B
+mail.example.com.	3600	IN	A	127.0.0.12
+mail.example.com.	3600	IN	AAAA	fd00::5357:5f0C
+example.com.		3600	IN	SOA	dns1.example.com. hostmaster.example.com. 2010111213 21600 3600 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.com. IN SOA
+SECTION ANSWER
+example.com.		3600	IN	SOA	dns1.example.com. hostmaster.example.com. 2010111213 21600 3600 604800 86400
+ENTRY_END
+
+RANGE_END
+
+
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.com IN NS
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+example.com. IN NS
+SECTION ANSWER
+example.com. 3600 IN NS dns1.example.com.
+example.com. 3600 IN NS dns2.example.com.
+SECTION ADDITIONAL
+dns1.example.com. 3600 IN A 127.0.0.10
+dns1.example.com. 3600 IN AAAA fd00::5357:5f0A
+dns2.example.com. 3600 IN A 127.0.0.11
+dns2.example.com. 3600 IN AAAA fd00::5357:5f0B
+ENTRY_END
+

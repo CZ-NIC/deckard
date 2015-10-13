@@ -1,0 +1,11 @@
+example.com.        	3600	SOA	dns1.example.com. hostmaster.example.com. 2010111213 21600 3600 604800 86400
+example.com.        	3600	NS	dns1.example.com.
+example.com.        	3600	NS	dns2.example.com.
+example.com.        	3600	MX	10 mail.example.com.
+dns1.example.com.   	3600	A	127.0.0.10
+dns1.example.com.   	3600	AAAA	fd00::5357:5f0a
+dns2.example.com.   	3600	A	127.0.0.11
+dns2.example.com.   	3600	AAAA	fd00::5357:5f0b
+mail.example.com.   	3600	A	127.0.0.12
+mail.example.com.   	3600	AAAA	fd00::5357:5f0c
+

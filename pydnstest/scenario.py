@@ -8,11 +8,7 @@ import os
 import itertools
 import time
 from datetime import datetime
-
-def dprint(msg):
-    """ Verbose logging (if enabled). """
-    if 'VERBOSE' in os.environ:
-        print(msg)
+from dprint import dprint
 
 class Entry:
     """
@@ -100,7 +96,7 @@ class Entry:
 
     def adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
-        answer = dns.message.from_text(self.message.to_text())
+        answer = self.message
         answer.use_edns(query.edns, query.ednsflags)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
@@ -168,11 +164,14 @@ class Entry:
 
     def __rr_add(self, section, rr):
     	""" Merge record to existing RRSet, or append to given section. """
-    	for existing_rr in section:
-    		if existing_rr.match(rr.name, rr.rdclass, rr.rdtype, 0):
-    			existing_rr += rr
-    			return
-    	section.append(rr)
+
+        if rr.rdtype != dns.rdatatype.SOA:
+            for existing_rr in section:
+                if existing_rr.match(rr.name, rr.rdclass, rr.rdtype, 0):
+                    existing_rr += rr
+                    return
+
+        section.append(rr)
 
     def __rr_from_str(self, owner, args):
         """ Parse RR from tokenized string. """
@@ -280,20 +279,25 @@ class Step:
 
     def play(self, ctx, peeraddr):
         """ Play one step from a scenario. """
-        dprint('[ STEP %03d ] %s' % (self.id, self.type))
+        dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         if self.type == 'QUERY':
-            dprint(self.data[0].message.to_text())
+            dprint(dtag, self.data[0].message.to_text())
             return self.__query(ctx, peeraddr)
         elif self.type == 'CHECK_OUT_QUERY':
-             pass # Ignore
+            dprint(dtag, '')
+            pass # Ignore
         elif self.type == 'CHECK_ANSWER':
+            dprint(dtag, '')
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES':
+            dprint(dtag, '')
             return self.__time_passes(ctx)
         elif self.type == 'REPLY':
+            dprint(dtag, '')
             pass
         else:
-            raise Exception('step %s unsupported' % self.type)
+            raise Exception('step id %03d type %s unsupported' % (self.id, self.type))
+
 
     def __check_answer(self, ctx):
         """ Compare answer from previously resolved query. """
@@ -301,12 +305,12 @@ class Step:
             raise Exception("response definition required")
         expected = self.data[0]
         if expected.is_raw_data_entry is True:
-            dprint(ctx.last_raw_answer.to_text())
+            dprint("[ __check_answer ]", ctx.last_raw_answer.to_text())
             expected.cmp_raw(ctx.last_raw_answer)
         else:
             if ctx.last_answer is None:
                 raise Exception("no answer from preceding query")
-            dprint(ctx.last_answer.to_text())
+            dprint("[ __check_answer ]", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
     def __query(self, ctx, peeraddr):
@@ -345,10 +349,11 @@ class Step:
         time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'r')
         line = time_file.readline().strip()
         time_file.close()
-        t = time.mktime(datetime.strptime(line, '%Y-%m-%d %H:%M:%S').timetuple())
+        t = time.mktime(datetime.strptime(line, '@%Y-%m-%d %H:%M:%S').timetuple())
         t += int(self.args[1])
         time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'w')
-        time_file.write(datetime.fromtimestamp(t).strftime('%Y-%m-%d %H:%M:%S') + "\n")
+        time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
+        time_file.flush()
         time_file.close()
 
 class Scenario:

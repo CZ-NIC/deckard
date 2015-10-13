@@ -2,14 +2,14 @@
 	target-fetch-policy: "0 0 0 0 0"
 	query-minimization: on
 	name: "."
-	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test query minimization with empty-nonterminal in path.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 127.0.0.2 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -19,7 +19,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -31,7 +31,7 @@ net. IN NS
 SECTION ANSWER
 net. IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -60,20 +60,20 @@ SECTION AUTHORITY
 com.	IN NS	lame-addr.gtld-servers.net.
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-lame-addr.gtld-servers.net.	IN 	A	1.1.1.1
-a.gtld-servers.net.	IN 	A	192.5.6.30
+lame-addr.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; lame.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 1.1.1.1
+	ADDRESS 127.0.0.3
 
 EANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 192.5.6.30
+	ADDRESS 127.0.0.4
 
 ENTRY_BEGIN
 MATCH opcode qtype qname

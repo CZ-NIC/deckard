@@ -26,11 +26,12 @@ def del_files(path_to):
 DEFAULT_IFACE = 0
 CHILD_IFACE = 0
 TMPDIR = ""
+INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
 
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
    DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
 if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
-    DEFAULT_IFACE = 10
+    DEFAULT_IFACE = 2
     os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
 
 if "KRESD_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -41,6 +42,7 @@ if CHILD_IFACE < 2 or CHILD_IFACE > 254 or CHILD_IFACE == DEFAULT_IFACE:
     if CHILD_IFACE > 254:
         CHILD_IFACE = 2
     os.environ["KRESD_WRAPPER_DEFAULT_IFACE"] = "{}".format(CHILD_IFACE)
+
 
 if "SOCKET_WRAPPER_DIR" in os.environ:
     TMPDIR = os.environ["SOCKET_WRAPPER_DIR"]
@@ -169,7 +171,8 @@ def find_objects(path):
 
 def write_timestamp_file(path, tst):
     time_file = open(path, 'w')
-    time_file.write(datetime.fromtimestamp(tst).strftime('%Y-%m-%d %H:%M:%S'))
+    time_file.write(datetime.fromtimestamp(tst).strftime('@%Y-%m-%d %H:%M:%S'))
+    time_file.flush()
     time_file.close()
 
 def setup_env(child_env, config, config_name, j2template):
@@ -181,7 +184,7 @@ def setup_env(child_env, config, config_name, j2template):
     os.environ["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
     child_env["FAKETIME_NO_CACHE"] = "1"
     child_env["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
-    write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], 0)
+    write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int (time.time()))
     # Set up child process env() 
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
@@ -219,6 +222,7 @@ def setup_env(child_env, config, config_name, j2template):
         "NO_MINIMIZE" : no_minimize,
         "TRUST_ANCHOR" : trust_anchor_str,
         "WORKING_DIR" : TMPDIR,
+        "INSTALL_DIR" : INSTALLDIR
     }
     cfg_rendered = j2template.render(j2template_ctx)
     f = open(os.path.join(TMPDIR,config_name), 'w')
@@ -240,6 +244,10 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     # Setup daemon environment
     daemon_env = os.environ.copy()
     setup_env(daemon_env, config, config_name, j2template)
+
+    server = testserver.TestServer(scenario, config, DEFAULT_IFACE, CHILD_IFACE)
+    server.start()
+
     # Start binary
     daemon_proc = None
     daemon_log = open('%s/server.log' % TMPDIR, 'w')
@@ -260,9 +268,9 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
             sock.connect((testserver.get_local_addr_str(socket.AF_INET, CHILD_IFACE), 53))
         except: continue
         break
+    sock.close()
+
     # Play scenario
-    server = testserver.TestServer(scenario, config, DEFAULT_IFACE, CHILD_IFACE)
-    server.start()
     try:
         server.play()
     finally:
@@ -272,7 +280,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         if 'VERBOSE' in os.environ:
             print('[ LOG      ]\n%s' % open('%s/server.log' % TMPDIR).read())
     # Do not clear files if the server crashed (for analysis)
-    del_files(TMPDIR)
+#    del_files(TMPDIR)
 
 def test_platform(*args):
     if sys.platform == 'windows':

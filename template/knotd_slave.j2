@@ -1,0 +1,28 @@
+#
+# This is a sample of a minimal configuration file for Knot DNS.
+# For more details, see man 5 knot.conf or refer to the server documentation.
+#
+
+server:
+    listen: {{SELF_ADDR}}@53
+
+control:
+    listen: "{{WORKING_DIR}}/knotd.sock"
+
+log:
+  - target: stdout
+    any: info
+
+remote:
+  - id: master
+    address: {{ROOT_ADDR}}@53
+
+template:
+   - id: default
+     storage: "{{WORKING_DIR}}"
+
+zone:
+   - domain: example.com
+     file: "{{WORKING_DIR}}/example.com.zone"
+     master: master
+

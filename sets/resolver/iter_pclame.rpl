@@ -1,7 +1,7 @@
 ; config options
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test resolution with recursion, parent child differ, lame domain
@@ -9,7 +9,7 @@ SCENARIO_BEGIN Test resolution with recursion, parent child differ, lame domain
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 127.0.0.2 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -19,7 +19,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -31,7 +31,7 @@ com. IN NS
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	192.5.6.30
+a.gtld-servers.net.	IN 	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -43,14 +43,14 @@ net. IN NS
 SECTION AUTHORITY
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	192.12.94.30
+e.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 192.5.6.30
+	ADDRESS 127.0.0.3
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -60,7 +60,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	192.5.6.30
+a.gtld-servers.net.	IN 	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -76,7 +76,7 @@ RANGE_END
 
 ; e.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 192.12.94.30
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -86,7 +86,7 @@ net. IN NS
 SECTION ANSWER
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	192.12.94.30
+e.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -98,13 +98,13 @@ example.net. IN NS
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.		IN 	A	1.2.3.44
+ns.example.net.		IN 	A	127.0.0.5
 ENTRY_END
 
 RANGE_END
 
 RANGE_BEGIN 0 200
-	ADDRESS 1.2.3.44
+	ADDRESS 127.0.0.5
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -119,7 +119,7 @@ RANGE_END
 ; Does not respond to anything (servfail instead
 ; of timeouts since this is easier to encode in .rpl file format).
 RANGE_BEGIN 0 200
-	ADDRESS 1.2.3.55
+	ADDRESS 127.0.0.6
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
