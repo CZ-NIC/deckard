@@ -280,7 +280,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         if 'VERBOSE' in os.environ:
             print('[ LOG      ]\n%s' % open('%s/server.log' % TMPDIR).read())
     # Do not clear files if the server crashed (for analysis)
-#    del_files(TMPDIR)
+    del_files(TMPDIR)
 
 def test_platform(*args):
     if sys.platform == 'windows':
