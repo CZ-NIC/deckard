@@ -91,7 +91,7 @@ def parse_entry(op, args, file_in):
 def parse_step(op, args, file_in):
     """ Parse range definition. """
     if len(args) < 2:
-        raise Exception('expected STEP <id> <type>')
+        raise Exception('expected at least STEP <id> <type>')
     extra_args = []
     if len(args) > 2:
         extra_args = args[2:]

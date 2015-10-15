@@ -272,6 +272,23 @@ class Step:
         self.has_data = self.type not in Step.require_data
         self.answer = None
         self.raw_answer = None
+        self.repeat_if_fail = 0
+        self.pause_if_fail = 0
+        self.next_if_fail = -1
+        
+        if type == 'CHECK_ANSWER':
+            for arg in extra_args:
+                param = arg.split('=')
+                try:
+                    if param[0] == 'REPEAT':
+                        self.repeat_if_fail = int(param[1])
+                    elif param[0] == 'PAUSE':
+                        self.pause_if_fail = float(param[1])
+                    elif param[0] == 'NEXT':
+                        self.next_if_fail = int(param[1])
+                except Exception as e:
+                    raise Exception('step #%d - wrong %s arg: %s' % (self.id, param[0], str(e)))
+
 
     def add(self, entry):
         """ Append a data entry to this step. """
@@ -402,15 +419,31 @@ class Scenario:
         self.child_sock.settimeout(2)
         self.child_sock.connect((paddr, 53))
 
-        step = None
         if len(self.steps) == 0:
             raise ('no steps in this scenario')
+
         try:
-            for step in self.steps:
+            step = None
+            i = 0
+            while i < len(self.steps):
+                step = self.steps[i]
                 self.current_step = step
-                step.play(self, paddr)
-        except Exception as e:
-            raise Exception('step #%d %s' % (step.id, str(e)))
+                try:
+                    step.play(self, paddr)
+                except Exception as e:
+                    if (step.repeat_if_fail > 0):
+                        dprint ('[play]',"step %d: exception catched - '%s', retrying step %d (%d left)" % (step.id, e, step.next_if_fail, step.repeat_if_fail))
+                        step.repeat_if_fail -= 1
+                        if (step.pause_if_fail > 0):
+                            time.sleep(step.pause_if_fail)
+                        if (step.next_if_fail != -1):
+                            next_step = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail][0]
+                            if (next_step < len(self.steps)):
+                                i = next_step
+                        continue
+                    else:
+                        raise Exception('step #%d %s' % (step.id, str(e)))
+                i = i + 1
         finally:
             self.child_sock.close()
             self.child_sock = None
