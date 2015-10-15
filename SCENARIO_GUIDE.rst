@@ -115,9 +115,8 @@ Format
   - **QUERY** - at this step new query must be sent
   - **REPLY** - send answer to last query; steps of this type fired when eligible 
     **RANGE** datablock can not be found
-  - **CHECK_ANSWER** - last received answer must be checked
-  - **TIME_PASSES** - new time must be passed to binary under test; 
-    **TIMESTAMP** - POSIX timemestamp.
+  - **CHECK_ANSWER** - last received answer must be checked; this step can have additional fields **RETRY** = `integer value` **PAUSE** = `float value` **NEXT** = `integer value`. This additional values are intended to ensure error recovery possibility. When answer checking failed, is possible to take    step with predefined step id. For example, **STEP CHECK_ANSWER RETRY** = `3` **PAUSE** = `0.5` **NEXT** = `10` means that when current step fails, then step with id = 10 must be taken after pause. Pause duration is 0.5 seconds. Maximal number of retries is 3. When maximal number of retries is reached, scenario fails.
+  - **TIME_PASSES ELAPSE** - new time must be set for binary under test; **TIMESTAMP** - POSIX timemestamp, it will be added to current system time.
 
 
 **ENTRY**
