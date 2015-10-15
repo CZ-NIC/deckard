@@ -437,9 +437,14 @@ class Scenario:
                         if (step.pause_if_fail > 0):
                             time.sleep(step.pause_if_fail)
                         if (step.next_if_fail != -1):
-                            next_step = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail][0]
+                            next_steps = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail]
+                            if (len(next_steps) == 0):
+                                raise Exception('step #%d: wrong NEXT value "%d"' % (step.id, step.next_if_fail))
+                            next_step = next_steps[0]
                             if (next_step < len(self.steps)):
                                 i = next_step
+                            else:
+                                raise Exception('step #%d: Can''t branch to NEXT value "%d"' % (step.id, step.next_if_fail))
                         continue
                     else:
                         raise Exception('step #%d %s' % (step.id, str(e)))
