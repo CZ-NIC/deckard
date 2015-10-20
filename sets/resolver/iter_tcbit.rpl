@@ -2,7 +2,7 @@
 	harden-referral-path: no
 	target-fetch-policy: "0 0 0 0 0"
         name: "."
-	stub-addr: 127.0.0.2         # K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3         # K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test TCP failover when reply contains TC=1.
@@ -25,7 +25,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET. IN A 127.0.0.2
+K.ROOT-SERVERS.NET. IN A 127.0.0.3
 ENTRY_END
 
 ; query sent to root server
@@ -40,8 +40,8 @@ SECTION AUTHORITY
 cz. IN NS ns1.cz.
 cz. IN NS ns2.cz.
 SECTION ADDITIONAL
-ns1.cz. IN A 127.0.0.3
-ns2.cz. IN A 127.0.0.4
+ns1.cz. IN A 127.0.0.4
+ns2.cz. IN A 127.0.0.5
 ENTRY_END
 
 ; this is the truncated answer
@@ -64,13 +64,13 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 cz. IN A
 SECTION ANSWER
-cz. IN A 127.0.0.5
+cz. IN A 127.0.0.6
 SECTION AUTHORITY
 cz. IN NS ns1.cz.
 cz. IN NS ns2.cz.
 SECTION ADDITIONAL
-ns1.cz. IN A 127.0.0.3
-ns2.cz. IN A 127.0.0.4
+ns1.cz. IN A 127.0.0.4
+ns2.cz. IN A 127.0.0.5
 ENTRY_END
 
 ; is the final answer correct?
@@ -81,7 +81,7 @@ REPLY QR RD RA
 SECTION QUESTION
 cz. IN A
 SECTION ANSWER
-cz. IN A 127.0.0.5
+cz. IN A 127.0.0.6
 ENTRY_END
 
 SCENARIO_END

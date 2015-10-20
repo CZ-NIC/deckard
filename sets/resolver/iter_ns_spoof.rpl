@@ -2,14 +2,14 @@
 	harden-referral-path: yes
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test NS record spoof protection.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2 
+	ADDRESS 127.0.0.3 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -19,7 +19,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -31,7 +31,7 @@ com.	IN NS
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ; for simplicity the root server is authoritative for root-servers.net
@@ -43,7 +43,7 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET.	IN	A
 SECTION ANSWER
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -53,14 +53,14 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	A
 SECTION ANSWER
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
@@ -70,7 +70,7 @@ example.com.	IN NS
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -82,13 +82,13 @@ com.	IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; ns.example.com.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 127.0.0.5
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -96,11 +96,11 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.5
+www.example.com. IN A	127.0.0.6
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -110,11 +110,11 @@ REPLY QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.6
+mail.example.com. IN A	127.0.0.7
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -126,7 +126,7 @@ example.com. IN NS
 SECTION ANSWER
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -136,7 +136,7 @@ REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 ENTRY_END
@@ -150,7 +150,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 bad123.example.com. IN A
 SECTION ANSWER
-bad123.example.com. IN A	127.0.0.7
+bad123.example.com. IN A	127.0.0.8
 SECTION AUTHORITY
 ; evil NS set.
 example.com.	IN NS	bad123.example.com.
@@ -160,7 +160,7 @@ RANGE_END
 
 ; evil server
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.7
+	ADDRESS 127.0.0.8
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -168,11 +168,11 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.7
+www.example.com. IN A	127.0.0.8
 SECTION AUTHORITY
 example.com.	IN NS	bad123.example.com.
 SECTION ADDITIONAL
-bad123.example.com. IN A	127.0.0.7
+bad123.example.com. IN A	127.0.0.8
 ENTRY_END
 
 ENTRY_BEGIN
@@ -182,11 +182,11 @@ REPLY QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.7
+mail.example.com. IN A	127.0.0.8
 SECTION AUTHORITY
 example.com.	IN NS	bad123.example.com.
 SECTION ADDITIONAL
-bad123.example.com. IN A	127.0.0.7
+bad123.example.com. IN A	127.0.0.8
 ENTRY_END
 
 ENTRY_BEGIN
@@ -196,7 +196,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 bad123.example.com. IN A
 SECTION ANSWER
-bad123.example.com. IN A	127.0.0.7
+bad123.example.com. IN A	127.0.0.8
 SECTION AUTHORITY
 ; evil NS set.
 example.com.	IN NS	bad123.example.com.
@@ -218,7 +218,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.5
+www.example.com. IN A	127.0.0.6
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.com.
 ;SECTION ADDITIONAL
@@ -244,7 +244,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 bad123.example.com. IN A
 SECTION ANSWER
-bad123.example.com. IN A	127.0.0.7
+bad123.example.com. IN A	127.0.0.8
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.com.
 ;SECTION ADDITIONAL
@@ -266,7 +266,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A 	127.0.0.6
+mail.example.com. IN A 	127.0.0.7
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.com.
 ;SECTION ADDITIONAL

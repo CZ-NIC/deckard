@@ -5,14 +5,14 @@ server:
 
 stub-zone:
 	name: "."
-	stub-addr: 127.0.0.2 	# a.root-servers.net.
+	stub-addr: 127.0.0.3 	# a.root-servers.net.
 CONFIG_END
 
 SCENARIO_BEGIN Test basic validation of NS cz. (two levels)
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2
+	ADDRESS 127.0.0.3
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -35,7 +35,7 @@ SECTION ANSWER
 .			518400	IN	NS	m.root-servers.net.
 .			518400	IN	RRSIG	NS 8 0 518400 20150802050000 20150723040000 1518 . JSoL4/wQXh7vzoY/m98WYbpr2/S66u4RQi/UhkSrR3JmPZaWRRERDFm6 RRrFY6GWt4CP61X9rvshuVT+0OhluXqYpEatoHEDgur+PKf3+dTAmcgQ 4RzsahwhQ42Y9fDgJ2nNVMcN97HEIH+qMv0FWjU9b7wJ2iYlDL1ZoAVu TKE=
 SECTION ADDITIONAL
-a.root-servers.net.	518400	IN	A	127.0.0.2
+a.root-servers.net.	518400	IN	A	127.0.0.3
 ENTRY_END
 
 
@@ -62,7 +62,7 @@ cz.			172800	IN	NS	a.ns.nic.cz.
 cz.			86400	IN	DS	54576 10 2 397E50C85EDE9CDE33F363A9E66FD1B216D788F8DD438A57A423A386 869C8F06
 cz.			86400	IN	RRSIG	DS 8 1 86400 20150802050000 20150723040000 1518 . fEz3NpYRzgeBjKrLMpht3KFOQ0t6U2wikIaOt1HcmFvurxtPkZVvqdb0 QBQfvh8DoEXDbvpcikzMIO9XYLzzs10X/m91ybGiWzcTVcU+prVGZJP9 zZrvYAIWrpxoC4deKD+vOoNZXGnLfffi6lmGn7QRZaH0LVKjn33cIaPQ 9EM=
 SECTION ADDITIONAL
-a.ns.nic.cz.		172800	IN	A	127.0.0.3
+a.ns.nic.cz.		172800	IN	A	127.0.0.4
 ENTRY_END
 
 ; fake, this can't be validated anyway
@@ -80,7 +80,7 @@ RANGE_END
 
 ;a.ns.nic.cz.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -108,10 +108,10 @@ cz.			18000	IN	NS	c.ns.nic.cz.
 cz.			18000	IN	NS	d.ns.nic.cz.
 cz.			18000	IN	RRSIG	NS 10 1 18000 20150802132511 20150721120844 39788 cz. pf5UzinUesHzGQTav/1NxGW0AifCmzLW3S8X9tWDRwx7XSKGac7QVXgp nMNyb/NiSho9oj+ZTaQpBZQaTri+brHT4W/nE0TofqZlyYiaABb9xgxJ LgjLkt+OVcJsM3a+q+QEGSt+skNlZVDQeR+sztbuORiZXAqhxumxD8iy zZ8=
 SECTION ADDITIONAL
-a.ns.nic.cz.		18000	IN	A	127.0.0.3
-b.ns.nic.cz.		18000	IN	A	127.0.0.3
-c.ns.nic.cz.		18000	IN	A	127.0.0.3
-d.ns.nic.cz.		18000	IN	A	127.0.0.3
+a.ns.nic.cz.		18000	IN	A	127.0.0.4
+b.ns.nic.cz.		18000	IN	A	127.0.0.4
+c.ns.nic.cz.		18000	IN	A	127.0.0.4
+d.ns.nic.cz.		18000	IN	A	127.0.0.4
 ENTRY_END
 
 RANGE_END

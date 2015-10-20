@@ -1,10 +1,10 @@
-	stub-addr: 127.0.0.2
+	stub-addr: 127.0.0.3
 CONFIG_END
 
 SCENARIO_BEGIN Simple knotd query.
 
 RANGE_BEGIN 0 100
-ADDRESS 127.0.0.2
+ADDRESS 127.0.0.3
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id

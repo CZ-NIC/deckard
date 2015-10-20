@@ -1,13 +1,13 @@
 ; config options
 	name: "."
-	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test lameness detection after scrubber.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2 
+	ADDRESS 127.0.0.3 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -17,7 +17,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -29,7 +29,7 @@ com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -48,13 +48,13 @@ REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN A
 SECTION ANSWER
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -64,7 +64,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -76,14 +76,14 @@ example.com. IN A
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.4
+ns.example.com.		IN 	A	127.0.0.5
 ENTRY_END
 RANGE_END
 
 ; ns.example.com.
 ; This server is Lame!
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 127.0.0.5
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -106,20 +106,20 @@ com.                    155182  IN      NS      k.gtld-servers.net.
 com.                    155182  IN      NS      l.gtld-servers.net.
 com.                    155182  IN      NS      m.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.     155182  IN      A       127.0.0.3
-b.gtld-servers.net.     155182  IN      A       127.0.0.5
-c.gtld-servers.net.     155182  IN      A       127.0.0.6
-d.gtld-servers.net.     155182  IN      A       127.0.0.7
-e.gtld-servers.net.     155182  IN      A       127.0.0.8
-f.gtld-servers.net.     155182  IN      A       127.0.0.9
-g.gtld-servers.net.     155182  IN      A       127.0.0.10
-h.gtld-servers.net.     155182  IN      A       127.0.0.11
-i.gtld-servers.net.     155182  IN      A       127.0.0.12
-j.gtld-servers.net.     155182  IN      A       127.0.0.13
-k.gtld-servers.net.     155182  IN      A       127.0.0.14
-l.gtld-servers.net.     155182  IN      A       127.0.0.15
-m.gtld-servers.net.     155182  IN      A       127.0.0.16
-a.gtld-servers.net.     155182  IN      AAAA    fd00::5357:5f11
+a.gtld-servers.net.     155182  IN      A       127.0.0.4
+b.gtld-servers.net.     155182  IN      A       127.0.0.6
+c.gtld-servers.net.     155182  IN      A       127.0.0.7
+d.gtld-servers.net.     155182  IN      A       127.0.0.8
+e.gtld-servers.net.     155182  IN      A       127.0.0.9
+f.gtld-servers.net.     155182  IN      A       127.0.0.10
+g.gtld-servers.net.     155182  IN      A       127.0.0.11
+h.gtld-servers.net.     155182  IN      A       127.0.0.12
+i.gtld-servers.net.     155182  IN      A       127.0.0.13
+j.gtld-servers.net.     155182  IN      A       127.0.0.14
+k.gtld-servers.net.     155182  IN      A       127.0.0.15
+l.gtld-servers.net.     155182  IN      A       127.0.0.16
+m.gtld-servers.net.     155182  IN      A       127.0.0.17
+a.gtld-servers.net.     155182  IN      AAAA    fd00::5357:5f12
 ENTRY_END
 RANGE_END
 

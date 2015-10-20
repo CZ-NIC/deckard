@@ -1,7 +1,7 @@
 ; config options
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test iterative resolve with cached cname for nameserver
@@ -14,7 +14,7 @@ SCENARIO_BEGIN Test iterative resolve with cached cname for nameserver
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2 
+	ADDRESS 127.0.0.3 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -24,7 +24,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -46,7 +46,7 @@ com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -58,13 +58,13 @@ nl. IN A
 SECTION AUTHORITY
 nl.	IN NS	ns2.nic.nl.
 SECTION ADDITIONAL
-ns2.nic.nl.	IN 	A	127.0.0.4
+ns2.nic.nl.	IN 	A	127.0.0.5
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.  ".com"
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -74,7 +74,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -88,9 +88,9 @@ example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns2.example.com.
 SECTION ADDITIONAL
 ;;; but really a CNAME in child server
-ns.example.com.  1 IN A 127.0.0.5
-ns2.example.com.  IN A 127.0.0.6
-ns2.example.com.  IN AAAA fd00::5357:5f07
+ns.example.com.  1 IN A 127.0.0.6
+ns2.example.com.  IN A 127.0.0.7
+ns2.example.com.  IN AAAA fd00::5357:5f08
 ENTRY_END
 
 ; lame answers back to root for .nl (.com server not authoritative for .nl)
@@ -103,14 +103,14 @@ nl. IN A
 SECTION AUTHORITY
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 RANGE_END
 
 ; ns2.nic.nl  ".nl"
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 127.0.0.5
 
 ENTRY_BEGIN
 MATCH opcode subdomain
@@ -121,14 +121,14 @@ bla.nl. IN A
 SECTION AUTHORITY
 bla.nl.	IN NS ns.bla.nl.
 SECTION ADDITIONAL
-ns.bla.nl. IN A 127.0.0.8
+ns.bla.nl. IN A 127.0.0.9
 ENTRY_END
 
 RANGE_END
 
 ; ns.bla.nl  "bla..nl"
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.8
+	ADDRESS 127.0.0.9
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -137,7 +137,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 ns.bla.nl. IN A
 SECTION ANSWER
-ns.bla.nl. IN A 127.0.0.8
+ns.bla.nl. IN A 127.0.0.9
 SECTION AUTHORITY
 bla.nl.	IN NS ns.bla.nl.
 SECTION ADDITIONAL
@@ -172,13 +172,13 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.9
+www.example.com. IN A	127.0.0.10
 ENTRY_END
 RANGE_END
 
 ; ns.example.com "example.com"
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.5
+	ADDRESS 127.0.0.6
 ENTRY_BEGIN
 MATCH opcode qname
 ADJUST copy_id copy_query
@@ -196,14 +196,14 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.9
+www.example.com. IN A	127.0.0.10
 ENTRY_END
 RANGE_END
 
 ; ns2.example.com "example.com"
 ; bad failing server
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.6
+	ADDRESS 127.0.0.7
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -217,7 +217,7 @@ RANGE_END
 ; ns2.example.com "example.com"
 ; bad failing server
 RANGE_BEGIN 0 100
-	ADDRESS fd00::5357:5f07
+	ADDRESS fd00::5357:5f08
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -267,7 +267,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A 127.0.0.9
+www.example.com. IN A 127.0.0.10
 SECTION AUTHORITY
 SECTION ADDITIONAL
 ENTRY_END

@@ -1,6 +1,6 @@
 ; config options
 	name: "."
-	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test iterator donotquery of 127/8.
@@ -12,7 +12,7 @@ SCENARIO_BEGIN Test iterator donotquery of 127/8.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2 
+	ADDRESS 127.0.0.3 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -22,7 +22,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -44,13 +44,13 @@ com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -60,7 +60,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.3
+a.gtld-servers.net.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -94,15 +94,15 @@ example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns2.example.com.
 SECTION ADDITIONAL
 ;ns.example.com.	IN 	A	1.2.3.4
-ns.example.com.		IN 	A	127.0.0.4
-ns2.example.com.	IN 	A	127.0.0.5
+ns.example.com.		IN 	A	127.0.0.5
+ns2.example.com.	IN 	A	127.0.0.6
 ENTRY_END
 
 RANGE_END
 
 ; ns.example.com.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.6
+	ADDRESS 127.0.0.7
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -114,8 +114,8 @@ example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns2.example.com.
 SECTION ADDITIONAL
 ;ns.example.com.	IN 	A	1.2.3.4
-ns.example.com.		IN 	A	127.0.0.4
-ns2.example.com.	IN 	A	127.0.0.5
+ns.example.com.		IN 	A	127.0.0.5
+ns2.example.com.	IN 	A	127.0.0.6
 ENTRY_END
 
 ENTRY_BEGIN
@@ -125,23 +125,23 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.7
+www.example.com. IN A	127.0.0.8
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.		IN 	A	127.0.0.6
+ns.example.com.		IN 	A	127.0.0.7
 ENTRY_END
 
 RANGE_END
 
 ; ns.example.com trap
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 127.0.0.5
 RANGE_END
 
 ; ns.example.com trap
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.5
+	ADDRESS 127.0.0.6
 RANGE_END
 
 STEP 1 QUERY

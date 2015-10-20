@@ -1,14 +1,14 @@
 ; config options
 	target-fetch-policy: "3 2 1 0 0"
 	name: "."
-	stub-addr: 127.0.0.2 	# K.ROOT-SERVERS.NET.
+	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test iterator with delagation with bad glue.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.2 
+	ADDRESS 127.0.0.3 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -18,7 +18,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.2
+K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
 ENTRY_END
 
 ENTRY_BEGIN
@@ -32,7 +32,7 @@ SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.com.
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.com.	IN 	A	127.0.0.3
+a.gtld-servers.com.	IN 	A	127.0.0.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -42,7 +42,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN	A
 SECTION ANSWER
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	127.0.0.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -58,7 +58,7 @@ RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 127.0.0.5
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -67,7 +67,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 www.foo.com. IN A
 SECTION ANSWER
-www.foo.com. 10 IN A	127.0.0.5
+www.foo.com. 10 IN A	127.0.0.6
 SECTION AUTHORITY
 www.foo.com.	3600 IN NS	a.gtld-servers.net.
 ENTRY_END
@@ -76,7 +76,7 @@ RANGE_END
 
 ; a.gtld-servers.com.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3
+	ADDRESS 127.0.0.4
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -88,7 +88,7 @@ SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.com.
 SECTION ADDITIONAL
 ; Keep suggesting address records for this server
-a.gtld-servers.com.	IN 	A	127.0.0.3
+a.gtld-servers.com.	IN 	A	127.0.0.4
 ENTRY_END
 
 RANGE_END
@@ -108,7 +108,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.foo.com. IN A
 SECTION ANSWER
-www.foo.com. 10 IN A	127.0.0.5
+www.foo.com. 10 IN A	127.0.0.6
 ENTRY_END
 
 SCENARIO_END
