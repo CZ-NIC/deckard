@@ -13,6 +13,8 @@ import errno
 import jinja2
 from pydnstest import scenario, testserver, test
 from datetime import datetime
+import random
+import string
 
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """ 
@@ -49,6 +51,11 @@ if "SOCKET_WRAPPER_DIR" in os.environ:
 if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
     OLDTMPDIR = TMPDIR
     TMPDIR = tempfile.mkdtemp(suffix='', prefix='tmp')
+    # Workaround for socket_wrapper specific feature
+    # len(<full path to cwrap socket file name>) + 1 + sizeof(sa_family_t) must be
+    # greater or equal sizeof(struct sockaddr_in6)
+    if len(TMPDIR) < 20:
+        TMPDIR = tempfile.mkdtemp(suffix=''.join(random.choice(string.lowercase) for i in range(20 - len(TMPDIR))), prefix='tmp')
     os.environ["SOCKET_WRAPPER_DIR"] = TMPDIR
 
 def get_next(file_in):
