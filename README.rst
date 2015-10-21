@@ -100,6 +100,8 @@ Examples
     local-address={{SELF_ADDR}}
     # socket-dir    Where the controlsocket will live
     socket-dir={{WORKING_DIR}}
+    # hint-file	If set, load root hints from this file
+    hint-file={{INSTALL_DIR}}/template/hints.pdns
 
 .. [#] Only changed directives in the default config are shown.
 
