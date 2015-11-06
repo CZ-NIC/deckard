@@ -1,4 +1,4 @@
-	stub-addr: 127.0.0.3
+	stub-addr: 192.0.2.10
 CONFIG_END
 
 SCENARIO_BEGIN Simple knotd query.
@@ -20,9 +20,9 @@ SECTION ANSWER
 example.com. 3600 IN NS dns1.example.com.
 example.com. 3600 IN NS dns2.example.com.
 SECTION ADDITIONAL
-dns1.example.com. 3600 IN A 127.0.0.10
-dns1.example.com. 3600 IN AAAA fd00::5357:5f0a
-dns2.example.com. 3600 IN A 127.0.0.11
-dns2.example.com. 3600 IN AAAA fd00::5357:5f0b
+dns1.example.com. 3600 IN A 192.0.2.1
+dns1.example.com. 3600 IN AAAA 2001:DB8::1
+dns2.example.com. 3600 IN A 192.0.2.2
+dns2.example.com. 3600 IN AAAA 2001:DB8::2
 ENTRY_END
 

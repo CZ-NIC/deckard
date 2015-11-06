@@ -3,7 +3,7 @@ SCENARIO_BEGIN Test iterative resolve with lame root.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3 
+	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id

@@ -1,7 +1,7 @@
 ; config options
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test resolution with parent child differ with pc child name.
@@ -10,7 +10,7 @@ SCENARIO_BEGIN Test resolution with parent child differ with pc child name.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3 
+	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -20,7 +20,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
+K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
@@ -32,7 +32,7 @@ com. IN NS
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -44,14 +44,14 @@ net. IN NS
 SECTION AUTHORITY
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	127.0.0.5
+e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
 
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -61,7 +61,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -73,13 +73,13 @@ example.com. IN NS
 SECTION AUTHORITY
 example.com.    IN NS   ns.example.com.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 RANGE_END
 
 ; e.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.5
+	ADDRESS 192.12.94.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -89,7 +89,7 @@ net. IN NS
 SECTION ANSWER
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	127.0.0.5
+e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -101,14 +101,14 @@ example.net. IN NS
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.		IN 	A	127.0.0.7
+ns.example.net.		IN 	A	1.2.3.55
 ENTRY_END
 
 RANGE_END
 
 ; the working version, until time 50.
 RANGE_BEGIN 0 50
-	ADDRESS 127.0.0.6
+	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -118,7 +118,7 @@ example.net. IN NS
 SECTION ANSWER
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.		IN 	A	127.0.0.6
+ns.example.net.		IN 	A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -128,7 +128,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
 SECTION ANSWER
-ns.example.net. IN A	127.0.0.6
+ns.example.net. IN A	1.2.3.44
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 ENTRY_END
@@ -142,7 +142,7 @@ ns.example.net. IN AAAA
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net. IN A	127.0.0.6
+ns.example.net. IN A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -152,7 +152,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com. IN A	127.0.0.6
+ns.example.com. IN A	1.2.3.44
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
@@ -168,7 +168,7 @@ SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A	127.0.0.6
+ns.example.com. IN A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -181,7 +181,7 @@ SECTION ANSWER
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -191,12 +191,12 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.8
+www.example.com. IN A	10.20.30.40
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -206,19 +206,19 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.9
+mail.example.com. IN A	10.20.30.20
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 RANGE_END
 
 ; Broken.   Does not respond to anything (servfail instead
 ; of timeouts since this is easier to encode in .rpl file format).
 RANGE_BEGIN 0 50
-	ADDRESS 127.0.0.7
+	ADDRESS 1.2.3.55
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -230,7 +230,7 @@ ENTRY_END
 RANGE_END
 
 RANGE_BEGIN 50 100
-	ADDRESS 127.0.0.6
+	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
@@ -242,7 +242,7 @@ ENTRY_END
 RANGE_END
 
 RANGE_BEGIN 50 100
-	ADDRESS 127.0.0.7
+	ADDRESS 1.2.3.55
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -252,7 +252,7 @@ example.net. IN NS
 SECTION ANSWER
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.		IN 	A	127.0.0.6
+ns.example.net.		IN 	A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -262,7 +262,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
 SECTION ANSWER
-ns.example.net. IN A	127.0.0.6
+ns.example.net. IN A	1.2.3.44
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 ENTRY_END
@@ -276,7 +276,7 @@ ns.example.net. IN AAAA
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net. IN A	127.0.0.6
+ns.example.net. IN A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -286,7 +286,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com. IN A	127.0.0.6
+ns.example.com. IN A	1.2.3.44
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
@@ -302,7 +302,7 @@ SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A	127.0.0.6
+ns.example.com. IN A	1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -315,7 +315,7 @@ SECTION ANSWER
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -325,12 +325,12 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.8
+www.example.com. IN A	10.20.30.40
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 
 ENTRY_BEGIN
@@ -340,12 +340,12 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.9
+mail.example.com. IN A	10.20.30.20
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.com. IN A 127.0.0.6
+ns.example.com. IN A 1.2.3.44
 ENTRY_END
 RANGE_END
 
@@ -365,7 +365,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.8
+www.example.com. IN A	10.20.30.40
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.com.
 ;example.com.	IN NS	ns.example.net.
@@ -389,7 +389,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.9
+mail.example.com. IN A	10.20.30.20
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.com.
 ;example.com.	IN NS	ns.example.net.

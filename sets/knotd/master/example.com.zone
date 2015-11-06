@@ -1,11 +1,22 @@
-example.com.        	3600	SOA	dns1.example.com. hostmaster.example.com. 2010111213 21600 3600 604800 86400
-example.com.        	3600	NS	dns1.example.com.
-example.com.        	3600	NS	dns2.example.com.
-example.com.        	3600	MX	10 mail.example.com.
-dns1.example.com.   	3600	A	127.0.0.10
-dns1.example.com.   	3600	AAAA	fd00::5357:5f0a
-dns2.example.com.   	3600	A	127.0.0.11
-dns2.example.com.   	3600	AAAA	fd00::5357:5f0b
-mail.example.com.   	3600	A	127.0.0.12
-mail.example.com.   	3600	AAAA	fd00::5357:5f0c
+$ORIGIN example.com.
+$TTL 3600
 
+@	SOA	dns1.example.com. hostmaster.example.com. (
+		2010111213	; serial
+		6h		; refresh
+		1h		; retry
+		1w		; expire
+		1d )		; minimum
+
+	NS	dns1
+	NS	dns2
+	MX	10 mail
+
+dns1	A	192.0.2.1
+	AAAA	2001:DB8::1
+
+dns2	A	192.0.2.2
+	AAAA	2001:DB8::2
+
+mail	A	192.0.2.3
+	AAAA	2001:DB8::3

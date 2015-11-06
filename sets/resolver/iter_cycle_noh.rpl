@@ -2,7 +2,7 @@
 	harden-glue: "no"
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test resolution where disabled scrubber avoids cycle
@@ -11,7 +11,7 @@ SCENARIO_BEGIN Test resolution where disabled scrubber avoids cycle
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3 
+	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -21,7 +21,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
+K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
@@ -33,7 +33,7 @@ ns.example.com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -45,7 +45,7 @@ ns.example.com. IN AAAA
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -57,7 +57,7 @@ ns.example.net. IN A
 SECTION AUTHORITY
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	127.0.0.5
+e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -69,13 +69,13 @@ ns.example.net. IN AAAA
 SECTION AUTHORITY
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	127.0.0.5
+e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -85,7 +85,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -97,7 +97,7 @@ ns.example.com. IN A
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.	IN A 127.0.0.6
+ns.example.net.	IN A 1.2.3.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -109,13 +109,13 @@ ns.example.com. IN AAAA
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.	IN A 127.0.0.6
+ns.example.net.	IN A 1.2.3.1
 ENTRY_END
 RANGE_END
 
 ; e.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.5
+	ADDRESS 192.12.94.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -125,7 +125,7 @@ net. IN NS
 SECTION ANSWER
 net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	127.0.0.5
+e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -137,7 +137,7 @@ ns.example.net. IN A
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	IN A 127.0.0.7
+ns.example.com.	IN A 1.2.3.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -149,13 +149,13 @@ ns.example.net. IN AAAA
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	IN A 127.0.0.7
+ns.example.com.	IN A 1.2.3.2
 ENTRY_END
 RANGE_END
 
 ; ns.example.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.6
+	ADDRESS 1.2.3.1
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -165,7 +165,7 @@ example.net. IN NS
 SECTION ANSWER
 example.net.	IN NS	ns.example.com.
 SECTION ADDITIONAL
-ns.example.com.	IN A 127.0.0.7
+ns.example.com.	IN A 1.2.3.2
 ENTRY_END
 
 ENTRY_BEGIN
@@ -177,7 +177,7 @@ example.com. IN NS
 SECTION ANSWER
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.	IN A 127.0.0.6
+ns.example.net.	IN A 1.2.3.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -187,11 +187,11 @@ REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com.	IN A 127.0.0.7
+ns.example.com.	IN A 1.2.3.2
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.net.
 SECTION ADDITIONAL
-ns.example.net.	IN A 127.0.0.6
+ns.example.net.	IN A 1.2.3.1
 ENTRY_END
 RANGE_END
 
@@ -211,7 +211,7 @@ REPLY QR RD RA
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com.	IN A 127.0.0.7
+ns.example.com.	IN A 1.2.3.2
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.net.
 ; scrubbed off

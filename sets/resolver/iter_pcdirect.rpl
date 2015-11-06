@@ -1,7 +1,7 @@
 ; config options
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
-	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test resolver with parent-child diff for direct impact
@@ -12,7 +12,7 @@ SCENARIO_BEGIN Test resolver with parent-child diff for direct impact
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3 
+	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -22,7 +22,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
+K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
@@ -34,7 +34,7 @@ www.example.com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -46,13 +46,13 @@ org. IN A
 SECTION AUTHORITY
 org. IN NS a0.org.afilias-nst.org.
 SECTION ADDITIONAL
-a0.org.afilias-nst.org. IN A 127.0.0.5
+a0.org.afilias-nst.org. IN A 199.19.56.1
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -62,7 +62,7 @@ com. IN NS
 SECTION ANSWER
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -78,7 +78,7 @@ RANGE_END
 
 ; a0.org.afilias-nst.org.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.5
+	ADDRESS 199.19.56.1
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -88,7 +88,7 @@ org. IN NS
 SECTION ANSWER
 org. IN NS a0.org.afilias-nst.org.
 SECTION ADDITIONAL
-a0.org.afilias-nst.org. IN A 127.0.0.5
+a0.org.afilias-nst.org. IN A 199.19.56.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -101,13 +101,13 @@ SECTION AUTHORITY
 example.org.	IN NS	ns.example.org.
 SECTION ADDITIONAL
 ; parent-side working address.
-ns.example.org. IN A 127.0.0.6
+ns.example.org. IN A 1.2.3.4
 ENTRY_END
 RANGE_END
 
 ; ns.example.org.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.6
+	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -135,7 +135,7 @@ REPLY QR AA RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.7
+www.example.com. IN A	10.20.30.40
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.org.
 ENTRY_END
@@ -147,7 +147,7 @@ REPLY QR AA RA NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.8
+mail.example.com. IN A	10.20.30.50
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.org.
 ENTRY_END
@@ -214,7 +214,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. IN A	127.0.0.7
+www.example.com. IN A	10.20.30.40
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.org.
 ENTRY_END
@@ -235,7 +235,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 mail.example.com. IN A
 SECTION ANSWER
-mail.example.com. IN A	127.0.0.8
+mail.example.com. IN A	10.20.30.50
 ;SECTION AUTHORITY
 ;example.com.	IN NS	ns.example.org.
 ENTRY_END

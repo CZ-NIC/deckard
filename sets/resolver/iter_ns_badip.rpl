@@ -1,14 +1,14 @@
 ; config options
 	target-fetch-policy: "3 2 1 0 0"
 	name: "."
-	stub-addr: 127.0.0.3 	# K.ROOT-SERVERS.NET.
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
 SCENARIO_BEGIN Test iterator with delagation with bad IP address
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.3 
+	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -18,7 +18,7 @@ SECTION QUESTION
 SECTION ANSWER
 . IN NS	K.ROOT-SERVERS.NET.
 SECTION ADDITIONAL
-K.ROOT-SERVERS.NET.	IN	A	127.0.0.3
+K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
@@ -38,7 +38,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN	A
 SECTION ANSWER
-a.gtld-servers.net.	IN 	A	127.0.0.4
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
@@ -49,18 +49,18 @@ SECTION QUESTION
 a.gtld-servers.net.	IN	AAAA
 SECTION ANSWER
 ; Intentional bad address
-a.gtld-servers.net.	IN 	AAAA	fd00::5357:5f05
+a.gtld-servers.net.	IN 	AAAA	1:2:3::4
 ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS fd00::5357:5f05
+	ADDRESS 1:2:3::4
 RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.4
+	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
@@ -71,8 +71,8 @@ SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 example.com.	IN NS	ns2.example.com.
 SECTION ADDITIONAL
-ns.example.com.	 10 	IN 	A	127.0.0.6
-ns2.example.com. 3600	IN 	A	127.0.0.7
+ns.example.com.	 10 	IN 	A	1.2.3.4
+ns2.example.com. 3600	IN 	A	1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -89,7 +89,7 @@ RANGE_END
 
 ; ns.example.com.
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.6
+	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -97,13 +97,13 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.example.com. 10 IN A	127.0.0.8
+www.example.com. 10 IN A	10.20.30.40
 SECTION AUTHORITY
 example.com.	3600 IN NS	ns.example.com.
 example.com.	3600 IN NS	ns2.example.com.
 SECTION ADDITIONAL
-ns.example.com.	10 	IN 	A	127.0.0.6
-ns2.example.com. 3600	IN 	A	127.0.0.7
+ns.example.com.	10 	IN 	A	1.2.3.4
+ns2.example.com. 3600	IN 	A	1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -113,12 +113,12 @@ REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
 SECTION ANSWER
-ns.example.com.	10 	IN 	A	127.0.0.6
+ns.example.com.	10 	IN 	A	1.2.3.4
 SECTION AUTHORITY
 example.com.	3600 IN NS	ns.example.com.
 example.com.	3600 IN NS	ns2.example.com.
 SECTION ADDITIONAL
-ns2.example.com. 3600	IN 	A	127.0.0.7
+ns2.example.com. 3600	IN 	A	1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -128,12 +128,12 @@ REPLY QR NOERROR
 SECTION QUESTION
 ns2.example.com. IN A
 SECTION ANSWER
-ns2.example.com. 3600	IN 	A	127.0.0.7
+ns2.example.com. 3600	IN 	A	1.2.3.5
 SECTION AUTHORITY
 example.com.	3600 IN NS	ns.example.com.
 example.com.	3600 IN NS	ns2.example.com.
 SECTION ADDITIONAL
-ns.example.com.	10 	IN 	A	127.0.0.6
+ns.example.com.	10 	IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
@@ -165,7 +165,7 @@ REPLY QR NOERROR
 SECTION QUESTION
 www.foo.com. IN A
 SECTION ANSWER
-www.foo.com. 10 IN A	127.0.0.8
+www.foo.com. 10 IN A	10.20.30.40
 SECTION AUTHORITY
 foo.com.	3600 IN NS	ns.example.com.
 foo.com.	3600 IN NS	ns2.example.com.
@@ -175,7 +175,7 @@ RANGE_END
 
 ; ns2.example.com. (lame)
 RANGE_BEGIN 0 100
-	ADDRESS 127.0.0.7
+	ADDRESS 1.2.3.5
 ENTRY_BEGIN
 MATCH opcode
 ADJUST copy_id copy_query
@@ -200,7 +200,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.foo.com. IN A
 SECTION ANSWER
-www.foo.com. 10 IN A	127.0.0.8
+www.foo.com. 10 IN A	10.20.30.40
 ;SECTION AUTHORITY
 ;foo.com.	3600 IN NS	ns.example.com.
 ;foo.com.	3600 IN NS	ns2.example.com.
@@ -225,7 +225,7 @@ REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.foo.com. IN A
 SECTION ANSWER
-www.foo.com. 10 IN A	127.0.0.8
+www.foo.com. 10 IN A	10.20.30.40
 ;SECTION AUTHORITY
 ;foo.com.	3600 IN NS	ns.example.com.
 ;foo.com.	3600 IN NS	ns2.example.com.

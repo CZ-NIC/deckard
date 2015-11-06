@@ -7,10 +7,10 @@ TESTS=sets/resolver
 DAEMON=pdns_recursor
      
 # Template file name
-TEMPLATE=template/recursor.j2 
+TEMPLATE=template/recursor.j2:template/hints_pdns.j2
 
 # Config file name
-CONFIG=recursor.conf
+CONFIG=recursor.conf:hints.pdns
 
 # Additional parameter for pdns_recursor
 # it means configuration file can be found in working directory

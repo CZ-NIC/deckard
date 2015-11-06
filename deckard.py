@@ -15,6 +15,7 @@ from pydnstest import scenario, testserver, test
 from datetime import datetime
 import random
 import string
+import itertools
 
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """ 
@@ -33,16 +34,16 @@ INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
    DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
 if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
-    DEFAULT_IFACE = 3
+    DEFAULT_IFACE = 2
     os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
 
 if "KRESD_WRAPPER_DEFAULT_IFACE" in os.environ:
     CHILD_IFACE = int(os.environ["KRESD_WRAPPER_DEFAULT_IFACE"])
 if CHILD_IFACE < 2 or CHILD_IFACE > 254 or CHILD_IFACE == DEFAULT_IFACE:
     OLD_CHILD_IFACE = CHILD_IFACE
-    CHILD_IFACE = DEFAULT_IFACE - 1
-    if CHILD_IFACE < 2:
-        CHILD_IFACE = 254
+    CHILD_IFACE = 254
+    if CHILD_IFACE == DEFAULT_IFACE:
+	CHILD_IFACE = 253
     os.environ["KRESD_WRAPPER_DEFAULT_IFACE"] = "{}".format(CHILD_IFACE)
 
 
@@ -182,7 +183,7 @@ def write_timestamp_file(path, tst):
     time_file.flush()
     time_file.close()
 
-def setup_env(child_env, config, config_name, j2template):
+def setup_env(child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
     # Clear test directory
     del_files(TMPDIR)
@@ -198,6 +199,7 @@ def setup_env(child_env, config, config_name, j2template):
     no_minimize = "true"
     trust_anchor_str = ""
     stub_addr = ""
+    selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
     for k,v in config:
         # Enable selectively for some tests
         if k == 'query-minimization' and str2bool(v):
@@ -209,7 +211,7 @@ def setup_env(child_env, config, config_name, j2template):
             write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(override_date_str))
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
-    if stub_addr.startswith('127.0.0.') or stub_addr.startswith('::'):
+    if stub_addr != "":
         selfaddr = stub_addr
     else:
         selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
@@ -222,7 +224,9 @@ def setup_env(child_env, config, config_name, j2template):
         sock.bind((childaddr, 53))
         if sock_type == socket.SOCK_STREAM:
             sock.listen(5)
-    # Generate configuration
+    # Generate configuration files
+    j2template_loader = jinja2.FileSystemLoader(searchpath=os.path.dirname(os.path.abspath(__file__)))
+    j2template_env = jinja2.Environment(loader=j2template_loader)
     j2template_ctx = {
         "ROOT_ADDR" : selfaddr,
         "SELF_ADDR" : childaddr,
@@ -231,10 +235,12 @@ def setup_env(child_env, config, config_name, j2template):
         "WORKING_DIR" : TMPDIR,
         "INSTALL_DIR" : INSTALLDIR
     }
-    cfg_rendered = j2template.render(j2template_ctx)
-    f = open(os.path.join(TMPDIR,config_name), 'w')
-    f.write(cfg_rendered)
-    f.close()
+    for template_name, config_name in itertools.izip(j2template_list,config_name_list):
+        j2template = j2template_env.get_template(template_name)
+        cfg_rendered = j2template.render(j2template_ctx)
+        f = open(os.path.join(TMPDIR,config_name), 'w')
+        f.write(cfg_rendered)
+        f.close()
 
 def play_object(path, binary_name, config_name, j2template, binary_additional_pars):
     """ Play scenario from a file object. """
@@ -299,35 +305,35 @@ if __name__ == '__main__':
         print "Usage: test_integration.py <scenario> <binary> <template> <config name> [<additional>]"
         print "\t<scenario> - path to scenario"
         print "\t<binary> - executable to test"
-        print "\t<template> - jinja2 template file to generate configuration"
-        print "\t<config name> - name of configuration file to be generated"
+        print "\t<template> - colon-separated list of jinja2 template files"
+        print "\t<config name> - colon-separated list of files to be generated"
         print "\t<additional> - additional parameters for <binary>"
         sys.exit(0)
 
     test_platform()
     path_to_scenario = ""
     binary_name = ""
-    template_name = ""
-    config_name = ""
+    template_name_list = ""
+    config_name_list = ""
     binary_additional_pars = []
 
     if len(sys.argv) > 4:
         path_to_scenario = sys.argv[1]
         binary_name = sys.argv[2]
-        template_name = sys.argv[3]
-        config_name = sys.argv[4]
+        template_name_list = sys.argv[3].split(':')
+        config_name_list = sys.argv[4].split(':')
+        if len(template_name_list) != len (config_name_list):
+                print "ERROR: Number of j2 template files not equal to number of file names to be generated"
+                print "i.e. len(<template>) != len(<config name>), see usage"
+                sys.exit(0)
 
     if len(sys.argv) > 5:
         binary_additional_pars = sys.argv[5:]
-
-    j2template_loader = jinja2.FileSystemLoader(searchpath=os.path.dirname(os.path.abspath(__file__)))
-    j2template_env = jinja2.Environment(loader=j2template_loader)
-    j2template = j2template_env.get_template(template_name)
 
     # Scan for scenarios
     test = test.Test()
     for arg in [path_to_scenario]:
         objects = find_objects(arg)
         for path in objects:
-            test.add(path, play_object, path, binary_name, config_name, j2template, binary_additional_pars)
+            test.add(path, play_object, path, binary_name, config_name_list, template_name_list, binary_additional_pars)
     sys.exit(test.run())

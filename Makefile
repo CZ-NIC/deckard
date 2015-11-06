@@ -12,8 +12,9 @@ endif
 
 # Dependencies
 include platform.mk
-$(eval $(call find_lib,socket_wrapper))
-libcwrap := $(strip $(socket_wrapper_LIBS))
+libcwrap_DIR := contrib/libswrap
+libcwrap_cmake_DIR := $(libcwrap_DIR)/obj
+libcwrap=$(abspath $(libcwrap_cmake_DIR))/src/libsocket_wrapper$(LIBEXT).0
 libfaketime_DIR := contrib/libfaketime
 libfaketime := $(abspath $(libfaketime_DIR))/src/libfaketime$(LIBEXT).1
 
@@ -25,19 +26,23 @@ else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
 
-# Targets
-ifeq ($(HAS_socket_wrapper), yes)
 all: depend
 	$(preload_syms) ./deckard.py $(TESTS) $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
 depend: $(libfaketime) $(libcwrap)
-else
-$(error missing required socket_wrapper)
-endif
 
 # Synchronize submodules
 $(libfaketime_DIR)/Makefile:
 	@git submodule update --init
 $(libfaketime): $(libfaketime_DIR)/Makefile
 	@CFLAGS="-O2 -g" $(MAKE) -C $(libfaketime_DIR)
+$(libcwrap_DIR):
+	@git submodule update --init
+$(libcwrap_cmake_DIR):$(libcwrap_DIR)
+	mkdir $(libcwrap_cmake_DIR)
+$(libcwrap_cmake_DIR)/Makefile: $(libcwrap_cmake_DIR)
+	@cd $(libcwrap_cmake_DIR); cmake ..
+$(libcwrap): $(libcwrap_cmake_DIR)/Makefile
+	@CFLAGS="-O2 -g" $(MAKE) -C $(libcwrap_cmake_DIR)
+
 
 .PHONY: depend all
