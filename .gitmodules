@@ -3,4 +3,4 @@
 	url = https://github.com/wolfcw/libfaketime.git
 [submodule "contrib/libswrap"]
 	path = contrib/libswrap
-	url = git@gitlab.labs.nic.cz:labs/socket_wrapper.git
+	url = https://gitlab.labs.nic.cz/labs/socket_wrapper.git

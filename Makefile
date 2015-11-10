@@ -15,6 +15,9 @@ include platform.mk
 libcwrap_DIR := contrib/libswrap
 libcwrap_cmake_DIR := $(libcwrap_DIR)/obj
 libcwrap=$(abspath $(libcwrap_cmake_DIR))/src/libsocket_wrapper$(LIBEXT).0
+ifeq ($(PLATFORM),Darwin)
+	libcwrap=$(abspath $(libcwrap_cmake_DIR))/src/libsocket_wrapper.0$(LIBEXT)
+endif
 libfaketime_DIR := contrib/libfaketime
 libfaketime := $(abspath $(libfaketime_DIR))/src/libfaketime$(LIBEXT).1
 
