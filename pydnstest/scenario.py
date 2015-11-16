@@ -167,7 +167,7 @@ class Entry:
 
         if rr.rdtype != dns.rdatatype.SOA:
             for existing_rr in section:
-                if existing_rr.match(rr.name, rr.rdclass, rr.rdtype, 0):
+                if existing_rr.match(rr.name, rr.rdclass, rr.rdtype, rr.covers):
                     existing_rr += rr
                     return
 
