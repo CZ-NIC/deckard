@@ -96,7 +96,7 @@ class Entry:
 
     def adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
-        answer = self.message
+        answer = dns.message.from_wire(self.message.to_wire(),xfr=self.message.xfr)
         answer.use_edns(query.edns, query.ednsflags)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
@@ -152,6 +152,8 @@ class Entry:
         else:
             rr = self.__rr_from_str(owner, args)
             if self.section == 'QUESTION':
+                if rr.rdtype == dns.rdatatype.AXFR:
+                    self.message.xfr = True
                 self.__rr_add(self.message.question, rr)
             elif self.section == 'ANSWER':
                 self.__rr_add(self.message.answer, rr)
