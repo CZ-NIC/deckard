@@ -19,7 +19,7 @@ Deckard requires next software to be installed:
 - Python >= 2.7
 - dnspython_ - DNS library for Python.
 - Jinja2_ - template engine for generating config files.
-- `socket_wrapper`_ - a part of the cwrap_ tool set for creating an isolated networks.
+- `socket_wrapper`_ - a modification of `initial socket_wrapper`_ library (part of the cwrap_ tool set for creating an isolated networks).
 
 It also depends on libfaketime_, but it is embedded as it requires a rather recent version (automatically synchronised with ``make``).
 
@@ -36,17 +36,13 @@ How to use it
 Create a config file template
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the tested server accepts a config file, you have to create a template for it.
+If the tested server accepts a config file(s), you have to create a template for it.
 Deckard uses the Jinja2_ templating engine (like Ansible or Salt) with several variables that you can use.
 It's okay if you don't use them, but expect some tests to fail (i.e. if you don't set the ``TRUST_ANCHOR``,
 then the DNSSEC tests won't work properly).
 
-- ``ROOT_ADDR``    - root server hint. An IPv4 address like ``127.0.0.{2-40}``,
-  where the last byte is equal to the ``SOCKET_WRAPPER_DEFAULT_IFACE`` environment variable.
-  When root hints resides in separated file, this file must be edited manually and the environment variable
-  must be set in advance. Port is not set and assumed to be equal to 53.
-- ``SELF_ADDR``    - assigned address for the tested binary. It is an IPv4 address from ``127.0.0.{2-40}`` range.
-  Port is not set and assumed to be equal to 53.
+- ``ROOT_ADDR``    - root server hint. Port is not set and assumed to be equal to 53.
+- ``SELF_ADDR``    - assigned address for the tested binary. Port is not set and assumed to be equal to 53.
 - ``NO_MINIMIZE``  - ``'true'`` or ``'false'``, enables or disables query minimization respectively.
 - ``WORKING_DIR``  - working directory, equivalent to the value of a ``SOCKET_WRAPPER_DIR``
   environment variable.
@@ -60,8 +56,9 @@ You can alter test process using the Makefile variables:
 
 - ``TESTS``        - path to scenario files; default: ``sets/resolver``
 - ``DAEMON``       - path to binary have to be tested; default: ``kresd``
-- ``TEMPLATE``     - jinja2 template file to generate configuration file; default: ``kresd.j2``
-- ``CONFIG``       - name of configuration file to be generated; default: ``config``
+- ``TEMPLATE``     - colon-separated list of jinja2 template files to generate configuration files; default: ``kresd.j2``
+- ``CONFIG``       - colon-separated list of names of configuration files to be generated; resulting files will be generated  respectively to the ``TEMPLATE`` file list, i.e. first file in list is the result of processing of the first file from ``TEMPLATE`` list, etc.; default: ``config``
+
 - ``ADDITIONAL``   - additional parameters for binary, intended to test; not set by default
 
 Run it
@@ -134,7 +131,7 @@ Detailed instructions on using cwrap you can read here_
 Generally, explicit environment setup for cwrap is not required. 
 When cwrap environment is absent, default values will be used :
 
-- ``SOCKET_WRAPPER_DEFAULT_IFACE`` = 10
+- ``SOCKET_WRAPPER_DEFAULT_IFACE`` = 2
 - ``SOCKET_WRAPPER_DIR`` will be created in default temporary directory with 
   randomly generated name, prefixed by ``/tmp``
 - ``SOCKET_WRAPPER_DEBUGLEVEL`` will not be set
@@ -152,7 +149,8 @@ The original test case format is described in the `Doxygen documentation <http:/
 .. _cwrap: https://cwrap.org/
 .. _`dnspython`: http://www.dnspython.org/
 .. _Jinja2: http://jinja.pocoo.org/
-.. _`socket_wrapper`: https://cwrap.org/socket_wrapper.html
+.. _`socket_wrapper`: https://gitlab.labs.nic.cz/labs/socket_wrapper
+.. _`initial socket_wrapper`: https://cwrap.org/socket_wrapper.html
 .. _Libfaketime: https://github.com/wolfcw/libfaketime
 .. _`Knot DNS Resolver`: https://gitlab.labs.nic.cz/knot/resolver/blob/master/README.md
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
