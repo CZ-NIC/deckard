@@ -51,9 +51,7 @@ $(libfaketime_DIR)/Makefile:
 	@git submodule update --init
 $(libfaketime): $(libfaketime_DIR)/Makefile
 	@CFLAGS="-O0 -g" $(MAKE) -C $(libfaketime_DIR)
-$(libcwrap_DIR):
-	@git submodule update --init
-$(libcwrap_cmake_DIR):$(libcwrap_DIR)
+$(libcwrap_cmake_DIR): $(libfaketime_DIR)/Makefile
 	@mkdir $(libcwrap_cmake_DIR)
 $(libcwrap_cmake_DIR)/Makefile: $(libcwrap_cmake_DIR)
 	@cd $(libcwrap_cmake_DIR); cmake ..
