@@ -26,6 +26,7 @@ def del_files(path_to):
         for f in files:
             os.unlink(os.path.join(root, f))
 
+VERBOSE = 0
 DEFAULT_IFACE = 0
 CHILD_IFACE = 0
 TMPDIR = ""
@@ -58,6 +59,11 @@ if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
     if len(TMPDIR) < 20:
         TMPDIR = tempfile.mkdtemp(suffix=''.join(random.choice(string.lowercase) for i in range(20 - len(TMPDIR))), prefix='tmp')
     os.environ["SOCKET_WRAPPER_DIR"] = TMPDIR
+
+if "VERBOSE" in os.environ:
+    try:
+        VERBOSE = int(os.environ["VERBOSE"])
+    except: pass
 
 def get_next(file_in):
     """ Return next token from the input stream. """
@@ -290,7 +296,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        if 'VERBOSE' in os.environ:
+        if VERBOSE:
             print('[ LOG      ]\n%s' % open('%s/server.log' % TMPDIR).read())
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR)

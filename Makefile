@@ -1,7 +1,7 @@
 # Defaults
 TESTS ?= sets/resolver
 DAEMON ?= kresd
-TEMPLATE ?= kresd.j2
+TEMPLATE ?= template/kresd.j2
 CONFIG ?= config
 
 LIBEXT := .so
@@ -37,7 +37,7 @@ depend: $(libfaketime) $(libcwrap)
 $(libfaketime_DIR)/Makefile:
 	@git submodule update --init
 $(libfaketime): $(libfaketime_DIR)/Makefile
-	@CFLAGS="-O2 -g" $(MAKE) -C $(libfaketime_DIR)
+	@CFLAGS="-O0 -g" $(MAKE) -C $(libfaketime_DIR)
 $(libcwrap_DIR):
 	@git submodule update --init
 $(libcwrap_cmake_DIR):$(libcwrap_DIR)
@@ -45,7 +45,7 @@ $(libcwrap_cmake_DIR):$(libcwrap_DIR)
 $(libcwrap_cmake_DIR)/Makefile: $(libcwrap_cmake_DIR)
 	@cd $(libcwrap_cmake_DIR); cmake ..
 $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
-	@CFLAGS="-O2 -g" $(MAKE) -C $(libcwrap_cmake_DIR)
+	@CFLAGS="-O0 -g" $(MAKE) -C $(libcwrap_cmake_DIR)
 
 
 .PHONY: depend all
