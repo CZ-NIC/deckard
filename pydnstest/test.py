@@ -19,24 +19,18 @@ class Test:
         if planned == 0:
             return
 
-        print('[==========] Running %d test(s).' % planned)
         for name, test_callback, args in self.tests:
-            print('[ RUN      ] %s' % name)
             try:
                 test_callback(*args)
                 passed += 1
-                print('[       OK ] %s' % name)
+                print('[  OK  ] %s' % name)
             except Exception as e:
-                print('[     FAIL ] %s (%s)' % (name, str(e)))
-                if 'VERBOSE' in os.environ:
-                    print(traceback.format_exc())
+                print('[ FAIL ] %s (%s)' % (name, str(e)))
+                print(traceback.format_exc())
 
         # Clear test set
         self.tests = []
-        print('[==========] %d test(s) run.' % planned)
         if passed == planned:
-            print('[  PASSED  ] %d test(s).' % passed)
             return 0
         else:
-            print('[  FAILED  ] %d test(s).' % (planned - passed))
             return 1

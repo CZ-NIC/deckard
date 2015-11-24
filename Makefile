@@ -10,6 +10,14 @@ ifeq ($(PLATFORM),Darwin)
 	LIBEXT := .dylib
 endif
 
+# Find all sub-targets
+TARGETS := $(TESTS)
+ifeq (,$(findstring .rpl,$(TESTS)))
+TARGETS := $(wildcard $(TESTS)/*.rpl)
+endif
+SOURCES := $(TARGETS)
+TARGETS := $(patsubst %.rpl,%.out,$(SOURCES))
+
 # Dependencies
 include platform.mk
 libcwrap_DIR := contrib/libswrap
@@ -29,9 +37,14 @@ else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
 
-all: depend
-	$(preload_syms) ./deckard.py $(TESTS) $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
+# Targets
+all: $(TARGETS)
 depend: $(libfaketime) $(libcwrap)
+
+# Generic rule to run test
+$(SOURCES): depend
+%.out: %.rpl
+	@$(preload_syms) python $(abspath ./deckard.py) $< $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
 
 # Synchronize submodules
 $(libfaketime_DIR)/Makefile:
@@ -41,7 +54,7 @@ $(libfaketime): $(libfaketime_DIR)/Makefile
 $(libcwrap_DIR):
 	@git submodule update --init
 $(libcwrap_cmake_DIR):$(libcwrap_DIR)
-	mkdir $(libcwrap_cmake_DIR)
+	@mkdir $(libcwrap_cmake_DIR)
 $(libcwrap_cmake_DIR)/Makefile: $(libcwrap_cmake_DIR)
 	@cd $(libcwrap_cmake_DIR); cmake ..
 $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
