@@ -292,12 +292,14 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     # Play scenario
     try:
         server.play()
+        if VERBOSE:
+            print(open('%s/server.log' % TMPDIR).read())
+    except:
+        print(open('%s/server.log' % TMPDIR).read())
     finally:
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        if VERBOSE:
-            print('[ LOG      ]\n%s' % open('%s/server.log' % TMPDIR).read())
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR)
 
