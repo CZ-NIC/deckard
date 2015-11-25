@@ -296,6 +296,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
             print(open('%s/server.log' % TMPDIR).read())
     except:
         print(open('%s/server.log' % TMPDIR).read())
+        raise
     finally:
         server.stop()
         daemon_proc.terminate()
