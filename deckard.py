@@ -21,15 +21,20 @@ def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """ 
     return v.lower() in ('yes', 'true', 'on')
 
-def del_files(path_to):
+
+def del_files(path_to, delpath):
     for root, dirs, files in os.walk(path_to):
         for f in files:
             os.unlink(os.path.join(root, f))
+    if delpath == True:
+        os.rmdir(path_to);
+
 
 VERBOSE = 0
 DEFAULT_IFACE = 0
 CHILD_IFACE = 0
 TMPDIR = ""
+OWN_TMPDIR = False
 INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
 
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -53,17 +58,14 @@ if "SOCKET_WRAPPER_DIR" in os.environ:
 if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
     OLDTMPDIR = TMPDIR
     TMPDIR = tempfile.mkdtemp(suffix='', prefix='tmp')
-    # Workaround for socket_wrapper specific feature
-    # len(<full path to cwrap socket file name>) + 1 + sizeof(sa_family_t) must be
-    # greater or equal sizeof(struct sockaddr_in6)
-    if len(TMPDIR) < 20:
-        TMPDIR = tempfile.mkdtemp(suffix=''.join(random.choice(string.lowercase) for i in range(20 - len(TMPDIR))), prefix='tmp')
+    OWN_TMPDIR = True
     os.environ["SOCKET_WRAPPER_DIR"] = TMPDIR
 
 if "VERBOSE" in os.environ:
     try:
         VERBOSE = int(os.environ["VERBOSE"])
     except: pass
+
 
 def get_next(file_in):
     """ Return next token from the input stream. """
@@ -192,7 +194,7 @@ def write_timestamp_file(path, tst):
 def setup_env(child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
     # Clear test directory
-    del_files(TMPDIR)
+    del_files(TMPDIR, False)
     # Set up libfaketime
     os.environ["FAKETIME_NO_CACHE"] = "1"
     os.environ["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
@@ -302,7 +304,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         daemon_proc.terminate()
         daemon_proc.wait()
     # Do not clear files if the server crashed (for analysis)
-    del_files(TMPDIR)
+    del_files(TMPDIR, OWN_TMPDIR)
 
 def test_platform(*args):
     if sys.platform == 'windows':
