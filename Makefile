@@ -32,7 +32,7 @@ libfaketime := $(abspath $(libfaketime_DIR))/src/libfaketime$(LIBEXT).1
 # Platform-specific targets
 ifeq ($(PLATFORM),Darwin)
 	libfaketime := $(abspath $(libfaketime_DIR))/src/libfaketime.1$(LIBEXT)
-	preload_syms := DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES="$(libfaketime):$(libcwrap)"
+	preload_syms := DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH) DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES="$(libfaketime):$(libcwrap)"
 else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
