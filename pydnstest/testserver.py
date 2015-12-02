@@ -256,9 +256,12 @@ class TestServer:
         return sockname, proto
 
     def play(self):
-        saddr = get_local_addr_str(socket.AF_INET,self.default_iface)
-        paddr = get_local_addr_str(socket.AF_INET,self.peer_iface)
-        self.scenario.play(saddr,paddr)
+        sockfamily = socket.AF_INET
+        if self.scenario.force_ipv6 == True:
+            sockfamily = socket.AF_INET6
+        saddr = get_local_addr_str(sockfamily,self.default_iface)
+        paddr = get_local_addr_str(sockfamily,self.peer_iface)
+        self.scenario.play(sockfamily,saddr,paddr)
 
 if __name__ == '__main__':
     # Self-test code

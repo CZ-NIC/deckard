@@ -353,7 +353,13 @@ class Step:
         # Wait for a response for a reasonable time
         answer = None
         if not self.data[0].is_raw_data_entry:
-            answer, addr = ctx.child_sock.recvfrom(4096)
+            while True:
+                try:
+                    answer, addr = ctx.child_sock.recvfrom(4096)
+                    break
+                except OSError, e:
+                    if e.errno == errno.ENOBUFS:
+                        time.sleep(0.1)
         # Remember last answer for checking later
         self.raw_answer = answer
         ctx.last_raw_answer = answer
@@ -383,6 +389,7 @@ class Scenario:
         self.steps = []
         self.current_step = None
         self.child_sock = None
+        self.force_ipv6 = False
 
     def reply(self, query, address = None):
         """ Attempt to find a range reply for a query. """
@@ -415,9 +422,9 @@ class Scenario:
                 pass
         return (None, True)
 
-    def play(self, saddr, paddr):
+    def play(self, family, saddr, paddr):
         """ Play given scenario. """
-        self.child_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.child_sock = socket.socket(family, socket.SOCK_DGRAM)
         self.child_sock.settimeout(3)
         self.child_sock.connect((paddr, 53))
 

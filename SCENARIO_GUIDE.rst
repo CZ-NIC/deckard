@@ -43,6 +43,27 @@ Next keys can be used
 
   POSIX timestamp; the system time will be reported to binary under the test
 
+- **features** : jinja2_var1=v1;jinja2_var2=v2;...;jinja2_varN=vN
+
+  semicolon-separated list of key=value pairs, all keys and values are strings;
+  contains user-defined jinja2 template variables which can be used for improving
+  flexibility of configuration generation process; when variable value is not needed,
+  it can be omitted as well as equal sign; **features** configuration key can be
+  repeated, so
+
+  ::
+
+      **features** : jinja2_var1=v1;jinja2_var2=v2;...;jinja2_varN=vN
+
+  equal to
+
+  ::
+
+      **features** : jinja2_var1=v1
+      **features** : jinja2_var2=v2
+      ...
+      **features** : jinja2_varN=vN
+
 
 Example
 ::
@@ -52,6 +73,8 @@ Example
 	    stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 	    trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
 	    val-override-date: "1442323400"
+            features: dns64
+            features: dns64_prefix = fe80::21b:aabb:0:0
     CONFIG_END
 
 **Scenario**

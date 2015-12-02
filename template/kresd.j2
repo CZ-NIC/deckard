@@ -5,6 +5,12 @@ hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
 option('NO_MINIMIZE', {{NO_MINIMIZE}})
 option('ALLOW_LOCAL', false)
 trust_anchors.add('{{TRUST_ANCHOR}}')
+{% if FEATURES.dns64 is defined %}
+modules.load( 'dns64')
+{% if FEATURES.dns64_prefix is defined %}
+dns64.config('{{FEATURES.dns64_prefix}}')
+{% endif %}
+{% endif %}
 verbose(true)
 
 -- Self-checks on globals

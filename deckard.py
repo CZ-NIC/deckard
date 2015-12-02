@@ -27,8 +27,10 @@ def del_files(path_to, delpath):
         for f in files:
             os.unlink(os.path.join(root, f))
     if delpath == True:
-        os.rmdir(path_to);
-
+        try:
+            os.rmdir(path_to);
+        except:
+            pass
 
 VERBOSE = 0
 DEFAULT_IFACE = 0
@@ -36,6 +38,8 @@ CHILD_IFACE = 0
 TMPDIR = ""
 OWN_TMPDIR = False
 INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_FEATURE_LIST_DELIM = ';'
+DEFAULT_FEATURE_PAIR_DELIM = '='
 
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
    DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
@@ -162,7 +166,7 @@ def parse_file(file_in):
                     line = line[0:line.index('#')]
                 # Break to key-value pairs
                 # e.g.: ['minimization', 'on']
-                kv = [x.strip() for x in line.split(':')]
+                kv = [x.strip() for x in line.split(':',1)]
                 if len(kv) >= 2:
                     config.append(kv)
             line = file_in.readline()
@@ -191,7 +195,7 @@ def write_timestamp_file(path, tst):
     time_file.flush()
     time_file.close()
 
-def setup_env(child_env, config, config_name_list, j2template_list):
+def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
     # Clear test directory
     del_files(TMPDIR, False)
@@ -207,6 +211,9 @@ def setup_env(child_env, config, config_name_list, j2template_list):
     no_minimize = "true"
     trust_anchor_str = ""
     stub_addr = ""
+    features = {}
+    feature_list_delimiter = DEFAULT_FEATURE_LIST_DELIM
+    feature_pair_delimiter = DEFAULT_FEATURE_PAIR_DELIM
     selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
     for k,v in config:
         # Enable selectively for some tests
@@ -219,16 +226,35 @@ def setup_env(child_env, config, config_name_list, j2template_list):
             write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(override_date_str))
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
+        elif k == 'features':
+            featurelist = v.split(feature_list_delimiter)
+            try :
+                for f_item in featurelist:
+                    if f_item.find(feature_pair_delimiter) != -1:
+                        f_key, f_value = [x.strip() for x in f_item.split(feature_pair_delimiter,1)]
+                    else:
+                        f_key = f_item.strip()
+                        f_value = ""
+                    features[f_key] = f_value
+            except Exception as e:
+                raise Exception ("can't parse features list in config section (%s)" % str(e));
+        elif k == 'force-ipv6' and v.upper() == 'TRUE':
+            scenario.force_ipv6 = True
+
+    self_sockfamily = socket.AF_INET
+    if scenario.force_ipv6 == True:
+        self_sockfamily = socket.AF_INET6
+
     if stub_addr != "":
         selfaddr = stub_addr
     else:
-        selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
-    childaddr = testserver.get_local_addr_str(socket.AF_INET, CHILD_IFACE)
+        selfaddr = testserver.get_local_addr_str(self_sockfamily, DEFAULT_IFACE)
+    childaddr = testserver.get_local_addr_str(self_sockfamily, CHILD_IFACE)
     # Prebind to sockets to create necessary files
     # @TODO: this is probably a workaround for socket_wrapper bug
     for sock_type in (socket.SOCK_STREAM, socket.SOCK_DGRAM):
-        sock = socket.socket(socket.AF_INET, sock_type)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock = socket.socket(self_sockfamily, sock_type)
+        sock.setsockopt(self_sockfamily, socket.SO_REUSEADDR, 1)
         sock.bind((childaddr, 53))
         if sock_type == socket.SOCK_STREAM:
             sock.listen(5)
@@ -241,7 +267,8 @@ def setup_env(child_env, config, config_name_list, j2template_list):
         "NO_MINIMIZE" : no_minimize,
         "TRUST_ANCHOR" : trust_anchor_str,
         "WORKING_DIR" : TMPDIR,
-        "INSTALL_DIR" : INSTALLDIR
+        "INSTALL_DIR" : INSTALLDIR,
+        "FEATURES" : features
     }
     for template_name, config_name in itertools.izip(j2template_list,config_name_list):
         j2template = j2template_env.get_template(template_name)
@@ -264,7 +291,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
-    setup_env(daemon_env, config, config_name, j2template)
+    setup_env(scenario, daemon_env, config, config_name, j2template)
 
     server = testserver.TestServer(scenario, config, DEFAULT_IFACE, CHILD_IFACE)
     server.start()
@@ -279,14 +306,17 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     except Exception as e:
         raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
     # Wait until the server accepts TCP clients
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sockfamily = socket.AF_INET
+    if scenario.force_ipv6 == True:
+        sockfamily = socket.AF_INET6
+    sock = socket.socket(sockfamily, socket.SOCK_STREAM)
     while True:
         time.sleep(0.1)
         if daemon_proc.poll() != None:
             print(open('%s/server.log' % TMPDIR).read())
             raise Exception('process died "%s", logs in "%s"' % (os.path.basename(binary_name), TMPDIR))
         try:
-            sock.connect((testserver.get_local_addr_str(socket.AF_INET, CHILD_IFACE), 53))
+            sock.connect((testserver.get_local_addr_str(sockfamily, CHILD_IFACE), 53))
         except: continue
         break
     sock.close()
