@@ -1,0 +1,43 @@
+; config options
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+        features: static_hint_name = www.nic.cz
+        features: static_hint_addr = 1.2.3.4
+CONFIG_END
+
+SCENARIO_BEGIN Simple static hint test
+
+STEP 10 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.nic.cz. IN A
+ENTRY_END
+
+STEP 20 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.nic.cz. IN A
+SECTION ANSWER
+www.nic.cz. IN A	1.2.3.4
+ENTRY_END
+
+STEP 30 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+4.3.2.1.in-addr.arpa. IN PTR
+ENTRY_END
+
+STEP 20 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+4.3.2.1.in-addr.arpa. IN PTR
+SECTION ANSWER
+4.3.2.1.in-addr.arpa. IN PTR	www.nic.cz
+ENTRY_END
+
+SCENARIO_END
