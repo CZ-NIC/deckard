@@ -1,6 +1,5 @@
 ; config options
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
-        features: dns64
         features: dns64_prefix = fe80::21b:aabb:0:0
 CONFIG_END
 

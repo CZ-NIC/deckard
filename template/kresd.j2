@@ -6,16 +6,21 @@ option('NO_MINIMIZE', {{NO_MINIMIZE}})
 option('ALLOW_LOCAL', false)
 trust_anchors.add('{{TRUST_ANCHOR}}')
 
-{% if FEATURES.dns64 is defined %}
-modules.load( 'dns64')
 {% if FEATURES.dns64_prefix is defined %}
+modules.load( 'dns64')
 dns64.config('{{FEATURES.dns64_prefix}}')
-{% endif %}
 {% endif %}
 
 {% if FEATURES.static_hint_name is defined %}
 {% if FEATURES.static_hint_addr is defined %}
 hints['{{FEATURES.static_hint_name}}'] = '{{FEATURES.static_hint_addr}}'
+{% endif %}
+{% endif %}
+
+{% if FEATURES.renumber_src is defined %}
+{% if FEATURES.renumber_dst is defined %}
+modules.load( 'renumber')
+renumber.config({{ '{{' }}'{{FEATURES.renumber_src}}','{{FEATURES.renumber_dst}}' {{ '}}' }})
 {% endif %}
 {% endif %}
 
