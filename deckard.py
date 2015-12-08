@@ -227,9 +227,9 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
         elif k == 'features':
-            featurelist = v.split(feature_list_delimiter)
+            feature_list = v.split(feature_list_delimiter)
             try :
-                for f_item in featurelist:
+                for f_item in feature_list:
                     if f_item.find(feature_pair_delimiter) != -1:
                         f_key, f_value = [x.strip() for x in f_item.split(feature_pair_delimiter,1)]
                     else:
@@ -237,7 +237,15 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
                         f_value = ""
                     features[f_key] = f_value
             except Exception as e:
-                raise Exception ("can't parse features list in config section (%s)" % str(e));
+                raise Exception ("can't parse features (%s) in config section (%s)" % (v,str(e)));
+        elif k == 'feature-list':
+            try :
+                f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter,1)]
+                if f_key not in features:
+                    features[f_key] = []
+                features[f_key].append(f_value)
+            except Exception as e:
+                raise Exception ("can't parse feature-list (%s) in config section (%s)" % (v,str(e)));
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             scenario.force_ipv6 = True
 

@@ -24,6 +24,10 @@ renumber.config({{ '{{' }}'{{FEATURES.renumber_src}}','{{FEATURES.renumber_dst}}
 {% endif %}
 {% endif %}
 
+{% for policy in FEATURES.policy %}
+{{policy}}
+{% endfor %}
+
 verbose(true)
 
 -- Self-checks on globals

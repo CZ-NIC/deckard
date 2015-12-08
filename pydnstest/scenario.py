@@ -55,6 +55,8 @@ class Entry:
             return self.__compare_sub(expected.question[0].name, qname)
         elif code == 'flags':
             return self.__compare_val(dns.flags.to_text(expected.flags), dns.flags.to_text(msg.flags))
+        elif code == 'rcode':
+            return self.__compare_val(dns.rcode.to_text(expected.rcode()), dns.rcode.to_text(msg.rcode()))
         elif code == 'question':
             return self.__compare_rrs(expected.question, msg.question)
         elif code == 'answer':
@@ -70,7 +72,7 @@ class Entry:
         """ Compare scripted reply to given message based on match criteria. """
         match_fields = self.match_fields
         if 'all' in match_fields:
-            match_fields = tuple(['flags'] + self.sections)
+            match_fields = tuple(['flags'] + ['rcode'] + self.sections)
         for code in match_fields:
             try:
                 res = self.match_part(code, msg)
