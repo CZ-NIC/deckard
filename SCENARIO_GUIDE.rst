@@ -64,6 +64,17 @@ Next keys can be used
       ...
       **features** : jinja2_varN=vN
 
+- **feature-list** : jinja_var=value
+
+  single key=value pair; key and value are strings; similar to **features**, it contains
+  user-defined jinja2 template variable, but difference is that jinja_var behaves as list 
+  of values; each **feature-list** row appends ``v`` to the list named ``jinja_var``; 
+  you can use loops in your jinja template to iterate through it
+
+  ::
+  
+      feature-list: policy=policy:add(policy.suffix(policy.DENY, {todname('example.com')}))
+      feature-list: policy=policy:add(policy.all(policy.FORWARD('2001:DB8::1')))
 
 Example
 ::
