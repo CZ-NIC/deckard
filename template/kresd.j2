@@ -4,6 +4,8 @@ cache.size = 1*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
 option('NO_MINIMIZE', {{NO_MINIMIZE}})
 option('ALLOW_LOCAL', false)
+-- Always retry failing resolver
+option('NO_THROTTLE', true)
 trust_anchors.add('{{TRUST_ANCHOR}}')
 
 {% if FEATURES.dns64_prefix is defined %}
