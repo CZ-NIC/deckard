@@ -157,7 +157,7 @@ class TestServer:
         query, addr = recvfrom_msg(client)
         if query is None:
             return False
-        dprint ("[ handle_query ]", "incoming query\n%s" % query)
+        dprint ("[ handle_query ]", "%s incoming query from %s\n%s" % (client_address, addr, query))
         response = dns.message.make_response(query)
         is_raw_data = False
         if self.scenario is not None:
