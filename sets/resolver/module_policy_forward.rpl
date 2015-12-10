@@ -1,0 +1,38 @@
+; config options
+	stub-addr: 1.2.3.4
+        feature-list: policy=policy:add(policy.suffix(policy.FORWARD('1.2.3.4'), {todname('example.cz')}))
+CONFIG_END
+
+SCENARIO_BEGIN Simple policy test
+
+RANGE_BEGIN 0 100
+	ADDRESS 1.2.3.4 
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.example.cz. IN A
+SECTION ANSWER
+www.example.cz.	IN A 5.6.7.8
+ENTRY_END
+RANGE_END
+
+STEP 10 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.example.cz. IN A
+ENTRY_END
+
+STEP 20 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.example.cz. IN A
+SECTION ANSWER
+www.example.cz.	IN A 5.6.7.8
+ENTRY_END
+
+SCENARIO_END

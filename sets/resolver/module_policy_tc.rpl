@@ -1,0 +1,24 @@
+; config options
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+        feature-list: policy=policy:add(policy.suffix(policy.TC, {todname('example.cz')}))
+CONFIG_END
+
+SCENARIO_BEGIN Simple policy test
+
+STEP 10 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.example.cz. IN A
+ENTRY_END
+
+STEP 20 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR TC RD RA
+SECTION QUESTION
+www.example.cz. IN A
+SECTION ANSWER
+ENTRY_END
+
+SCENARIO_END
