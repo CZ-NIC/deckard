@@ -195,9 +195,6 @@ def write_timestamp_file(path, tst):
     time_file.flush()
     time_file.close()
 
-def load_template(template):
-    return template
-
 def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
     # Clear test directory
