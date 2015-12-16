@@ -195,6 +195,9 @@ def write_timestamp_file(path, tst):
     time_file.flush()
     time_file.close()
 
+def load_template(template):
+    return template
+
 def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
     # Clear test directory
@@ -243,6 +246,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
                 f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter,1)]
                 if f_key not in features:
                     features[f_key] = []
+                f_value = f_value.replace("{{INSTALL_DIR}}",INSTALLDIR)
                 features[f_key].append(f_value)
             except Exception as e:
                 raise Exception ("can't parse feature-list (%s) in config section (%s)" % (v,str(e)));
