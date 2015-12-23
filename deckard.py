@@ -16,6 +16,7 @@ from datetime import datetime
 import random
 import string
 import itertools
+import calendar
 
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """ 
@@ -221,9 +222,21 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
             no_minimize = "false"
         elif k == 'trust-anchor':
             trust_anchor_str = v.strip('"\'')
+        elif k == 'val-override-timestamp':
+            override_timestamp_str = v.strip('"\'')
+            write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(override_timestamp_str))
         elif k == 'val-override-date':
             override_date_str = v.strip('"\'')
-            write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(override_date_str))
+            ovr_yr = override_date_str[0:4]
+            ovr_mnt = override_date_str[4:6]
+            ovr_day = override_date_str[6:8]
+            ovr_hr = override_date_str[8:10]
+            ovr_min = override_date_str[10:12]
+            ovr_sec = override_date_str[12:]
+            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(ovr_yr,ovr_mnt,ovr_day,ovr_hr,ovr_min,ovr_sec)
+            override_date = time.strptime(override_date_str_arg,"%Y %m %d %H %M %S")
+            override_date_timestamp = calendar.timegm(override_date)
+            write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], override_date_timestamp)
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
         elif k == 'features':

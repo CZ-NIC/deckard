@@ -1,7 +1,7 @@
 ; config options
 server:
 	trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
-	val-override-date: "1442489540"
+	val-override-timestamp: "1442489540"
 
 stub-zone:
 	name: "."

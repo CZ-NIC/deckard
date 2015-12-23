@@ -38,10 +38,14 @@ Next keys can be used
   variable will be replaced by this address.
 - **thrust-anchor** : ``string value``
 
-  Delegation Signer record, can be used for DNSSEC-related scenarios
-- **val-override-date** : ``string value``
+  Trust anchor, can be used for DNSSEC-related scenarios
+- **val-override-timestamp** : ``string value``
 
   POSIX timestamp; the system time will be reported to binary under the test
+- **val-override-date** : ``string value``
+
+  the system time to be reported to binary under the test; ``string value`` has format
+  ``YYYYMMDDHHMMSS``, so ``20120420235959`` means ``Fri Apr 20 23:59:59 2012``
 
 - **features** : jinja2_var1=v1;jinja2_var2=v2;...;jinja2_varN=vN
 
