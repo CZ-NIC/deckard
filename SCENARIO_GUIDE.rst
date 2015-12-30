@@ -181,13 +181,14 @@ Format
   - **qname**      - check if domain name (**QNAME**) fields of question sections are equal
   - **subdomain**  - check if domain from question section of incoming query (answer) 
     is a subdomain of domain from question section of this **ENTRY** block.
-  - **flags**      - check if set of dns flags (**QR** **AA** **TC** **RD** **RA**) is equal
+  - **flags**      - check if sets of dns flags (**QR** **AA** **TC** **RD** **RA**) are equal
+  - **rcode**      - check if response codes are equal
   - **question**,
   - **answer**,
   - **authority**,
   - **additional** - check if lists of RR sets for question,answer,authority and 
     additional section respectively is equal
-  - **all**        - check if set of dns flags is equal and all sections presented 
+  - **all**        - check if sets of dns flags are equal, rcodes and all sections presented
     in entry are equal to ones in incoming query (answer); incoming query 
     (answer) can contain some extra sections which will not be compared
     

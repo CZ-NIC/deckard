@@ -30,6 +30,13 @@ renumber.config({{ '{{' }}'{{FEATURES.renumber_src}}','{{FEATURES.renumber_dst}}
 {{policy}}
 {% endfor %}
 
+{% if FEATURES.view is defined %}
+modules.load( 'view')
+{% for view in FEATURES.view %}
+{{view}}
+{% endfor %}
+{% endif %}
+
 verbose(true)
 
 -- Self-checks on globals
