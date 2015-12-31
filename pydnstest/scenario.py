@@ -2,6 +2,7 @@ import dns.message
 import dns.rrset
 import dns.rcode
 import dns.dnssec
+import dns.tsigkeyring
 import binascii
 import socket
 import os
@@ -166,6 +167,12 @@ class Entry:
             else:
                 raise Exception('bad section %s' % self.section)
 
+    def use_tsig(self,fields):
+        tsig_keyname = fields[0]
+        tsig_secret  = fields[1]
+        keyring = dns.tsigkeyring.from_text({tsig_keyname : tsig_secret})
+        self.message.use_tsig(keyring=keyring,keyname=tsig_keyname)
+
     def __rr_add(self, section, rr):
     	""" Merge record to existing RRSet, or append to given section. """
 
@@ -224,6 +231,7 @@ class Entry:
         if not expected.is_subdomain(got):
             raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
         return True
+
 
 
 class Range:

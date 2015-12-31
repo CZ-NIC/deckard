@@ -104,6 +104,8 @@ def parse_entry(op, args, file_in):
             out.begin_section(args[0])
         elif op == 'RAW':
             out.begin_raw()
+        elif op == 'TSIG':
+            out.use_tsig(args)
         else:
             out.add_record(op, args)
     return out
