@@ -306,12 +306,12 @@ class Step:
         """ Append a data entry to this step. """
         self.data.append(entry)
 
-    def play(self, ctx, peeraddr):
+    def play(self, ctx):
         """ Play one step from a scenario. """
         dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         if self.type == 'QUERY':
             dprint(dtag, self.data[0].message.to_text())
-            return self.__query(ctx, peeraddr)
+            return self.__query(ctx)
         elif self.type == 'CHECK_OUT_QUERY':
             dprint(dtag, '')
             pass # Ignore
@@ -342,7 +342,7 @@ class Step:
             dprint("[ __check_answer ]", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __query(self, ctx, peeraddr):
+    def __query(self, ctx):
         """ Resolve a query. """
         if len(self.data) == 0:
             raise Exception("query definition required")
@@ -416,7 +416,7 @@ class Scenario:
                 return (rng.reply(query), False)
         # Find any prescripted one-shot replies
         for step in self.steps:
-            if step.id <= step_id or step.type != 'REPLY':
+            if step.id < step_id or step.type != 'REPLY':
                 continue
             try:
                 candidate = step.data[0]
@@ -432,11 +432,11 @@ class Scenario:
                 pass
         return (None, True)
 
-    def play(self, family, saddr, paddr):
+    def play(self, family, paddr):
         """ Play given scenario. """
         self.child_sock = socket.socket(family, socket.SOCK_DGRAM)
         self.child_sock.settimeout(3)
-        self.child_sock.connect((paddr, 53))
+        self.child_sock.connect(paddr)
 
         if len(self.steps) == 0:
             raise ('no steps in this scenario')
@@ -448,7 +448,7 @@ class Scenario:
                 step = self.steps[i]
                 self.current_step = step
                 try:
-                    step.play(self, paddr)
+                    step.play(self)
                 except Exception as e:
                     if (step.repeat_if_fail > 0):
                         dprint ('[play]',"step %d: exception catched - '%s', retrying step %d (%d left)" % (step.id, e, step.next_if_fail, step.repeat_if_fail))

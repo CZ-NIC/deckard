@@ -65,7 +65,7 @@ class AddrMapInfo:
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, scenario, config, d_iface, p_iface):
+    def __init__(self, scenario, config, d_iface):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -78,9 +78,8 @@ class TestServer:
         self.start_iface = 2
         self.cur_iface = self.start_iface
         self.kroot_local = None
-        self.kroot_family = None
+        self.addr_family = None
         self.default_iface = d_iface
-        self.peer_iface = p_iface
         self.set_initial_address()
 
     def __del__(self):
@@ -88,13 +87,13 @@ class TestServer:
         if self.active is True:
             self.stop()
 
-    def start(self):
+    def start(self, port = 53):
         """ Synchronous start """
         if self.active is True:
             raise Exception('TestServer already started')
         self.active = True
-        self.start_srv(self.kroot_local, self.kroot_family)
-        self.start_srv(self.kroot_local, self.kroot_family, socket.IPPROTO_TCP)
+        self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
+        self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
 
     def stop(self):
         """ Stop socket server operation. """
@@ -124,25 +123,24 @@ class TestServer:
     def set_initial_address(self):
         """ Set address for starting thread """
         if self.config is None:
-            self.kroot_family = socket.AF_INET
-            self.kroot_local = get_local_addr_str(self.kroot_family, self.default_iface)
+            self.addr_family = socket.AF_INET
+            self.kroot_local = get_local_addr_str(self.addr_family, self.default_iface)
             return
+        # Default address is localhost
         kroot_addr = None
         for k, v in self.config:
             if k == 'stub-addr':
                 kroot_addr = v
         if kroot_addr is not None:
             if self.check_family (kroot_addr, socket.AF_INET):
-                self.kroot_family = socket.AF_INET
+                self.addr_family = socket.AF_INET
                 self.kroot_local = kroot_addr
             elif self.check_family (kroot_addr, socket.AF_INET6):
-                self.kroot_family = socket.AF_INET6
+                self.addr_family = socket.AF_INET6
                 self.kroot_local = kroot_addr
-            else:
-                raise Exception("[set_initial_adress] Invalid 'stub-addr' address (%s), must be IPv4 or IPv6, check the config")
         else:
-            self.kroot_family = socket.AF_INET
-            self.kroot_local = get_local_addr_str(self.kroot_family, self.default_iface)
+            self.addr_family = socket.AF_INET
+            self.kroot_local = get_local_addr_str(self.addr_family, self.default_iface)
 
     def address(self):
         """ Returns opened sockets list """
@@ -164,13 +162,7 @@ class TestServer:
             response, is_raw_data = self.scenario.reply(query, client_address)
         if response:
             if is_raw_data is False:
-                for rr in itertools.chain(response.answer,response.additional,response.question,response.authority):
-                    for rd in rr:
-                        if rd.rdtype == dns.rdatatype.A:
-                            self.start_srv(rd.address, socket.AF_INET)
-                        elif rd.rdtype == dns.rdatatype.AAAA:
-                            self.start_srv(rd.address, socket.AF_INET6)
-                data_to_wire = response.to_wire()
+                data_to_wire = response.to_wire(max_size = 65535)
                 dprint ("[ handle_query ]", "response\n%s" % response)
             else:
                 data_to_wire = response
@@ -208,19 +200,18 @@ class TestServer:
            for sock in to_error:
               raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
 
-    def start_srv(self, address = None, family = socket.AF_INET, proto = socket.IPPROTO_UDP, port = 53):
+    def start_srv(self, address = None, family = socket.AF_INET, proto = socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
-
         if family == None:
             family = socket.AF_INET
         if family == socket.AF_INET:
-            if address == '' or address is None:
-                address = get_local_addr_str(family, self.default_iface)
+            if address[0] is None:
+                address = (get_local_addr_str(family, self.default_iface), 53)
         elif family == socket.AF_INET6:
             if socket.has_ipv6 is not True:
                 raise Exception("[start_srv] IPV6 is not supported")
-            if address == '' or address is None:
-                address = get_local_addr_str(family, self.default_iface)
+            if address[0] is None:
+                address = (get_local_addr_str(family, self.default_iface), 53)
         else:
             raise Exception("[start_srv] unsupported protocol family {family}".format(family=family))
 
@@ -233,21 +224,16 @@ class TestServer:
         else:
             raise Exception("[start_srv] unsupported protocol {protocol}".format(protocol=proto))
 
-        if port == 0 or port is None:
-            port = 53
-
         if (self.thread is None):
             self.thread = threading.Thread(target=self.query_io)
             self.thread.start()
 
         for srv_sock in self.srv_socks:
-            if srv_sock.family == family and srv_sock.getsockname()[0] == address and srv_sock.proto == proto:
+            if srv_sock.family == family and srv_sock.getsockname() == address and srv_sock.proto == proto:
                 return srv_sock.getsockname()
 
-        addr_info = socket.getaddrinfo(address,port,family,socktype,proto)
         sock = socket.socket(family, socktype, proto)
-        sockaddr = addr_info[0][-1]
-        sock.bind(sockaddr)
+        sock.bind(address)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
@@ -255,13 +241,12 @@ class TestServer:
         sockname = sock.getsockname()
         return sockname, proto
 
-    def play(self):
+    def play(self, subject_addr):
         sockfamily = socket.AF_INET
         if self.scenario.force_ipv6 == True:
             sockfamily = socket.AF_INET6
-        saddr = get_local_addr_str(sockfamily,self.default_iface)
-        paddr = get_local_addr_str(sockfamily,self.peer_iface)
-        self.scenario.play(sockfamily,saddr,paddr)
+        paddr = get_local_addr_str(sockfamily, subject_addr)
+        self.scenario.play(sockfamily, (paddr, 53))
 
 if __name__ == '__main__':
     # Self-test code
@@ -273,7 +258,7 @@ if __name__ == '__main__':
         DEFAULT_IFACE = 10
         os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
     # Mirror server
-    server = TestServer(None,None,DEFAULT_IFACE,DEFAULT_IFACE)
+    server = TestServer(None,None,DEFAULT_IFACE)
     server.start()
     print "[==========] Mirror server running at", server.address()
     try:

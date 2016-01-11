@@ -11,6 +11,7 @@ import signal
 import stat
 import errno
 import jinja2
+import dns.rdatatype
 from pydnstest import scenario, testserver, test
 from datetime import datetime
 import random
@@ -276,12 +277,13 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     childaddr = testserver.get_local_addr_str(self_sockfamily, CHILD_IFACE)
     # Prebind to sockets to create necessary files
     # @TODO: this is probably a workaround for socket_wrapper bug
-    for sock_type in (socket.SOCK_STREAM, socket.SOCK_DGRAM):
-        sock = socket.socket(self_sockfamily, sock_type)
-        sock.setsockopt(self_sockfamily, socket.SO_REUSEADDR, 1)
-        sock.bind((childaddr, 53))
-        if sock_type == socket.SOCK_STREAM:
-            sock.listen(5)
+    if 'NOPRELOAD' not in os.environ:
+        for sock_type in (socket.SOCK_STREAM, socket.SOCK_DGRAM):
+            sock = socket.socket(self_sockfamily, sock_type)
+            sock.setsockopt(self_sockfamily, socket.SO_REUSEADDR, 1)
+            sock.bind((childaddr, 53))
+            if sock_type == socket.SOCK_STREAM:
+                sock.listen(5)
     # Generate configuration files
     j2template_loader = jinja2.FileSystemLoader(searchpath=os.path.dirname(os.path.abspath(__file__)))
     j2template_env = jinja2.Environment(loader=j2template_loader)
@@ -305,19 +307,13 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     """ Play scenario from a file object. """
 
     # Parse scenario
-    file_in = fileinput.input(path)
-    scenario = None
-    config = None
-    try:
-        scenario, config = parse_file(file_in)
-    finally:
-        file_in.close()
+    case, config = scenario.parse_file(fileinput.input(path))
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
-    setup_env(scenario, daemon_env, config, config_name, j2template)
+    setup_env(case, daemon_env, config, config_name, j2template)
 
-    server = testserver.TestServer(scenario, config, DEFAULT_IFACE, CHILD_IFACE)
+    server = testserver.TestServer(case, config, DEFAULT_IFACE)
     server.start()
 
     # Start binary
@@ -328,15 +324,18 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
       daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
                                      cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
+        server.stop()
         raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
+
     # Wait until the server accepts TCP clients
     sockfamily = socket.AF_INET
-    if scenario.force_ipv6 == True:
+    if case.force_ipv6 == True:
         sockfamily = socket.AF_INET6
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
     while True:
         time.sleep(0.1)
         if daemon_proc.poll() != None:
+            server.stop()
             print(open('%s/server.log' % TMPDIR).read())
             raise Exception('process died "%s", logs in "%s"' % (os.path.basename(binary_name), TMPDIR))
         try:
@@ -345,9 +344,24 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         break
     sock.close()
 
-    # Play scenario
+    # Bind to test servers
+    for r in case.ranges:
+        family = socket.AF_INET6 if ':' in r.address else socket.AF_INET
+        server.start_srv((r.address, 53), family)
+    # Bind addresses in ad-hoc REPLYs
+    for s in case.steps:
+        if s.type == 'REPLY':
+            reply = s.data[0].message
+            for rr in itertools.chain(reply.answer,reply.additional,reply.question,reply.authority):
+                for rd in rr:
+                    if rd.rdtype == dns.rdatatype.A:
+                        server.start_srv((rd.address, 53), socket.AF_INET)
+                    elif rd.rdtype == dns.rdatatype.AAAA:
+                        server.start_srv((rd.address, 53), socket.AF_INET6)
+
+    # Play test scenario
     try:
-        server.play()
+        server.play(CHILD_IFACE)
         if VERBOSE:
             print(open('%s/server.log' % TMPDIR).read())
     except:

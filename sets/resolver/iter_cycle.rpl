@@ -7,9 +7,14 @@ CONFIG_END
 SCENARIO_BEGIN Test resolution with dependency cycle
 ; query for ns.example.com, needs ns.example.net, needs ns.example.com.
 
+; Invalid server
+RANGE_BEGIN 0 100
+ADDRESS 1.2.3.1
+RANGE_END
+
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
