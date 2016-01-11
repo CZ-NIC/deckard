@@ -472,7 +472,7 @@ class Scenario:
             self.child_sock.close()
             self.child_sock = None
 
-def get_next(file_in, skip = True):
+def get_next(file_in):
     """ Return next token from the input stream. """
     while True:
         line = file_in.readline()
@@ -483,18 +483,15 @@ def get_next(file_in, skip = True):
                 line = line[0:line.index(csep)]
         tokens = ' '.join(line.strip().split()).split()
         if len(tokens) == 0:
-            if skip:
                 continue  # Skip empty lines
-            else:
-                return '', []
         op = tokens.pop(0)
         return op, tokens
 
 def parse_entry(op, args, file_in):
     """ Parse entry definition. """
     out = Entry()
-    for op, args in iter(lambda: get_next(file_in, False), False):
-        if op == 'ENTRY_END' or op == '':
+    for op, args in iter(lambda: get_next(file_in), False):
+        if op == 'ENTRY_END':
             break
         elif op == 'REPLY':
             out.set_reply(args)
