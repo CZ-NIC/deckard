@@ -471,3 +471,124 @@ class Scenario:
         finally:
             self.child_sock.close()
             self.child_sock = None
+
+def get_next(file_in, skip = True):
+    """ Return next token from the input stream. """
+    while True:
+        line = file_in.readline()
+        if len(line) == 0:
+            return False
+        for csep in (';', '#'):
+            if csep in line:
+                line = line[0:line.index(csep)]
+        tokens = ' '.join(line.strip().split()).split()
+        if len(tokens) == 0:
+            if skip:
+                continue  # Skip empty lines
+            else:
+                return '', []
+        op = tokens.pop(0)
+        return op, tokens
+
+def parse_entry(op, args, file_in):
+    """ Parse entry definition. """
+    out = Entry()
+    for op, args in iter(lambda: get_next(file_in, False), False):
+        if op == 'ENTRY_END' or op == '':
+            break
+        elif op == 'REPLY':
+            out.set_reply(args)
+        elif op == 'MATCH':
+            out.set_match(args)
+        elif op == 'ADJUST':
+            out.set_adjust(args)
+        elif op == 'SECTION':
+            out.begin_section(args[0])
+        elif op == 'RAW':
+            out.begin_raw()
+        elif op == 'TSIG':
+            out.use_tsig(args)
+        else:
+            out.add_record(op, args)
+    return out
+
+auto_step = 0
+def parse_step(op, args, file_in):
+    """ Parse range definition. """
+    global auto_step
+    if len(args) == 0:
+        raise Exception('expected at least STEP <type>')
+    if len(args) < 2:
+        args = [str(auto_step), args[0]]
+    auto_step = int(args[0]) + 1 # Add 1 when step ID isn't specified
+    extra_args = []
+    if len(args) > 2:
+        extra_args = args[2:]
+    out = Step(args[0], args[1], extra_args)
+    if out.has_data:
+        op, args = get_next(file_in)
+        if op == 'ENTRY_BEGIN':
+            out.add(parse_entry(op, args, file_in))
+        else:
+            raise Exception('expected "ENTRY_BEGIN"')
+    return out
+
+
+def parse_range(op, args, file_in):
+    """ Parse range definition. """
+    if len(args) < 2:
+        raise Exception('expected RANGE_BEGIN <from> <to> [address]')
+    out = Range(int(args[0]), int(args[1]))
+    # Shortcut for address
+    if len(args) > 2:
+        out.address = args[2]
+    for op, args in iter(lambda: get_next(file_in), False):
+        if op == 'ADDRESS':
+            out.address = args[0]
+        elif op == 'ENTRY_BEGIN':
+            out.add(parse_entry(op, args, file_in))
+        elif op == 'RANGE_END':
+            break
+    return out
+
+
+def parse_scenario(op, args, file_in):
+    """ Parse scenario definition. """
+    out = Scenario(args[0])
+    for op, args in iter(lambda: get_next(file_in), False):
+        if op == 'SCENARIO_END':
+            break
+        if op == 'RANGE_BEGIN':
+            out.ranges.append(parse_range(op, args, file_in))
+        if op == 'STEP':
+            out.steps.append(parse_step(op, args, file_in))
+    return out
+
+
+def parse_file(file_in):
+    """ Parse scenario from a file. """
+    try:
+        config = []
+        line = file_in.readline()
+        while len(line):
+            # Zero-configuration
+            if line.startswith('SCENARIO_BEGIN'):
+                return parse_scenario(line, line.split(' ')[1:], file_in), config
+            if line.startswith('CONFIG_END'):
+                break
+            if not line.startswith(';'):
+                if '#' in line:
+                    line = line[0:line.index('#')]
+                # Break to key-value pairs
+                # e.g.: ['minimization', 'on']
+                kv = [x.strip() for x in line.split(':',1)]
+                if len(kv) >= 2:
+                    config.append(kv)
+            line = file_in.readline()
+
+        for op, args in iter(lambda: get_next(file_in), False):
+            if op == 'SCENARIO_BEGIN':
+                return parse_scenario(op, args, file_in), config
+        raise Exception("IGNORE (missing scenario)")
+    except Exception as e:
+        raise Exception('line %d: %s' % (file_in.lineno(), str(e)))
