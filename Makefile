@@ -4,6 +4,7 @@ DAEMON ?= kresd
 TEMPLATE ?= template/kresd.j2
 CONFIG ?= config
 
+PYTHON := python
 LIBEXT := .so
 PLATFORM := $(shell uname -s)
 ifeq ($(PLATFORM),Darwin)
@@ -44,7 +45,7 @@ depend: $(libfaketime) $(libcwrap)
 # Generic rule to run test
 $(SOURCES): depend
 %.out: %.rpl
-	@$(preload_syms) python $(abspath ./deckard.py) $< $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
+	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $< $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
 
 # Synchronize submodules
 $(libfaketime_DIR)/Makefile: .gitmodules
