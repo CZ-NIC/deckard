@@ -10,7 +10,7 @@ import struct
 import binascii
 from dprint import dprint
 
-def recvfrom_msg(stream):
+def recvfrom_msg(stream, raw = False):
     """ Receive DNS/UDP/TCP message. """
     if stream.type == socket.SOCK_DGRAM:
         data, addr = stream.recvfrom(4096)
@@ -30,13 +30,18 @@ def recvfrom_msg(stream):
         addr = stream.getpeername()[0]
     else:
         raise Exception ("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    return dns.message.from_wire(data), addr
+    if not raw:
+        data = dns.message.from_wire(data)
+    return data, addr
 
-def sendto_msg(stream, message, addr):
+def sendto_msg(stream, message, addr = None):
     """ Send DNS/UDP/TCP message. """
     try:
         if stream.type == socket.SOCK_DGRAM:
-            stream.sendto(message, addr)
+            if addr is None:
+                stream.send(message)
+            else:
+                stream.sendto(message, addr)
         elif stream.type == socket.SOCK_STREAM:
             data = struct.pack("!H",len(message)) + message
             stream.send(data)
