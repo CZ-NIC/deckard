@@ -22,7 +22,7 @@ class Entry:
     default_cls = 'IN'
     default_rc = 'NOERROR'
 
-    def __init__(self):
+    def __init__(self, lineno = 0):
         """ Initialize data entry. """
         self.match_fields = ['opcode', 'qtype', 'qname']
         self.adjust_fields = ['copy_id']
@@ -33,6 +33,7 @@ class Entry:
         self.is_raw_data_entry = False
         self.raw_data_pending = False
         self.raw_data = None
+        self.lineno = lineno
 
     def match_part(self, code, msg):
         """ Compare scripted reply to given message using single criteria. """
@@ -79,7 +80,7 @@ class Entry:
             try:
                 res = self.match_part(code, msg)
             except Exception as e:
-                raise Exception("%s: %s" % (code, str(e)))
+                raise Exception("line %d, %s: %s" % (self.lineno, code, str(e)))
 
     def cmp_raw(self, raw_value):
         if self.is_raw_data_entry is False:
@@ -506,7 +507,7 @@ def get_next(file_in):
 
 def parse_entry(op, args, file_in):
     """ Parse entry definition. """
-    out = Entry()
+    out = Entry(file_in.lineno())
     for op, args in iter(lambda: get_next(file_in), False):
         if op == 'ENTRY_END':
             break
