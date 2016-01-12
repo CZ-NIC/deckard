@@ -68,6 +68,11 @@ class Entry:
             return self.__compare_rrs(expected.authority, msg.authority)
         elif code == 'additional':
             return self.__compare_rrs(expected.additional, msg.additional)
+        elif code == 'edns':
+            if msg.edns != expected.edns:
+                raise Exception('expected EDNS %d, got %d' % (expected.edns, msg.edns))
+            if msg.payload != expected.payload:
+                raise Exception('expected EDNS bufsize %d, got %d' % (expected.payload, msg.payload))
         else:
             raise Exception('unknown match request "%s"' % code)
 
@@ -75,7 +80,8 @@ class Entry:
         """ Compare scripted reply to given message based on match criteria. """
         match_fields = self.match_fields
         if 'all' in match_fields:
-            match_fields = tuple(['flags'] + ['rcode'] + self.sections)
+            match_fields.remove('all')
+            match_fields += ['flags'] + ['rcode'] + self.sections
         for code in match_fields:
             try:
                 res = self.match_part(code, msg)
@@ -96,7 +102,7 @@ class Entry:
             raise Exception("comparsion failed")
 
     def set_match(self, fields):
-        """ Set conditions for message comparison [all, flags, question, answer, authority, additional] """
+        """ Set conditions for message comparison [all, flags, question, answer, authority, additional, edns] """
         self.match_fields = fields
 
     def adjust_reply(self, query):
