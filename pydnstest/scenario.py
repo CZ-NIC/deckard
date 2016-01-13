@@ -317,7 +317,7 @@ class Step:
                     elif param[0] == 'NEXT':
                         self.next_if_fail = int(param[1])
                 except Exception as e:
-                    raise Exception('step #%d - wrong %s arg: %s' % (self.id, param[0], str(e)))
+                    raise Exception('step %d - wrong %s arg: %s' % (self.id, param[0], str(e)))
 
 
     def add(self, entry):
@@ -329,11 +329,18 @@ class Step:
         dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         if self.type == 'QUERY':
             dprint(dtag, self.data[0].message.to_text())
-            args = [x for x in self.args if x != 'TCP']
-            choice = None
-            if len(args) > 0:
-                choice = args[0]
-            return self.__query(ctx, tcp = 'TCP' in self.args, choice = choice)
+            # Parse QUERY-specific parameters
+            choice, tcp, source = None, False, None
+            for v in self.args:
+                if '=' in v: # Key=Value
+                    v = v.split('=')
+                    if v[0].lower() == 'source':
+                        source = v[1]
+                elif v.lower() == 'tcp':
+                    tcp = True
+                else:
+                    choice = v
+            return self.__query(ctx, tcp = tcp, choice = choice, source = source)
         elif self.type == 'CHECK_OUT_QUERY':
             dprint(dtag, '')
             pass # Ignore
@@ -364,7 +371,7 @@ class Step:
             dprint("[ __check_answer ]", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __query(self, ctx, tcp = False, choice = None):
+    def __query(self, ctx, tcp = False, choice = None, source = None):
         """ Resolve a query. """
         if len(self.data) == 0:
             raise Exception("query definition required")
@@ -373,12 +380,25 @@ class Step:
         else:
             # Don't use a message copy as the EDNS data portion is not copied.
             data_to_wire = self.data[0].message.to_wire()
-        # Send query to client and wait for response
         if choice is None or len(choice) == 0:
-            choice = ctx.child_udp.keys()[0]
-        if choice not in ctx.child_udp:
+            choice = ctx.client.keys()[0]
+        if choice not in ctx.client:
             raise Exception('step %03d invalid QUERY target: %s' % (self.id, choice))
-        sock = ctx.child_tcp[choice] if tcp else ctx.child_udp[choice]
+        # Create socket to test subject
+        sock = None
+        destination = ctx.client[choice]
+        family = socket.AF_INET6 if ':' in destination else socket.AF_INET
+        if tcp:
+            sock = socket.socket(family, socket.SOCK_STREAM)
+            sock.settimeout(3)
+            if source: sock.bind((source, 0))
+            sock.connect(destination)
+        else:
+            sock = socket.socket(family, socket.SOCK_DGRAM)
+            sock.settimeout(3)
+            if source: sock.bind((source, 0))
+            sock.connect(destination)
+        # Send query to client and wait for response
         while True:
             try:
                 sendto_msg(sock, data_to_wire)
@@ -419,14 +439,14 @@ class Step:
         time_file.close()
 
 class Scenario:
-    def __init__(self, info):
+    def __init__(self, info, filename = ''):
         """ Initialize scenario with description. """
         self.info = info
+        self.file = filename
         self.ranges = []
         self.steps = []
         self.current_step = None
-        self.child_udp = {}
-        self.child_tcp = {}
+        self.client = {}
         self.force_ipv6 = False
 
     def reply(self, query, address = None):
@@ -462,52 +482,38 @@ class Scenario:
 
     def play(self, family, paddr):
         """ Play given scenario. """
-        # Connect to tested subject
-        for k,v in paddr.iteritems():
-            udp = socket.socket(family, socket.SOCK_DGRAM)
-            udp.settimeout(3)
-            udp.connect(v)
-            tcp = socket.socket(family, socket.SOCK_STREAM)
-            tcp.settimeout(3)
-            tcp.connect(v)
-            self.child_udp[k] = udp
-            self.child_tcp[k] = tcp
+        # Store test subject => address mapping
+        self.client = paddr
 
+        step = None
+        i = 0
         if len(self.steps) == 0:
-            raise ('no steps in this scenario')
+            raise ('%s: no steps in this scenario' % self.file)
+        while i < len(self.steps):
+            step = self.steps[i]
+            self.current_step = step
+            try:
+                step.play(self)
+            except Exception as e:
+                if (step.repeat_if_fail > 0):
+                    dprint ('[play]',"step %d: exception catched - '%s', retrying step %d (%d left)" % (step.id, e, step.next_if_fail, step.repeat_if_fail))
+                    step.repeat_if_fail -= 1
+                    if (step.pause_if_fail > 0):
+                        time.sleep(step.pause_if_fail)
+                    if (step.next_if_fail != -1):
+                        next_steps = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail]
+                        if (len(next_steps) == 0):
+                            raise Exception('step %d: wrong NEXT value "%d"' % (step.id, step.next_if_fail))
+                        next_step = next_steps[0]
+                        if (next_step < len(self.steps)):
+                            i = next_step
+                        else:
+                            raise Exception('step %d: Can''t branch to NEXT value "%d"' % (step.id, step.next_if_fail))
+                    continue
+                else:
+                    raise Exception('%s step %d %s' % (self.file, step.id, str(e)))
+            i = i + 1
 
-        try:
-            step = None
-            i = 0
-            while i < len(self.steps):
-                step = self.steps[i]
-                self.current_step = step
-                try:
-                    step.play(self)
-                except Exception as e:
-                    if (step.repeat_if_fail > 0):
-                        dprint ('[play]',"step %d: exception catched - '%s', retrying step %d (%d left)" % (step.id, e, step.next_if_fail, step.repeat_if_fail))
-                        step.repeat_if_fail -= 1
-                        if (step.pause_if_fail > 0):
-                            time.sleep(step.pause_if_fail)
-                        if (step.next_if_fail != -1):
-                            next_steps = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail]
-                            if (len(next_steps) == 0):
-                                raise Exception('step #%d: wrong NEXT value "%d"' % (step.id, step.next_if_fail))
-                            next_step = next_steps[0]
-                            if (next_step < len(self.steps)):
-                                i = next_step
-                            else:
-                                raise Exception('step #%d: Can''t branch to NEXT value "%d"' % (step.id, step.next_if_fail))
-                        continue
-                    else:
-                        raise Exception('step #%d %s' % (step.id, str(e)))
-                i = i + 1
-        finally:
-            for k,v in self.child_udp.iteritems():
-                v.close()
-            for k,v in self.child_tcp.iteritems():
-                v.close()
 
 def get_next(file_in):
     """ Return next token from the input stream. """
@@ -588,7 +594,7 @@ def parse_range(op, args, file_in):
 
 def parse_scenario(op, args, file_in):
     """ Parse scenario definition. """
-    out = Scenario(args[0])
+    out = Scenario(args[0], file_in.filename())
     for op, args in iter(lambda: get_next(file_in), False):
         if op == 'SCENARIO_END':
             break
