@@ -144,10 +144,27 @@ class Entry:
         version = 0
         bufsize = 4096
         if len(fields) > 0:
-            version = int(fields[0])
-        if len(fields) > 1:
-            bufsize = int(fields[1])
-        self.message.use_edns(edns = version, payload = bufsize)
+            version = int(fields.pop(0))
+        if len(fields) > 0:
+            bufsize = int(fields.pop(0))
+        opts = []
+        for v in fields:
+            k, v = tuple(v.split('=')) if '=' in v or (v, True)
+            if k.lower() == 'nsid':
+                opts.append(dns.edns.GenericOption(dns.edns.NSID, ''))
+            if k.lower() == 'subnet':
+                net = v.split('/')
+                family = socket.AF_INET6 if ':' in net[0] else socket.AF_INET
+                subnet_addr = net[0]
+                addr = socket.inet_pton(family, net[0])
+                prefix = len(addr) * 8
+                if len(net) > 1:
+                    prefix = int(net[1])
+                addr = addr[0 : (prefix + 7)/8]
+                if prefix % 8 != 0: # Mask the last byte
+                    addr = addr[:-1] + chr(ord(addr[-1]) & 0xFF << (8 - prefix % 8))
+                opts.append(dns.edns.GenericOption(8, struct.pack("!HBB", 1 if family == socket.AF_INET else 2, prefix, 0) + addr))
+        self.message.use_edns(edns = version, payload = bufsize, options = opts)
 
     def begin_raw(self):
         """ Set raw data pending flag. """
