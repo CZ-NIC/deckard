@@ -149,7 +149,7 @@ class Entry:
             bufsize = int(fields.pop(0))
         opts = []
         for v in fields:
-            k, v = tuple(v.split('=')) if '=' in v or (v, True)
+            k, v = tuple(v.split('=')) if '=' in v else (v, True)
             if k.lower() == 'nsid':
                 opts.append(dns.edns.GenericOption(dns.edns.NSID, ''))
             if k.lower() == 'subnet':
