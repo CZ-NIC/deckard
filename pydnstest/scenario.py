@@ -62,7 +62,7 @@ class Entry:
             return self.__compare_val(dns.rcode.to_text(expected.rcode()), dns.rcode.to_text(msg.rcode()))
         elif code == 'question':
             return self.__compare_rrs(expected.question, msg.question)
-        elif code == 'answer':
+        elif code == 'answer' or code == 'ttl':
             return self.__compare_rrs(expected.answer, msg.answer)
         elif code == 'authority':
             return self.__compare_rrs(expected.authority, msg.authority)
@@ -329,7 +329,11 @@ class Step:
         dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         if self.type == 'QUERY':
             dprint(dtag, self.data[0].message.to_text())
-            return self.__query(ctx, tcp = 'TCP' in self.args)
+            args = [x for x in self.args if x != 'TCP']
+            choice = None
+            if len(args) > 0:
+                choice = args[0]
+            return self.__query(ctx, tcp = 'TCP' in self.args, choice = choice)
         elif self.type == 'CHECK_OUT_QUERY':
             dprint(dtag, '')
             pass # Ignore
@@ -343,7 +347,7 @@ class Step:
             dprint(dtag, '')
             pass
         else:
-            raise Exception('step id %03d type %s unsupported' % (self.id, self.type))
+            raise Exception('step %03d type %s unsupported' % (self.id, self.type))
 
 
     def __check_answer(self, ctx):
@@ -360,7 +364,7 @@ class Step:
             dprint("[ __check_answer ]", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __query(self, ctx, tcp = False):
+    def __query(self, ctx, tcp = False, choice = None):
         """ Resolve a query. """
         if len(self.data) == 0:
             raise Exception("query definition required")
@@ -370,7 +374,11 @@ class Step:
             # Don't use a message copy as the EDNS data portion is not copied.
             data_to_wire = self.data[0].message.to_wire()
         # Send query to client and wait for response
-        sock = ctx.child_tcp if tcp else ctx.child_udp
+        if choice is None or len(choice) == 0:
+            choice = ctx.child_udp.keys()[0]
+        if choice not in ctx.child_udp:
+            raise Exception('step %03d invalid QUERY target: %s' % (self.id, choice))
+        sock = ctx.child_tcp[choice] if tcp else ctx.child_udp[choice]
         while True:
             try:
                 sendto_msg(sock, data_to_wire)
@@ -417,8 +425,8 @@ class Scenario:
         self.ranges = []
         self.steps = []
         self.current_step = None
-        self.child_udp = None
-        self.child_tcp = None
+        self.child_udp = {}
+        self.child_tcp = {}
         self.force_ipv6 = False
 
     def reply(self, query, address = None):
@@ -455,12 +463,15 @@ class Scenario:
     def play(self, family, paddr):
         """ Play given scenario. """
         # Connect to tested subject
-        self.child_udp = socket.socket(family, socket.SOCK_DGRAM)
-        self.child_udp.settimeout(3)
-        self.child_udp.connect(paddr)
-        self.child_tcp = socket.socket(family, socket.SOCK_STREAM)
-        self.child_tcp.settimeout(3)
-        self.child_tcp.connect(paddr)
+        for k,v in paddr.iteritems():
+            udp = socket.socket(family, socket.SOCK_DGRAM)
+            udp.settimeout(3)
+            udp.connect(v)
+            tcp = socket.socket(family, socket.SOCK_STREAM)
+            tcp.settimeout(3)
+            tcp.connect(v)
+            self.child_udp[k] = udp
+            self.child_tcp[k] = tcp
 
         if len(self.steps) == 0:
             raise ('no steps in this scenario')
@@ -493,8 +504,10 @@ class Scenario:
                         raise Exception('step #%d %s' % (step.id, str(e)))
                 i = i + 1
         finally:
-            self.child_udp.close()
-            self.child_tcp.close()
+            for k,v in self.child_udp.iteritems():
+                v.close()
+            for k,v in self.child_tcp.iteritems():
+                v.close()
 
 def get_next(file_in):
     """ Return next token from the input stream. """

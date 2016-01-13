@@ -251,7 +251,7 @@ class TestServer:
         if self.scenario.force_ipv6 == True:
             sockfamily = socket.AF_INET6
         paddr = get_local_addr_str(sockfamily, subject_addr)
-        self.scenario.play(sockfamily, (paddr, 53))
+        self.scenario.play(sockfamily, {'': (paddr, 53)})
 
 if __name__ == '__main__':
     # Self-test code
