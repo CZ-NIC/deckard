@@ -4,7 +4,7 @@ import dns.rcode
 import dns.dnssec
 import dns.tsigkeyring
 import binascii
-import socket
+import socket, struct
 import os
 import itertools
 import time
@@ -143,10 +143,13 @@ class Entry:
         """ Set EDNS version and bufsize. """
         version = 0
         bufsize = 4096
-        if len(fields) > 0:
+        if len(fields) > 0 and fields[0].isdigit():
             version = int(fields.pop(0))
-        if len(fields) > 0:
+        if len(fields) > 0 and fields[0].isdigit():
             bufsize = int(fields.pop(0))
+        if bufsize == 0:
+            self.message.use_edns(False)
+            return
         opts = []
         for v in fields:
             k, v = tuple(v.split('=')) if '=' in v else (v, True)
