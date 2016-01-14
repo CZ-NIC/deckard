@@ -538,9 +538,17 @@ def get_next(file_in):
         line = file_in.readline()
         if len(line) == 0:
             return False
-        for csep in (';', '#'):
-            if csep in line:
-                line = line[0:line.index(csep)]
+        quoted, escaped = False, False
+        for i in range(len(line)):
+            if line[i] == '\\':
+                escaped = not escaped
+            if not escaped and line[i] == '"':
+                quoted = not quoted
+            if line[i] in (';', '#') and not quoted:
+                line = line[0:i]
+                break
+            if line[i] != '\\':
+                escaped = False
         tokens = ' '.join(line.strip().split()).split()
         if len(tokens) == 0:
                 continue  # Skip empty lines
@@ -648,4 +656,4 @@ def parse_file(file_in):
                 return parse_scenario(op, args, file_in), config
         raise Exception("IGNORE (missing scenario)")
     except Exception as e:
-        raise Exception('line %d: %s' % (file_in.lineno(), str(e)))
+        raise Exception('%s#%d: %s' % (file_in.filename(), file_in.lineno(), str(e)))
