@@ -12,6 +12,32 @@ from datetime import datetime
 from dprint import dprint
 from testserver import recvfrom_msg, sendto_msg
 
+#
+# Element comparators
+#
+
+def compare_rrs(expected, got):
+    """ Compare lists of RR sets, throw exception if different. """
+    for rr in expected:
+        if rr not in got:
+            raise Exception("expected record '%s'" % rr.to_text())
+    for rr in got:
+        if rr not in expected:
+            raise Exception("unexpected record '%s'" % rr.to_text())
+    return True
+
+def compare_val(expected, got):
+    """ Compare values, throw exception if different. """
+    if expected != got:
+        raise Exception("expected '%s', got '%s'" % (expected, got))
+    return True
+
+def compare_sub(got, expected):
+    """ Check if got subdomain of expected, throw exception if different. """
+    if not expected.is_subdomain(got):
+        raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
+    return True
+
 class Entry:
     """
     Data entry represents scripted message and extra metadata, notably match criteria and reply adjustments.
@@ -41,33 +67,33 @@ class Entry:
             return True
         expected = self.message
         if code == 'opcode':
-            return self.__compare_val(expected.opcode(), msg.opcode())
+            return compare_val(expected.opcode(), msg.opcode())
         elif code == 'qtype':
             if len(expected.question) == 0:
                 return True
-            return self.__compare_val(expected.question[0].rdtype, msg.question[0].rdtype)
+            return compare_val(expected.question[0].rdtype, msg.question[0].rdtype)
         elif code == 'qname':
             if len(expected.question) == 0:
                 return True
             qname = dns.name.from_text(msg.question[0].name.to_text().lower())
-            return self.__compare_val(expected.question[0].name, qname)
+            return compare_val(expected.question[0].name, qname)
         elif code == 'subdomain':
             if len(expected.question) == 0:
                 return True
             qname = dns.name.from_text(msg.question[0].name.to_text().lower())
-            return self.__compare_sub(expected.question[0].name, qname)
+            return compare_sub(expected.question[0].name, qname)
         elif code == 'flags':
-            return self.__compare_val(dns.flags.to_text(expected.flags), dns.flags.to_text(msg.flags))
+            return compare_val(dns.flags.to_text(expected.flags), dns.flags.to_text(msg.flags))
         elif code == 'rcode':
-            return self.__compare_val(dns.rcode.to_text(expected.rcode()), dns.rcode.to_text(msg.rcode()))
+            return compare_val(dns.rcode.to_text(expected.rcode()), dns.rcode.to_text(msg.rcode()))
         elif code == 'question':
-            return self.__compare_rrs(expected.question, msg.question)
+            return compare_rrs(expected.question, msg.question)
         elif code == 'answer' or code == 'ttl':
-            return self.__compare_rrs(expected.answer, msg.answer)
+            return compare_rrs(expected.answer, msg.answer)
         elif code == 'authority':
-            return self.__compare_rrs(expected.authority, msg.authority)
+            return compare_rrs(expected.authority, msg.authority)
         elif code == 'additional':
-            return self.__compare_rrs(expected.additional, msg.additional)
+            return compare_rrs(expected.additional, msg.additional)
         elif code == 'edns':
             if msg.edns != expected.edns:
                 raise Exception('expected EDNS %d, got %d' % (expected.edns, msg.edns))
@@ -247,29 +273,6 @@ class Entry:
             rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(args), origin=dns.name.from_text(self.origin), relativize=False)
             rr.add(rd)
         return rr
-
-    def __compare_rrs(self, expected, got):
-        """ Compare lists of RR sets, throw exception if different. """
-        for rr in expected:
-            if rr not in got:
-                raise Exception("expected record '%s'" % rr.to_text())
-        for rr in got:
-            if rr not in expected:
-                raise Exception("unexpected record '%s'" % rr.to_text())
-        return True
-
-    def __compare_val(self, expected, got):
-        """ Compare values, throw exception if different. """
-        if expected != got:
-            raise Exception("expected '%s', got '%s'" % (expected, got))
-        return True
-
-    def __compare_sub(self, got, expected):
-        """ Check if got subdomain of expected, throw exception if different. """
-        if not expected.is_subdomain(got):
-            raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
-        return True
-
 
 
 class Range:
