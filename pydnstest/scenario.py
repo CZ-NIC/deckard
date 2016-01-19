@@ -121,6 +121,20 @@ class Entry:
                 raise Exception('expected EDNS %d, got %d' % (expected.edns, msg.edns))
             if msg.payload != expected.payload:
                 raise Exception('expected EDNS bufsize %d, got %d' % (expected.payload, msg.payload))
+        elif code == 'nsid':
+            nsid_opt = None
+            for opt in expected.options:
+                if opt.otype == dns.edns.NSID:
+                    nsid_opt = opt
+                    break
+            # Find matching NSID
+            for opt in msg.options:
+                if opt.otype == dns.edns.NSID:
+                    if opt == nsid_opt:
+                        return True
+                    else:
+                        raise Exception('expected NSID "%s", got "%s"' % (nsid_opt.data, opt.data))
+            raise Exception('expected NSID "%s"' % nsid_opt.data)
         else:
             raise Exception('unknown match request "%s"' % code)
 
@@ -202,7 +216,7 @@ class Entry:
         for v in fields:
             k, v = tuple(v.split('=')) if '=' in v else (v, True)
             if k.lower() == 'nsid':
-                opts.append(dns.edns.GenericOption(dns.edns.NSID, ''))
+                opts.append(dns.edns.GenericOption(dns.edns.NSID, '' if v == True else v))
             if k.lower() == 'subnet':
                 net = v.split('/')
                 family = socket.AF_INET6 if ':' in net[0] else socket.AF_INET
