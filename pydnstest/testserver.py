@@ -174,7 +174,7 @@ class TestServer:
                 dprint ("[ handle_query ]", "raw response found")
         else:
             response = dns.message.make_response(query)
-            response.rcode = dns.rcode.SERVFAIL
+            response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
             dprint ("[ handle_query ]", "response failed, SERVFAIL")
 
