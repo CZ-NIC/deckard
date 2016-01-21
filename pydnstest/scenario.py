@@ -561,8 +561,6 @@ class Scenario:
 
         step = None
         i = 0
-        if len(self.steps) == 0:
-            raise ('%s: no steps in this scenario' % self.file)
         while i < len(self.steps):
             step = self.steps[i]
             self.current_step = step
