@@ -130,11 +130,14 @@ class Entry:
             # Find matching NSID
             for opt in msg.options:
                 if opt.otype == dns.edns.NSID:
+                    if nsid_opt == None:
+                        raise Exception('unexpected NSID value "%s"' % opt.data)
                     if opt == nsid_opt:
                         return True
                     else:
                         raise Exception('expected NSID "%s", got "%s"' % (nsid_opt.data, opt.data))
-            raise Exception('expected NSID "%s"' % nsid_opt.data)
+            if nsid_opt:
+                raise Exception('expected NSID "%s"' % nsid_opt.data)
         else:
             raise Exception('unknown match request "%s"' % code)
 
