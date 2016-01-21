@@ -5,7 +5,7 @@ import dns.dnssec
 import dns.tsigkeyring
 import binascii
 import socket, struct
-import os, sys
+import os, sys, errno
 import itertools
 import time
 from datetime import datetime
@@ -33,6 +33,10 @@ def log_packet(sock, buf, query = True):
     ip.len = len(ip)
     eth = dpkt.ethernet.Ethernet(data = ip)
     g_pcap.writepkt(eth.pack())
+
+# Global statistics
+g_rtt = 0.0
+g_nqueries = 0
 
 #
 # Element comparators
@@ -452,17 +456,16 @@ class Step:
         sock = None
         destination = ctx.client[choice]
         family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
+        sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         if tcp:
-            sock = socket.socket(family, socket.SOCK_STREAM)
-            sock.settimeout(3)
-            if source: sock.bind((source, 0))
-            sock.connect(destination)
-        else:
-            sock = socket.socket(family, socket.SOCK_DGRAM)
-            sock.settimeout(3)
-            if source: sock.bind((source, 0))
-            sock.connect(destination)
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
+        sock.settimeout(3)
+        if source:
+            sock.bind((source, 0))    
+        sock.connect(destination)
         # Send query to client and wait for response
+        tstart = datetime.now()
         log_packet(sock, data_to_wire, query = True)
         while True:
             try:
@@ -482,6 +485,11 @@ class Step:
                 except OSError, e:
                     if e.errno == errno.ENOBUFS:
                         time.sleep(0.1)
+        # Track RTT
+        rtt = (datetime.now() - tstart).total_seconds() * 1000
+        global g_rtt, g_nqueries
+        g_nqueries += 1
+        g_rtt += rtt
         # Remember last answer for checking later
         self.raw_answer = answer
         ctx.last_raw_answer = answer
