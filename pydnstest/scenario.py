@@ -173,7 +173,7 @@ class Entry:
     def adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
         answer = dns.message.from_wire(self.message.to_wire(),xfr=self.message.xfr)
-        answer.use_edns(query.edns, query.ednsflags)
+        answer.use_edns(query.edns, query.ednsflags, options = self.message.options)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
             # Copy letter-case if the template has QD
@@ -181,6 +181,8 @@ class Entry:
                 answer.question[0].name = query.question[0].name
         if 'copy_query' in self.adjust_fields:
             answer.question = query.question
+        # Re-set, as the EDNS might have reset the ext-rcode
+        answer.set_rcode(self.message.rcode())
         return answer
 
     def set_adjust(self, fields):
@@ -449,7 +451,7 @@ class Step:
         # Create socket to test subject
         sock = None
         destination = ctx.client[choice]
-        family = socket.AF_INET6 if ':' in destination else socket.AF_INET
+        family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
         if tcp:
             sock = socket.socket(family, socket.SOCK_STREAM)
             sock.settimeout(3)
