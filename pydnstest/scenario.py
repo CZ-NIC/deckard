@@ -359,7 +359,7 @@ class Step:
     each step has an order identifier, type and optionally data entry.
     """
 
-    require_data = ['TIME_PASSES']
+    require_data = ['QUERY', 'CHECK_ANSWER', 'REPLY']
 
     def __init__(self, id, type, extra_args):
         """ Initialize single scenario step. """
@@ -367,7 +367,7 @@ class Step:
         self.type = type
         self.args = extra_args
         self.data = []
-        self.has_data = self.type not in Step.require_data
+        self.has_data = self.type in Step.require_data
         self.answer = None
         self.raw_answer = None
         self.repeat_if_fail = 0
@@ -421,9 +421,12 @@ class Step:
         elif self.type == 'REPLY':
             dprint(dtag, '')
             pass
+        elif self.type == 'LOG':
+            if not ctx.log:
+                raise Exception('scenario has no log interface')
+            return ctx.log.match(self.args)
         else:
             raise Exception('step %03d type %s unsupported' % (self.id, self.type))
-
 
     def __check_answer(self, ctx):
         """ Compare answer from previously resolved query. """
