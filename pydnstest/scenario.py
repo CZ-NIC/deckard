@@ -412,13 +412,13 @@ class Step:
         elif self.type == 'CHECK_OUT_QUERY':
             dprint(dtag, '')
             pass # Ignore
-        elif self.type == 'CHECK_ANSWER':
+        elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
             dprint(dtag, '')
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES':
             dprint(dtag, '')
             return self.__time_passes(ctx)
-        elif self.type == 'REPLY':
+        elif self.type == 'REPLY' or self.type == 'MOCK':
             dprint(dtag, '')
             pass
         elif self.type == 'LOG':
@@ -590,7 +590,7 @@ class Scenario:
             i = i + 1
 
 
-def get_next(file_in):
+def get_next(file_in, skip_empty = True):
     """ Return next token from the input stream. """
     while True:
         line = file_in.readline()
@@ -609,16 +609,26 @@ def get_next(file_in):
                 escaped = False
         tokens = ' '.join(line.strip().split()).split()
         if len(tokens) == 0:
-                continue  # Skip empty lines
+            if skip_empty:
+                continue
+            else:
+                return '', []
         op = tokens.pop(0)
         return op, tokens
 
 def parse_entry(op, args, file_in):
     """ Parse entry definition. """
+    in_entry = False
     out = Entry(file_in.lineno())
-    for op, args in iter(lambda: get_next(file_in), False):
-        if op == 'ENTRY_END':
+    for op, args in iter(lambda: get_next(file_in, in_entry), False):
+        if op == 'ENTRY_END' or op == '':
+            in_entry = False
             break
+        elif op == 'ENTRY_BEGIN': # Optional, compatibility with Unbound tests
+            if in_entry:
+                raise Exception('nested ENTRY_BEGIN not supported')
+            in_entry = True
+            pass
         elif op == 'EDNS':
             out.set_edns(args)
         elif op == 'REPLY' or op == 'FLAGS':
@@ -649,11 +659,7 @@ def parse_step(op, args, file_in):
     auto_step = int(args[0]) + 1
     out = Step(args[0], args[1], args[2:])
     if out.has_data:
-        op, args = get_next(file_in)
-        if op == 'ENTRY_BEGIN':
-            out.add(parse_entry(op, args, file_in))
-        else:
-            raise Exception('expected "ENTRY_BEGIN"')
+        out.add(parse_entry(op, args, file_in))
     return out
 
 
