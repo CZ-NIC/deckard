@@ -115,7 +115,7 @@ def replay_rrs(rrs, nqueries, destination, args = []):
     fdset = [sock]
     import select
     while nsent - nwait < nqueries:
-        to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.1)
+        to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.5)
         if len(to_write) > 0:
             try:
                 while nsent < nqueries and nwait < chunksize:
@@ -132,6 +132,9 @@ def replay_rrs(rrs, nqueries, destination, args = []):
                     nrcvd += 1
             except:
                 pass
+        if len(to_write) == 0 and len(to_read) == 0:
+            nwait = 0 # Timeout, started dropping packets
+            break
     return nsent, nrcvd
 
 class Entry:
@@ -495,6 +498,8 @@ class Step:
         destination = ctx.client[ctx.client.keys()[0]]
         if 'VERBOSE' in os.environ:
             dprint(dtag, 'replaying %d queries to %s@%d (%s)' % (nqueries, destination[0], destination[1], ' '.join(self.args)))
+        if 'INTENSIFY' in os.environ:
+            nqueries *= int(os.environ['INTENSIFY'])
         tstart = datetime.now()
         nsent, nrcvd = replay_rrs(self.queries, nqueries, destination, self.args)
         # Keep/print the statistics
