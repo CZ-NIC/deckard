@@ -6,7 +6,7 @@ import dns.tsigkeyring
 import binascii
 import socket, struct
 import os, sys, errno
-import itertools
+import itertools, random, string
 import time
 from datetime import datetime
 from dprint import dprint
@@ -88,13 +88,19 @@ def compare_sub(got, expected):
         raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
 
-def replay_rrs(rrs, nqueries, destination):
+def replay_rrs(rrs, nqueries, destination, args = []):
     """ Replay list of queries and report statistics. """
     navail, queries = len(rrs), []
     chunksize = 16
-    for i in range(navail):
+    for i in range(nqueries if 'RAND' in args else navail):
         rr = rrs[i % navail]
-        msg = dns.message.make_query(rr.name, rr.rdtype, rr.rdclass)
+        name = rr.name
+        if 'RAND' in args:
+            prefix = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(8)])
+            name = prefix + '.' + rr.name.to_text()
+        msg = dns.message.make_query(name, rr.rdtype, rr.rdclass)
+        if 'DO' in args:
+            msg.want_dnssec(True)
         queries.append(msg.to_wire())
     # Make a UDP connected socket to the destination
     tstart = datetime.now()
@@ -484,17 +490,25 @@ class Step:
     def __replay(self, ctx, chunksize = 8):
         dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         nqueries = len(self.queries)
-        if len(self.args) > 0:
-            nqueries = int(self.args[0])
+        if len(self.args) > 0 and self.args[0].isdigit():
+            nqueries = int(self.args.pop(0))
         destination = ctx.client[ctx.client.keys()[0]]
         if 'VERBOSE' in os.environ:
-            dprint(dtag, 'replaying %d queries to %s@%d' % (nqueries, destination[0], destination[1]))
+            dprint(dtag, 'replaying %d queries to %s@%d (%s)' % (nqueries, destination[0], destination[1], ' '.join(self.args)))
         tstart = datetime.now()
-        nsent, nrcvd = replay_rrs(self.queries, nqueries, destination)
-        # Keep the statistics
+        nsent, nrcvd = replay_rrs(self.queries, nqueries, destination, self.args)
+        # Keep/print the statistics
+        rtt = (datetime.now() - tstart).total_seconds() * 1000
+        pps = 1000 * nrcvd / rtt
         if 'VERBOSE' in os.environ:
-            rtt = (datetime.now() - tstart).total_seconds() * 1000
-            dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, 1000 * nrcvd / rtt))
+            dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, pps))
+        tag = None
+        for arg in self.args:
+            if arg.upper().startswith('PRINT'):
+                _, tag = tuple(arg.split('=')) if '=' in arg else (None, 'replay')
+        if tag:
+            print('  [ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d' % (tag.ljust(11), pps, rtt, nsent, nrcvd))
+
 
     def __query(self, ctx, tcp = False, choice = None, source = None):
         """ Resolve a query. """
