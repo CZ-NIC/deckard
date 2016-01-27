@@ -1,36 +1,26 @@
 Writing scenarios
 =================
 
+A scenario has three parts - a configuration in the header, description of the environment and sequential steps.
+The environment is described as a set of mock answers valid within a time range using **RANGE** keyword.
+A mocked DNS message is represented by an **ENTRY** block and may contain patterns for matching,
+DNS header and records in appropriate sections, it looks similar to a dig(1) output which makes
+generating test cases easier.
 
-
-**Rewiev**
-
-Scenario is a text file which must have the extension .rpl.
-It consists of two sequential parts - configuration and scenario.
-Configuration, which contains data with global scope, is always placed first.
-Scenario follows Configuration. This part consists of sequence of datablocks
-of two different types - **RANGE** and **STEP**. Generally **RANGE** datablock contains
-data, used Python fake dns server to make answers to binary's under test
-queries. And **STEP** datablock defines action will be taken - send next query 
-to binary under test, send reply to binary under test, set faked system time, 
-check the last answer. Each datablock must contain at least one **ENTRY** block 
-and may contain some extra data. Each **ENTRY** block contains header data and 
-at least one **SECTION** or **RAW** block. **SECTION** block contains Record Resource 
-Sets like a dns message sections. **RAW** contains single-line data which will be
-interpreted as raw dns message. Lines started with semicolon (;) are ignored 
-and can be used as comments.
+Each **STEP** keyword then describes a single step in the test scenario. 
+Lines started with semicolon or hash are treated as comments.
 
 **Configuration**
 
 Configuration part is a list of "key : value" pairs, one pair per line.
 Configuration have no explicit start, it's assumed it starts immediately at
-scenario file begin. It must be explicitly ended with **CONFIG_END** statement.
-Next keys can be used
+scenario file begin.
 
 - **query-minimization** : on
 
   value "on" means query minimization algorithm will be used; any other value
   means query minimization algorithm will not be used.
+
 - **stub-addr** : ipv4-addr
 
   address, which will be listened by Python fake dns server immediately after startup.
@@ -239,6 +229,28 @@ Example
 
   RAW
       b5c9ca3d50104320f4120000000000000000
+
+Writing load tests 
+------------------
+
+The test harness support a simple benchmarking steps for writing load tests. Note that this is to
+test how the subject behaves under load, not for comparative benchmarking.
+
+::
+
+	STEP REPLAY [query_count]
+	<qname> [qclass] <qtype>
+	...
+
+This replays the list of queries described below replay step repetitively to the subject until ``query_count`` is reached.
+Following example replays 1000 queries (500 times each).
+
+::
+	STEP REPLAY 1000
+	example.com A
+	www.example.com AAAA
+
+.. tip:: Define ``VERBOSE`` environment variable to see benchmarking results (queries sent, received and response rate).
 
 `SCRIPT EXAMPLE`_
 

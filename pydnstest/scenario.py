@@ -42,6 +42,30 @@ g_nqueries = 0
 # Element comparators
 #
 
+def create_rr(owner, args, ttl = 3600, rdclass = 'IN', origin = '.'):
+    """ Parse RR from tokenized string. """
+    if not owner.endswith('.'):
+        owner += origin
+    try:
+        ttl = dns.ttl.from_text(args[0])
+        args.pop(0)
+    except:
+        pass  # optional
+    try:
+        rdclass = dns.rdataclass.from_text(args[0])
+        args.pop(0)
+    except:
+        pass  # optional
+    rdtype = args.pop(0)
+    rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
+    if len(args) > 0:
+        if (rr.rdtype == dns.rdatatype.DS):
+            # convert textual algorithm identifier to number
+            args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
+        rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(args), origin=dns.name.from_text(origin), relativize=False)
+        rr.add(rd)
+    return rr
+
 def compare_rrs(expected, got):
     """ Compare lists of RR sets, throw exception if different. """
     for rr in expected:
@@ -63,6 +87,46 @@ def compare_sub(got, expected):
     if not expected.is_subdomain(got):
         raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
+
+def replay_rrs(rrs, nqueries, destination):
+    """ Replay list of queries and report statistics. """
+    navail, queries = len(rrs), []
+    chunksize = 16
+    for i in range(navail):
+        rr = rrs[i % navail]
+        msg = dns.message.make_query(rr.name, rr.rdtype, rr.rdclass)
+        queries.append(msg.to_wire())
+    # Make a UDP connected socket to the destination
+    tstart = datetime.now()
+    family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
+    sock = socket.socket(family, socket.SOCK_DGRAM)
+    sock.connect(destination)
+    sock.setblocking(False)
+    # Play the query set
+    # @NOTE: this is only good for relative low-speed replay
+    rcvbuf = bytearray('\x00' * 512)
+    nsent, nrcvd, nwait, navail = 0, 0, 0, len(queries)
+    fdset = [sock]
+    import select
+    while nsent - nwait < nqueries:
+        to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.1)
+        if len(to_write) > 0:
+            try:
+                while nsent < nqueries and nwait < chunksize:
+                    sock.send(queries[nsent % navail])
+                    nwait += 1
+                    nsent += 1
+            except:
+                pass # EINVAL
+        if len(to_read) > 0:
+            try:
+                while nwait > 0:
+                    sock.recv_into(rcvbuf)
+                    nwait -= 1
+                    nrcvd += 1
+            except:
+                pass
+    return nsent, nrcvd
 
 class Entry:
     """
@@ -262,7 +326,7 @@ class Entry:
             self.raw_data_pending = False
             self.is_raw_data_entry = True
         else:
-            rr = self.__rr_from_str(owner, args)
+            rr = create_rr(owner, args, ttl = self.default_ttl, rdclass = self.default_cls, origin = self.origin)
             if self.section == 'QUESTION':
                 if rr.rdtype == dns.rdatatype.AXFR:
                     self.message.xfr = True
@@ -292,33 +356,6 @@ class Entry:
                     return
 
         section.append(rr)
-
-    def __rr_from_str(self, owner, args):
-        """ Parse RR from tokenized string. """
-        if not owner.endswith('.'):
-            owner += self.origin
-        ttl = self.default_ttl
-        rdclass = self.default_cls
-        try:
-            ttl = dns.ttl.from_text(args[0])
-            args.pop(0)
-        except:
-            pass  # optional
-        try:
-            rdclass = dns.rdataclass.from_text(args[0])
-            args.pop(0)
-        except:
-            pass  # optional
-        rdtype = args.pop(0)
-        rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
-        if len(args) > 0:
-            if (rr.rdtype == dns.rdatatype.DS):
-                # convert textual algorithm identifier to number
-                args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
-            rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(args), origin=dns.name.from_text(self.origin), relativize=False)
-            rr.add(rd)
-        return rr
-
 
 class Range:
     """
@@ -425,6 +462,8 @@ class Step:
             if not ctx.log:
                 raise Exception('scenario has no log interface')
             return ctx.log.match(self.args)
+        elif self.type == 'REPLAY':
+            self.__replay(ctx)
         else:
             raise Exception('step %03d type %s unsupported' % (self.id, self.type))
 
@@ -441,6 +480,21 @@ class Step:
                 raise Exception("no answer from preceding query")
             dprint("", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
+
+    def __replay(self, ctx, chunksize = 8):
+        dtag = '[ STEP %03d ] %s' % (self.id, self.type)
+        nqueries = len(self.queries)
+        if len(self.args) > 0:
+            nqueries = int(self.args[0])
+        destination = ctx.client[ctx.client.keys()[0]]
+        if 'VERBOSE' in os.environ:
+            dprint(dtag, 'replaying %d queries to %s@%d' % (nqueries, destination[0], destination[1]))
+        tstart = datetime.now()
+        nsent, nrcvd = replay_rrs(self.queries, nqueries, destination)
+        # Keep the statistics
+        if 'VERBOSE' in os.environ:
+            rtt = (datetime.now() - tstart).total_seconds() * 1000
+            dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, 1000 * nrcvd / rtt))
 
     def __query(self, ctx, tcp = False, choice = None, source = None):
         """ Resolve a query. """
@@ -647,6 +701,15 @@ def parse_entry(op, args, file_in):
             out.add_record(op, args)
     return out
 
+def parse_queries(out, file_in):
+    """ Parse list of queries terminated by blank line. """
+    out.queries = []
+    for op, args in iter(lambda: get_next(file_in, False), False):
+        if op == '':
+            break
+        out.queries.append(create_rr(op, args))
+    return out
+
 auto_step = 0
 def parse_step(op, args, file_in):
     """ Parse range definition. """
@@ -660,6 +723,9 @@ def parse_step(op, args, file_in):
     out = Step(args[0], args[1], args[2:])
     if out.has_data:
         out.add(parse_entry(op, args, file_in))
+    # Special steps
+    if args[1] == 'REPLAY':
+        parse_queries(out, file_in)
     return out
 
 
