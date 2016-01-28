@@ -720,9 +720,8 @@ def get_next(file_in, skip_empty = True):
         op = tokens.pop(0)
         return op, tokens
 
-def parse_entry(op, args, file_in):
+def parse_entry(op, args, file_in, in_entry = False):
     """ Parse entry definition. """
-    in_entry = False
     out = Entry(file_in.lineno())
     for op, args in iter(lambda: get_next(file_in, in_entry), False):
         if op == 'ENTRY_END' or op == '':
@@ -797,7 +796,7 @@ def parse_range(op, args, file_in):
         if op == 'ADDRESS':
             out.address = args[0]
         elif op == 'ENTRY_BEGIN':
-            out.add(parse_entry(op, args, file_in))
+            out.add(parse_entry(op, args, file_in, in_entry = True))
         elif op == 'RANGE_END':
             break
     return out
