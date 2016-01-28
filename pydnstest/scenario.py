@@ -487,6 +487,8 @@ class Step:
             return ctx.log.match(self.args)
         elif self.type == 'REPLAY':
             self.__replay(ctx)
+        elif self.type == 'ASSERT':
+            self.__assert(ctx)
         else:
             raise Exception('step %03d type %s unsupported' % (self.id, self.type))
 
@@ -601,6 +603,19 @@ class Step:
         time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
         time_file.flush()
         time_file.close()
+
+    def __assert(self, ctx):
+        """ Assert that a passed expression evaluates to True. """
+        result = eval(' '.join(self.args), {'SCENARIO': ctx, 'RANGE': ctx.ranges})
+        # Evaluate subexpressions for clarity
+        subexpr = []
+        for expr in self.args:
+            try:
+                ee = eval(expr, {'SCENARIO': ctx, 'RANGE': ctx.ranges})
+                subexpr.append(str(ee))
+            except:
+                subexpr.append(expr)
+        assert result is True, '"%s" assertion fails (%s)' % (' '.join(self.args), ' '.join(subexpr))
 
 class Scenario:
     def __init__(self, info, filename = ''):
