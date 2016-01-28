@@ -377,6 +377,13 @@ class Range:
         self.b = b
         self.address = None
         self.stored = []
+        self.args = {}
+        self.received = 0
+        self.sent = 0
+
+    def __del__(self):
+        dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.address)
+        dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
 
     def add(self, entry):
         """ Append a scripted response to the range"""
@@ -390,10 +397,17 @@ class Range:
 
     def reply(self, query):
         """ Find matching response to given query. """
+        self.received += 1
         for candidate in self.stored:
             try:
                 candidate.match(query)
-                return candidate.adjust_reply(query)
+                resp = candidate.adjust_reply(query)
+                # Probabilistic loss
+                if 'LOSS' in self.args:
+                    if random.random() < float(self.args['LOSS']):
+                        return None
+                self.sent += 1
+                return resp
             except Exception as e:
                 pass
         return None
@@ -594,6 +608,7 @@ class Scenario:
         self.info = info
         self.file = filename
         self.ranges = []
+        self.current_range = None
         self.steps = []
         self.current_step = None
         self.client = {}
@@ -611,6 +626,7 @@ class Scenario:
         # Find current valid query response range
         for rng in self.ranges:
             if rng.eligible(step_id, address):
+                self.current_range = rng
                 return (rng.reply(query), False)
         # Find any prescripted one-shot replies
         for step in self.steps:
@@ -756,6 +772,12 @@ def parse_range(op, args, file_in):
     # Shortcut for address
     if len(args) > 2:
         out.address = args[2]
+    # Parameters
+    if len(args) > 3:
+        out.args = {}
+        for v in args[3:]:
+            k, v = tuple(v.split('=')) if '=' in v else (v, True)
+            out.args[k] = v
     for op, args in iter(lambda: get_next(file_in), False):
         if op == 'ADDRESS':
             out.address = args[0]
