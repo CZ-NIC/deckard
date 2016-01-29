@@ -230,7 +230,6 @@ RANGE_END
 
 ; get cname in cache.  use MX query 
 STEP 1 QUERY
-;TCP
 ENTRY_BEGIN
 REPLY RD
 SECTION QUESTION

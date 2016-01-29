@@ -37,11 +37,11 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 193.29.206.1
 ENTRY_BEGIN
-MATCH opcode qname
+MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
-www.example.cz. IN NS
+example.cz. IN NS
 SECTION AUTHORITY
 example.cz.		IN 	NS	ns.example.cz.
 SECTION ADDITIONAL
