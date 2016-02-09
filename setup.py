@@ -2,7 +2,7 @@
 import sys
 from distutils.core import setup
 
-version = '0.1'
+version = '0.1.1'
 
 kwargs = {
     'name' : 'pydnstest',

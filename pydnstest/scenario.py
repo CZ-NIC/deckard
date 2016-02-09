@@ -228,7 +228,8 @@ class Entry:
             try:
                 res = self.match_part(code, msg)
             except Exception as e:
-                raise Exception("line %d, %s: %s" % (self.lineno, code, str(e)))
+                errstr = '%s in the response:\n%s' % (str(e), msg.to_text())
+                raise Exception("line %d, \"%s\": %s" % (self.lineno, code, errstr))
 
     def cmp_raw(self, raw_value):
         if self.is_raw_data_entry is False:
