@@ -103,7 +103,8 @@ class TestServer:
     def stop(self):
         """ Stop socket server operation. """
         self.active = False
-        self.thread.join()
+        if self.thread:
+            self.thread.join()
         for conn in self.connections:
             conn.close()
         for srv_sock in self.srv_socks:
