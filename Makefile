@@ -17,7 +17,7 @@ ifeq (,$(findstring .rpl,$(TESTS)))
 TARGETS := $(wildcard $(TESTS)/*.rpl)
 endif
 SOURCES := $(TARGETS)
-TARGETS := $(patsubst %.rpl,%.out,$(SOURCES))
+TARGETS := $(sort $(patsubst %.rpl,%.out,$(SOURCES)))
 
 # Dependencies
 include platform.mk
