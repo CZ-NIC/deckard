@@ -159,6 +159,8 @@ class Entry:
         self.raw_data_pending = False
         self.raw_data = None
         self.lineno = lineno
+        self.mandatory = False
+        self.fired = 0;
 
     def match_part(self, code, msg):
         """ Compare scripted reply to given message using single criteria. """
@@ -367,6 +369,9 @@ class Entry:
 
         section.append(rr)
 
+    def set_mandatory(self):
+        self.mandatory = True
+
 class Range:
     """
     Range represents a set of scripted queries valid for given step range.
@@ -385,6 +390,9 @@ class Range:
     def __del__(self):
         dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.address)
         dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
+        for e in self.stored:
+            if e.mandatory is True and e.fired == 0:
+                raise Exception('Mandatory section at line %d is not fired' % e.lineno)
 
     def add(self, entry):
         """ Append a scripted response to the range"""
@@ -408,6 +416,7 @@ class Range:
                     if random.random() < float(self.args['LOSS']):
                         return None
                 self.sent += 1
+                candidate.fired += 1
                 return resp
             except Exception as e:
                 pass
@@ -747,6 +756,8 @@ def parse_entry(op, args, file_in, in_entry = False):
             out.begin_raw()
         elif op == 'TSIG':
             out.use_tsig(args)
+        elif op == 'MANDATORY':
+            out.set_mandatory()
         else:
             out.add_record(op, args)
     return out
