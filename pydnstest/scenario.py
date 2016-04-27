@@ -390,9 +390,6 @@ class Range:
     def __del__(self):
         dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.address)
         dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
-        for e in self.stored:
-            if e.mandatory is True and e.fired == 0:
-                raise Exception('Mandatory section at line %d is not fired' % e.lineno)
 
     def add(self, entry):
         """ Append a scripted response to the range"""
@@ -702,6 +699,11 @@ class Scenario:
                 else:
                     raise Exception('%s step %d %s' % (self.file, step.id, str(e)))
             i = i + 1
+
+        for r in self.ranges:
+            for e in r.stored:
+                if e.mandatory is True and e.fired == 0:
+                    raise Exception('Mandatory section at line %d is not fired' % e.lineno)
 
 
 def get_next(file_in, skip_empty = True):
