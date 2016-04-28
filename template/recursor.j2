@@ -66,6 +66,8 @@ daemon=no
 #
 # disable-packetcache=no
 
+dnssec={% if TRUST_ANCHOR != "" %}validate{%else%}process{%endif%}
+
 #################################
 # dont-query	If set, do not query these netmasks for DNS data
 #
@@ -132,6 +134,8 @@ local-port=53
 # logging-facility	Facility to log messages as. 0 corresponds to local0
 #
 # logging-facility=
+
+lua-config-file={{WORKING_DIR}}/dnssec.lua
 
 #################################
 # lua-dns-script	Filename containing an optional 'lua' script that will be used to modify dns answers
@@ -224,6 +228,8 @@ quiet=no
 #
 # remotes-ringbuffer-entries=0
 
+security-poll-suffix=
+
 #################################
 # serve-rfc1918	If we should be authoritative for RFC 1918 private IP space
 #
@@ -297,7 +303,7 @@ threads=1
 #################################
 # trace	if we should output heaps of logging
 #
-# trace=off	
+trace=on
 
 #################################
 # version-string	string reported on version.pdns or version.bind
