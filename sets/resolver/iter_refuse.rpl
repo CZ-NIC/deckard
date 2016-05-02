@@ -58,10 +58,16 @@ SECTION AUTHORITY
 example.com.	IN NS	ns1.example.com.
 example.com.	IN NS	ns2.example.com.
 example.com.	IN NS	ns3.example.com.
+example.com.	IN NS	ns4.example.com.
+example.com.	IN NS	ns5.example.com.
+example.com.	IN NS	ns6.example.com.
 SECTION ADDITIONAL
 ns1.example.com.		IN 	A	1.2.3.4
 ns2.example.com.		IN 	A	1.2.3.5
 ns3.example.com.		IN 	A	1.2.3.6
+ns4.example.com.		IN 	A	1.2.3.7
+ns5.example.com.		IN 	A	1.2.3.8
+ns6.example.com.		IN 	A	1.2.3.9
 ENTRY_END
 RANGE_END
 
@@ -113,6 +119,55 @@ SECTION AUTHORITY
 SECTION ADDITIONAL
 ENTRY_END
 RANGE_END
+
+; ns4.example.com.
+RANGE_BEGIN 0 100
+	ADDRESS 1.2.3.7
+ENTRY_BEGIN
+MANDATORY
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA REFUSED
+SECTION QUESTION
+www.example.com. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+RANGE_END
+
+; ns5.example.com.
+RANGE_BEGIN 0 100
+	ADDRESS 1.2.3.8
+ENTRY_BEGIN
+MANDATORY
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA REFUSED
+SECTION QUESTION
+www.example.com. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+RANGE_END
+
+; ns6.example.com.
+RANGE_BEGIN 0 100
+	ADDRESS 1.2.3.9
+ENTRY_BEGIN
+MANDATORY
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA REFUSED
+SECTION QUESTION
+www.example.com. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+RANGE_END
+
 
 STEP 1 QUERY
 ENTRY_BEGIN
