@@ -1,9 +1,10 @@
 net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
-cache.size = 1*MB
+cache.size = 2*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
 option('NO_MINIMIZE', {{NO_MINIMIZE}})
-option('ALLOW_LOCAL', false)
+-- Sync cache after each pass
+option('CACHE_SYNC', true)
 -- Run tests in permissive mode
 option('PERMISSIVE',  true)
 -- Always retry failing resolver
