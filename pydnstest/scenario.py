@@ -1,4 +1,3 @@
-import dns.message
 import dns.rrset
 import dns.rcode
 import dns.dnssec
@@ -74,6 +73,10 @@ def compare_rrs(expected, got):
     for rr in got:
         if rr not in expected:
             raise Exception("unexpected record '%s'" % rr.to_text())
+    if len(expected) != len(got):
+        raise Exception("expected %s records but got %s records "
+                        "(a duplicate RR somewhere?)"
+                        % (len(expected), len(got)))
     return True
 
 def compare_val(expected, got):
@@ -252,7 +255,9 @@ class Entry:
 
     def adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
-        answer = dns.message.from_wire(self.message.to_wire(),xfr=self.message.xfr)
+        answer = dns.message.from_wire(self.message.to_wire(),
+                                       xfr=self.message.xfr,
+                                       one_rr_per_rrset=True)
         answer.use_edns(query.edns, query.ednsflags, options = self.message.options)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
@@ -263,6 +268,11 @@ class Entry:
             answer.question = query.question
         # Re-set, as the EDNS might have reset the ext-rcode
         answer.set_rcode(self.message.rcode())
+
+        # sanity check: adjusted answer should be almost the same
+        assert len(answer.answer) == len(self.message.answer)
+        assert len(answer.authority) == len(self.message.authority)
+        assert len(answer.additional) == len(self.message.additional)
         return answer
 
     def set_adjust(self, fields):
@@ -360,13 +370,6 @@ class Entry:
 
     def __rr_add(self, section, rr):
     	""" Merge record to existing RRSet, or append to given section. """
-
-        if rr.rdtype != dns.rdatatype.SOA:
-            for existing_rr in section:
-                if existing_rr.match(rr.name, rr.rdclass, rr.rdtype, rr.covers):
-                    existing_rr += rr
-                    return
-
         section.append(rr)
 
     def set_mandatory(self):
@@ -603,7 +606,7 @@ class Step:
         self.raw_answer = answer
         ctx.last_raw_answer = answer
         if self.raw_answer is not None:
-            self.answer = dns.message.from_wire(self.raw_answer)
+            self.answer = dns.message.from_wire(self.raw_answer,one_rr_per_rrset=True)
             log_packet(sock, answer, query = False)
         else:
             self.answer = None

@@ -37,7 +37,7 @@ def recvfrom_msg(stream, raw = False):
     else:
         raise Exception ("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
     if not raw:
-        data = dns.message.from_wire(data)
+        data = dns.message.from_wire(data, one_rr_per_rrset=True)
     return data, addr
 
 def sendto_msg(stream, message, addr = None):
