@@ -718,7 +718,7 @@ def get_next(file_in, skip_empty = True):
                 escaped = not escaped
             if not escaped and line[i] == '"':
                 quoted = not quoted
-            if line[i] in (';', '#') and not quoted:
+            if line[i] in (';') and not quoted:
                 line = line[0:i]
                 break
             if line[i] != '\\':
