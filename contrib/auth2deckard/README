@@ -1,0 +1,4 @@
+This set of utilities is meant ease Deckard test writting.
+
+The ultimate goal is to capture real-DNS-world traffic
+and transform it into a Deckard test.
