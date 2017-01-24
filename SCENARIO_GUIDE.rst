@@ -104,20 +104,22 @@ Format:
 ::
 
     RANGE_BEGIN n1 n2
-        ADDRESS addr
+        ADDRESS addr1
+        ADDRESS addr2
+        ADDRESS addr3
     ...
     RANGE_END
 
 - **n1** and **n2** respectively minimal or maximal step ids (see below) to which this  
   range can be applied. 
-- **addr** - IP address for which **RANGE** datablock is prepared; this statement can be omitted.
+- **addr** - IP address for which **RANGE** datablock is prepared; this statement can be omitted or repeated multiple times.
 
 Datablock will be used for fetching reply to query only for these steps, whose identificators greater then or equal n1 and
 lesser then or equal n2. Also one of the next condition must be met : 
 
 - addr is not set
-- addr is set, and query is directed to this addr
-- address, to which query is directed, can not be found within the range addresses list for whole scenario
+- addr is set, and query is directed to one of listed addresses
+- address, to which query is directed, can not be found within the range addresses lists for whole scenario
 
 **STEP datablock**
 

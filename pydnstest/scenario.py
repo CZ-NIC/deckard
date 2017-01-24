@@ -381,14 +381,14 @@ class Range:
         """ Initialize reply range. """
         self.a = a
         self.b = b
-        self.address = None
+        self.addresses = set()
         self.stored = []
         self.args = {}
         self.received = 0
         self.sent = 0
 
     def __del__(self):
-        dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.address)
+        dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.addresses)
         dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
 
     def add(self, entry):
@@ -398,7 +398,9 @@ class Range:
     def eligible(self, id, address):
         """ Return true if this range is eligible for fetching reply. """
         if self.a <= id <= self.b:
-            return None in (self.address, address) or (self.address == address)
+            return (None == address
+                    or set() == self.addresses
+                    or address in self.addresses)
         return False
 
     def reply(self, query):
@@ -643,7 +645,10 @@ class Scenario:
             step_id = self.current_step.id
         # Unknown address, select any match
         # TODO: workaround until the server supports stub zones
-        if address not in [rng.address for rng in self.ranges]:
+        all_addresses = set()
+        for rng in self.ranges:
+            all_addresses.update(rng.addresses)
+        if address not in all_addresses:
             address = None
         # Find current valid query response range
         for rng in self.ranges:
@@ -799,7 +804,7 @@ def parse_range(op, args, file_in):
     out = Range(int(args[0]), int(args[1]))
     # Shortcut for address
     if len(args) > 2:
-        out.address = args[2]
+        out.addresses.add(args[2])
     # Parameters
     if len(args) > 3:
         out.args = {}
@@ -808,7 +813,7 @@ def parse_range(op, args, file_in):
             out.args[k] = v
     for op, args in iter(lambda: get_next(file_in), False):
         if op == 'ADDRESS':
-            out.address = args[0]
+            out.addresses.add(args[0])
         elif op == 'ENTRY_BEGIN':
             out.add(parse_entry(op, args, file_in, in_entry = True))
         elif op == 'RANGE_END':

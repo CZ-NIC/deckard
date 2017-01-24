@@ -236,8 +236,9 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
 
     # Bind to test servers
     for r in case.ranges:
-        family = socket.AF_INET6 if ':' in r.address else socket.AF_INET
-        server.start_srv((r.address, 53), family)
+        for addr in r.addresses:
+            family = socket.AF_INET6 if ':' in addr else socket.AF_INET
+            server.start_srv((addr, 53), family)
     # Bind addresses in ad-hoc REPLYs
     for s in case.steps:
         if s.type == 'REPLY':
