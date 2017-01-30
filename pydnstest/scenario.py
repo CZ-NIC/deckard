@@ -162,6 +162,33 @@ class Entry:
         self.mandatory = False
         self.fired = 0;
 
+    def __str__(self):
+        txt = 'ENTRY_BEGIN\n'
+        txt += 'MATCH {0}\n'.format(' '.join(self.match_fields))
+        txt += 'ADJUST {0}\n'.format(' '.join(self.adjust_fields))
+        txt += 'REPLY {rcode} {flags}\n'.format(
+            rcode=dns.rcode.to_text(self.message.rcode()),
+            flags=' '.join([dns.flags.to_text(self.message.flags),
+                            dns.flags.edns_to_text(self.message.ednsflags)])
+            )
+        for sect_name in ['question', 'answer', 'authority', 'additional']:
+            sect = getattr(self.message, sect_name)
+            if not sect:
+                continue
+            txt += 'SECTION {n}\n'.format(n=sect_name.upper())
+            for rr in sect:
+                txt += str(rr)
+                txt += '\n'
+        if self.is_raw_data_entry:
+            txt += 'RAW\n'
+            if self.raw_data:
+                txt += binascii.hexlify(self.raw_data)
+            else:
+                txt += 'NULL'
+            txt += '\n'
+        txt += 'ENTRY_END\n'
+        return txt
+
     def match_part(self, code, msg):
         """ Compare scripted reply to given message using single criteria. """
         if code not in self.match_fields and 'all' not in self.match_fields:
@@ -387,6 +414,17 @@ class Range:
         self.received = 0
         self.sent = 0
 
+    def __str__(self):
+        txt = '\nRANGE_BEGIN {a} {b}\n'.format(a=self.a, b=self.b)
+        for addr in self.addresses:
+            txt += '        ADDRESS {0}\n'.format(addr)
+
+        for entry in self.stored:
+            txt += '\n'
+            txt += str(entry)
+        txt += 'RANGE_END\n\n'
+        return txt
+
     def __del__(self):
         dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.addresses)
         dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
@@ -455,6 +493,25 @@ class Step:
                         self.next_if_fail = int(param[1])
                 except Exception as e:
                     raise Exception('step %d - wrong %s arg: %s' % (self.id, param[0], str(e)))
+
+    def __str__(self):
+        txt = '\nSTEP {i} {t}'.format(i=self.id, t=self.type)
+        if self.repeat_if_fail:
+            txt += ' REPEAT {v}'.format(v=self.repeat_if_fail)
+        elif self.pause_if_fail:
+            txt += ' PAUSE {v}'.format(v=self.pause_if_fail)
+        elif self.next_if_fail != -1:
+            txt += ' NEXT {v}'.format(v=self.next_if_fail)
+        if self.args:
+            txt += ' '
+            txt += ' '.join(self.args)
+        txt += '\n'
+
+        for data in self.data:
+            #from IPython.core.debugger import Tracer
+            #Tracer()()
+            txt += str(data)
+        return txt
 
 
     def add(self, entry):
@@ -637,6 +694,17 @@ class Scenario:
         self.current_step = None
         self.client = {}
         self.force_ipv6 = False
+
+    def __str__(self):
+        txt = 'SCENATION_BEGIN'
+        if self.info:
+            txt += ' {0}'.format(self.info)
+        txt += '\n'
+        for range in self.ranges:
+            txt += str(range)
+        for step in self.steps:
+            txt += str(step)
+        return txt
 
     def reply(self, query, address = None):
         """ Attempt to find a range reply for a query. """
