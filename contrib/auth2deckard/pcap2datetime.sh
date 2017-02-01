@@ -4,5 +4,5 @@
 # 20170127161325
 
 set -o errexit -o nounset
-DATE=$(tshark -r /tmp/all.pcapng -t ud -c 1 -T fields -e frame.time_epoch)
+DATE=$(tshark -r "${1}" -t ud -c 1 -T fields -e frame.time_epoch)
 date --date=@${DATE} "+%Y%m%d%H%M%S"
