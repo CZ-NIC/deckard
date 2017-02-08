@@ -251,17 +251,20 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
                         server.start_srv((rd.address, 53), socket.AF_INET6)
 
     # Play test scenario
+    ex = None
     try:
         server.play(CHILD_IFACE)
-        if VERBOSE:
-            print(open('%s/server.log' % TMPDIR).read())
-    except:
-        print(open('%s/server.log' % TMPDIR).read())
+    except Exception as ex:
         raise
     finally:
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
+        if VERBOSE or ex or daemon_proc.returncode:
+            print(open('%s/server.log' % TMPDIR).read())
+        if daemon_proc.returncode != 0:
+            raise ValueError('process terminated with return code %s'
+                             % daemon_proc.returncode)
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR, OWN_TMPDIR)
 
