@@ -1,0 +1,56 @@
+variables:
+  LC_ALL: C.UTF-8
+
+stages:
+  - test
+
+test:pep8:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - cp ci/common.sh /tmp
+    - cp ci/compare-pep8.sh /tmp
+    - /tmp/compare-pep8.sh
+  tags:
+    - docker
+    - linux
+    - amd64
+
+test:pylint:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - cp ci/common.sh /tmp
+    - cp ci/compare-pylint.sh /tmp
+    - /tmp/compare-pylint.sh
+  artifacts:
+    when: on_failure
+    expire_in: '1 hour'
+    paths:
+      - base.log
+      - head.log
+  tags:
+    - docker
+    - linux
+    - amd64
+
+test:comparative:kresd:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - cp ci/common.sh /tmp
+    - cp ci/compare-tests.sh /tmp
+    - /tmp/compare-tests.sh $(pwd)/kresd_run.sh
+  artifacts:
+    when: always
+    expire_in: '1 hour'
+    paths:
+      - modified_tests
+      - base.log
+      - base.tests
+      - head.log
+      - head.tests
+  tags:
+    - docker
+    - linux
+    - amd64
