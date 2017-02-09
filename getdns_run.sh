@@ -23,7 +23,7 @@
 # These fail because they set specific unbound options in the
 # "; config options" section.  We might consider facilitating this in getdns
 # at some point.
-# 
+#
 ## iter_cycle_noh.rpl  iter_ns_spoof.rpl
 #
 #
@@ -60,20 +60,20 @@
 
 
 # Path to scenario files
-TESTS=sets/resolver
+TESTS=${TESTS:-"sets/resolver"}
 
 # Path to daemon
-DAEMON=getdns_query
+DAEMON=${DAEMON:-"getdns_query"}
 
 # Template file name
-TEMPLATE=template/getdns.j2:template/dnssec_getdns.j2
+TEMPLATE=${TEMPLATE:-"template/getdns.j2:template/dnssec_getdns.j2"}
 
 # Config file name
-CONFIG=getdns.conf:getdns-root.key
+CONFIG=${CONFIG:-"getdns.conf:getdns-root.key"}
 
-ADDITIONAL="-C getdns.conf"
+ADDITIONAL=${ADDITIONAL:-"-C getdns.conf"}
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
-make
-
+MAKEDIR="$(dirname "$(readlink -f "$0")")"
+make -C "${MAKEDIR}"

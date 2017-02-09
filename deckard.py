@@ -102,7 +102,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     # Set up child process env() 
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
-    no_minimize = "true"
+    no_minimize = os.environ.get("NO_MINIMIZE", "true")
     trust_anchor_str = ""
     stub_addr = ""
     features = {}

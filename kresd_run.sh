@@ -1,18 +1,24 @@
 #!/bin/bash
+set -o nounset
 
 # Path to scenario files
-TESTS=sets/resolver
+TESTS=${TESTS:-"sets/resolver"}
 
 # Path to daemon
-DAEMON=kresd
-     
+DAEMON=${DAEMON:-"kresd"}
+
 # Template file name
-TEMPLATE=template/kresd.j2
+TEMPLATE=${TEMPLATE:-"template/kresd.j2"}
 
 # Config file name
-CONFIG=config
+CONFIG=${CONFIG:-"config"}
 
 export TESTS DAEMON TEMPLATE CONFIG
 
-make
-
+MAKEDIR="$(dirname "$(readlink -f "$0")")"
+echo '=== Testing WITHOUT query minimization ==='
+export NO_MINIMIZE="true"
+make -C "${MAKEDIR}"
+echo '=== Testing WITH query minimization ==='
+export NO_MINIMIZE="false"
+make -C "${MAKEDIR}"
