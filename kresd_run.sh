@@ -1,16 +1,17 @@
 #!/bin/bash
+set -o nounset
 
 # Path to scenario files
-TESTS=sets/resolver
+TESTS=${TESTS:-"sets/resolver"}
 
 # Path to daemon
-DAEMON=kresd
+DAEMON=${DAEMON:-"kresd"}
 
 # Template file name
-TEMPLATE=template/kresd.j2
+TEMPLATE=${TEMPLATE:-"template/kresd.j2"}
 
 # Config file name
-CONFIG=config
+CONFIG=${CONFIG:-"config"}
 
 export TESTS DAEMON TEMPLATE CONFIG
 

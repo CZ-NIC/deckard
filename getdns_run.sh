@@ -60,18 +60,18 @@
 
 
 # Path to scenario files
-TESTS=sets/resolver
+TESTS=${TESTS:-"sets/resolver"}
 
 # Path to daemon
-DAEMON=getdns_query
+DAEMON=${DAEMON:-"getdns_query"}
 
 # Template file name
-TEMPLATE=template/getdns.j2:template/dnssec_getdns.j2
+TEMPLATE=${TEMPLATE:-"template/getdns.j2:template/dnssec_getdns.j2"}
 
 # Config file name
-CONFIG=getdns.conf:getdns-root.key
+CONFIG=${CONFIG:-"getdns.conf:getdns-root.key"}
 
-ADDITIONAL="-C getdns.conf"
+ADDITIONAL=${ADDITIONAL:-"-C getdns.conf"}
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
