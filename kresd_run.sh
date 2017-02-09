@@ -14,5 +14,9 @@ CONFIG=config
 
 export TESTS DAEMON TEMPLATE CONFIG
 
+echo '=== Testing WITHOUT query minimization ==='
+export NO_MINIMIZE="true"
 make
-
+echo '=== Testing WITH query minimization ==='
+export NO_MINIMIZE="false"
+make
