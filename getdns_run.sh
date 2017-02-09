@@ -75,5 +75,5 @@ ADDITIONAL="-C getdns.conf"
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
-make
-
+MAKEDIR="$(dirname "$(readlink -f "$0")")"
+make -C "${MAKEDIR}"

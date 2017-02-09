@@ -5,7 +5,7 @@ TESTS=sets/resolver
 
 # Path to daemon
 DAEMON=$HOME/src/PowerDNS/pdns/pdns/recursordist/pdns_recursor
-     
+
 # Template file name
 TEMPLATE=template/recursor.j2:template/hints_pdns.j2:template/dnssec_pdns.j2
 
@@ -18,5 +18,5 @@ ADDITIONAL=--config-dir=./
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
-make
-
+MAKEDIR="$(dirname "$(readlink -f "$0")")"
+make -C "${MAKEDIR}"
