@@ -1,4 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
+from __future__ import print_function
+
 import sys
 import os
 import fileinput
@@ -175,7 +177,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
             sock = socket.socket(self_sockfamily, sock_type)
             sock.setsockopt(self_sockfamily, socket.SO_REUSEADDR, 1)
             sock.bind((childaddr, 53))
-            if sock_type == socket.SOCK_STREAM:
+            if sock_type & socket.SOCK_STREAM:
                 sock.listen(5)
     # Generate configuration files
     j2template_loader = jinja2.FileSystemLoader(searchpath=os.path.dirname(os.path.abspath(__file__)))
@@ -189,7 +191,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         "INSTALL_DIR" : INSTALLDIR,
         "FEATURES" : features
     }
-    for template_name, config_name in itertools.izip(j2template_list,config_name_list):
+    for template_name, config_name in zip(j2template_list,config_name_list):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(j2template_ctx)
         f = open(os.path.join(TMPDIR,config_name), 'w')
@@ -255,11 +257,13 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
                         server.start_srv((rd.address, 53), socket.AF_INET6)
 
     # Play test scenario
-    ex = None
     try:
         server.play(CHILD_IFACE)
-    except Exception as ex:
+    except Exception as exc:
+        ex = exc
         raise
+    else:
+        ex = None
     finally:
         server.stop()
         daemon_proc.terminate()
@@ -279,12 +283,12 @@ def test_platform(*args):
 if __name__ == '__main__':
 
     if len(sys.argv) < 5:
-        print "Usage: test_integration.py <scenario> <binary> <template> <config name> [<additional>]"
-        print "\t<scenario> - path to scenario"
-        print "\t<binary> - executable to test"
-        print "\t<template> - colon-separated list of jinja2 template files"
-        print "\t<config name> - colon-separated list of files to be generated"
-        print "\t<additional> - additional parameters for <binary>"
+        print("Usage: test_integration.py <scenario> <binary> <template> <config name> [<additional>]")
+        print("\t<scenario> - path to scenario")
+        print("\t<binary> - executable to test")
+        print("\t<template> - colon-separated list of jinja2 template files")
+        print("\t<config name> - colon-separated list of files to be generated")
+        print("\t<additional> - additional parameters for <binary>")
         sys.exit(0)
 
     test_platform()
@@ -300,8 +304,8 @@ if __name__ == '__main__':
         template_name_list = sys.argv[3].split(':')
         config_name_list = sys.argv[4].split(':')
         if len(template_name_list) != len (config_name_list):
-                print "ERROR: Number of j2 template files not equal to number of file names to be generated"
-                print "i.e. len(<template>) != len(<config name>), see usage"
+                print("ERROR: Number of j2 template files not equal to number of file names to be generated")
+                print("i.e. len(<template>) != len(<config name>), see usage")
                 sys.exit(0)
 
     if len(sys.argv) > 5:

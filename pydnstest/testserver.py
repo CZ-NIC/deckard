@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import print_function
+
 import threading
 import select
 import socket
@@ -8,7 +11,7 @@ import dns.rdatatype
 import itertools
 import struct
 import binascii
-from dprint import dprint
+from pydnstest.dprint import dprint
 
 def recvfrom_msg(stream, raw = False):
     """
@@ -18,14 +21,14 @@ def recvfrom_msg(stream, raw = False):
         if raw == False: (DNS message object, peer address)
         if raw == True: (blob, peer address)
     """
-    if stream.type == socket.SOCK_DGRAM:
+    if stream.type & socket.SOCK_DGRAM:
         data, addr = stream.recvfrom(4096)
-    elif stream.type == socket.SOCK_STREAM:
+    elif stream.type & socket.SOCK_STREAM:
         data = stream.recv(2)
         if len(data) == 0:
             return None, None
         msg_len = struct.unpack_from("!H",data)[0]
-        data = ""
+        data = b""
         received = 0
         while received < msg_len:
             next_chunk = stream.recv(4096)
@@ -35,7 +38,7 @@ def recvfrom_msg(stream, raw = False):
             received += len(next_chunk)
         addr = stream.getpeername()[0]
     else:
-        raise Exception("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
     if not raw:
         data = dns.message.from_wire(data, one_rr_per_rrset=True)
     return data, addr
@@ -44,16 +47,16 @@ def recvfrom_msg(stream, raw = False):
 def sendto_msg(stream, message, addr=None):
     """ Send DNS/UDP/TCP message. """
     try:
-        if stream.type == socket.SOCK_DGRAM:
+        if stream.type & socket.SOCK_DGRAM:
             if addr is None:
                 stream.send(message)
             else:
                 stream.sendto(message, addr)
-        elif stream.type == socket.SOCK_STREAM:
+        elif stream.type & socket.SOCK_STREAM:
             data = struct.pack("!H",len(message)) + message
             stream.send(data)
         else:
-            raise Exception ("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
     except: # Failure to respond is OK, resolver should recover
         pass
 
@@ -64,7 +67,7 @@ def get_local_addr_str(family, iface):
     elif family == socket.AF_INET6:
         addr_local_pattern = "fd00::5357:5f{:02X}"
     else:
-        raise Exception("[get_local_addr_str] family not supported '%i'" % family)
+        raise NotImplementedError("[get_local_addr_str] family not supported '%i'" % family)
     return addr_local_pattern.format(iface)
 
 class AddrMapInfo:
@@ -228,7 +231,8 @@ class TestServer:
                 address = (get_local_addr_str(family, self.default_iface), 53)
         elif family == socket.AF_INET6:
             if socket.has_ipv6 is not True:
-                raise Exception("[start_srv] IPV6 is not supported")
+                raise NotImplementedError("[start_srv] IPv6 is not supported by socket {0}"
+                                          .format(socket))
             if address[0] is None:
                 address = (get_local_addr_str(family, self.default_iface), 53)
         else:
@@ -241,7 +245,7 @@ class TestServer:
         elif proto == socket.IPPROTO_UDP:
             socktype = socket.SOCK_DGRAM
         else:
-            raise Exception("[start_srv] unsupported protocol {protocol}".format(protocol=proto))
+            raise NotImplementedError("[start_srv] unsupported protocol {0}".format(proto))
 
         if (self.thread is None):
             self.thread = threading.Thread(target=self.query_io)
@@ -269,6 +273,7 @@ class TestServer:
 
 if __name__ == '__main__':
     # Self-test code
+    # Usage: $PYTHON -m pydnstest.testserver
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -279,11 +284,11 @@ if __name__ == '__main__':
     # Mirror server
     server = TestServer(None,None,DEFAULT_IFACE)
     server.start()
-    print "[==========] Mirror server running at", server.address()
+    print("[==========] Mirror server running at", server.address())
     try:
         while True:
-	    time.sleep(0.5)
+            time.sleep(0.5)
     except KeyboardInterrupt:
-        print "[==========] Shutdown."
+        print("[==========] Shutdown.")
         pass
     server.stop()

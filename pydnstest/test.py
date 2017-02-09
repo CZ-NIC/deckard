@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import traceback
+import time
 
 class Test:
     """ Small library to imitate CMocka output. """

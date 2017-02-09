@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+
+import dns.message
 import dns.rrset
 import dns.rcode
 import dns.dnssec
@@ -8,8 +11,8 @@ import os, sys, errno
 import itertools, random, string
 import time
 from datetime import datetime
-from dprint import dprint
-from testserver import recvfrom_msg, sendto_msg
+from pydnstest.dprint import dprint
+from pydnstest.testserver import recvfrom_msg, sendto_msg
 
 
 # Global statistics
@@ -349,7 +352,7 @@ class Entry:
         self.message.use_tsig(keyring=keyring, keyname=tsig_keyname)
 
     def __rr_add(self, section, rr):
-        """ Merge record to existing RRSet, or append to given section. """
+        """Append to given section."""
         section.append(rr)
 
     def set_mandatory(self):
@@ -541,7 +544,7 @@ class Step:
             # Don't use a message copy as the EDNS data portion is not copied.
             data_to_wire = self.data[0].message.to_wire()
         if choice is None or len(choice) == 0:
-            choice = ctx.client.keys()[0]
+            choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
             raise Exception('step %03d invalid QUERY target: %s' % (self.id, choice))
         # Create socket to test subject
@@ -554,7 +557,7 @@ class Step:
             sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
         sock.settimeout(3)
         if source:
-            sock.bind((source, 0))    
+            sock.bind((source, 0))
         sock.connect(destination)
         # Send query to client and wait for response
         tstart = datetime.now()
@@ -562,7 +565,7 @@ class Step:
             try:
                 sendto_msg(sock, data_to_wire)
                 break
-            except OSError, e:
+            except OSError as e:
                 # ENOBUFS, throttle sending
                 if e.errno == errno.ENOBUFS:
                     time.sleep(0.1)
@@ -573,7 +576,7 @@ class Step:
                 try:
                     answer, _ = recvfrom_msg(sock, True)
                     break
-                except OSError, e:
+                except OSError as e:
                     if e.errno == errno.ENOBUFS:
                         time.sleep(0.1)
         # Track RTT
