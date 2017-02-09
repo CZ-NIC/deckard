@@ -5,9 +5,9 @@ TESTS=sets/knotd/master
 
 # Path to daemon
 DAEMON=knotd
-     
+
 # Template file name
-TEMPLATE=template/knotd_master.j2 
+TEMPLATE=template/knotd_master.j2
 
 # Config file name
 CONFIG=knotd.conf

@@ -5,7 +5,7 @@ TESTS=sets/resolver
 
 # Path to daemon
 DAEMON=kresd
-     
+
 # Template file name
 TEMPLATE=template/kresd.j2
 

@@ -23,7 +23,7 @@
 # These fail because they set specific unbound options in the
 # "; config options" section.  We might consider facilitating this in getdns
 # at some point.
-# 
+#
 ## iter_cycle_noh.rpl  iter_ns_spoof.rpl
 #
 #
