@@ -7,7 +7,9 @@ option('NO_MINIMIZE', {{NO_MINIMIZE}})
 option('PERMISSIVE',  true)
 -- Always retry failing resolver
 option('NO_THROTTLE', true)
-trust_anchors.add('{{TRUST_ANCHOR}}')
+{% for TA in TRUST_ANCHORS %}
+trust_anchors.add('{{TA}}')
+{% endfor %}
 
 {% if FEATURES.dns64_prefix is defined %}
 modules.load( 'dns64')
