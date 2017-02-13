@@ -59,6 +59,9 @@ if __name__ == "__main__":
     argparser.add_argument('qname', type=dns.name.from_text, help='query name')
     argparser.add_argument('qtype',
                            help='RR type (default: A)', nargs='?', default='A')
+    argparser.add_argument('--parent', action='store_const', const=True,
+                           help='query parent servers (whose delegate to zone in question)')
+
     # argparser.add_argument('+noadditional', type=bool, help='do not compare additional sections')
     args = argparser.parse_args()
     qname = args.qname
@@ -66,12 +69,19 @@ if __name__ == "__main__":
         qtype = int(args.qtype)
     except ValueError:
         qtype = dns.rdatatype.from_text(args.qtype)
+    if qtype == dns.rdatatype.DS:
+        args.parent = True
 
     logging.debug('query %s %s', qname, dns.rdatatype.to_text(qtype))
     logging.debug('determining zone containing "%s"', qname)
     zname = dns.resolver.zone_for_name(qname)
     logging.info('name "%s" belongs to zone "%s"', qname, zname)
-    servers = get_zone_servers(zname)
+    if args.parent:
+        zparentname = dns.name.Name(zname[1:])
+        logging.debug('looking up parent servers (for zone %s)', zparentname)
+        servers = get_zone_servers(zparentname)
+    else:
+        servers = get_zone_servers(zname)
     answers = get_answers(qname, qtype, servers)
 
     equiv_classes = equivalence.partition_messages(answers)
