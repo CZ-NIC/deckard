@@ -12,6 +12,7 @@ import dns.resolver
 import dns.query
 
 import equivalence
+import pydnstest.scenario
 
 def get_ip_addresses(qname):
     addresses = set()
@@ -76,12 +77,21 @@ if __name__ == "__main__":
     equiv_classes = equivalence.partition_messages(answers)
     print('Received {0} distinct answers'.format(len(equiv_classes.keys())))
     for ips, a in equiv_classes.items():
-        print('Answer from servers: {0}'.format(ips))
-        print(a)
+        r = pydnstest.scenario.Range(0, 100)
+        r.addresses = set(ips)
+        entry = pydnstest.scenario.Entry()
+        entry.message = a
+        # this is fragile when it comes to non-compliant servers
+        if not a.flags & dns.flags.AA and a.authority:
+            logging.debug('non-authoritative answer with AUTHORITY section detected, adjusting MATCH and ADJUST fields')
+            entry.match_fields = ['opcode', 'subdomain']
+            entry.adjust_fields.append('copy_query')
+        r.add(entry)
+        print(r)
+
+        #print('Answer from servers: {0}'.format(ips))
+        #print(a)
 
     #debug
     vals = equiv_classes.values()
-    a0 = vals[0].additional
-    a1 = vals[1].additional
-    a2 = vals[2].additional
 
