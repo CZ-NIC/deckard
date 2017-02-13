@@ -198,9 +198,9 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
 
     # Parse scenario
     case, config = scenario.parse_file(fileinput.input(path))
-    print(config)
-    print(case)
-    sys.exit(1)
+    #print(config)
+    #print(case)
+    #sys.exit(1)
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
