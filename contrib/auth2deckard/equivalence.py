@@ -115,7 +115,7 @@ def compare_rrsets(x, y):
 
 def compare_dns_messages(m1, m2, merge_rrsets_first=True, sort_rrsets=True):
     """Compare two dns.message.Message instances"""
-    ignored_attrs = set(['id', 'index', 'time', 'hack_source_ip'])
+    ignored_attrs = set(['id', 'index', 'time', 'hack_source_ip', 'payload'])
     sections = ['question', 'answer', 'authority', 'additional']
     for m in (m1, m2):
         for section in sections:
