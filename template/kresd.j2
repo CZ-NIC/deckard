@@ -11,6 +11,14 @@ option('NO_THROTTLE', true)
 trust_anchors.add('{{TA}}')
 {% endfor %}
 
+{% if FEATURES.min_ttl is defined %}
+cache.min_ttl({{FEATURES.min_ttl}})
+{% endif %}
+
+{% if FEATURES.max_ttl is defined %}
+cache.max_ttl({{FEATURES.max_ttl}})
+{% endif %}
+
 {% if FEATURES.dns64_prefix is defined %}
 modules.load( 'dns64')
 dns64.config('{{FEATURES.dns64_prefix}}')
