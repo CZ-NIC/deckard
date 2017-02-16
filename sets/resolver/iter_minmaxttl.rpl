@@ -1,0 +1,186 @@
+; config options
+    features: min_ttl = 300
+    features: max_ttl = 600
+CONFIG_END
+
+SCENARIO_BEGIN Test configurable minimum and maximum TTL
+
+; minimum TTL
+; time 0
+RANGE_BEGIN 1 2
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com. 0  IN  A   5.6.7.8 ; TTL smaller than min_ttl
+ENTRY_END
+RANGE_END
+
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.com.    IN  A
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com.    IN  A   5.6.7.8
+ENTRY_END
+
+
+STEP 3 TIME_PASSES ELAPSE 200  
+; time 200
+
+RANGE_BEGIN 4 8
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com. 0  IN  A   9.10.11.12
+ENTRY_END
+RANGE_END
+
+STEP 4 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.com.    IN  A
+ENTRY_END
+
+; time 200 < min_ttl 300: returns cached answer
+STEP 5 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com.    IN  A   5.6.7.8
+ENTRY_END
+
+STEP 6 TIME_PASSES ELAPSE 200
+; time 400
+
+STEP 7 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.com.    IN  A
+ENTRY_END
+
+; time 400 > min_ttl 300: returns new answer
+STEP 8 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com.    IN  A   9.10.11.12
+ENTRY_END
+
+
+; maximum TTL
+; time 0
+RANGE_BEGIN 9 10
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz. 3600  IN  A   13.14.15.16 ; TTL bigger than max_ttl
+ENTRY_END
+RANGE_END
+
+STEP 9 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.cz.    IN  A
+ENTRY_END
+
+STEP 10 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz.    IN  A   13.14.15.16
+ENTRY_END
+
+
+STEP 11 TIME_PASSES ELAPSE 500
+; time 500
+
+RANGE_BEGIN 12 16
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz. 3600  IN  A   17.18.19.20
+ENTRY_END
+RANGE_END
+
+STEP 12 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.cz.    IN  A
+ENTRY_END
+
+; time 500 < max_ttl 600: returns cached answer
+STEP 13 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz.    IN  A   13.14.15.16
+ENTRY_END
+
+STEP 14 TIME_PASSES ELAPSE 500
+; time 1000
+
+STEP 15 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example.cz.    IN  A
+ENTRY_END
+
+; time 1000 > max_ttl 600: returns new answer
+STEP 16 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz.    IN  A   17.18.19.20
+ENTRY_END
+
+
+SCENARIO_END
