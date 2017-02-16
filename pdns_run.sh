@@ -16,7 +16,10 @@ CONFIG=${CONFIG:-"recursor.conf:hints.pdns:dnssec.lua"}
 # it means configuration file can be found in working directory
 ADDITIONAL=${ADDITIONAL:-"--config-dir=./"}
 
-export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
+# SIGTERM leads to return code -15 instead of clean 0 so we have to ignore it
+IGNORE_EXIT_CODE=1
+
+export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL IGNORE_EXIT_CODE
 
 MAKEDIR="$(dirname "$(readlink -f "$0")")"
 make -C "${MAKEDIR}"
