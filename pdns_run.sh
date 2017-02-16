@@ -7,7 +7,7 @@ TESTS=${TESTS:-"sets/resolver"}
 DAEMON=${DAEMON:-"pdns_recursor"}
 
 # Template file name
-TEMPLATE=${TEMPLATE:-"template/recursor.j2:template/hints_pdns.j2:template/dnssec_pdns.j2"}
+TEMPLATE=${TEMPLATE:-"template/recursor.j2:template/hints_pdns.j2:template/pdns_dnssec.j2"}
 
 # Config file name
 CONFIG=${CONFIG:-"recursor.conf:hints.pdns:dnssec.lua"}

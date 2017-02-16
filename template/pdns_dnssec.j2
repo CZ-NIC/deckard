@@ -1,0 +1,5 @@
+-- only DS records are accepted, DNSKEY records will cause errors
+-- addDS takes 2 arguments, the node in the DNS-tree and the data of the corresponding DS record
+{% for TA in TRUST_ANCHORS %}
+addDS('{{TA.split()[0]}}', '{{' '.join(TA.split()[-4:])}}')
+{% endfor %}
