@@ -4,7 +4,7 @@
 TESTS=${TESTS:-"sets/resolver"}
 
 # Path to daemon
-DAEMON=${DAEMON:-"$HOME/src/PowerDNS/pdns/pdns/recursordist/pdns_recursor"}
+DAEMON=${DAEMON:-"pdns_recursor"}
 
 # Template file name
 TEMPLATE=${TEMPLATE:-"template/recursor.j2:template/hints_pdns.j2:template/dnssec_pdns.j2"}
