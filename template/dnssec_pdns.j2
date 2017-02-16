@@ -1,3 +1,3 @@
-{% if TRUST_ANCHOR != "" %}
-addDS('.', '{{' '.join(TRUST_ANCHOR.split()[4:])}}')
-{% endif %}
+{% for TA in TRUST_ANCHORS %}
+addDS('.', '{{' '.join(TA.split()[4:])}}')
+{% endfor %}

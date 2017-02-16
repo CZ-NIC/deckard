@@ -103,7 +103,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
     no_minimize = os.environ.get("NO_MINIMIZE", "true")
-    trust_anchor_str = ""
+    trust_anchor_list = []
     stub_addr = ""
     features = {}
     feature_list_delimiter = DEFAULT_FEATURE_LIST_DELIM
@@ -114,7 +114,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         if k == 'query-minimization' and str2bool(v):
             no_minimize = "false"
         elif k == 'trust-anchor':
-            trust_anchor_str = v.strip('"\'')
+            trust_anchor_list.append(v.strip('"\''))
         elif k == 'val-override-timestamp':
             override_timestamp_str = v.strip('"\'')
             write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(override_timestamp_str))
@@ -181,7 +181,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         "ROOT_ADDR" : selfaddr,
         "SELF_ADDR" : childaddr,
         "NO_MINIMIZE" : no_minimize,
-        "TRUST_ANCHOR" : trust_anchor_str,
+        "TRUST_ANCHORS" : trust_anchor_list,
         "WORKING_DIR" : TMPDIR,
         "INSTALL_DIR" : INSTALLDIR,
         "FEATURES" : features

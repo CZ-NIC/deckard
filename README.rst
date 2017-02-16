@@ -38,7 +38,7 @@ Create a config file template
 
 If the tested server accepts a config file(s), you have to create a template for it.
 Deckard uses the Jinja2_ templating engine (like Ansible or Salt) with several variables that you can use.
-It's okay if you don't use them, but expect some tests to fail (i.e. if you don't set the ``TRUST_ANCHOR``,
+It's okay if you don't use them, but expect some tests to fail (i.e. if you don't set the ``TRUST_ANCHORS``,
 then the DNSSEC tests won't work properly).
 
 - ``ROOT_ADDR``    - root server hint. Port is not set and assumed to be equal to 53.
@@ -47,7 +47,7 @@ then the DNSSEC tests won't work properly).
 - ``WORKING_DIR``  - working directory, equivalent to the value of a ``SOCKET_WRAPPER_DIR``
   environment variable.
 - ``INSTALL_DIR``  - Deckard home directory
-- ``TRUST_ANCHOR`` - a trust anchor in form of a DS record, see `scenario guide <https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_GUIDE.rst>`_.
+- ``TRUST_ANCHORS`` - list of trust anchors in form of a DS records, see `scenario guide <https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARIO_GUIDE.rst>`_.
 
 Setting up the test
 ^^^^^^^^^^^^^^^^^^^
@@ -84,7 +84,9 @@ Examples
     hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
     option('NO_MINIMIZE', {{NO_MINIMIZE}})
     option('ALLOW_LOCAL', true)
-    trust_anchors.add('{{TRUST_ANCHOR}}')
+    {% for TA in TRUST_ANCHORS %}
+    trust_anchors.add('{{TA}}')
+    {% endfor %}
 
 
 2. Configuration file example for PowerDNS Recursor [#]_:

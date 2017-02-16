@@ -66,7 +66,7 @@ daemon=no
 #
 # disable-packetcache=no
 
-dnssec={% if TRUST_ANCHOR != "" %}validate{%else%}process{%endif%}
+dnssec={% if TRUST_ANCHORS|length > 0 %}validate{%else%}process{%endif%}
 
 #################################
 # dont-query	If set, do not query these netmasks for DNS data
