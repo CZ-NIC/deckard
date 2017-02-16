@@ -8,7 +8,7 @@
 # allow-from	If set, only allow these comma separated netmasks to recurse
 #
 #allow-from=127.0.0.0/8, 10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fe80::/10
-#allow-from=127.0.0.0/24
+allow-from=
 
 #################################
 # allow-from-file	If set, load allowed netmasks from this file
@@ -211,12 +211,11 @@ max-cache-entries=1000000
 #################################
 # query-local-address	Source IP address for sending queries
 #
-# query-local-address=0.0.0.0
+query-local-address=0.0.0.0
 
 #################################
 # query-local-address6	Source IPv6 address for sending queries
-#
-# query-local-address6=
+query-local-address6=::
 
 #################################
 # quiet	Suppress logging of questions and answers
