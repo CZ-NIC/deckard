@@ -5,12 +5,12 @@
 " au BufRead,BufNewFile *.stc set foldmethod=syntax
 
 syntax keyword Keyword MATCH STEP
-syntax keyword Structure CONFIG_END ENTRY_BEGIN ENTRY_END RANGE_BEGIN RANGE_END
+syntax keyword Structure CONFIG_END
 syntax keyword Function CHECK_ANSWER QUERY TIME_PASSES
 
-syntax region deckardEntry start="ENTRY_BEGIN" end="ENTRY_END" fold transparent
-syntax region deckardRange start="RANGE_BEGIN" end="RANGE_END" fold transparent
-syntax region deckardScenario start="SCENARIO_BEGIN" end="SCENARIO_END" fold transparent
+syntax region deckardEntry matchgroup=Structure start="ENTRY_BEGIN" end="ENTRY_END" fold transparent
+syntax region deckardRange matchgroup=Structure start="RANGE_BEGIN" end="RANGE_END" fold transparent
+syntax region deckardScenario matchgroup=Structure start="SCENARIO_BEGIN" end="SCENARIO_END" fold transparent
 
 syntax match deckardSection 'SECTION \+[^ ]\+'
 syntax match deckardReply 'REPLY.*'
