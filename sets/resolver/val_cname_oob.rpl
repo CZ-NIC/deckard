@@ -40,10 +40,11 @@ MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
-a.gtld-servers.net. IN A
+net. IN A
 SECTION AUTHORITY
-a.gtld-servers.net.	IN 	A	192.5.6.30
+net.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 RANGE_END
 
@@ -60,6 +61,27 @@ SECTION ANSWER
 com.    IN NS   a.gtld-servers.net.
 SECTION ADDITIONAL
 a.gtld-servers.net.     IN      A       192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	IN 	A
+SECTION ANSWER
+a.gtld-servers.net.	IN 	A	192.5.6.30
+SECTION ADDITIONAL
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	IN 	AAAA
+SECTION ANSWER
+SECTION ADDITIONAL
 ENTRY_END
 
 ENTRY_BEGIN
