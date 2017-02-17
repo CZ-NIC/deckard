@@ -1,0 +1,272 @@
+stub-addr: 1.1.1.1
+CONFIG_END
+
+SCENARIO_BEGIN Test not using cached glue records
+
+;root server
+RANGE_BEGIN 0 100
+	ADDRESS 1.1.1.1
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+.	IN	NS
+SECTION ANSWER
+.	IN	NS	k.root-servers.net.
+SECTION ADDITIONAL
+k.root-servers.net.	IN	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+com.	IN	NS
+SECTION AUTHORITY
+com.	IN	NS	ns.com.
+SECTION ADDITIONAL
+ns.com.	IN	A	2.2.2.2
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+net.	IN	NS
+SECTION AUTHORITY
+net.	IN	NS	ns.net.
+SECTION ADDITIONAL
+ns.net	IN	A	3.3.3.3
+ENTRY_END
+RANGE_END
+
+;ns.com.
+RANGE_BEGIN 0 100
+	ADDRESS 2.2.2.2
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+com.	IN	NS
+SECTION ANSWER
+com.	IN	NS	ns.com.
+SECTION ADDITIONAL
+ns.com.	IN	A	2.2.2.2
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns.com.	IN	A
+SECTION ANSWER
+ns.com.	IN	A	2.2.2.2
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns.com.	IN	AAAA
+SECTION AUTHORITY
+com.	IN	SOA	. . 1487352364 1800 900 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+a.com.	IN	NS
+SECTION AUTHORITY
+a.com.	IN	NS	ns-a.net.	 ; out-of-bailwick nameservers
+a.com.	IN	NS	ns-obsolete.net.
+SECTION ADDITIONAL
+ns-a.net.		IN	A	4.4.4.4
+ns-obsolete.net.	IN	A	6.6.6.6 ; dead address in glue records
+ENTRY_END
+RANGE_END
+
+;ns.net.
+RANGE_BEGIN 0 100
+	ADDRESS 3.3.3.3
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+net.	IN	NS
+SECTION ANSWER
+net.	IN	NS	ns.net.
+SECTION ADDITIONAL
+ns.net.	IN	A	3.3.3.3
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns.net.	IN	A
+SECTION ANSWER
+ns.net.	IN	A	3.3.3.3
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns.net.	IN	AAAA
+SECTION AUTHORITY
+net.	IN	SOA	. . 1487352364 1800 900 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+root-servers.net.	IN	A
+SECTION AUTHORITY
+net.                    900     IN      SOA     . . 1487352364 1800 900 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+k.root-servers.net.	IN	A
+SECTION ANSWER
+ns-a.net.	IN	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+k.root-servers.net.	IN	AAAA
+SECTION AUTHORITY
+net.                    900     IN      SOA     . . 1487352364 1800 900 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns-a.net.	IN	A
+SECTION ANSWER
+ns-a.net.	IN	A	4.4.4.4
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns-obsolete.net.	IN	A
+SECTION ANSWER
+ns-obsolete.net.	IN	A	9.9.9.9 ; working address
+ENTRY_END
+
+; no IPv6
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns-a.net.	IN	AAAA
+SECTION AUTHORITY
+net.                    900     IN      SOA     . . 1487352364 1800 900 604800 86400
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+ns-obsolete.net.	IN	AAAA
+SECTION AUTHORITY
+net.                    900     IN      SOA     . . 1487352364 1800 900 604800 86400
+ENTRY_END
+RANGE_END
+
+;ns-a.net
+RANGE_BEGIN 0 100
+	ADDRESS 4.4.4.4
+	ADDRESS 9.9.9.9
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+a.com.	IN	NS
+SECTION ANSWER
+a.com.	IN	NS	ns-a.net.	 ; out-of-bailwick nameservers
+a.com.	IN	NS	ns-obsolete.net.
+SECTION ADDITIONAL
+ns-a.net.		IN	A	4.4.4.4
+ns-obsolete.net.	IN	A	9.9.9.9 ; the new (functional) address
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+; phony target used to pollute resolver's cache
+www.a.com.	IN	A
+SECTION ANSWER
+www.a.com.	IN	A	5.5.5.5
+ENTRY_END
+RANGE_END
+
+; ask for phony target to pollute resolver's cache
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.a.com.	IN	A
+ENTRY_END
+
+; we don't actually care about this answer
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.a.com.	IN	A
+SECTION ANSWER
+www.a.com.	IN	A	5.5.5.5
+ENTRY_END
+
+; check if obsolete data from glue records is returned to the client
+STEP 3 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+ns-obsolete.net.	IN	A
+ENTRY_END
+
+STEP 4 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+ns-obsolete.net.	IN	A
+SECTION ANSWER
+ns-obsolete.net.	IN	A	9.9.9.9 ; 6.6.6.6 should not be here
+ENTRY_END
+
+SCENARIO_END
