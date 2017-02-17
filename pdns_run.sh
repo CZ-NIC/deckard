@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o errexit -o nounset
 
 # Path to scenario files
 TESTS=${TESTS:-"sets/resolver"}

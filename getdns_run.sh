@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o errexit -o nounset
 
 # Below a summary of tests that failed including a reason for the failure.
 # It might be wise to move these out of the way before testing with getdns.
