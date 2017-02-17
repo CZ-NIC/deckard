@@ -206,6 +206,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     server = testserver.TestServer(case, config, DEFAULT_IFACE)
     server.start()
 
+    ignore_exit = bool(os.environ.get('IGNORE_EXIT_CODE', 0))
     # Start binary
     daemon_proc = None
     daemon_log = open('%s/server.log' % TMPDIR, 'w')
@@ -260,9 +261,9 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        if VERBOSE or ex or daemon_proc.returncode:
+        if VERBOSE or ex or (daemon_proc.returncode and not ignore_exit):
             print(open('%s/server.log' % TMPDIR).read())
-        if daemon_proc.returncode != 0:
+        if daemon_proc.returncode != 0 and not ignore_exit:
             raise ValueError('process terminated with return code %s'
                              % daemon_proc.returncode)
     # Do not clear files if the server crashed (for analysis)
