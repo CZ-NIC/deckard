@@ -19,6 +19,6 @@ ADDITIONAL=${ADDITIONAL:-"-c ./knotd.conf"}
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
-echo 'INFO: Tests require Knot compiled with ./configure --enable-recvmmsg=no
+echo 'INFO: Tests require Knot compiled with ./configure --enable-recvmmsg=no'
 MAKEDIR="$(dirname "$(readlink -f "$0")")"
 make -C "${MAKEDIR}"
