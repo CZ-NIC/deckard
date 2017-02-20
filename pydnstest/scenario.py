@@ -521,8 +521,7 @@ class Step:
         if len(self.args) > 0 and self.args[0].isdigit():
             nqueries = int(self.args.pop(0))
         destination = ctx.client[ctx.client.keys()[0]]
-        if 'VERBOSE' in os.environ:
-            dprint(dtag, 'replaying %d queries to %s@%d (%s)' % (nqueries, destination[0], destination[1], ' '.join(self.args)))
+        dprint(dtag, 'replaying %d queries to %s@%d (%s)' % (nqueries, destination[0], destination[1], ' '.join(self.args)))
         if 'INTENSIFY' in os.environ:
             nqueries *= int(os.environ['INTENSIFY'])
         tstart = datetime.now()
@@ -530,8 +529,7 @@ class Step:
         # Keep/print the statistics
         rtt = (datetime.now() - tstart).total_seconds() * 1000
         pps = 1000 * nrcvd / rtt
-        if 'VERBOSE' in os.environ:
-            dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, pps))
+        dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, pps))
         tag = None
         for arg in self.args:
             if arg.upper().startswith('PRINT'):
