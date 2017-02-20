@@ -404,7 +404,12 @@ class Range:
         return False
 
     def reply(self, query):
-        """ Find matching response to given query. """
+        """
+        Get answer for given query (adjusted if needed).
+
+        Returns:
+            (DNS message object) or None if there is no candidate in this range
+        """
         self.received += 1
         for candidate in self.stored:
             try:
@@ -539,7 +544,11 @@ class Step:
 
 
     def __query(self, ctx, tcp = False, choice = None, source = None):
-        """ Resolve a query. """
+        """
+        Send query and wait for an answer (if the query is not RAW).
+
+        The received answer is stored in self.answer and ctx.last_answer.
+        """
         if len(self.data) == 0:
             raise Exception("query definition required")
         if self.data[0].is_raw_data_entry is True:
@@ -637,10 +646,16 @@ class Scenario:
         self.force_ipv6 = False
 
     def reply(self, query, address = None):
-        """ Attempt to find a range reply for a query. """
-        step_id = 0
+        """
+        Generate answer packet for given query.
+
+        The answer can be DNS message object or a binary blob.
+        Returns:
+            (answer, boolean "is the answer binary blob?")
+        """
+        current_step_id = 0
         if self.current_step is not None:
-            step_id = self.current_step.id
+            current_step_id = self.current_step.id
         # Unknown address, select any match
         # TODO: workaround until the server supports stub zones
         all_addresses = set()
@@ -650,12 +665,12 @@ class Scenario:
             address = None
         # Find current valid query response range
         for rng in self.ranges:
-            if rng.eligible(step_id, address):
+            if rng.eligible(current_step_id, address):
                 self.current_range = rng
                 return (rng.reply(query), False)
         # Find any prescripted one-shot replies
         for step in self.steps:
-            if step.id < step_id or step.type != 'REPLY':
+            if step.id < current_step_id or step.type != 'REPLY':
                 continue
             try:
                 candidate = step.data[0]

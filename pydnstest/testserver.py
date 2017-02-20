@@ -11,7 +11,13 @@ import binascii
 from dprint import dprint
 
 def recvfrom_msg(stream, raw = False):
-    """ Receive DNS/UDP/TCP message. """
+    """
+    Receive DNS message from TCP/UDP socket.
+
+    Returns:
+        if raw == False: (DNS message object, peer address)
+        if raw == True: (blob, peer address)
+    """
     if stream.type == socket.SOCK_DGRAM:
         data, addr = stream.recvfrom(4096)
     elif stream.type == socket.SOCK_STREAM:
@@ -156,7 +162,13 @@ class TestServer:
         return addrlist;
 
     def handle_query(self, client):
-        """ Handle incoming queries. """
+        """
+        Receive query from client socket and send an answer.
+
+        Returns:
+            True if client socket should be closed by caller
+            False if client socket should be kept open
+        """
         client_address = client.getsockname()[0]
         query, addr = recvfrom_msg(client)
         if query is None:
