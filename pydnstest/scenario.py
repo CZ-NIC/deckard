@@ -441,6 +441,7 @@ class Step:
         self.type = type
         self.args = extra_args
         self.data = []
+        self.queries = []
         self.has_data = self.type in Step.require_data
         self.answer = None
         self.raw_answer = None
