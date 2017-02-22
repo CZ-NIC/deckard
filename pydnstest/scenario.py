@@ -79,6 +79,7 @@ def compare_rrs(expected, got):
                         % (len(expected), len(got)))
     return True
 
+
 def compare_val(expected, got):
     """ Compare values, throw exception if different. """
     if expected != got:
@@ -258,7 +259,7 @@ class Entry:
         answer = dns.message.from_wire(self.message.to_wire(),
                                        xfr=self.message.xfr,
                                        one_rr_per_rrset=True)
-        answer.use_edns(query.edns, query.ednsflags, options = self.message.options)
+        answer.use_edns(query.edns, query.ednsflags, options=self.message.options)
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
             # Copy letter-case if the template has QD
@@ -362,14 +363,14 @@ class Entry:
             else:
                 raise Exception('bad section %s' % self.section)
 
-    def use_tsig(self,fields):
+    def use_tsig(self, fields):
         tsig_keyname = fields[0]
-        tsig_secret  = fields[1]
-        keyring = dns.tsigkeyring.from_text({tsig_keyname : tsig_secret})
-        self.message.use_tsig(keyring=keyring,keyname=tsig_keyname)
+        tsig_secret = fields[1]
+        keyring = dns.tsigkeyring.from_text({tsig_keyname: tsig_secret})
+        self.message.use_tsig(keyring=keyring, keyname=tsig_keyname)
 
     def __rr_add(self, section, rr):
-    	""" Merge record to existing RRSet, or append to given section. """
+        """ Merge record to existing RRSet, or append to given section. """
         section.append(rr)
 
     def set_mandatory(self):
@@ -606,8 +607,8 @@ class Step:
         self.raw_answer = answer
         ctx.last_raw_answer = answer
         if self.raw_answer is not None:
-            self.answer = dns.message.from_wire(self.raw_answer,one_rr_per_rrset=True)
-            log_packet(sock, answer, query = False)
+            self.answer = dns.message.from_wire(self.raw_answer, one_rr_per_rrset=True)
+            log_packet(sock, answer, query=False)
         else:
             self.answer = None
         ctx.last_answer = self.answer

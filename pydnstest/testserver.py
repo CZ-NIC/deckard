@@ -32,15 +32,16 @@ def recvfrom_msg(stream, raw = False):
             if len(next_chunk) == 0:
                 return None, None
             data += next_chunk
-            received += len (next_chunk)
+            received += len(next_chunk)
         addr = stream.getpeername()[0]
     else:
-        raise Exception ("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+        raise Exception("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
     if not raw:
         data = dns.message.from_wire(data, one_rr_per_rrset=True)
     return data, addr
 
-def sendto_msg(stream, message, addr = None):
+
+def sendto_msg(stream, message, addr=None):
     """ Send DNS/UDP/TCP message. """
     try:
         if stream.type == socket.SOCK_DGRAM:
