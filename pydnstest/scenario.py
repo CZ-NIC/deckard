@@ -11,27 +11,6 @@ from datetime import datetime
 from dprint import dprint
 from testserver import recvfrom_msg, sendto_msg
 
-# If PCAP is pointed to a file, queries/responses from the test are captured
-g_pcap = None
-if 'PCAP' in os.environ:
-    import dpkt
-    g_pcap = dpkt.pcap.Writer(open(os.environ['PCAP'], 'wb'))
-def log_packet(sock, buf, query = True):
-    """ Fake underlying layers and store packet in a pcap. """
-    if not g_pcap:
-        return
-    src, dst = (sock.getpeername()[0], 53), sock.getsockname()
-    if query:
-        src, dst = sock.getsockname(), (sock.getpeername()[0], 53)
-    # Synthesise IP/UDP/Eth layers
-    transport = dpkt.udp.UDP(data = buf, dport = dst[1], sport = src[1])
-    transport.ulen = len(transport)
-    ip = dpkt.ip.IP(src = socket.inet_pton(sock.family, src[0]),
-                    dst = socket.inet_pton(sock.family, dst[0]), p = dpkt.ip.IP_PROTO_UDP)
-    ip.data = transport
-    ip.len = len(ip)
-    eth = dpkt.ethernet.Ethernet(data = ip)
-    g_pcap.writepkt(eth.pack())
 
 # Global statistics
 g_rtt = 0.0
@@ -579,7 +558,6 @@ class Step:
         sock.connect(destination)
         # Send query to client and wait for response
         tstart = datetime.now()
-        log_packet(sock, data_to_wire, query = True)
         while True:
             try:
                 sendto_msg(sock, data_to_wire)
@@ -608,7 +586,6 @@ class Step:
         ctx.last_raw_answer = answer
         if self.raw_answer is not None:
             self.answer = dns.message.from_wire(self.raw_answer, one_rr_per_rrset=True)
-            log_packet(sock, answer, query=False)
         else:
             self.answer = None
         ctx.last_answer = self.answer

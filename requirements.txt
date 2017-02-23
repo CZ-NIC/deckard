@@ -1,3 +1,2 @@
 dnspython==1.11
-dpkt>=1.8
 Jinja2>=2.8

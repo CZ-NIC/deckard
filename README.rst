@@ -142,6 +142,8 @@ When cwrap environment is absent, default values will be used :
 fails, the work directory can contain useful information for post-mortem analysis. You can explicitly
 set ``SOCKET_WRAPPER_DIR`` to a custom path for more convenient analysis.
 
+If ``SOCKET_WRAPPER_PCAP_FILE`` contains a path to a writeable file, all the network traffic will be appended to specified file.
+
 Acknowledgments
 ---------------
 

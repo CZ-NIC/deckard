@@ -102,6 +102,9 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     # Set up child process env() 
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
+    # do not pass SOCKET_WRAPPER_PCAP_FILE into child to avoid duplicate packets in pcap
+    if "SOCKET_WRAPPER_PCAP_FILE" in child_env:
+        del child_env["SOCKET_WRAPPER_PCAP_FILE"]
     no_minimize = os.environ.get("NO_MINIMIZE", "true")
     trust_anchor_list = []
     stub_addr = ""
