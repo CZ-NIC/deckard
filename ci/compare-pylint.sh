@@ -8,7 +8,7 @@ PYFILES=$(find . \
 	-type f -exec grep -qsm1 '^#!.*\bpython' '{}' \; -print)
 
 : check if version under test does not produce critical errors
-pylint -E ${PYFILES}
+${PYTHON} -m pylint -E ${PYFILES}
 
 : no critical errors, compare score between versions
 rm -rf ~/.pylint.d
@@ -20,7 +20,7 @@ PYFILES=$(find . \
 	-type d -exec test -e '{}/__init__.py' \; -print -prune -o \
 	-name '*.py' -print -o \
 	-type f -exec grep -qsm1 '^#!.*\bpython' '{}' \; -print)
-pylint ${PYFILES} &> /tmp/base.log || : old version is not clear
+${PYTHON} -m pylint ${PYFILES} &> /tmp/base.log || : old version is not clear
 LOGS[0]="/tmp/base.log"
 echo ==================== merge base ====================
 cat /tmp/base.log
@@ -29,7 +29,7 @@ echo ==================== merge base end ====================
 : get test results from version under test
 git checkout --force --detach "${HEAD}"
 git clean -xdf
-pylint ${PYFILES} &> /tmp/head.log || : version under test is not clear
+${PYTHON} -m pylint ${PYFILES} &> /tmp/head.log || : version under test is not clear
 LOGS[1]="/tmp/base.log"
 echo ==================== candidate version ====================
 cat /tmp/head.log
