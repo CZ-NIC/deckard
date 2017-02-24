@@ -168,23 +168,19 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
                 raise Exception("can't parse feature-list (%s) in config section (%s)"
                                 % (v, str(e)))
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
-            scenario.force_ipv6 = True
-
-    self_sockfamily = socket.AF_INET
-    if scenario.force_ipv6 == True:
-        self_sockfamily = socket.AF_INET6
+            scenario.sockfamily = socket.AF_INET6
 
     if stub_addr != "":
         selfaddr = stub_addr
     else:
-        selfaddr = testserver.get_local_addr_str(self_sockfamily, DEFAULT_IFACE)
-    childaddr = testserver.get_local_addr_str(self_sockfamily, CHILD_IFACE)
+        selfaddr = testserver.get_local_addr_str(scenario.sockfamily, DEFAULT_IFACE)
+    childaddr = testserver.get_local_addr_str(scenario.sockfamily, CHILD_IFACE)
     # Prebind to sockets to create necessary files
     # @TODO: this is probably a workaround for socket_wrapper bug
     if 'NOPRELOAD' not in os.environ:
         for sock_type in (socket.SOCK_STREAM, socket.SOCK_DGRAM):
-            sock = socket.socket(self_sockfamily, sock_type)
-            sock.setsockopt(self_sockfamily, socket.SO_REUSEADDR, 1)
+            sock = socket.socket(scenario.sockfamily, sock_type)
+            sock.setsockopt(scenario.sockfamily, socket.SO_REUSEADDR, 1)
             sock.bind((childaddr, 53))
             if sock_type & socket.SOCK_STREAM:
                 sock.listen(5)
@@ -235,10 +231,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
 
     # Wait until the server accepts TCP clients
-    sockfamily = socket.AF_INET
-    if case.force_ipv6 == True:
-        sockfamily = socket.AF_INET6
-    sock = socket.socket(sockfamily, socket.SOCK_STREAM)
+    sock = socket.socket(case.sockfamily, socket.SOCK_STREAM)
     while True:
         time.sleep(0.1)
         if daemon_proc.poll():
@@ -247,7 +240,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
             raise Exception('process died "%s", logs in "%s"' %
                             (os.path.basename(binary_name), TMPDIR))
         try:
-            sock.connect((testserver.get_local_addr_str(sockfamily, CHILD_IFACE), 53))
+            sock.connect((testserver.get_local_addr_str(case.sockfamily, CHILD_IFACE), 53))
         except:
             continue
         break

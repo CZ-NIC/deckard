@@ -270,11 +270,8 @@ class TestServer:
         return sockname, proto
 
     def play(self, subject_addr):
-        sockfamily = socket.AF_INET
-        if self.scenario.force_ipv6 == True:
-            sockfamily = socket.AF_INET6
-        paddr = get_local_addr_str(sockfamily, subject_addr)
-        self.scenario.play(sockfamily, {'': (paddr, 53)})
+        paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
+        self.scenario.play({'': (paddr, 53)})
 
 if __name__ == '__main__':
     # Self-test code

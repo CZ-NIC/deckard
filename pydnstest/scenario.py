@@ -652,7 +652,7 @@ class Scenario:
         self.steps = []
         self.current_step = None
         self.client = {}
-        self.force_ipv6 = False
+        self.sockfamily = socket.AF_INET
 
     def reply(self, query, address=None):
         """
@@ -695,7 +695,7 @@ class Scenario:
                 pass
         return (None, True)
 
-    def play(self, family, paddr):
+    def play(self, paddr):
         """ Play given scenario. """
         # Store test subject => address mapping
         self.client = paddr
