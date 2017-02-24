@@ -17,6 +17,10 @@ kwargs = {
     'license': 'BSD',
     'url': 'https://github.com/CZ-NIC/deckard',
     'packages': ['pydnstest'],
+    'install_requires': [
+        'dnspython',
+        'jinja2'
+    ],
     'classifiers': [
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
@@ -25,9 +29,5 @@ kwargs = {
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 }
-
-if sys.hexversion >= 0x02050000:
-    kwargs['requires'] = ['dns']
-    kwargs['provides'] = ['pydnstest']
 
 setup(**kwargs)
