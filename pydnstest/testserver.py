@@ -204,23 +204,23 @@ class TestServer:
         if self.active is False:
             raise Exception("[query_io] Test server not active")
         while self.active is True:
-           objects = self.srv_socks + self.connections
-           to_read, _, to_error = select.select(objects, [], objects, 0.1)
-           for sock in to_read:
-              if sock in self.srv_socks:
-                  if (sock.proto == socket.IPPROTO_TCP):
-                      conn, addr = sock.accept()
-                      self.connections.append(conn)
-                  else:
-                      self.handle_query(sock)
-              elif sock in self.connections:
-                  if not self.handle_query(sock):
-                      sock.close()
-                      self.connections.remove(sock)
-              else:
-                  raise Exception("[query_io] Socket IO internal error {}, exit".format(sock.getsockname()))
-           for sock in to_error:
-              raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
+            objects = self.srv_socks + self.connections
+            to_read, _, to_error = select.select(objects, [], objects, 0.1)
+            for sock in to_read:
+                if sock in self.srv_socks:
+                    if (sock.proto == socket.IPPROTO_TCP):
+                        conn, addr = sock.accept()
+                        self.connections.append(conn)
+                    else:
+                        self.handle_query(sock)
+                elif sock in self.connections:
+                    if not self.handle_query(sock):
+                        sock.close()
+                        self.connections.remove(sock)
+                else:
+                    raise Exception("[query_io] Socket IO internal error {}, exit".format(sock.getsockname()))
+            for sock in to_error:
+                raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
 
     def start_srv(self, address = None, family = socket.AF_INET, proto = socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
@@ -277,7 +277,7 @@ if __name__ == '__main__':
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
-       DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
+        DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
     if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
         DEFAULT_IFACE = 10
         os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)

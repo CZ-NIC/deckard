@@ -22,7 +22,7 @@ import itertools
 import calendar
 
 def str2bool(v):
-    """ Return conversion of JSON-ish string value to boolean. """ 
+    """ Return conversion of JSON-ish string value to boolean. """
     return v.lower() in ('yes', 'true', 'on')
 
 
@@ -46,7 +46,7 @@ DEFAULT_FEATURE_LIST_DELIM = ';'
 DEFAULT_FEATURE_PAIR_DELIM = '='
 
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
-   DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
+    DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
 if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
     DEFAULT_IFACE = 2
     os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
@@ -101,7 +101,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     child_env["FAKETIME_NO_CACHE"] = "1"
     child_env["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
     write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int (time.time()))
-    # Set up child process env() 
+    # Set up child process env()
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
     # do not pass SOCKET_WRAPPER_PCAP_FILE into child to avoid duplicate packets in pcap
@@ -217,8 +217,8 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     daemon_log = open('%s/server.log' % TMPDIR, 'w')
     daemon_args = [binary_name] + binary_additional_pars
     try :
-      daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
-                                     cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
+        daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
+                                       cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
         server.stop()
         raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
@@ -304,9 +304,9 @@ if __name__ == '__main__':
         template_name_list = sys.argv[3].split(':')
         config_name_list = sys.argv[4].split(':')
         if len(template_name_list) != len (config_name_list):
-                print("ERROR: Number of j2 template files not equal to number of file names to be generated")
-                print("i.e. len(<template>) != len(<config name>), see usage")
-                sys.exit(0)
+            print("ERROR: Number of j2 template files not equal to number of file names to be generated")
+            print("i.e. len(<template>) != len(<config name>), see usage")
+            sys.exit(0)
 
     if len(sys.argv) > 5:
         binary_additional_pars = sys.argv[5:]

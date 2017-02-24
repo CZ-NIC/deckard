@@ -434,7 +434,7 @@ class Step:
         self.repeat_if_fail = 0
         self.pause_if_fail = 0
         self.next_if_fail = -1
-        
+
         if type == 'CHECK_ANSWER':
             for arg in extra_args:
                 param = arg.split('=')
