@@ -6,9 +6,14 @@ import dns.rcode
 import dns.dnssec
 import dns.tsigkeyring
 import binascii
-import socket, struct
-import os, sys, errno
-import itertools, random, string
+import socket
+import struct
+import os
+import sys
+import errno
+import itertools
+import random
+import string
 import time
 from datetime import datetime
 from pydnstest.dprint import dprint
@@ -23,7 +28,8 @@ g_nqueries = 0
 # Element comparators
 #
 
-def create_rr(owner, args, ttl = 3600, rdclass = 'IN', origin = '.'):
+
+def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
     """ Parse RR from tokenized string. """
     if not owner.endswith('.'):
         owner += origin
@@ -43,9 +49,11 @@ def create_rr(owner, args, ttl = 3600, rdclass = 'IN', origin = '.'):
         if (rr.rdtype == dns.rdatatype.DS):
             # convert textual algorithm identifier to number
             args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
-        rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(args), origin=dns.name.from_text(origin), relativize=False)
+        rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
+            args), origin=dns.name.from_text(origin), relativize=False)
         rr.add(rd)
     return rr
+
 
 def compare_rrs(expected, got):
     """ Compare lists of RR sets, throw exception if different. """
@@ -68,13 +76,15 @@ def compare_val(expected, got):
         raise Exception("expected '%s', got '%s'" % (expected, got))
     return True
 
+
 def compare_sub(got, expected):
     """ Check if got subdomain of expected, throw exception if different. """
     if not expected.is_subdomain(got):
         raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
 
-def replay_rrs(rrs, nqueries, destination, args = []):
+
+def replay_rrs(rrs, nqueries, destination, args=[]):
     """ Replay list of queries and report statistics. """
     navail, queries = len(rrs), []
     chunksize = 16
@@ -82,7 +92,8 @@ def replay_rrs(rrs, nqueries, destination, args = []):
         rr = rrs[i % navail]
         name = rr.name
         if 'RAND' in args:
-            prefix = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(8)])
+            prefix = ''.join([random.choice(string.ascii_letters + string.digits)
+                              for n in range(8)])
             name = prefix + '.' + rr.name.to_text()
         msg = dns.message.make_query(name, rr.rdtype, rr.rdclass)
         if 'DO' in args:
@@ -109,7 +120,7 @@ def replay_rrs(rrs, nqueries, destination, args = []):
                     nwait += 1
                     nsent += 1
             except:
-                pass # EINVAL
+                pass  # EINVAL
         if len(to_read) > 0:
             try:
                 while nwait > 0:
@@ -119,13 +130,15 @@ def replay_rrs(rrs, nqueries, destination, args = []):
             except:
                 pass
         if len(to_write) == 0 and len(to_read) == 0:
-            nwait = 0 # Timeout, started dropping packets
+            nwait = 0  # Timeout, started dropping packets
             break
     return nsent, nrcvd
 
+
 class Entry:
     """
-    Data entry represents scripted message and extra metadata, notably match criteria and reply adjustments.
+    Data entry represents scripted message and extra metadata,
+    notably match criteria and reply adjustments.
     """
 
     # Globals
@@ -133,20 +146,20 @@ class Entry:
     default_cls = 'IN'
     default_rc = 'NOERROR'
 
-    def __init__(self, lineno = 0):
+    def __init__(self, lineno=0):
         """ Initialize data entry. """
         self.match_fields = ['opcode', 'qtype', 'qname']
         self.adjust_fields = ['copy_id']
         self.origin = '.'
         self.message = dns.message.Message()
-        self.message.use_edns(edns = 0, payload = 4096)
+        self.message.use_edns(edns=0, payload=4096)
         self.sections = []
         self.is_raw_data_entry = False
         self.raw_data_pending = False
         self.raw_data = None
         self.lineno = lineno
         self.mandatory = False
-        self.fired = 0;
+        self.fired = 0
 
     def match_part(self, code, msg):
         """ Compare scripted reply to given message using single criteria. """
@@ -185,7 +198,8 @@ class Entry:
             if msg.edns != expected.edns:
                 raise Exception('expected EDNS %d, got %d' % (expected.edns, msg.edns))
             if msg.payload != expected.payload:
-                raise Exception('expected EDNS bufsize %d, got %d' % (expected.payload, msg.payload))
+                raise Exception('expected EDNS bufsize %d, got %d'
+                                % (expected.payload, msg.payload))
         elif code == 'nsid':
             nsid_opt = None
             for opt in expected.options:
@@ -229,11 +243,15 @@ class Entry:
         if raw_value is not None:
             got = binascii.hexlify(raw_value)
         if expected != got:
-            print("expected '",expected,"', got '",got,"'")
+            print("expected '", expected, "', got '", got, "'")
             raise Exception("comparsion failed")
 
     def set_match(self, fields):
-        """ Set conditions for message comparison [all, flags, question, answer, authority, additional, edns] """
+        """
+        Set list of conditions for message comparison
+
+        [all, flags, question, answer, authority, additional, edns]
+        """
         self.match_fields = fields
 
     def adjust_reply(self, query):
@@ -303,11 +321,12 @@ class Entry:
                 prefix = len(addr) * 8
                 if len(net) > 1:
                     prefix = int(net[1])
-                addr = addr[0 : (prefix + 7)/8]
-                if prefix % 8 != 0: # Mask the last byte
+                addr = addr[0: (prefix + 7) / 8]
+                if prefix % 8 != 0:  # Mask the last byte
                     addr = addr[:-1] + chr(ord(addr[-1]) & 0xFF << (8 - prefix % 8))
-                opts.append(dns.edns.GenericOption(8, struct.pack("!HBB", 1 if family == socket.AF_INET else 2, prefix, 0) + addr))
-        self.message.use_edns(edns = version, payload = bufsize, options = opts)
+                opts.append(dns.edns.GenericOption(8, struct.pack(
+                    "!HBB", 1 if family == socket.AF_INET else 2, prefix, 0) + addr))
+        self.message.use_edns(edns=version, payload=bufsize, options=opts)
 
     def begin_raw(self):
         """ Set raw data pending flag. """
@@ -331,7 +350,8 @@ class Entry:
             self.raw_data_pending = False
             self.is_raw_data_entry = True
         else:
-            rr = create_rr(owner, args, ttl = self.default_ttl, rdclass = self.default_cls, origin = self.origin)
+            rr = create_rr(owner, args, ttl=self.default_ttl,
+                           rdclass=self.default_cls, origin=self.origin)
             if self.section == 'QUESTION':
                 if rr.rdtype == dns.rdatatype.AXFR:
                     self.message.xfr = True
@@ -357,6 +377,7 @@ class Entry:
 
     def set_mandatory(self):
         self.mandatory = True
+
 
 class Range:
     """
@@ -448,7 +469,6 @@ class Step:
                 except Exception as e:
                     raise Exception('step %d - wrong %s arg: %s' % (self.id, param[0], str(e)))
 
-
     def add(self, entry):
         """ Append a data entry to this step. """
         self.data.append(entry)
@@ -461,7 +481,7 @@ class Step:
             # Parse QUERY-specific parameters
             choice, tcp, source = None, False, None
             for v in self.args:
-                if '=' in v: # Key=Value
+                if '=' in v:  # Key=Value
                     v = v.split('=')
                     if v[0].lower() == 'source':
                         source = v[1]
@@ -469,10 +489,10 @@ class Step:
                     tcp = True
                 else:
                     choice = v
-            return self.__query(ctx, tcp = tcp, choice = choice, source = source)
+            return self.__query(ctx, tcp=tcp, choice=choice, source=source)
         elif self.type == 'CHECK_OUT_QUERY':
             dprint(dtag, '')
-            pass # Ignore
+            pass  # Ignore
         elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
             dprint(dtag, '')
             return self.__check_answer(ctx)
@@ -507,13 +527,14 @@ class Step:
             dprint("", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __replay(self, ctx, chunksize = 8):
+    def __replay(self, ctx, chunksize=8):
         dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         nqueries = len(self.queries)
         if len(self.args) > 0 and self.args[0].isdigit():
             nqueries = int(self.args.pop(0))
         destination = ctx.client[ctx.client.keys()[0]]
-        dprint(dtag, 'replaying %d queries to %s@%d (%s)' % (nqueries, destination[0], destination[1], ' '.join(self.args)))
+        dprint(dtag, 'replaying %d queries to %s@%d (%s)' %
+               (nqueries, destination[0], destination[1], ' '.join(self.args)))
         if 'INTENSIFY' in os.environ:
             nqueries *= int(os.environ['INTENSIFY'])
         tstart = datetime.now()
@@ -527,10 +548,10 @@ class Step:
             if arg.upper().startswith('PRINT'):
                 _, tag = tuple(arg.split('=')) if '=' in arg else (None, 'replay')
         if tag:
-            print('  [ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d' % (tag.ljust(11), pps, rtt, nsent, nrcvd))
+            print('  [ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d' %
+                  (tag.ljust(11), pps, rtt, nsent, nrcvd))
 
-
-    def __query(self, ctx, tcp = False, choice = None, source = None):
+    def __query(self, ctx, tcp=False, choice=None, source=None):
         """
         Send query and wait for an answer (if the query is not RAW).
 
@@ -616,10 +637,13 @@ class Step:
                 subexpr.append(str(ee))
             except:
                 subexpr.append(expr)
-        assert result is True, '"%s" assertion fails (%s)' % (' '.join(self.args), ' '.join(subexpr))
+        assert result is True, '"%s" assertion fails (%s)' % (
+                               ' '.join(self.args), ' '.join(subexpr))
+
 
 class Scenario:
-    def __init__(self, info, filename = ''):
+
+    def __init__(self, info, filename=''):
         """ Initialize scenario with description. """
         self.info = info
         self.file = filename
@@ -630,7 +654,7 @@ class Scenario:
         self.client = {}
         self.force_ipv6 = False
 
-    def reply(self, query, address = None):
+    def reply(self, query, address=None):
         """
         Generate answer packet for given query.
 
@@ -685,19 +709,24 @@ class Scenario:
                 step.play(self)
             except Exception as e:
                 if (step.repeat_if_fail > 0):
-                    dprint ('[play]',"step %d: exception catched - '%s', retrying step %d (%d left)" % (step.id, e, step.next_if_fail, step.repeat_if_fail))
+                    dprint("[play]",
+                           "step %d: exception catched - '%s', retrying step %d (%d left)" %
+                           (step.id, e, step.next_if_fail, step.repeat_if_fail))
                     step.repeat_if_fail -= 1
                     if (step.pause_if_fail > 0):
                         time.sleep(step.pause_if_fail)
                     if (step.next_if_fail != -1):
-                        next_steps = [j for j in range(len(self.steps)) if self.steps[j].id == step.next_if_fail]
+                        next_steps = [j for j in range(len(self.steps)) if self.steps[
+                            j].id == step.next_if_fail]
                         if (len(next_steps) == 0):
-                            raise Exception('step %d: wrong NEXT value "%d"' % (step.id, step.next_if_fail))
+                            raise Exception('step %d: wrong NEXT value "%d"' %
+                                            (step.id, step.next_if_fail))
                         next_step = next_steps[0]
                         if (next_step < len(self.steps)):
                             i = next_step
                         else:
-                            raise Exception('step %d: Can''t branch to NEXT value "%d"' % (step.id, step.next_if_fail))
+                            raise Exception('step %d: Can''t branch to NEXT value "%d"' %
+                                            (step.id, step.next_if_fail))
                     continue
                 else:
                     raise Exception('%s step %d %s' % (self.file, step.id, str(e)))
@@ -709,7 +738,7 @@ class Scenario:
                     raise Exception('Mandatory section at line %d is not fired' % e.lineno)
 
 
-def get_next(file_in, skip_empty = True):
+def get_next(file_in, skip_empty=True):
     """ Return next token from the input stream. """
     while True:
         line = file_in.readline()
@@ -735,14 +764,15 @@ def get_next(file_in, skip_empty = True):
         op = tokens.pop(0)
         return op, tokens
 
-def parse_entry(op, args, file_in, in_entry = False):
+
+def parse_entry(op, args, file_in, in_entry=False):
     """ Parse entry definition. """
     out = Entry(file_in.lineno())
     for op, args in iter(lambda: get_next(file_in, in_entry), False):
         if op == 'ENTRY_END' or op == '':
             in_entry = False
             break
-        elif op == 'ENTRY_BEGIN': # Optional, compatibility with Unbound tests
+        elif op == 'ENTRY_BEGIN':  # Optional, compatibility with Unbound tests
             if in_entry:
                 raise Exception('nested ENTRY_BEGIN not supported')
             in_entry = True
@@ -767,6 +797,7 @@ def parse_entry(op, args, file_in, in_entry = False):
             out.add_record(op, args)
     return out
 
+
 def parse_queries(out, file_in):
     """ Parse list of queries terminated by blank line. """
     out.queries = []
@@ -777,6 +808,8 @@ def parse_queries(out, file_in):
     return out
 
 auto_step = 0
+
+
 def parse_step(op, args, file_in):
     """ Parse range definition. """
     global auto_step
@@ -813,7 +846,7 @@ def parse_range(op, args, file_in):
         if op == 'ADDRESS':
             out.addresses.add(args[0])
         elif op == 'ENTRY_BEGIN':
-            out.add(parse_entry(op, args, file_in, in_entry = True))
+            out.add(parse_entry(op, args, file_in, in_entry=True))
         elif op == 'RANGE_END':
             break
     return out
@@ -848,7 +881,7 @@ def parse_file(file_in):
                     line = line[0:line.index('#')]
                 # Break to key-value pairs
                 # e.g.: ['minimization', 'on']
-                kv = [x.strip() for x in line.split(':',1)]
+                kv = [x.strip() for x in line.split(':', 1)]
                 if len(kv) >= 2:
                     config.append(kv)
             line = file_in.readline()

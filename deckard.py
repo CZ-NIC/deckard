@@ -21,6 +21,7 @@ import string
 import itertools
 import calendar
 
+
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """
     return v.lower() in ('yes', 'true', 'on')
@@ -32,7 +33,7 @@ def del_files(path_to, delpath):
             os.unlink(os.path.join(root, f))
     if delpath == True:
         try:
-            os.rmdir(path_to);
+            os.rmdir(path_to)
         except:
             pass
 
@@ -47,9 +48,9 @@ DEFAULT_FEATURE_PAIR_DELIM = '='
 
 if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
     DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
-if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
+if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254:
     DEFAULT_IFACE = 2
-    os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
+    os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
 
 if "KRESD_WRAPPER_DEFAULT_IFACE" in os.environ:
     CHILD_IFACE = int(os.environ["KRESD_WRAPPER_DEFAULT_IFACE"])
@@ -72,7 +73,9 @@ if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
 if "VERBOSE" in os.environ:
     try:
         VERBOSE = int(os.environ["VERBOSE"])
-    except: pass
+    except:
+        pass
+
 
 def find_objects(path):
     """ Recursively scan file/directory for scenarios. """
@@ -85,11 +88,13 @@ def find_objects(path):
             result.append(path)
     return result
 
+
 def write_timestamp_file(path, tst):
     time_file = open(path, 'w')
     time_file.write(datetime.fromtimestamp(tst).strftime('@%Y-%m-%d %H:%M:%S'))
     time_file.flush()
     time_file.close()
+
 
 def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     """ Set up test environment and config """
@@ -100,7 +105,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     os.environ["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
     child_env["FAKETIME_NO_CACHE"] = "1"
     child_env["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % TMPDIR
-    write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int (time.time()))
+    write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], int(time.time()))
     # Set up child process env()
     child_env["SOCKET_WRAPPER_DEFAULT_IFACE"] = "%i" % CHILD_IFACE
     child_env["SOCKET_WRAPPER_DIR"] = TMPDIR
@@ -114,7 +119,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     feature_list_delimiter = DEFAULT_FEATURE_LIST_DELIM
     feature_pair_delimiter = DEFAULT_FEATURE_PAIR_DELIM
     selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
-    for k,v in config:
+    for k, v in config:
         # Enable selectively for some tests
         if k == 'query-minimization' and str2bool(v):
             no_minimize = "false"
@@ -131,33 +136,37 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
             ovr_hr = override_date_str[8:10]
             ovr_min = override_date_str[10:12]
             ovr_sec = override_date_str[12:]
-            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(ovr_yr,ovr_mnt,ovr_day,ovr_hr,ovr_min,ovr_sec)
-            override_date = time.strptime(override_date_str_arg,"%Y %m %d %H %M %S")
+            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(
+                ovr_yr, ovr_mnt, ovr_day, ovr_hr, ovr_min, ovr_sec)
+            override_date = time.strptime(override_date_str_arg, "%Y %m %d %H %M %S")
             override_date_timestamp = calendar.timegm(override_date)
             write_timestamp_file(child_env["FAKETIME_TIMESTAMP_FILE"], override_date_timestamp)
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
         elif k == 'features':
             feature_list = v.split(feature_list_delimiter)
-            try :
+            try:
                 for f_item in feature_list:
                     if f_item.find(feature_pair_delimiter) != -1:
-                        f_key, f_value = [x.strip() for x in f_item.split(feature_pair_delimiter,1)]
+                        f_key, f_value = [x.strip()
+                                          for x
+                                          in f_item.split(feature_pair_delimiter, 1)]
                     else:
                         f_key = f_item.strip()
                         f_value = ""
                     features[f_key] = f_value
             except Exception as e:
-                raise Exception ("can't parse features (%s) in config section (%s)" % (v,str(e)));
+                raise Exception("can't parse features (%s) in config section (%s)" % (v, str(e)))
         elif k == 'feature-list':
-            try :
-                f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter,1)]
+            try:
+                f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
                 if f_key not in features:
                     features[f_key] = []
-                f_value = f_value.replace("{{INSTALL_DIR}}",INSTALLDIR)
+                f_value = f_value.replace("{{INSTALL_DIR}}", INSTALLDIR)
                 features[f_key].append(f_value)
             except Exception as e:
-                raise Exception ("can't parse feature-list (%s) in config section (%s)" % (v,str(e)));
+                raise Exception("can't parse feature-list (%s) in config section (%s)"
+                                % (v, str(e)))
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             scenario.force_ipv6 = True
 
@@ -180,23 +189,25 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
             if sock_type & socket.SOCK_STREAM:
                 sock.listen(5)
     # Generate configuration files
-    j2template_loader = jinja2.FileSystemLoader(searchpath=os.path.dirname(os.path.abspath(__file__)))
+    j2template_loader = jinja2.FileSystemLoader(
+        searchpath=os.path.dirname(os.path.abspath(__file__)))
     j2template_env = jinja2.Environment(loader=j2template_loader)
     j2template_ctx = {
-        "ROOT_ADDR" : selfaddr,
-        "SELF_ADDR" : childaddr,
-        "NO_MINIMIZE" : no_minimize,
-        "TRUST_ANCHORS" : trust_anchor_list,
-        "WORKING_DIR" : TMPDIR,
-        "INSTALL_DIR" : INSTALLDIR,
-        "FEATURES" : features
+        "ROOT_ADDR": selfaddr,
+        "SELF_ADDR": childaddr,
+        "NO_MINIMIZE": no_minimize,
+        "TRUST_ANCHORS": trust_anchor_list,
+        "WORKING_DIR": TMPDIR,
+        "INSTALL_DIR": INSTALLDIR,
+        "FEATURES": features
     }
-    for template_name, config_name in zip(j2template_list,config_name_list):
+    for template_name, config_name in zip(j2template_list, config_name_list):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(j2template_ctx)
-        f = open(os.path.join(TMPDIR,config_name), 'w')
+        f = open(os.path.join(TMPDIR, config_name), 'w')
         f.write(cfg_rendered)
         f.close()
+
 
 def play_object(path, binary_name, config_name, j2template, binary_additional_pars):
     """ Play scenario from a file object. """
@@ -216,7 +227,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     daemon_proc = None
     daemon_log = open('%s/server.log' % TMPDIR, 'w')
     daemon_args = [binary_name] + binary_additional_pars
-    try :
+    try:
         daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
                                        cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
@@ -233,10 +244,12 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         if daemon_proc.poll() != None:
             server.stop()
             print(open('%s/server.log' % TMPDIR).read())
-            raise Exception('process died "%s", logs in "%s"' % (os.path.basename(binary_name), TMPDIR))
+            raise Exception('process died "%s", logs in "%s"' %
+                            (os.path.basename(binary_name), TMPDIR))
         try:
             sock.connect((testserver.get_local_addr_str(sockfamily, CHILD_IFACE), 53))
-        except: continue
+        except:
+            continue
         break
     sock.close()
 
@@ -249,7 +262,10 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     for s in case.steps:
         if s.type == 'REPLY':
             reply = s.data[0].message
-            for rr in itertools.chain(reply.answer,reply.additional,reply.question,reply.authority):
+            for rr in itertools.chain(reply.answer,
+                                      reply.additional,
+                                      reply.question,
+                                      reply.authority):
                 for rd in rr:
                     if rd.rdtype == dns.rdatatype.A:
                         server.start_srv((rd.address, 53), socket.AF_INET)
@@ -276,6 +292,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR, OWN_TMPDIR)
 
+
 def test_platform(*args):
     if sys.platform == 'windows':
         raise Exception('not supported at all on Windows')
@@ -283,7 +300,8 @@ def test_platform(*args):
 if __name__ == '__main__':
 
     if len(sys.argv) < 5:
-        print("Usage: test_integration.py <scenario> <binary> <template> <config name> [<additional>]")
+        print("Usage:")
+        print("test_integration.py <scenario> <binary> <template> <config name> [<additional>]")
         print("\t<scenario> - path to scenario")
         print("\t<binary> - executable to test")
         print("\t<template> - colon-separated list of jinja2 template files")
@@ -303,8 +321,8 @@ if __name__ == '__main__':
         binary_name = sys.argv[2]
         template_name_list = sys.argv[3].split(':')
         config_name_list = sys.argv[4].split(':')
-        if len(template_name_list) != len (config_name_list):
-            print("ERROR: Number of j2 template files not equal to number of file names to be generated")
+        if len(template_name_list) != len(config_name_list):
+            print("ERROR: Number of j2 template files not equal to number of files to be generated")
             print("i.e. len(<template>) != len(<config name>), see usage")
             sys.exit(0)
 
@@ -316,5 +334,6 @@ if __name__ == '__main__':
     for arg in [path_to_scenario]:
         objects = find_objects(arg)
         for path in objects:
-            test.add(path, play_object, path, binary_name, config_name_list, template_name_list, binary_additional_pars)
+            test.add(path, play_object, path, binary_name, config_name_list,
+                     template_name_list, binary_additional_pars)
     sys.exit(test.run())

@@ -5,6 +5,7 @@ import threading
 
 dprint_lock = threading.Lock()
 
+
 def dprint(tag, msg):
     """ Verbose logging (if enabled). """
     if 'VERBOSE' in os.environ:
