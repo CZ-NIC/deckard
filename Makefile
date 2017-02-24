@@ -48,8 +48,11 @@ $(SOURCES): depend
 	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $< $(DAEMON) $(TEMPLATE) $(CONFIG) $(ADDITIONAL)
 
 # Synchronize submodules
-$(libfaketime_DIR)/Makefile $(libcwrap_DIR)/CMakeLists.txt: .gitmodules
+submodules: .gitmodules
 	@git submodule update --init
+# indirection through submodules target is necessary
+# to prevent make from running "git submodule" commands in parallel
+$(libfaketime_DIR)/Makefile $(libcwrap_DIR)/CMakeLists.txt: submodules
 $(libfaketime): $(libfaketime_DIR)/Makefile
 	@CFLAGS="-O0 -g" $(MAKE) -s -C $(libfaketime_DIR)
 $(libcwrap_cmake_DIR):$(libcwrap_DIR)/CMakeLists.txt
@@ -60,4 +63,4 @@ $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
 	@CFLAGS="-O0 -g" $(MAKE) -s -C $(libcwrap_cmake_DIR)
 
 
-.PHONY: depend all
+.PHONY: submodules depend all
