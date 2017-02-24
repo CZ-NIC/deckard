@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import print_function
+
 import threading
 import select
 import socket
@@ -8,9 +11,10 @@ import dns.rdatatype
 import itertools
 import struct
 import binascii
-from dprint import dprint
+from pydnstest.dprint import dprint
 
-def recvfrom_msg(stream, raw = False):
+
+def recvfrom_msg(stream, raw=False):
     """
     Receive DNS message from TCP/UDP socket.
 
@@ -18,14 +22,14 @@ def recvfrom_msg(stream, raw = False):
         if raw == False: (DNS message object, peer address)
         if raw == True: (blob, peer address)
     """
-    if stream.type == socket.SOCK_DGRAM:
+    if stream.type & socket.SOCK_DGRAM:
         data, addr = stream.recvfrom(4096)
-    elif stream.type == socket.SOCK_STREAM:
+    elif stream.type & socket.SOCK_STREAM:
         data = stream.recv(2)
         if len(data) == 0:
             return None, None
-        msg_len = struct.unpack_from("!H",data)[0]
-        data = ""
+        msg_len = struct.unpack_from("!H", data)[0]
+        data = b""
         received = 0
         while received < msg_len:
             next_chunk = stream.recv(4096)
@@ -35,7 +39,7 @@ def recvfrom_msg(stream, raw = False):
             received += len(next_chunk)
         addr = stream.getpeername()[0]
     else:
-        raise Exception("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
     if not raw:
         data = dns.message.from_wire(data, one_rr_per_rrset=True)
     return data, addr
@@ -44,18 +48,19 @@ def recvfrom_msg(stream, raw = False):
 def sendto_msg(stream, message, addr=None):
     """ Send DNS/UDP/TCP message. """
     try:
-        if stream.type == socket.SOCK_DGRAM:
+        if stream.type & socket.SOCK_DGRAM:
             if addr is None:
                 stream.send(message)
             else:
                 stream.sendto(message, addr)
-        elif stream.type == socket.SOCK_STREAM:
-            data = struct.pack("!H",len(message)) + message
+        elif stream.type & socket.SOCK_STREAM:
+            data = struct.pack("!H", len(message)) + message
             stream.send(data)
         else:
-            raise Exception ("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    except: # Failure to respond is OK, resolver should recover
+            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
+    except:  # Failure to respond is OK, resolver should recover
         pass
+
 
 def get_local_addr_str(family, iface):
     """ Returns pattern string for localhost address  """
@@ -64,15 +69,18 @@ def get_local_addr_str(family, iface):
     elif family == socket.AF_INET6:
         addr_local_pattern = "fd00::5357:5f{:02X}"
     else:
-        raise Exception("[get_local_addr_str] family not supported '%i'" % family)
+        raise NotImplementedError("[get_local_addr_str] family not supported '%i'" % family)
     return addr_local_pattern.format(iface)
+
 
 class AddrMapInfo:
     """ Saves mapping info between adresses from rpl and cwrap adresses """
+
     def __init__(self, family, local, external):
-        self.family   = family
-        self.local    = local
-        self.external =  external
+        self.family = family
+        self.local = local
+        self.external = external
+
 
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
@@ -99,7 +107,7 @@ class TestServer:
         if self.active is True:
             self.stop()
 
-    def start(self, port = 53):
+    def start(self, port=53):
         """ Synchronous start """
         if self.active is True:
             raise Exception('TestServer already started')
@@ -123,7 +131,7 @@ class TestServer:
         self.connections = []
         self.scenario = None
 
-    def check_family (self, addr, family):
+    def check_family(self, addr, family):
         """ Determines if address matches family """
         test_addr = None
         try:
@@ -145,10 +153,10 @@ class TestServer:
             if k == 'stub-addr':
                 kroot_addr = v
         if kroot_addr is not None:
-            if self.check_family (kroot_addr, socket.AF_INET):
+            if self.check_family(kroot_addr, socket.AF_INET):
                 self.addr_family = socket.AF_INET
                 self.kroot_local = kroot_addr
-            elif self.check_family (kroot_addr, socket.AF_INET6):
+            elif self.check_family(kroot_addr, socket.AF_INET6):
                 self.addr_family = socket.AF_INET6
                 self.kroot_local = kroot_addr
         else:
@@ -157,10 +165,10 @@ class TestServer:
 
     def address(self):
         """ Returns opened sockets list """
-        addrlist = [];
+        addrlist = []
         for s in self.srv_socks:
-            addrlist.append(s.getsockname());
-        return addrlist;
+            addrlist.append(s.getsockname())
+        return addrlist
 
     def handle_query(self, client):
         """
@@ -174,24 +182,23 @@ class TestServer:
         query, addr = recvfrom_msg(client)
         if query is None:
             return False
-        dprint ("[ handle_query ]", "%s incoming query from %s\n%s" % (client_address, addr, query))
+        dprint("[ handle_query ]", "%s incoming query from %s\n%s" % (client_address, addr, query))
         response = dns.message.make_response(query)
         is_raw_data = False
         if self.scenario is not None:
             response, is_raw_data = self.scenario.reply(query, client_address)
         if response:
             if is_raw_data is False:
-                data_to_wire = response.to_wire(max_size = 65535)
-                dprint ("[ handle_query ]", "response\n%s" % response)
+                data_to_wire = response.to_wire(max_size=65535)
+                dprint("[ handle_query ]", "response\n%s" % response)
             else:
                 data_to_wire = response
-                dprint ("[ handle_query ]", "raw response found")
+                dprint("[ handle_query ]", "raw response found")
         else:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
-            dprint ("[ handle_query ]", "response failed, SERVFAIL")
-
+            dprint("[ handle_query ]", "response failed, SERVFAIL")
 
         sendto_msg(client, data_to_wire, addr)
         return True
@@ -201,54 +208,56 @@ class TestServer:
         if self.active is False:
             raise Exception("[query_io] Test server not active")
         while self.active is True:
-           objects = self.srv_socks + self.connections
-           to_read, _, to_error = select.select(objects, [], objects, 0.1)
-           for sock in to_read:
-              if sock in self.srv_socks:
-                  if (sock.proto == socket.IPPROTO_TCP):
-                      conn, addr = sock.accept()
-                      self.connections.append(conn)
-                  else:
-                      self.handle_query(sock)
-              elif sock in self.connections:
-                  if not self.handle_query(sock):
-                      sock.close()
-                      self.connections.remove(sock)
-              else:
-                  raise Exception("[query_io] Socket IO internal error {}, exit".format(sock.getsockname()))
-           for sock in to_error:
-              raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
+            objects = self.srv_socks + self.connections
+            to_read, _, to_error = select.select(objects, [], objects, 0.1)
+            for sock in to_read:
+                if sock in self.srv_socks:
+                    if (sock.proto == socket.IPPROTO_TCP):
+                        conn, addr = sock.accept()
+                        self.connections.append(conn)
+                    else:
+                        self.handle_query(sock)
+                elif sock in self.connections:
+                    if not self.handle_query(sock):
+                        sock.close()
+                        self.connections.remove(sock)
+                else:
+                    raise Exception(
+                        "[query_io] Socket IO internal error {}, exit".format(sock.getsockname()))
+            for sock in to_error:
+                raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
 
-    def start_srv(self, address = None, family = socket.AF_INET, proto = socket.IPPROTO_UDP):
+    def start_srv(self, address=None, family=socket.AF_INET, proto=socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
-        if family == None:
-            family = socket.AF_INET
+        assert family
+        assert proto
         if family == socket.AF_INET:
             if address[0] is None:
                 address = (get_local_addr_str(family, self.default_iface), 53)
         elif family == socket.AF_INET6:
             if socket.has_ipv6 is not True:
-                raise Exception("[start_srv] IPV6 is not supported")
+                raise NotImplementedError("[start_srv] IPv6 is not supported by socket {0}"
+                                          .format(socket))
             if address[0] is None:
                 address = (get_local_addr_str(family, self.default_iface), 53)
         else:
-            raise Exception("[start_srv] unsupported protocol family {family}".format(family=family))
+            raise NotImplementedError("[start_srv] unsupported protocol family {0}".format(family))
 
-        if proto == None:
-            proto = socket.IPPROTO_UDP
         if proto == socket.IPPROTO_TCP:
             socktype = socket.SOCK_STREAM
         elif proto == socket.IPPROTO_UDP:
             socktype = socket.SOCK_DGRAM
         else:
-            raise Exception("[start_srv] unsupported protocol {protocol}".format(protocol=proto))
+            raise NotImplementedError("[start_srv] unsupported protocol {0}".format(proto))
 
         if (self.thread is None):
             self.thread = threading.Thread(target=self.query_io)
             self.thread.start()
 
         for srv_sock in self.srv_socks:
-            if srv_sock.family == family and srv_sock.getsockname() == address and srv_sock.proto == proto:
+            if (srv_sock.family == family
+                    and srv_sock.getsockname() == address
+                    and srv_sock.proto == proto):
                 return srv_sock.getsockname()
 
         sock = socket.socket(family, socktype, proto)
@@ -261,29 +270,27 @@ class TestServer:
         return sockname, proto
 
     def play(self, subject_addr):
-        sockfamily = socket.AF_INET
-        if self.scenario.force_ipv6 == True:
-            sockfamily = socket.AF_INET6
-        paddr = get_local_addr_str(sockfamily, subject_addr)
-        self.scenario.play(sockfamily, {'': (paddr, 53)})
+        paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
+        self.scenario.play({'': (paddr, 53)})
 
 if __name__ == '__main__':
     # Self-test code
+    # Usage: $PYTHON -m pydnstest.testserver
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
-       DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
-    if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254 :
+        DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
+    if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254:
         DEFAULT_IFACE = 10
-        os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"]="{}".format(DEFAULT_IFACE)
+        os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
     # Mirror server
-    server = TestServer(None,None,DEFAULT_IFACE)
+    server = TestServer(None, None, DEFAULT_IFACE)
     server.start()
-    print "[==========] Mirror server running at", server.address()
+    print("[==========] Mirror server running at", server.address())
     try:
         while True:
-	    time.sleep(0.5)
+            time.sleep(0.5)
     except KeyboardInterrupt:
-        print "[==========] Shutdown."
+        print("[==========] Shutdown.")
         pass
     server.stop()
