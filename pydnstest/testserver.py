@@ -229,8 +229,8 @@ class TestServer:
 
     def start_srv(self, address=None, family=socket.AF_INET, proto=socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
-        if family == None:
-            family = socket.AF_INET
+        assert family
+        assert proto
         if family == socket.AF_INET:
             if address[0] is None:
                 address = (get_local_addr_str(family, self.default_iface), 53)
@@ -243,8 +243,6 @@ class TestServer:
         else:
             raise NotImplementedError("[start_srv] unsupported protocol family {0}".format(family))
 
-        if proto == None:
-            proto = socket.IPPROTO_UDP
         if proto == socket.IPPROTO_TCP:
             socktype = socket.SOCK_STREAM
         elif proto == socket.IPPROTO_UDP:
