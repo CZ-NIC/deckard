@@ -15,6 +15,11 @@ rm -rf ~/.pylint.d
 : get test results from common ancestor with master branch
 git checkout --force --detach "${MERGEBASE}"
 git clean -xdf
+# set of Python files might have changed during checkout
+PYFILES=$(find . \
+	-type d -exec test -e '{}/__init__.py' \; -print -prune -o \
+	-name '*.py' -print -o \
+	-type f -exec grep -qsm1 '^#!.*\bpython' '{}' \; -print)
 pylint ${PYFILES} &> /tmp/base.log || : old version is not clear
 LOGS[0]="/tmp/base.log"
 echo ==================== merge base ====================
