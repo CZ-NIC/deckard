@@ -31,7 +31,7 @@ def del_files(path_to, delpath):
     for root, dirs, files in os.walk(path_to):
         for f in files:
             os.unlink(os.path.join(root, f))
-    if delpath == True:
+    if delpath:
         try:
             os.rmdir(path_to)
         except:
@@ -241,7 +241,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
     while True:
         time.sleep(0.1)
-        if daemon_proc.poll() != None:
+        if daemon_proc.poll():
             server.stop()
             print(open('%s/server.log' % TMPDIR).read())
             raise Exception('process died "%s", logs in "%s"' %

@@ -209,7 +209,7 @@ class Entry:
             # Find matching NSID
             for opt in msg.options:
                 if opt.otype == dns.edns.NSID:
-                    if nsid_opt == None:
+                    if not nsid_opt:
                         raise Exception('unexpected NSID value "%s"' % opt.data)
                     if opt == nsid_opt:
                         return True
@@ -312,7 +312,7 @@ class Entry:
         for v in fields:
             k, v = tuple(v.split('=')) if '=' in v else (v, True)
             if k.lower() == 'nsid':
-                opts.append(dns.edns.GenericOption(dns.edns.NSID, '' if v == True else v))
+                opts.append(dns.edns.GenericOption(dns.edns.NSID, '' if v is True else v))
             if k.lower() == 'subnet':
                 net = v.split('/')
                 family = socket.AF_INET6 if ':' in net[0] else socket.AF_INET
@@ -340,7 +340,7 @@ class Entry:
     def add_record(self, owner, args):
         """ Add record to current packet section. """
         if self.raw_data_pending is True:
-            if self.raw_data == None:
+            if self.raw_data is None:
                 if owner == 'NULL':
                     self.raw_data = None
                 else:
@@ -405,7 +405,7 @@ class Range:
     def eligible(self, id, address):
         """ Return true if this range is eligible for fetching reply. """
         if self.a <= id <= self.b:
-            return (None == address
+            return (None is address
                     or set() == self.addresses
                     or address in self.addresses)
         return False
