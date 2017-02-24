@@ -30,12 +30,15 @@ echo ==================== merge base end ====================
 git checkout --force --detach "${HEAD}"
 git clean -xdf
 ${PYTHON} -m pylint ${PYFILES} &> /tmp/head.log || : version under test is not clear
-LOGS[1]="/tmp/base.log"
+LOGS[1]="/tmp/head.log"
 echo ==================== candidate version ====================
 cat /tmp/head.log
 echo ==================== candidate end ====================
 
 : check if candidate version produced more messages than the base
 grep '^|\(convention\|refactor\|warning\|error\).*+' /tmp/head.log \
-	&& echo "New pylint message detected: Use diff base.log head.log and go fix it!" \
+	&& { \
+		echo "New pylint message detected: Use diff base.log head.log and go fix it!"; \
+		exit 1; \
+	} \
 	|| echo "OK, no new pylint messages detected"
