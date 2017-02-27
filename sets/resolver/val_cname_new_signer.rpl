@@ -222,7 +222,6 @@ REPLY QR RD RA AD DO NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
-www.sub.example.com.			      3600 IN A		1.2.3.123
 www.example.com.			      3600 IN CNAME	foo.example.com.
 www.example.com.			      3600 IN RRSIG	CNAME 10 3 3600 20251231235959 20160308093040 438 example.com. Bn3zMkt2HEfIt5kLCEmcT6Kj/20qcvob2RdQaaTtZD+xrbDmqjFkiW09 d+RGP4g7ydXxIDczs4d3dTaSjEp2mgzd8GG0yegG1wiLzObp+gXTLaIT LLz53neab4yS0ZOaformDeWSCx3//U8guRRfOSnPHLQGAmqrVG7Dr30D RKU=
 www.example.com.			      3600 IN RRSIG	CNAME 10 3 3600 20251231235959 20160308093040 2843 example.com. FpyDEo49Y1b5Hb112BDCohW+93sDTmBrYc1rRfI8QrfLPXRwpMFVZBhU fDk8aG6qyKVlCa3DhpcHRyPi9SAz1nNPNhstcSqmmj7vNWjBVY5wtt1m 9AqEXFca5liXxVhuijpW9GBMm1LFyNYzuNqQszyje8/NZSumaIbqJiJy f6c=
