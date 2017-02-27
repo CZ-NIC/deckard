@@ -109,11 +109,6 @@ www.example.com. IN A
 SECTION ANSWER
 www.example.com.			      3600 IN CNAME	www.sub.example.com.
 www.example.com.			      3600 IN RRSIG	CNAME 10 3 3600 20251231235959 20160308093040 2843 example.com. msZaF29s99toR+WhRyQsRR63Nclwvic7dOMKH3KW3g/mamiN22g9dJ7L VPdG1FX9+4qosyn37d/+jUXy2UIryBXuXBojpPU3UrPq/gJOYtp1y23e dHgeGpCv7Tmp/TDDWJPNSUL/rWjl64MK1Dkd+O4plU+SMgqN1wuTgBg8 fsk=
-www.sub.example.com.			      3600 IN A		1.2.3.123
-SECTION AUTHORITY
-sub.example.com.			      3600 IN NS	ns.sub.example.com.
-SECTION ADDITIONAL
-ns.sub.example.com.			      3600 IN A		1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
@@ -143,6 +138,17 @@ example.com.				      3600 IN RRSIG	SOA 10 2 3600 20251231235959 20160308093040 
 sub.example.com.			      18000 IN NSEC	www.example.com. NS RRSIG NSEC
 sub.example.com.			      18000 IN RRSIG	NSEC 10 3 18000 20251231235959 20160308093040 2843 example.com. vA2GpUEeAnbvg8t35VEZybJoJvxlu9UGXHNEzIohxKetvLTp761NaCW5 NIhYnVv/b9GDmu5sU9cvQxN+7nEGqLXKnzlGbzIdSedrzBgjOnQNOGO5 BJTollsCG71OfTs2/4kzi04N11yWqSaJyidWLXPH2lElTFQX/3dMcP2m 5uE=
 ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION AUTHORITY
+sub.example.com.			      3600 IN NS	ns.sub.example.com.
+SECTION ADDITIONAL
+ns.sub.example.com.			      3600 IN A		1.2.3.5
+ENTRY_END
+
 
 RANGE_END
 
