@@ -117,6 +117,19 @@ ns.sub.example.com.			      3600 IN A		1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+www.sub.example.com. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+sub.example.com.			      3600 IN NS	ns.sub.example.com.
+SECTION ADDITIONAL
+ns.sub.example.com.			      3600 IN A		1.2.3.5
+ENTRY_END
+
+ENTRY_BEGIN
 MANDATORY
 MATCH opcode qtype qname
 ADJUST copy_id
