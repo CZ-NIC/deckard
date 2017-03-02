@@ -1,0 +1,5 @@
+# ignore all logs and pcaps
+*.log
+*.pcap
+*.rpl
+*.xml

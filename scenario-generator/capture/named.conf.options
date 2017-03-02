@@ -1,0 +1,51 @@
+acl goodclients {
+	192.0.2.0/24;
+	localhost;
+	localnets;
+};
+
+logging {
+  channel bind_log {
+    file "bind.log";
+    severity debug;
+    print-category yes;
+    print-severity yes;
+    print-time yes;
+  };
+  category default { bind_log; };
+  category update { bind_log; };
+  category update-security { bind_log; };
+  category security { bind_log; };
+  category queries { bind_log; };
+  category resolver { bind_log; };
+  category lame-servers { bind_log; };
+};
+
+options {
+	directory "/var/cache/bind";
+
+	// If there is a firewall between you and nameservers you want
+	// to talk to, you may need to fix the firewall to allow multiple
+	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+	// If your ISP provided one or more IP addresses for stable 
+	// nameservers, you probably want to use them as forwarders.  
+	// Uncomment the following block, and insert the addresses replacing 
+	// the all-0's placeholder.
+
+	// forwarders {
+	// 	0.0.0.0;
+	// };
+	recursion yes;
+	allow-query {goodclients;};
+	//========================================================================
+	// If BIND logs error messages about the root key being expired,
+	// you will need to update your keys.  See https://www.isc.org/bind-keys
+	//========================================================================
+	dnssec-enable yes;
+	dnssec-validation yes;
+
+	auth-nxdomain no;    # conform to RFC1035
+	listen-on-v6 { any; };
+};
+

@@ -17,6 +17,8 @@ RUN apt-get install -y pdns-recursor
 RUN apt-get install -y python-augeas python-pep8  pylint  python-pip  python-jinja2 python-yaml python-pytest
 RUN apt-get install -y python3-augeas python3-pep8 pylint3 python3-pip python3-jinja2 python3-yaml python3-pytest
 # version of dnspython in Ubuntu repository is f**ked up
-RUN pip install --upgrade dnspython selenium xvfbwrapper
-RUN pip3 install --upgrade dnspython selenium xvfbwrapper
+RUN pip install --upgrade selenium xvfbwrapper
+RUN pip3 install --upgrade selenium xvfbwrapper
+RUN pip install git+https://github.com/PhillWide/dnspython.git@nsec3_bitmap_from_text_bug
+RUN pip3 install git+https://github.com/PhillWide/dnspython.git@nsec3_bitmap_from_text_bug
 
