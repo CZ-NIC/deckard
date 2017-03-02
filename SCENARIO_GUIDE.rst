@@ -248,6 +248,7 @@ This replays the list of queries described below replay step repetitively to the
 Following example replays 1000 queries (500 times each).
 
 ::
+
 	STEP REPLAY 1000
 	example.com A
 	www.example.com AAAA
