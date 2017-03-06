@@ -297,6 +297,12 @@ class Entry:
         self.message.want_dnssec('DO' in eflags)
         self.message.set_rcode(rcode)
 
+    def set_opcode(self, fields):
+        """ Set message opcode. """
+        if len(fields) > 0:
+            opcode = dns.opcode.from_text(fields.pop(0))
+            self.message.set_opcode(opcode)
+
     def set_edns(self, fields):
         """ Set EDNS version and bufsize. """
         version = 0
@@ -781,6 +787,8 @@ def parse_entry(op, args, file_in, in_entry=False):
             out.set_edns(args)
         elif op == 'REPLY' or op == 'FLAGS':
             out.set_reply(args)
+        elif op == 'OPCODE':
+            out.set_opcode(args)
         elif op == 'MATCH':
             out.set_match(args)
         elif op == 'ADJUST':
