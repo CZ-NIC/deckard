@@ -116,6 +116,19 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+www.example.com. IN RRSIG
+SECTION ANSWER
+; following RRSIG was generated for www.example.com. 3600 IN CNAME www.sub.example.com.
+; -> rdata "fake.sub.example.com." obtained from previous query == an attack!
+www.example.com.			      3600 IN RRSIG	CNAME 10 3 3600 20251231235959 20160308093040 2843 example.com. msZaF29s99toR+WhRyQsRR63Nclwvic7dOMKH3KW3g/mamiN22g9dJ7L VPdG1FX9+4qosyn37d/+jUXy2UIryBXuXBojpPU3UrPq/gJOYtp1y23e dHgeGpCv7Tmp/TDDWJPNSUL/rWjl64MK1Dkd+O4plU+SMgqN1wuTgBg8 fsk=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 fake.sub.example.com. IN A
@@ -141,20 +154,10 @@ sub.example.com.			      18000 IN NSEC	www.example.com. NS RRSIG NSEC
 sub.example.com.			      18000 IN RRSIG	NSEC 10 3 18000 20251231235959 20160308093040 2843 example.com. vA2GpUEeAnbvg8t35VEZybJoJvxlu9UGXHNEzIohxKetvLTp761NaCW5 NIhYnVv/b9GDmu5sU9cvQxN+7nEGqLXKnzlGbzIdSedrzBgjOnQNOGO5 BJTollsCG71OfTs2/4kzi04N11yWqSaJyidWLXPH2lElTFQX/3dMcP2m 5uE=
 ENTRY_END
 
-ENTRY_BEGIN
-MATCH opcode subdomain
-ADJUST copy_id copy_query
-REPLY QR NOERROR
-SECTION AUTHORITY
-sub.example.com.			      3600 IN NS	ns.sub.example.com.
-SECTION ADDITIONAL
-ns.sub.example.com.			      3600 IN A		1.2.3.5
-ENTRY_END
-
-
 RANGE_END
 
 ; ns.sub.example.com.
+; it should not be reached because of invalid RRSIG
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.5
 ENTRY_BEGIN
