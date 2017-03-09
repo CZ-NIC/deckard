@@ -112,19 +112,6 @@ www.example.com.			      3600 IN RRSIG	CNAME 10 3 3600 20251231235959 2016030809
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR AA NOERROR
-SECTION QUESTION
-www.sub.example.com. IN A
-SECTION ANSWER
-SECTION AUTHORITY
-sub.example.com.			      3600 IN NS	ns.sub.example.com.
-SECTION ADDITIONAL
-ns.sub.example.com.			      3600 IN A		1.2.3.5
-ENTRY_END
-
-ENTRY_BEGIN
 MANDATORY
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -143,14 +130,16 @@ ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
+SECTION QUESTION
+sub.example.com. IN A
 SECTION AUTHORITY
 sub.example.com.			      3600 IN NS	ns.sub.example.com.
 SECTION ADDITIONAL
 ns.sub.example.com.			      3600 IN A		1.2.3.5
 ENTRY_END
 
-
 RANGE_END
+
 
 ; ns.sub.example.com.
 RANGE_BEGIN 0 100
