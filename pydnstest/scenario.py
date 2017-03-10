@@ -200,6 +200,8 @@ class Entry:
             if msg.payload != expected.payload:
                 raise Exception('expected EDNS bufsize %d, got %d'
                                 % (expected.payload, msg.payload))
+            if msg.options != expected.options:
+                raise Exception('different EDNS options received')
         elif code == 'nsid':
             nsid_opt = None
             for opt in expected.options:
@@ -325,13 +327,16 @@ class Entry:
                 subnet_addr = net[0]
                 addr = socket.inet_pton(family, net[0])
                 prefix = len(addr) * 8
+                scope = 0
                 if len(net) > 1:
                     prefix = int(net[1])
+                if len(net) > 2:
+                    scope = int(net[2])
                 addr = addr[0: (prefix + 7) / 8]
                 if prefix % 8 != 0:  # Mask the last byte
                     addr = addr[:-1] + chr(ord(addr[-1]) & 0xFF << (8 - prefix % 8))
                 opts.append(dns.edns.GenericOption(8, struct.pack(
-                    "!HBB", 1 if family == socket.AF_INET else 2, prefix, 0) + addr))
+                    "!HBB", 1 if family == socket.AF_INET else 2, prefix, scope) + addr))
         self.message.use_edns(edns=version, payload=bufsize, options=opts)
 
     def begin_raw(self):
