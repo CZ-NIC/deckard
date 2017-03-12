@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import argparse
 import sys
 import os
 import fileinput
@@ -205,7 +206,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         f.close()
 
 
-def play_object(path, binary_name, config_name, j2template, binary_additional_pars):
+def play_object(path, args):
     """ Play scenario from a file object. """
 
     # Parse scenario
@@ -213,7 +214,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
-    setup_env(case, daemon_env, config, config_name, j2template)
+    setup_env(case, daemon_env, config, args.configs, args.templates)
 
     server = testserver.TestServer(case, config, DEFAULT_IFACE)
     server.start()
@@ -222,7 +223,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     # Start binary
     daemon_proc = None
     daemon_log = open('%s/server.log' % TMPDIR, 'w')
-    daemon_args = [binary_name] + binary_additional_pars
+    daemon_args = [args.binary] + args.additional
     try:
         daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
                                        cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
@@ -238,7 +239,7 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
             server.stop()
             print(open('%s/server.log' % TMPDIR).read())
             raise Exception('process died "%s", logs in "%s"' %
-                            (os.path.basename(binary_name), TMPDIR))
+                            (os.path.basename(args.binary), TMPDIR))
         try:
             sock.connect((testserver.get_local_addr_str(case.sockfamily, CHILD_IFACE), 53))
         except:
@@ -288,45 +289,32 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
 
 def test_platform(*args):
     if sys.platform == 'windows':
-        raise Exception('not supported at all on Windows')
+        raise NotImplementedError('not supported at all on Windows')
 
 if __name__ == '__main__':
-
-    if len(sys.argv) < 5:
-        print("Usage:")
-        print("test_integration.py <scenario> <binary> <template> <config name> [<additional>]")
-        print("\t<scenario> - path to scenario")
-        print("\t<binary> - executable to test")
-        print("\t<template> - colon-separated list of jinja2 template files")
-        print("\t<config name> - colon-separated list of files to be generated")
-        print("\t<additional> - additional parameters for <binary>")
-        sys.exit(0)
-
     test_platform()
-    path_to_scenario = ""
-    binary_name = ""
-    template_name_list = ""
-    config_name_list = ""
-    binary_additional_pars = []
 
-    if len(sys.argv) > 4:
-        path_to_scenario = sys.argv[1]
-        binary_name = sys.argv[2]
-        template_name_list = sys.argv[3].split(':')
-        config_name_list = sys.argv[4].split(':')
-        if len(template_name_list) != len(config_name_list):
-            print("ERROR: Number of j2 template files not equal to number of files to be generated")
-            print("i.e. len(<template>) != len(<config name>), see usage")
-            sys.exit(0)
+    class ColonSplitter(argparse.Action):  # pylint: disable=too-few-public-methods
+        """Split argument string into list holding items separated by colon."""
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, values.split(':'))
 
-    if len(sys.argv) > 5:
-        binary_additional_pars = sys.argv[5:]
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('scenario', help='path to test scenario')
+    argparser.add_argument('binary', help='executable to test')
+    argparser.add_argument('templates', help='colon-separated list of jinja2 template files', action=ColonSplitter)
+    argparser.add_argument('configs', help='colon-separated list of files to be generated from jinja2 templates', action=ColonSplitter)
+    argparser.add_argument('additional', help='additional parameters for the binary', nargs='*')
+    args = argparser.parse_args()
+
+    if len(args.templates) != len(args.configs):
+        print("ERROR: Number of jinja2 template files is not equal to number of config files to be generated")
+        print("i.e. len(templates) != len(configs), see usage")
+        sys.exit(1)
 
     # Scan for scenarios
     test = test.Test()
-    for arg in [path_to_scenario]:
-        objects = find_objects(arg)
-        for path in objects:
-            test.add(path, play_object, path, binary_name, config_name_list,
-                     template_name_list, binary_additional_pars)
+    objects = find_objects(args.scenario)
+    for path in objects:
+        test.add(path, play_object, args)
     sys.exit(test.run())
