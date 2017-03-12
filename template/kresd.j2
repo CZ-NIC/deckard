@@ -2,7 +2,11 @@ net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
 cache.size = 2*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
-option('NO_MINIMIZE', {{NO_MINIMIZE}})
+{% if QMIN == "false" %}
+option('NO_MINIMIZE', true)
+{% else %}
+option('NO_MINIMIZE', false)
+{% endif %}
 -- Run tests in permissive mode
 option('PERMISSIVE',  true)
 -- Always retry failing resolver

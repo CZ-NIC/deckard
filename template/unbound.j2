@@ -364,7 +364,7 @@ server:
 	# Sent minimum amount of information to upstream servers to enhance
 	# privacy. Only sent minimum required labels of the QNAME and set QTYPE
 	# to NS when possible.
-	{% if NO_MINIMIZE == "true"  %}
+	{% if QMIN == "false" %}
 	qname-minimisation: no
 	{% else %}
 	qname-minimisation: yes

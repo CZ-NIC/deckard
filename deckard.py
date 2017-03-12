@@ -97,7 +97,7 @@ def write_timestamp_file(path, tst):
     time_file.close()
 
 
-def setup_env(scenario, child_env, config, config_name_list, j2template_list):
+def setup_env(scenario, child_env, config, args):
     """ Set up test environment and config """
     # Clear test directory
     del_files(TMPDIR, False)
@@ -113,7 +113,7 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     # do not pass SOCKET_WRAPPER_PCAP_FILE into child to avoid duplicate packets in pcap
     if "SOCKET_WRAPPER_PCAP_FILE" in child_env:
         del child_env["SOCKET_WRAPPER_PCAP_FILE"]
-    no_minimize = os.environ.get("NO_MINIMIZE", "true")
+    qmin = args.qmin
     trust_anchor_list = []
     stub_addr = ""
     features = {}
@@ -122,8 +122,8 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
     for k, v in config:
         # Enable selectively for some tests
-        if k == 'query-minimization' and str2bool(v):
-            no_minimize = "false"
+        if k == 'query-minimization':
+            qmin = str2bool(v)
         elif k == 'trust-anchor':
             trust_anchor_list.append(v.strip('"\''))
         elif k == 'val-override-timestamp':
@@ -192,13 +192,13 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     j2template_ctx = {
         "ROOT_ADDR": selfaddr,
         "SELF_ADDR": childaddr,
-        "NO_MINIMIZE": no_minimize,
+        "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
         "WORKING_DIR": TMPDIR,
         "INSTALL_DIR": INSTALLDIR,
         "FEATURES": features
     }
-    for template_name, config_name in zip(j2template_list, config_name_list):
+    for template_name, config_name in zip(args.templates, args.configs):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(j2template_ctx)
         f = open(os.path.join(TMPDIR, config_name), 'w')
@@ -214,7 +214,7 @@ def play_object(path, args):
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
-    setup_env(case, daemon_env, config, args.configs, args.templates)
+    setup_env(case, daemon_env, config, args)
 
     server = testserver.TestServer(case, config, DEFAULT_IFACE)
     server.start()
@@ -299,7 +299,21 @@ if __name__ == '__main__':
         def __call__(self, parser, namespace, values, option_string=None):
             setattr(namespace, self.dest, values.split(':'))
 
+    class EnvDefault(argparse.Action):  # pylint: disable=too-few-public-methods
+        """Get default value for parameter from environment variable."""
+        def __init__(self, envvar, required=True, default=None, **kwargs):
+            if envvar and envvar in os.environ:
+                default = os.environ[envvar]
+            if required and default is not None:
+                required = False
+            super(EnvDefault, self).__init__(default=default, required=required, **kwargs)
+
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, values)
+
     argparser = argparse.ArgumentParser()
+    argparser.add_argument('--qmin', help='query minimization (default: enabled)', default=True,
+                           action=EnvDefault, envvar='QMIN', type=str2bool)
     argparser.add_argument('scenario', help='path to test scenario')
     argparser.add_argument('binary', help='executable to test')
     argparser.add_argument('templates', help='colon-separated list of jinja2 template files', action=ColonSplitter)
