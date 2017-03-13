@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import logging
 import argparse
 import sys
 import os
@@ -292,8 +293,7 @@ def test_platform(*args):
         raise NotImplementedError('not supported at all on Windows')
 
 if __name__ == '__main__':
-    test_platform()
-
+    # auxilitary classes for argparse
     class ColonSplitter(argparse.Action):  # pylint: disable=too-few-public-methods
         """Split argument string into list holding items separated by colon."""
         def __call__(self, parser, namespace, values, option_string=None):
@@ -311,19 +311,27 @@ if __name__ == '__main__':
         def __call__(self, parser, namespace, values, option_string=None):
             setattr(namespace, self.dest, values)
 
+    test_platform()
+    logging.basicConfig(level=logging.ERROR)
+    log = logging.getLogger('deckard')
+
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--qmin', help='query minimization (default: enabled)', default=True,
                            action=EnvDefault, envvar='QMIN', type=str2bool)
     argparser.add_argument('scenario', help='path to test scenario')
     argparser.add_argument('binary', help='executable to test')
-    argparser.add_argument('templates', help='colon-separated list of jinja2 template files', action=ColonSplitter)
-    argparser.add_argument('configs', help='colon-separated list of files to be generated from jinja2 templates', action=ColonSplitter)
+    argparser.add_argument('templates', help='colon-separated list of jinja2 template files',
+                           action=ColonSplitter)
+    argparser.add_argument('configs',
+                           help='colon-separated list of files to be generated from templates',
+                           action=ColonSplitter)
     argparser.add_argument('additional', help='additional parameters for the binary', nargs='*')
     args = argparser.parse_args()
 
     if len(args.templates) != len(args.configs):
-        print("ERROR: Number of jinja2 template files is not equal to number of config files to be generated")
-        print("i.e. len(templates) != len(configs), see usage")
+        log.critical('Number of jinja2 template files is not equal '
+                     'to number of config files to be generated, '
+                     'i.e. len(templates) != len(configs)')
         sys.exit(1)
 
     # Scan for scenarios

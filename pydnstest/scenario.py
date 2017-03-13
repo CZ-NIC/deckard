@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import logging
 import dns.message
 import dns.rrset
 import dns.rcode
@@ -16,7 +17,6 @@ import random
 import string
 import time
 from datetime import datetime
-from pydnstest.dprint import dprint
 from pydnstest.testserver import recvfrom_msg, sendto_msg
 
 
@@ -383,6 +383,7 @@ class Range:
     """
     Range represents a set of scripted queries valid for given step range.
     """
+    log = logging.getLogger('pydnstest.scenario.Range')
 
     def __init__(self, a, b):
         """ Initialize reply range. """
@@ -395,8 +396,8 @@ class Range:
         self.sent = 0
 
     def __del__(self):
-        dtag = '[ RANGE %d-%d ] %s' % (self.a, self.b, self.addresses)
-        dprint(dtag, 'received: %d sent: %d' % (self.received, self.sent))
+        self.log.info('[ RANGE %d-%d ] %s received: %d sent: %d',
+                      self.a, self.b, self.addresses, self.received, self.sent)
 
     def add(self, entry):
         """ Append a scripted response to the range"""
@@ -434,18 +435,27 @@ class Range:
         return None
 
 
+class StepLogger(logging.LoggerAdapter):
+    """
+    Prepent Step identification before each log message.
+    """
+    def process(self, msg, kwargs):
+        return '[STEP %s %s] %s' % (self.extra['id'], self.extra['type'], msg), kwargs
+
+
 class Step:
     """
     Step represents one scripted action in a given moment,
     each step has an order identifier, type and optionally data entry.
     """
-
     require_data = ['QUERY', 'CHECK_ANSWER', 'REPLY']
 
     def __init__(self, id, type, extra_args):
         """ Initialize single scenario step. """
         self.id = int(id)
         self.type = type
+        self.log = StepLogger(logging.getLogger('pydnstest.scenario.Step'),
+                              {'id': id, 'type': type})
         self.args = extra_args
         self.data = []
         self.queries = []
@@ -475,9 +485,9 @@ class Step:
 
     def play(self, ctx):
         """ Play one step from a scenario. """
-        dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         if self.type == 'QUERY':
-            dprint(dtag, self.data[0].message.to_text())
+            self.log.info('')
+            self.log.debug(self.data[0].message.to_text())
             # Parse QUERY-specific parameters
             choice, tcp, source = None, False, None
             for v in self.args:
@@ -491,17 +501,16 @@ class Step:
                     choice = v
             return self.__query(ctx, tcp=tcp, choice=choice, source=source)
         elif self.type == 'CHECK_OUT_QUERY':
-            dprint(dtag, '')
+            self.log.info('')
             pass  # Ignore
         elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
-            dprint(dtag, '')
+            self.log.info('')
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES':
-            dprint(dtag, '')
+            self.log.info('')
             return self.__time_passes(ctx)
         elif self.type == 'REPLY' or self.type == 'MOCK':
-            dprint(dtag, '')
-            pass
+            self.log.info('')
         elif self.type == 'LOG':
             if not ctx.log:
                 raise Exception('scenario has no log interface')
@@ -519,22 +528,21 @@ class Step:
             raise Exception("response definition required")
         expected = self.data[0]
         if expected.is_raw_data_entry is True:
-            dprint("", ctx.last_raw_answer.to_text())
+            self.log.debug("raw answer: %s", ctx.last_raw_answer.to_text())
             expected.cmp_raw(ctx.last_raw_answer)
         else:
             if ctx.last_answer is None:
                 raise Exception("no answer from preceding query")
-            dprint("", ctx.last_answer.to_text())
+            self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
     def __replay(self, ctx, chunksize=8):
-        dtag = '[ STEP %03d ] %s' % (self.id, self.type)
         nqueries = len(self.queries)
         if len(self.args) > 0 and self.args[0].isdigit():
             nqueries = int(self.args.pop(0))
         destination = ctx.client[ctx.client.keys()[0]]
-        dprint(dtag, 'replaying %d queries to %s@%d (%s)' %
-               (nqueries, destination[0], destination[1], ' '.join(self.args)))
+        self.log.info('replaying %d queries to %s@%d (%s)',
+                      nqueries, destination[0], destination[1], ' '.join(self.args))
         if 'INTENSIFY' in os.environ:
             nqueries *= int(os.environ['INTENSIFY'])
         tstart = datetime.now()
@@ -542,7 +550,7 @@ class Step:
         # Keep/print the statistics
         rtt = (datetime.now() - tstart).total_seconds() * 1000
         pps = 1000 * nrcvd / rtt
-        dprint(dtag, 'sent: %d, received: %d (%d ms, %d p/s)' % (nsent, nrcvd, rtt, pps))
+        self.log.debug('sent: %d, received: %d (%d ms, %d p/s)', nsent, nrcvd, rtt, pps)
         tag = None
         for arg in self.args:
             if arg.upper().startswith('PRINT'):
@@ -642,6 +650,7 @@ class Step:
 
 
 class Scenario:
+    log = logging.getLogger('pydnstest.scenatio.Scenario')
 
     def __init__(self, info, filename=''):
         """ Initialize scenario with description. """
@@ -709,9 +718,8 @@ class Scenario:
                 step.play(self)
             except Exception as e:
                 if (step.repeat_if_fail > 0):
-                    dprint("[play]",
-                           "step %d: exception catched - '%s', retrying step %d (%d left)" %
-                           (step.id, e, step.next_if_fail, step.repeat_if_fail))
+                    self.log.info("[play] step %d: exception - '%s', retrying step %d (%d left)",
+                                  step.id, e, step.next_if_fail, step.repeat_if_fail)
                     step.repeat_if_fail -= 1
                     if (step.pause_if_fail > 0):
                         time.sleep(step.pause_if_fail)

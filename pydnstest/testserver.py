@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import logging
 import threading
 import select
 import socket
@@ -11,7 +12,6 @@ import dns.rdatatype
 import itertools
 import struct
 import binascii
-from pydnstest.dprint import dprint
 
 
 def recvfrom_msg(stream, raw=False):
@@ -178,11 +178,12 @@ class TestServer:
             True if client socket should be closed by caller
             False if client socket should be kept open
         """
+        log = logging.getLogger('pydnstest.testserver.handle_query')
         client_address = client.getsockname()[0]
         query, addr = recvfrom_msg(client)
         if query is None:
             return False
-        dprint("[ handle_query ]", "%s incoming query from %s\n%s" % (client_address, addr, query))
+        log.debug('server %s received query from %s: %s', addr, client_address, query)
         response = dns.message.make_response(query)
         is_raw_data = False
         if self.scenario is not None:
@@ -190,15 +191,16 @@ class TestServer:
         if response:
             if is_raw_data is False:
                 data_to_wire = response.to_wire(max_size=65535)
-                dprint("[ handle_query ]", "response\n%s" % response)
+                log.debug('response: %s', response)
             else:
                 data_to_wire = response
-                dprint("[ handle_query ]", "raw response found")
+                log.debug('raw response not printed')
         else:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
-            dprint("[ handle_query ]", "response failed, SERVFAIL")
+            log.error('no response found for question %s, answering with SERVFAIL',
+                      '; '.join([str(rr) for rr in query.question]))
 
         sendto_msg(client, data_to_wire, addr)
         return True
