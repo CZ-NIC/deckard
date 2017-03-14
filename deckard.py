@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import logging
+import logging.config
 import argparse
 import sys
 import os
@@ -316,7 +317,15 @@ if __name__ == '__main__':
             setattr(namespace, self.dest, values)
 
     test_platform()
-    logging.basicConfig(level=logging.ERROR)
+    logging.basicConfig(level=logging.ERROR, format='%(message)s')
+    logging.config.dictConfig(
+        {
+            'version': 1,
+            'incremental': True,
+            'loggers': {
+                'pydnstest.test.Test': {'level': 'INFO'}
+            }
+        })
     log = logging.getLogger('deckard')
 
     argparser = argparse.ArgumentParser()
