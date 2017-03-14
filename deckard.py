@@ -209,6 +209,7 @@ def setup_env(scenario, child_env, config, args):
 
 def play_object(path, args):
     """ Play scenario from a file object. """
+    daemon_logger = logging.getLogger('deckard.daemon_log')
 
     # Parse scenario
     case, config = scenario.parse_file(fileinput.input(path))
@@ -223,14 +224,16 @@ def play_object(path, args):
     ignore_exit = bool(os.environ.get('IGNORE_EXIT_CODE', 0))
     # Start binary
     daemon_proc = None
-    daemon_log = open('%s/server.log' % TMPDIR, 'w')
+    daemon_log_path = open('%s/server.log' % TMPDIR, 'w')
     daemon_args = [args.binary] + args.additional
     try:
-        daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
+        daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log_path, stderr=daemon_log_path,
                                        cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
         server.stop()
-        raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
+        msg = "Can't start '%s': %s" % (daemon_args, str(e))
+        daemon_logger.critical(msg)
+        raise Exception(msg)
 
     # Wait until the server accepts TCP clients
     sock = socket.socket(case.sockfamily, socket.SOCK_STREAM)
@@ -238,9 +241,10 @@ def play_object(path, args):
         time.sleep(0.1)
         if daemon_proc.poll():
             server.stop()
-            print(open('%s/server.log' % TMPDIR).read())
-            raise Exception('process died "%s", logs in "%s"' %
-                            (os.path.basename(args.binary), TMPDIR))
+            msg = 'process died "%s", logs in "%s"' % (os.path.basename(args.binary), TMPDIR)
+            daemon_logger.critical(msg)
+            daemon_logger.error(open('%s/server.log' % TMPDIR).read())
+            raise Exception(msg)
         try:
             sock.connect((testserver.get_local_addr_str(case.sockfamily, CHILD_IFACE), 53))
         except:
