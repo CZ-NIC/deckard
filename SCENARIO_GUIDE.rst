@@ -253,7 +253,7 @@ Following example replays 1000 queries (500 times each).
 	example.com A
 	www.example.com AAAA
 
-.. tip:: Define ``VERBOSE`` environment variable to see benchmarking results (queries sent, received and response rate).
+.. tip:: Define ``VERBOSE=20`` environment variable to see benchmarking results (queries sent, received and response rate).
 
 `SCRIPT EXAMPLE`_
 

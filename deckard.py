@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
-
 import logging
 import logging.config
 import argparse
@@ -27,7 +25,7 @@ import calendar
 
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """
-    return v.lower() in ('yes', 'true', 'on')
+    return v.lower() in ('yes', 'true', 'on', '1')
 
 
 def del_files(path_to, delpath):
@@ -40,7 +38,6 @@ def del_files(path_to, delpath):
         except:
             pass
 
-VERBOSE = 0
 DEFAULT_IFACE = 0
 CHILD_IFACE = 0
 TMPDIR = ""
@@ -72,12 +69,6 @@ if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
     TMPDIR = tempfile.mkdtemp(suffix='', prefix='tmp')
     OWN_TMPDIR = True
     os.environ["SOCKET_WRAPPER_DIR"] = TMPDIR
-
-if "VERBOSE" in os.environ:
-    try:
-        VERBOSE = int(os.environ["VERBOSE"])
-    except:
-        pass
 
 
 def find_objects(path):
@@ -275,17 +266,12 @@ def play_object(path, args):
     # Play test scenario
     try:
         server.play(CHILD_IFACE)
-    except Exception as exc:
-        ex = exc
-        raise
-    else:
-        ex = None
     finally:
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        if VERBOSE or ex or (daemon_proc.returncode and not ignore_exit):
-            print(open('%s/server.log' % TMPDIR).read())
+        daemon_logger = logging.getLogger('deckard.daemon_log')
+        daemon_logger.debug(open('%s/server.log' % TMPDIR).read())
         if daemon_proc.returncode != 0 and not ignore_exit:
             raise ValueError('process terminated with return code %s'
                              % daemon_proc.returncode)
@@ -316,21 +302,25 @@ if __name__ == '__main__':
         def __call__(self, parser, namespace, values, option_string=None):
             setattr(namespace, self.dest, values)
 
+    def loglevel2number(level):
+        """Convert direct log level number or symbolic name to a number."""
+        try:
+            return int(level)
+        except ValueError:
+            pass  # not a number, try if it is a named constant from logging module
+        try:
+            return getattr(logging, level.upper())
+        except AttributeError:
+            raise ValueError('unknown log level %s' % level)
+
     test_platform()
-    logging.basicConfig(level=logging.ERROR, format='%(message)s')
-    logging.config.dictConfig(
-        {
-            'version': 1,
-            'incremental': True,
-            'loggers': {
-                'pydnstest.test.Test': {'level': 'INFO'}
-            }
-        })
-    log = logging.getLogger('deckard')
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--qmin', help='query minimization (default: enabled)', default=True,
                            action=EnvDefault, envvar='QMIN', type=str2bool)
+    argparser.add_argument('--loglevel', help='verbosity (default: errors + test results)',
+                           action=EnvDefault, envvar='VERBOSE',
+                           type=loglevel2number, required=False)
     argparser.add_argument('scenario', help='path to test scenario')
     argparser.add_argument('binary', help='executable to test')
     argparser.add_argument('templates', help='colon-separated list of jinja2 template files',
@@ -340,6 +330,24 @@ if __name__ == '__main__':
                            action=ColonSplitter)
     argparser.add_argument('additional', help='additional parameters for the binary', nargs='*')
     args = argparser.parse_args()
+
+    if not args.loglevel:
+        # default verbosity: errors + test results
+        args.loglevel = logging.ERROR
+        logging.config.dictConfig(
+            {
+                'version': 1,
+                'incremental': True,
+                'loggers': {
+                    'pydnstest.test.Test': {'level': 'INFO'}
+                }
+            })
+
+    if args.loglevel <= logging.DEBUG:  # include message origin
+        logging.basicConfig(level=args.loglevel)
+    else:
+        logging.basicConfig(level=args.loglevel, format='%(message)s')
+    log = logging.getLogger('deckard')
 
     if len(args.templates) != len(args.configs):
         log.critical('Number of jinja2 template files is not equal '
