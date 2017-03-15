@@ -234,8 +234,7 @@ class Entry:
                 raise Exception("line %d, \"%s\": %s" % (self.lineno, code, errstr))
 
     def cmp_raw(self, raw_value):
-        if self.is_raw_data_entry is False:
-            raise Exception("entry.cmp_raw() misuse")
+        assert self.is_raw_data_entry
         expected = None
         if self.raw_data is not None:
             expected = binascii.hexlify(self.raw_data)
