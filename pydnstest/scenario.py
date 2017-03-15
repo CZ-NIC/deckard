@@ -242,8 +242,7 @@ class Entry:
         if raw_value is not None:
             got = binascii.hexlify(raw_value)
         if expected != got:
-            print("expected '", expected, "', got '", got, "'")
-            raise Exception("comparsion failed")
+            raise Exception("raw message comparsion failed: expected %s got %s" % (expected, got))
 
     def set_match(self, fields):
         """
@@ -555,8 +554,8 @@ class Step:
             if arg.upper().startswith('PRINT'):
                 _, tag = tuple(arg.split('=')) if '=' in arg else (None, 'replay')
         if tag:
-            print('  [ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d' %
-                  (tag.ljust(11), pps, rtt, nsent, nrcvd))
+            self.log.info('[ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d',
+                          tag.ljust(11), pps, rtt, nsent, nrcvd)
 
     def __query(self, ctx, tcp=False, choice=None, source=None):
         """
