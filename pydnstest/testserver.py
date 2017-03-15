@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from __future__ import print_function
 
 import logging
 import threading
@@ -278,6 +277,7 @@ class TestServer:
 if __name__ == '__main__':
     # Self-test code
     # Usage: $PYTHON -m pydnstest.testserver
+    logging.basicConfig(level=logging.DEBUG)
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -288,11 +288,11 @@ if __name__ == '__main__':
     # Mirror server
     server = TestServer(None, None, DEFAULT_IFACE)
     server.start()
-    print("[==========] Mirror server running at", server.address())
+    logging.info("[==========] Mirror server running at %s", server.address())
     try:
         while True:
             time.sleep(0.5)
     except KeyboardInterrupt:
-        print("[==========] Shutdown.")
+        logging.info("[==========] Shutdown.")
         pass
     server.stop()
