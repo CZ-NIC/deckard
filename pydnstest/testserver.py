@@ -178,15 +178,15 @@ class TestServer:
             False if client socket should be kept open
         """
         log = logging.getLogger('pydnstest.testserver.handle_query')
-        client_address = client.getsockname()[0]
-        query, addr = recvfrom_msg(client)
+        server_addr = client.getsockname()[0]
+        query, client_addr = recvfrom_msg(client)
         if query is None:
             return False
-        log.debug('server %s received query from %s: %s', addr, client_address, query)
+        log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
         response = dns.message.make_response(query)
         is_raw_data = False
         if self.scenario is not None:
-            response, is_raw_data = self.scenario.reply(query, client_address)
+            response, is_raw_data = self.scenario.reply(query, server_addr)
         if response:
             if is_raw_data is False:
                 data_to_wire = response.to_wire(max_size=65535)
@@ -198,10 +198,12 @@ class TestServer:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
-            log.error('no response found for question %s, answering with SERVFAIL',
-                      '; '.join([str(rr) for rr in query.question]))
+            self.scenario.current_step.log.error(
+                'server %s has no response for question %s, answering with SERVFAIL',
+                server_addr,
+                '; '.join([str(rr) for rr in query.question]))
 
-        sendto_msg(client, data_to_wire, addr)
+        sendto_msg(client, data_to_wire, client_addr)
         return True
 
     def query_io(self):
