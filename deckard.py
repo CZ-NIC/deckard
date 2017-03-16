@@ -92,6 +92,7 @@ def write_timestamp_file(path, tst):
 
 def setup_env(scenario, child_env, config, args):
     """ Set up test environment and config """
+    log = logging.getLogger('deckard.setup_env')
     # Clear test directory
     del_files(TMPDIR, False)
     # Set up libfaketime
@@ -191,6 +192,8 @@ def setup_env(scenario, child_env, config, args):
         "INSTALL_DIR": INSTALLDIR,
         "FEATURES": features
     }
+    log.debug('values for templates: %s', j2template_ctx)
+
     for template_name, config_name in zip(args.templates, args.configs):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(j2template_ctx)
