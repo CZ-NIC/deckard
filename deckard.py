@@ -204,7 +204,7 @@ def setup_env(scenario, child_env, config, args):
 
 def play_object(path, args):
     """ Play scenario from a file object. """
-    daemon_logger = logging.getLogger('deckard.daemon_log')
+    daemon_logger_log = logging.getLogger('deckard.daemon.log')
 
     # Parse scenario
     case, config = scenario.parse_file(fileinput.input(path))
@@ -221,13 +221,15 @@ def play_object(path, args):
     daemon_proc = None
     daemon_log_path = open('%s/server.log' % TMPDIR, 'w')
     daemon_args = [args.binary] + args.additional
+    logging.getLogger('deckard.daemon.env').debug('%s', daemon_env)
+    logging.getLogger('deckard.daemon.argv').debug('%s', daemon_args)
     try:
         daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log_path, stderr=daemon_log_path,
                                        cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
         server.stop()
         msg = "Can't start '%s': %s" % (daemon_args, str(e))
-        daemon_logger.critical(msg)
+        daemon_logger_log.critical(msg)
         raise Exception(msg)
 
     # Wait until the server accepts TCP clients
@@ -237,8 +239,8 @@ def play_object(path, args):
         if daemon_proc.poll():
             server.stop()
             msg = 'process died "%s", logs in "%s"' % (os.path.basename(args.binary), TMPDIR)
-            daemon_logger.critical(msg)
-            daemon_logger.error(open('%s/server.log' % TMPDIR).read())
+            daemon_logger_log.critical(msg)
+            daemon_logger_log.error(open('%s/server.log' % TMPDIR).read())
             raise Exception(msg)
         try:
             sock.connect((testserver.get_local_addr_str(case.sockfamily, CHILD_IFACE), 53))
@@ -273,8 +275,8 @@ def play_object(path, args):
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        daemon_logger = logging.getLogger('deckard.daemon_log')
-        daemon_logger.debug(open('%s/server.log' % TMPDIR).read())
+        daemon_logger_log = logging.getLogger('deckard.daemon_log')
+        daemon_logger_log.debug(open('%s/server.log' % TMPDIR).read())
         if daemon_proc.returncode != 0 and not ignore_exit:
             raise ValueError('process terminated with return code %s'
                              % daemon_proc.returncode)
