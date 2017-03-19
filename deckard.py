@@ -108,6 +108,7 @@ def setup_env(scenario, child_env, config, args):
     if "SOCKET_WRAPPER_PCAP_FILE" in child_env:
         del child_env["SOCKET_WRAPPER_PCAP_FILE"]
     qmin = args.qmin
+    do_not_query_localhost = True
     trust_anchor_list = []
     stub_addr = ""
     features = {}
@@ -116,6 +117,8 @@ def setup_env(scenario, child_env, config, args):
     selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
     for k, v in config:
         # Enable selectively for some tests
+        if k == 'do-not-query-localhost':
+            do_not_query_localhost = str2bool(v)
         if k == 'query-minimization':
             qmin = str2bool(v)
         elif k == 'trust-anchor':
@@ -184,6 +187,7 @@ def setup_env(scenario, child_env, config, args):
         searchpath=os.path.dirname(os.path.abspath(__file__)))
     j2template_env = jinja2.Environment(loader=j2template_loader)
     j2template_ctx = {
+        "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
         "ROOT_ADDR": selfaddr,
         "SELF_ADDR": childaddr,
         "QMIN": str(qmin).lower(),

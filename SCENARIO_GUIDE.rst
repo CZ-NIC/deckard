@@ -16,6 +16,10 @@ Configuration part is a list of "key : value" pairs, one pair per line.
 Configuration have no explicit start, it's assumed it starts immediately at
 scenario file begin.
 
+- **do-not-query-localhost:** : on
+
+  value "on" means that queries cannot be sent to 127.0.0.1/8 or ::1/128 addresses.
+
 - **query-minimization** : on
 
   value "on" means query minimization algorithm will be used; any other value
