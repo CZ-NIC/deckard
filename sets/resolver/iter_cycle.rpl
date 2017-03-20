@@ -9,6 +9,12 @@ SCENARIO_BEGIN Test resolution with dependency cycle
 
 ; Invalid server
 RANGE_BEGIN 0 100 1.2.3.1
+
+ENTRY_BEGIN
+ADJUST copy_id copy_query
+REPLY QR SERVFAIL
+ENTRY_END
+
 RANGE_END
 
 ; K.ROOT-SERVERS.NET.
