@@ -198,6 +198,7 @@ class TestServer:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
+            self.undefined_answers += 1
             self.scenario.current_step.log.error(
                 'server %s has no response for question %s, answering with SERVFAIL',
                 server_addr,
@@ -208,6 +209,7 @@ class TestServer:
 
     def query_io(self):
         """ Main server process """
+        self.undefined_answers = 0
         if self.active is False:
             raise Exception("[query_io] Test server not active")
         while self.active is True:

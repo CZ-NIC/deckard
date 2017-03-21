@@ -286,6 +286,8 @@ def play_object(path, args):
                              % daemon_proc.returncode)
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR, OWN_TMPDIR)
+    if server.undefined_answers > 0:
+        raise ValueError('the scenario does not define all necessary answers (see error log)')
 
 
 def test_platform(*args):
