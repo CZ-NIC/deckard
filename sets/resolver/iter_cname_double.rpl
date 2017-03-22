@@ -10,7 +10,7 @@ SCENARIO_BEGIN Test double cname in reply.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -64,6 +64,7 @@ SECTION ADDITIONAL
 a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
+ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR NOERROR
