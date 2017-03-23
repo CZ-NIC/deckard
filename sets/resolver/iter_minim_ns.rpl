@@ -9,7 +9,7 @@ SCENARIO_BEGIN Test query minimization with empty-nonterminal in path.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -69,7 +69,7 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.1.1.1
 
-EANGE_END
+RANGE_END
 
 ; a.gtld-servers.net.
 RANGE_BEGIN 0 100
