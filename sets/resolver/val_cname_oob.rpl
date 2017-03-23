@@ -4,6 +4,7 @@ server:
 	trust-anchor: "example.com.		IN DS 438 10 2 33F8133EB48EDB093839E985600EB7B7009EB5AC312D11CCA9007F6B 71D94D7B"
 	val-override-date: "20160308103040"
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN OOB CNAME to wrong name.

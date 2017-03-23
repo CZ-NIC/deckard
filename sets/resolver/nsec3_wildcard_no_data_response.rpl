@@ -3,6 +3,7 @@ server:
         stub-addr: 193.0.14.129
 	trust-anchor: ". 3600 IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5"
 	val-override-timestamp: "1450794800"
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN Test validation of NSEC wildcard answer response.
