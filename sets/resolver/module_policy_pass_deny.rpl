@@ -2,6 +2,7 @@
 	stub-addr: 1.2.3.4
         feature-list: policy=policy:add(policy.pattern(policy.PASS, todname('dummy.example.cz')))
         feature-list: policy=policy:add(policy.suffix(policy.DENY, {todname('example.cz')}))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN PASS, DENY policy test; uses policy.pattern and policy.suffix
