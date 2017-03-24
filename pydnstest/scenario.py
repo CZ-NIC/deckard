@@ -177,6 +177,8 @@ class Entry:
                 return True
             qname = dns.name.from_text(msg.question[0].name.to_text().lower())
             return compare_val(expected.question[0].name, qname)
+        elif code == 'qcase':
+            return compare_val(msg.question[0].name.labels, expected.question[0].name.labels)
         elif code == 'subdomain':
             if len(expected.question) == 0:
                 return True

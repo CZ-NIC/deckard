@@ -61,6 +61,10 @@ modules.load( 'view')
 {% endfor %}
 {% endif %}
 
+{% if FEATURES.workarounds is defined %}
+modules = { 'workarounds < iterate' }
+{% endif %}
+
 verbose(true)
 
 -- Self-checks on globals
