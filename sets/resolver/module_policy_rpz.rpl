@@ -1,6 +1,7 @@
 ; config options
 	stub-addr: 1.2.3.4
         feature-list: policy=policy:add(policy.rpz(policy.DENY, '{{INSTALL_DIR}}/sets/resolver/zone.rpz'))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN policy.rpz test

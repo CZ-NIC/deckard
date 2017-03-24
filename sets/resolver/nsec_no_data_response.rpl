@@ -2,13 +2,14 @@
 server:
 	trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
 	val-override-timestamp: "1442839270"
+	do-not-query-localhost: off
 
 stub-zone:
 	name: "."
 	stub-addr: 127.0.0.1 	# ns.
 CONFIG_END
 
-SCENARIO_BEGIN Test validation of NSEC3 name error responses.
+SCENARIO_BEGIN Test validation of NSEC name error responses.
 
 ; ns.
 RANGE_BEGIN 0 100
@@ -40,11 +41,11 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
+MATCH opcode subdomain
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
-nsec.example. IN CNAME
+example. IN NS
 SECTION AUTHORITY
 example.                3600    IN      NS      ns.example.
 example.                3600    IN      DS      11225 13 4 B4BDAB0B3751300BFB9D0D240649279B4BA0E67A308E1B0BFE2931D9 47F7FD71A2BD807D84CDE24286D955A35752484F
@@ -167,7 +168,7 @@ ENTRY_END
 ; recursion happens here.
 STEP 2 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH opcode qtype qname
+MATCH all
 ADJUST copy_id
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
@@ -188,9 +189,9 @@ ENTRY_END
 
 STEP 4 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH opcode qtype qname
+MATCH all
 ADJUST copy_id
-REPLY QR RD RA AD SERVFAIL
+REPLY QR RD RA SERVFAIL
 SECTION QUESTION
 nsec.example. IN TYPE1000
 SECTION AUTHORITY

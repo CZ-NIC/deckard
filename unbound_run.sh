@@ -21,8 +21,8 @@ export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
 MAKEDIR="$(dirname "$(readlink -f "$0")")"
 echo '=== Testing WITHOUT query minimization ==='
-export NO_MINIMIZE="true"
+export QMIN="false"
 make -C "${MAKEDIR}"
 echo '=== Testing WITH query minimization ==='
-export NO_MINIMIZE="false"
+export QMIN="true"
 make -C "${MAKEDIR}"

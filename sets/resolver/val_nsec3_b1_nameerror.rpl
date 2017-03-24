@@ -3,6 +3,7 @@ server:
         trust-anchor: "example. DNSKEY  257 3 7 AwEAAcUlFV1vhmqx6NSOUOq2R/dsR7Xm3upJ ( j7IommWSpJABVfW8Q0rOvXdM6kzt+TAu92L9 AbsUdblMFin8CVF3n4s= )"
 	val-override-date: "20120420235959"
 	target-fetch-policy: "0 0 0 0 0"
+	query-minimization: off  ; RFC 5155 section B.1 does not contain information necessary to cover query-minimization
 
 stub-zone:
 	name: "."
@@ -27,11 +28,11 @@ K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype
+MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
-. IN A
+example. IN A
 SECTION AUTHORITY
 example.	IN NS	ns1.example.
 ; leave out to make unbound take ns1

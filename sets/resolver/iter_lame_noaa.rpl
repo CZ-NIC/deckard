@@ -3,6 +3,8 @@
 	target-fetch-policy: "0 0 0 0 0"
         name: "."
 	stub-addr: 193.0.14.129         # K.ROOT-SERVERS.NET.
+	; test with pre-scripted replies does not make sense with qmin
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN Test lame detection if AA bit is omitted

@@ -2,6 +2,7 @@
 	stub-addr: 1.2.3.4
         feature-list: policy=policy:add(policy.suffix(policy.DENY, {todname('nic.cz')}))
         feature-list: policy=policy:add(policy.pattern(policy.DENY, '\8example[0-8]\2cz'))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN DENY policy test; uses policy.suffix, policy.pattern, todname

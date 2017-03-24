@@ -1,6 +1,7 @@
 ; config options
 	stub-addr: 1.2.3.4
 	feature-list: policy=policy:add(policy.suffix_common(policy.DENY, policy.todnames({'example.cz', 'nic.cz'}), todname('cz')))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN DENY policy test, uses policy.common_suffix and policy.todnames

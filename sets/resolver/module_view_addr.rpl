@@ -2,6 +2,7 @@
 	stub-addr: 1.2.3.4
         feature-list: view=view:addr('127.0.0.0/24', policy.suffix(policy.DENY,{"\3com\0"}))
         feature-list: view=view:addr('127.0.0.0/24', policy.suffix(policy.FORWARD('1.2.3.4'),{"\2cz\0"}))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN view:addr test

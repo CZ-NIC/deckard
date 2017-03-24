@@ -5,7 +5,7 @@ ORIGNAME="$(git symbolic-ref -q --short HEAD || git describe --all --always HEAD
 FAILURE_DETECTED="?"
 
 function checkout_back {
-	git checkout --force "${ORIGNAME}" || (echo "Warning: unable to checkout back!" && exit 5)
+	git checkout --force "${ORIGNAME}" || { echo "Warning: unable to checkout back!"; exit 5; }
 
 	test "${FAILURE_DETECTED}" "==" "0" && echo "All tests passed, good work!"
 	test "${FAILURE_DETECTED}" "!=" "0" && echo "Problem found, go fix it!"

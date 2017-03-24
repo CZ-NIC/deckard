@@ -1,6 +1,8 @@
 ; config options
     features: min_ttl = 300
     features: max_ttl = 600
+    ; the test is purely about cache so we do not need qmin complexity
+    query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN Test configurable minimum and maximum TTL

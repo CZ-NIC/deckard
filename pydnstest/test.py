@@ -1,16 +1,17 @@
 #!/usr/bin/env python
+import logging
 import os
-import traceback
 import time
 
 
 class Test:
     """ Small library to imitate CMocka output. """
+    log = logging.getLogger('pydnstest.test.Test')
 
     def __init__(self):
         self.tests = []
 
-    def add(self, name, test, *args):
+    def add(self, name, test, args):
         """ Add named test to set. """
         self.tests.append((name, test, args))
 
@@ -23,12 +24,12 @@ class Test:
 
         for name, test_callback, args in self.tests:
             try:
-                test_callback(*args)
+                test_callback(name, args)
                 passed += 1
-                print('[  OK  ] %s' % name)
+                self.log.info('[  OK  ] %s', name)
             except Exception as e:
-                print('[ FAIL ] %s (%s)' % (name, str(e)))
-                print(traceback.format_exc())
+                self.log.error('[ FAIL ] %s', name)
+                self.log.exception(e)
 
         # Clear test set
         self.tests = []

@@ -2,6 +2,7 @@
         trust-anchor: ". IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5"
 	val-override-date: "20160220000000"
 	stub-addr: 202.12.27.33 # M.ROOT-SERVERS.NET.
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN Test validator NSEC3 B.3 referral to optout unsigned zone, cache timeout.

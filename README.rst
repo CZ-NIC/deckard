@@ -43,7 +43,7 @@ then the DNSSEC tests won't work properly).
 
 - ``ROOT_ADDR``    - root server hint. Port is not set and assumed to be equal to 53.
 - ``SELF_ADDR``    - assigned address for the tested binary. Port is not set and assumed to be equal to 53.
-- ``NO_MINIMIZE``  - ``'true'`` or ``'false'``, disables or enables query minimization respectively. (Default: disabled)
+- ``QMIN``         - ``'true'`` or ``'false'``, enables or disables query minimization respectively. (Default: enabled)
 - ``WORKING_DIR``  - working directory, equivalent to the value of a ``SOCKET_WRAPPER_DIR``
   environment variable.
 - ``INSTALL_DIR``  - Deckard home directory

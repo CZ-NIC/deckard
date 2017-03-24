@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-from __future__ import print_function
-
+import logging
+import logging.config
+import argparse
 import sys
 import os
 import fileinput
@@ -24,7 +25,7 @@ import calendar
 
 def str2bool(v):
     """ Return conversion of JSON-ish string value to boolean. """
-    return v.lower() in ('yes', 'true', 'on')
+    return v.lower() in ('yes', 'true', 'on', '1')
 
 
 def del_files(path_to, delpath):
@@ -37,7 +38,6 @@ def del_files(path_to, delpath):
         except:
             pass
 
-VERBOSE = 0
 DEFAULT_IFACE = 0
 CHILD_IFACE = 0
 TMPDIR = ""
@@ -70,12 +70,6 @@ if TMPDIR == "" or os.path.isdir(TMPDIR) is False:
     OWN_TMPDIR = True
     os.environ["SOCKET_WRAPPER_DIR"] = TMPDIR
 
-if "VERBOSE" in os.environ:
-    try:
-        VERBOSE = int(os.environ["VERBOSE"])
-    except:
-        pass
-
 
 def find_objects(path):
     """ Recursively scan file/directory for scenarios. """
@@ -96,8 +90,9 @@ def write_timestamp_file(path, tst):
     time_file.close()
 
 
-def setup_env(scenario, child_env, config, config_name_list, j2template_list):
+def setup_env(scenario, child_env, config, args):
     """ Set up test environment and config """
+    log = logging.getLogger('deckard.setup_env')
     # Clear test directory
     del_files(TMPDIR, False)
     # Set up libfaketime
@@ -112,7 +107,8 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     # do not pass SOCKET_WRAPPER_PCAP_FILE into child to avoid duplicate packets in pcap
     if "SOCKET_WRAPPER_PCAP_FILE" in child_env:
         del child_env["SOCKET_WRAPPER_PCAP_FILE"]
-    no_minimize = os.environ.get("NO_MINIMIZE", "true")
+    qmin = args.qmin
+    do_not_query_localhost = True
     trust_anchor_list = []
     stub_addr = ""
     features = {}
@@ -121,8 +117,10 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
     selfaddr = testserver.get_local_addr_str(socket.AF_INET, DEFAULT_IFACE)
     for k, v in config:
         # Enable selectively for some tests
-        if k == 'query-minimization' and str2bool(v):
-            no_minimize = "false"
+        if k == 'do-not-query-localhost':
+            do_not_query_localhost = str2bool(v)
+        if k == 'query-minimization':
+            qmin = str2bool(v)
         elif k == 'trust-anchor':
             trust_anchor_list.append(v.strip('"\''))
         elif k == 'val-override-timestamp':
@@ -189,15 +187,18 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         searchpath=os.path.dirname(os.path.abspath(__file__)))
     j2template_env = jinja2.Environment(loader=j2template_loader)
     j2template_ctx = {
+        "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
         "ROOT_ADDR": selfaddr,
         "SELF_ADDR": childaddr,
-        "NO_MINIMIZE": no_minimize,
+        "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
         "WORKING_DIR": TMPDIR,
         "INSTALL_DIR": INSTALLDIR,
         "FEATURES": features
     }
-    for template_name, config_name in zip(j2template_list, config_name_list):
+    log.debug('values for templates: %s', j2template_ctx)
+
+    for template_name, config_name in zip(args.templates, args.configs):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(j2template_ctx)
         f = open(os.path.join(TMPDIR, config_name), 'w')
@@ -205,15 +206,16 @@ def setup_env(scenario, child_env, config, config_name_list, j2template_list):
         f.close()
 
 
-def play_object(path, binary_name, config_name, j2template, binary_additional_pars):
+def play_object(path, args):
     """ Play scenario from a file object. """
+    daemon_logger_log = logging.getLogger('deckard.daemon.log')
 
     # Parse scenario
     case, config = scenario.parse_file(fileinput.input(path))
 
     # Setup daemon environment
     daemon_env = os.environ.copy()
-    setup_env(case, daemon_env, config, config_name, j2template)
+    setup_env(case, daemon_env, config, args)
 
     server = testserver.TestServer(case, config, DEFAULT_IFACE)
     server.start()
@@ -221,14 +223,18 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     ignore_exit = bool(os.environ.get('IGNORE_EXIT_CODE', 0))
     # Start binary
     daemon_proc = None
-    daemon_log = open('%s/server.log' % TMPDIR, 'w')
-    daemon_args = [binary_name] + binary_additional_pars
+    daemon_log_path = open('%s/server.log' % TMPDIR, 'w')
+    daemon_args = [args.binary] + args.additional
+    logging.getLogger('deckard.daemon.env').debug('%s', daemon_env)
+    logging.getLogger('deckard.daemon.argv').debug('%s', daemon_args)
     try:
-        daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log, stderr=daemon_log,
+        daemon_proc = subprocess.Popen(daemon_args, stdout=daemon_log_path, stderr=daemon_log_path,
                                        cwd=TMPDIR, preexec_fn=os.setsid, env=daemon_env)
     except Exception as e:
         server.stop()
-        raise Exception("Can't start '%s': %s" % (daemon_args, str(e)))
+        msg = "Can't start '%s': %s" % (daemon_args, str(e))
+        daemon_logger_log.critical(msg)
+        raise Exception(msg)
 
     # Wait until the server accepts TCP clients
     sock = socket.socket(case.sockfamily, socket.SOCK_STREAM)
@@ -236,9 +242,10 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
         time.sleep(0.1)
         if daemon_proc.poll():
             server.stop()
-            print(open('%s/server.log' % TMPDIR).read())
-            raise Exception('process died "%s", logs in "%s"' %
-                            (os.path.basename(binary_name), TMPDIR))
+            msg = 'process died "%s", logs in "%s"' % (os.path.basename(args.binary), TMPDIR)
+            daemon_logger_log.critical(msg)
+            daemon_logger_log.error(open('%s/server.log' % TMPDIR).read())
+            raise Exception(msg)
         try:
             sock.connect((testserver.get_local_addr_str(case.sockfamily, CHILD_IFACE), 53))
         except:
@@ -268,65 +275,100 @@ def play_object(path, binary_name, config_name, j2template, binary_additional_pa
     # Play test scenario
     try:
         server.play(CHILD_IFACE)
-    except Exception as exc:
-        ex = exc
-        raise
-    else:
-        ex = None
     finally:
         server.stop()
         daemon_proc.terminate()
         daemon_proc.wait()
-        if VERBOSE or ex or (daemon_proc.returncode and not ignore_exit):
-            print(open('%s/server.log' % TMPDIR).read())
+        daemon_logger_log = logging.getLogger('deckard.daemon_log')
+        daemon_logger_log.debug(open('%s/server.log' % TMPDIR).read())
         if daemon_proc.returncode != 0 and not ignore_exit:
             raise ValueError('process terminated with return code %s'
                              % daemon_proc.returncode)
     # Do not clear files if the server crashed (for analysis)
     del_files(TMPDIR, OWN_TMPDIR)
+    if server.undefined_answers > 0:
+        raise ValueError('the scenario does not define all necessary answers (see error log)')
 
 
 def test_platform(*args):
     if sys.platform == 'windows':
-        raise Exception('not supported at all on Windows')
+        raise NotImplementedError('not supported at all on Windows')
 
 if __name__ == '__main__':
+    # auxilitary classes for argparse
+    class ColonSplitter(argparse.Action):  # pylint: disable=too-few-public-methods
+        """Split argument string into list holding items separated by colon."""
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, values.split(':'))
 
-    if len(sys.argv) < 5:
-        print("Usage:")
-        print("test_integration.py <scenario> <binary> <template> <config name> [<additional>]")
-        print("\t<scenario> - path to scenario")
-        print("\t<binary> - executable to test")
-        print("\t<template> - colon-separated list of jinja2 template files")
-        print("\t<config name> - colon-separated list of files to be generated")
-        print("\t<additional> - additional parameters for <binary>")
-        sys.exit(0)
+    class EnvDefault(argparse.Action):  # pylint: disable=too-few-public-methods
+        """Get default value for parameter from environment variable."""
+        def __init__(self, envvar, required=True, default=None, **kwargs):
+            if envvar and envvar in os.environ:
+                default = os.environ[envvar]
+            if required and default is not None:
+                required = False
+            super(EnvDefault, self).__init__(default=default, required=required, **kwargs)
+
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, values)
+
+    def loglevel2number(level):
+        """Convert direct log level number or symbolic name to a number."""
+        try:
+            return int(level)
+        except ValueError:
+            pass  # not a number, try if it is a named constant from logging module
+        try:
+            return getattr(logging, level.upper())
+        except AttributeError:
+            raise ValueError('unknown log level %s' % level)
 
     test_platform()
-    path_to_scenario = ""
-    binary_name = ""
-    template_name_list = ""
-    config_name_list = ""
-    binary_additional_pars = []
 
-    if len(sys.argv) > 4:
-        path_to_scenario = sys.argv[1]
-        binary_name = sys.argv[2]
-        template_name_list = sys.argv[3].split(':')
-        config_name_list = sys.argv[4].split(':')
-        if len(template_name_list) != len(config_name_list):
-            print("ERROR: Number of j2 template files not equal to number of files to be generated")
-            print("i.e. len(<template>) != len(<config name>), see usage")
-            sys.exit(0)
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--qmin', help='query minimization (default: enabled)', default=True,
+                           action=EnvDefault, envvar='QMIN', type=str2bool)
+    argparser.add_argument('--loglevel', help='verbosity (default: errors + test results)',
+                           action=EnvDefault, envvar='VERBOSE',
+                           type=loglevel2number, required=False)
+    argparser.add_argument('scenario', help='path to test scenario')
+    argparser.add_argument('binary', help='executable to test')
+    argparser.add_argument('templates', help='colon-separated list of jinja2 template files',
+                           action=ColonSplitter)
+    argparser.add_argument('configs',
+                           help='colon-separated list of files to be generated from templates',
+                           action=ColonSplitter)
+    argparser.add_argument('additional', help='additional parameters for the binary', nargs='*')
+    args = argparser.parse_args()
 
-    if len(sys.argv) > 5:
-        binary_additional_pars = sys.argv[5:]
+    if not args.loglevel:
+        # default verbosity: errors + test results
+        args.loglevel = logging.ERROR
+        logging.config.dictConfig(
+            {
+                'version': 1,
+                'incremental': True,
+                'loggers': {
+                    'pydnstest.test.Test': {'level': 'INFO'}
+                }
+            })
+
+    if args.loglevel <= logging.DEBUG:  # include message origin
+        logging.basicConfig(level=args.loglevel)
+    else:
+        logging.basicConfig(level=args.loglevel, format='%(message)s')
+    log = logging.getLogger('deckard')
+
+    if len(args.templates) != len(args.configs):
+        log.critical('Number of jinja2 template files is not equal '
+                     'to number of config files to be generated, '
+                     'i.e. len(templates) != len(configs)')
+        sys.exit(1)
 
     # Scan for scenarios
     test = test.Test()
-    for arg in [path_to_scenario]:
-        objects = find_objects(arg)
-        for path in objects:
-            test.add(path, play_object, path, binary_name, config_name_list,
-                     template_name_list, binary_additional_pars)
+    objects = find_objects(args.scenario)
+    for path in objects:
+        test.add(path, play_object, args)
     sys.exit(test.run())
