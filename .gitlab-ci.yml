@@ -105,3 +105,19 @@ test:python3:comparative:kresd:
     - docker
     - linux
     - amd64
+
+# Run all tests on the latest kresd version to ensure that we not push tests
+# which do not work on latest kresd. It would lead to breakage in kresd CI.
+test:python3:latest:kresd:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - git clone --depth=1 https://gitlab.labs.nic.cz/knot/resolver.git kresd-local-build
+    - GIT_DIR=$(pwd)/kresd-local-build/.git git log -1
+    - PREFIX=$(pwd)/.local make -C kresd-local-build -k all
+    - PREFIX=$(pwd)/.local make -C kresd-local-build install
+    - LD_LIBRARY_PATH=$(pwd)/.local/lib DAEMON=$(pwd)/.local/sbin/kresd MAKEFLAGS="-j $(nproc) --keep-going" ./kresd_run.sh
+  tags:
+    - docker
+    - linux
+    - amd64
