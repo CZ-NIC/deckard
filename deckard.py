@@ -109,7 +109,7 @@ def setup_env(scenario, child_env, config, args):
         del child_env["SOCKET_WRAPPER_PCAP_FILE"]
     qmin = args.qmin
     do_not_query_localhost = True
-    harden_glue = False
+    harden_glue = True
     trust_anchor_list = []
     stub_addr = ""
     features = {}
