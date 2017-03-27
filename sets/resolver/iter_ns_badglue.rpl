@@ -222,7 +222,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.31
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
+MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -232,27 +232,6 @@ com.	IN NS	x.gtld-servers.net.
 SECTION ADDITIONAL
 ; Keep suggesting address records for this server
 x.gtld-servers.net.	IN 	A	192.5.6.31
-ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id copy_query
-REPLY QR NOERROR
-SECTION QUESTION
-foo.com. IN NS
-SECTION AUTHORITY
-foo.com.	IN NS	x.gtld-servers.net.
-SECTION ADDITIONAL
-; Keep suggesting address records for this server
-x.gtld-servers.net.	IN 	A	192.5.6.31
-ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode subdomain
-ADJUST copy_id copy_query
-REPLY QR REFUSED
-SECTION QUESTION
-foo.com. IN A
 ENTRY_END
 
 RANGE_END
