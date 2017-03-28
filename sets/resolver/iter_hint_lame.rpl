@@ -2,16 +2,19 @@
 	target-fetch-policy: "0 0 0 0 0"
 	name: "."
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	; minimization does not affect priming query
+	query-minimization: off
 CONFIG_END
 
-SCENARIO_BEGIN Test iterative resolve with lame hints.
+SCENARIO_BEGIN Test iterative resolve with lame hints (RA flag on but no AA flag)
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
+; flags are intentionally weird: it should have AA instead of RA
 REPLY QR RA NOERROR
 SECTION QUESTION
 . IN NS
@@ -26,7 +29,47 @@ MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR RA NOERROR
 SECTION QUESTION
-www.example.com. IN A
+K.ROOT-SERVERS.NET. IN A
+SECTION ANSWER
+K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RA NOERROR
+SECTION QUESTION
+K.ROOT-SERVERS.NET. IN AAAA
+SECTION AUTHORITY
+. IN SOA . . 0 0 0 0 0
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RA NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN A
+SECTION ANSWER
+a.gtld-servers.net. IN A 192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RA NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN AAAA
+SECTION AUTHORITY
+. IN SOA . . 0 0 0 0 0
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR RA NOERROR
+SECTION QUESTION
+com. IN A
 SECTION AUTHORITY
 com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
@@ -50,11 +93,11 @@ a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
+MATCH opcode subdomain
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
-www.example.com. IN A
+example.com. IN A
 SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL

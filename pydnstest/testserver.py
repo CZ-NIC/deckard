@@ -1,6 +1,6 @@
 from __future__ import absolute_import
-from __future__ import print_function
 
+import logging
 import threading
 import select
 import socket
@@ -11,7 +11,6 @@ import dns.rdatatype
 import itertools
 import struct
 import binascii
-from pydnstest.dprint import dprint
 
 
 def recvfrom_msg(stream, raw=False):
@@ -178,33 +177,39 @@ class TestServer:
             True if client socket should be closed by caller
             False if client socket should be kept open
         """
-        client_address = client.getsockname()[0]
-        query, addr = recvfrom_msg(client)
+        log = logging.getLogger('pydnstest.testserver.handle_query')
+        server_addr = client.getsockname()[0]
+        query, client_addr = recvfrom_msg(client)
         if query is None:
             return False
-        dprint("[ handle_query ]", "%s incoming query from %s\n%s" % (client_address, addr, query))
+        log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
         response = dns.message.make_response(query)
         is_raw_data = False
         if self.scenario is not None:
-            response, is_raw_data = self.scenario.reply(query, client_address)
+            response, is_raw_data = self.scenario.reply(query, server_addr)
         if response:
             if is_raw_data is False:
                 data_to_wire = response.to_wire(max_size=65535)
-                dprint("[ handle_query ]", "response\n%s" % response)
+                log.debug('response: %s', response)
             else:
                 data_to_wire = response
-                dprint("[ handle_query ]", "raw response found")
+                log.debug('raw response not printed')
         else:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
-            dprint("[ handle_query ]", "response failed, SERVFAIL")
+            self.undefined_answers += 1
+            self.scenario.current_step.log.error(
+                'server %s has no response for question %s, answering with SERVFAIL',
+                server_addr,
+                '; '.join([str(rr) for rr in query.question]))
 
-        sendto_msg(client, data_to_wire, addr)
+        sendto_msg(client, data_to_wire, client_addr)
         return True
 
     def query_io(self):
         """ Main server process """
+        self.undefined_answers = 0
         if self.active is False:
             raise Exception("[query_io] Test server not active")
         while self.active is True:
@@ -276,6 +281,7 @@ class TestServer:
 if __name__ == '__main__':
     # Self-test code
     # Usage: $PYTHON -m pydnstest.testserver
+    logging.basicConfig(level=logging.DEBUG)
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -286,11 +292,11 @@ if __name__ == '__main__':
     # Mirror server
     server = TestServer(None, None, DEFAULT_IFACE)
     server.start()
-    print("[==========] Mirror server running at", server.address())
+    logging.info("[==========] Mirror server running at %s", server.address())
     try:
         while True:
             time.sleep(0.5)
     except KeyboardInterrupt:
-        print("[==========] Shutdown.")
+        logging.info("[==========] Shutdown.")
         pass
     server.stop()

@@ -2,6 +2,7 @@
 	stub-addr: 1.2.3.4
         feature-list: policy=policy:add(policy.suffix(policy.DENY, {todname('nic.cz')}))
         feature-list: policy=policy:add(policy.pattern(policy.DENY, '\8example[0-8]\2cz'))
+	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN DENY policy test; uses policy.suffix, policy.pattern, todname
@@ -70,7 +71,7 @@ ENTRY_END
 STEP 20 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY QR RD RA NXDOMAIN
+REPLY QR RD RA AA NXDOMAIN
 SECTION QUESTION
 nic.cz. IN A
 SECTION ANSWER
@@ -87,7 +88,7 @@ ENTRY_END
 STEP 40 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY QR RD RA NXDOMAIN
+REPLY QR RD RA AA NXDOMAIN
 SECTION QUESTION
 dummy.nic.cz. IN A
 SECTION ANSWER
@@ -104,7 +105,7 @@ ENTRY_END
 STEP 60 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY QR RD RA NXDOMAIN
+REPLY QR RD RA AA NXDOMAIN
 SECTION QUESTION
 example0.cz. IN A
 SECTION ANSWER
@@ -121,7 +122,7 @@ ENTRY_END
 STEP 80 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY QR RD RA NXDOMAIN
+REPLY QR RD RA AA NXDOMAIN
 SECTION QUESTION
 dummy.example0.cz. IN A
 SECTION ANSWER

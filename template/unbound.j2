@@ -339,7 +339,12 @@ server:
 	# harden-large-queries: no
 
 	# Harden against out of zone rrsets, to avoid spoofing attempts.
+
+	{% if HARDEN_GLUE == "true" %}
 	harden-glue: yes
+	{% else %}
+	harden-glue: no
+	{% endif %}
 
 	# Harden against receiving dnssec-stripped data. If you turn it
 	# off, failing to validate dnskey data for a trustanchor will
@@ -364,7 +369,7 @@ server:
 	# Sent minimum amount of information to upstream servers to enhance
 	# privacy. Only sent minimum required labels of the QNAME and set QTYPE
 	# to NS when possible.
-	{% if NO_MINIMIZE == "true"  %}
+	{% if QMIN == "false" %}
 	qname-minimisation: no
 	{% else %}
 	qname-minimisation: yes
@@ -410,7 +415,11 @@ server:
 
 	# if yes, the above default do-not-query-address entries are present.
 	# if no, localhost can be queried (for testing and debugging).
+	{% if DO_NOT_QUERY_LOCALHOST == "false" %}
 	do-not-query-localhost: no
+	{% else %}
+	do-not-query-localhost: yes
+	{% endif %}
 
 	# if yes, perform prefetching of almost expired message cache entries.
 	prefetch: no

@@ -1,0 +1,81 @@
+; config options
+        features: workarounds = true
+        stub-addr: 1.1.1.1
+CONFIG_END
+
+SCENARIO_BEGIN Test module workarounds disabling 0x20 for certain domains
+RANGE_BEGIN 0 100
+	ADDRESS 1.1.1.1
+ENTRY_BEGIN
+MATCH opcode qtype qcase ; case sensitive comparison
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A ; all lowercase
+SECTION ANSWER
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A   2.2.2.2
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+.	IN	NS
+SECTION ANSWER
+.	IN	NS	k.root-servers.net.
+SECTION ADDITIONAL
+k.root-servers.net.	IN	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+com.	IN	NS
+SECTION AUTHORITY
+com.	IN	NS	k.root-servers.net.
+SECTION ADDITIONAL
+k.root-servers.net.	IN	A	1.1.1.1
+ENTRY_END
+RANGE_END
+
+STEP 10 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A ; all lowercase: tests that 0x20 won't be used
+ENTRY_END
+
+STEP 11 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A
+SECTION ANSWER
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A   2.2.2.2
+ENTRY_END
+
+; expire cached results
+STEP 22 TIME_PASSES ELAPSE 4000
+
+STEP 30 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.COM.    IN  A ; upper case in the TLD: tests making the name lowercase before sending the query
+ENTRY_END
+
+STEP 31 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A
+SECTION ANSWER
+b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A   2.2.2.2
+ENTRY_END
+
+SCENARIO_END

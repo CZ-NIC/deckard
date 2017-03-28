@@ -9,7 +9,7 @@ SCENARIO_BEGIN Test query minimization with terminal in resolution path.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -69,6 +69,13 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.1.1.1
 
+ENTRY_BEGIN
+MATCH opcode
+ADJUST copy_id copy_query
+REPLY QR SERVFAIL
+SECTION QUESTION
+. IN NS
+ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
@@ -105,15 +112,21 @@ ENTRY_END
 RANGE_END
 
 STEP 1 QUERY
+ENTRY_BEGIN
 FLAGS RD
 SECTION QUESTION
 www.example.com. IN NS
+ENTRY_END
 
 ; recursion happens here.
 STEP 10 CHECK_ANSWER
+ENTRY_BEGIN
 MATCH all
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.com. IN NS
 SECTION ANSWER
 www.example.com. IN NS blackhole.
+ENTRY_END
+
+SCENARIO_END

@@ -1,6 +1,8 @@
 ; config options
     features: min_ttl = 300
     features: max_ttl = 600
+    ; the test is purely about cache so we do not need qmin complexity
+    query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN Test configurable minimum and maximum TTL
@@ -17,6 +19,50 @@ SECTION QUESTION
 example.com.    IN  A
 SECTION ANSWER
 example.com. 0  IN  A   5.6.7.8 ; TTL smaller than min_ttl
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 4 8
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.com.    IN  A
+SECTION ANSWER
+example.com. 0  IN  A   9.10.11.12
+ENTRY_END
+RANGE_END
+
+
+
+
+; maximum TTL
+; time 0
+RANGE_BEGIN 9 10
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz. 3600  IN  A   13.14.15.16 ; TTL bigger than max_ttl
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 12 16
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR RD NOERROR
+SECTION QUESTION
+example.cz.    IN  A
+SECTION ANSWER
+example.cz. 3600  IN  A   17.18.19.20
 ENTRY_END
 RANGE_END
 
@@ -38,21 +84,8 @@ example.com.    IN  A   5.6.7.8
 ENTRY_END
 
 
-STEP 3 TIME_PASSES ELAPSE 200  
+STEP 3 TIME_PASSES ELAPSE 200
 ; time 200
-
-RANGE_BEGIN 4 8
-	ADDRESS 1.2.3.4
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR RD NOERROR
-SECTION QUESTION
-example.com.    IN  A
-SECTION ANSWER
-example.com. 0  IN  A   9.10.11.12
-ENTRY_END
-RANGE_END
 
 STEP 4 QUERY
 ENTRY_BEGIN
@@ -94,21 +127,6 @@ example.com.    IN  A   9.10.11.12
 ENTRY_END
 
 
-; maximum TTL
-; time 0
-RANGE_BEGIN 9 10
-	ADDRESS 1.2.3.4
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR RD NOERROR
-SECTION QUESTION
-example.cz.    IN  A
-SECTION ANSWER
-example.cz. 3600  IN  A   13.14.15.16 ; TTL bigger than max_ttl
-ENTRY_END
-RANGE_END
-
 STEP 9 QUERY
 ENTRY_BEGIN
 REPLY RD
@@ -129,19 +147,6 @@ ENTRY_END
 
 STEP 11 TIME_PASSES ELAPSE 500
 ; time 500
-
-RANGE_BEGIN 12 16
-	ADDRESS 1.2.3.4
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR RD NOERROR
-SECTION QUESTION
-example.cz.    IN  A
-SECTION ANSWER
-example.cz. 3600  IN  A   17.18.19.20
-ENTRY_END
-RANGE_END
 
 STEP 12 QUERY
 ENTRY_BEGIN

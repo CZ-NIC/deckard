@@ -2,9 +2,22 @@ net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
 cache.size = 2*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
-option('NO_MINIMIZE', {{NO_MINIMIZE}})
--- Run tests in permissive mode
-option('PERMISSIVE',  true)
+{% if QMIN == "false" %}
+option('NO_MINIMIZE', true)
+{% else %}
+option('NO_MINIMIZE', false)
+{% endif %}
+{% if DO_NOT_QUERY_LOCALHOST == "false" %}
+option('ALLOW_LOCAL', true)
+{% else %}
+option('ALLOW_LOCAL', false)
+{% endif %}
+
+{% if HARDEN_GLUE == "true" %}
+mode('normal')
+{% else %}
+mode('permissive')
+{% endif %}
 -- Always retry failing resolver
 option('NO_THROTTLE', true)
 {% for TA in TRUST_ANCHORS %}
@@ -46,6 +59,10 @@ modules.load( 'view')
 {% for view in FEATURES.view %}
 {{view}}
 {% endfor %}
+{% endif %}
+
+{% if FEATURES.workarounds is defined %}
+modules = { 'workarounds < iterate' }
 {% endif %}
 
 verbose(true)
