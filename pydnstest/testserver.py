@@ -286,12 +286,22 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--scenario', help='path to test scenario',
                            required=False)
+    argparser.add_argument('--step', help='step # in the scenario (default: first)',
+                           required=False, type=int)
     args = argparser.parse_args()
     if args.scenario:
         test_scenario, test_config = scenario.parse_file(fileinput.input(args.scenario))
     else:
         test_scenario, test_config = empty_test_case()
-    test_scenario.current_step = test_scenario.steps[0]
+
+    if args.step:
+        for step in test_scenario.steps:
+            if step.id == args.step:
+                test_scenario.current_step = step
+        if not test_scenario.current_step:
+            raise ValueError('step ID %s not found in scenario' % args.step)
+    else:
+        test_scenario.current_step = test_scenario.steps[0]
 
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
