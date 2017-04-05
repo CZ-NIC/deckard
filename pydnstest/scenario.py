@@ -17,7 +17,6 @@ import random
 import string
 import time
 from datetime import datetime
-from pydnstest.testserver import recvfrom_msg, sendto_msg
 
 
 # Global statistics
@@ -82,6 +81,54 @@ def compare_sub(got, expected):
     if not expected.is_subdomain(got):
         raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
+
+
+def recvfrom_msg(stream, raw=False):
+    """
+    Receive DNS message from TCP/UDP socket.
+
+    Returns:
+        if raw == False: (DNS message object, peer address)
+        if raw == True: (blob, peer address)
+    """
+    if stream.type & socket.SOCK_DGRAM:
+        data, addr = stream.recvfrom(4096)
+    elif stream.type & socket.SOCK_STREAM:
+        data = stream.recv(2)
+        if len(data) == 0:
+            return None, None
+        msg_len = struct.unpack_from("!H", data)[0]
+        data = b""
+        received = 0
+        while received < msg_len:
+            next_chunk = stream.recv(4096)
+            if len(next_chunk) == 0:
+                return None, None
+            data += next_chunk
+            received += len(next_chunk)
+        addr = stream.getpeername()[0]
+    else:
+        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+    if not raw:
+        data = dns.message.from_wire(data, one_rr_per_rrset=True)
+    return data, addr
+
+
+def sendto_msg(stream, message, addr=None):
+    """ Send DNS/UDP/TCP message. """
+    try:
+        if stream.type & socket.SOCK_DGRAM:
+            if addr is None:
+                stream.send(message)
+            else:
+                stream.sendto(message, addr)
+        elif stream.type & socket.SOCK_STREAM:
+            data = struct.pack("!H", len(message)) + message
+            stream.send(data)
+        else:
+            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
+    except:  # Failure to respond is OK, resolver should recover
+        pass
 
 
 def replay_rrs(rrs, nqueries, destination, args=[]):
