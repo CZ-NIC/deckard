@@ -19,7 +19,6 @@ from pydnstest import scenario, testserver, test
 from datetime import datetime
 import random
 import string
-import itertools
 import calendar
 
 
@@ -256,25 +255,6 @@ def play_object(path, args):
             continue
         break
     sock.close()
-
-    # Bind to test servers
-    for r in case.ranges:
-        for addr in r.addresses:
-            family = socket.AF_INET6 if ':' in addr else socket.AF_INET
-            server.start_srv((addr, 53), family)
-    # Bind addresses in ad-hoc REPLYs
-    for s in case.steps:
-        if s.type == 'REPLY':
-            reply = s.data[0].message
-            for rr in itertools.chain(reply.answer,
-                                      reply.additional,
-                                      reply.question,
-                                      reply.authority):
-                for rd in rr:
-                    if rd.rdtype == dns.rdatatype.A:
-                        server.start_srv((rd.address, 53), socket.AF_INET)
-                    elif rd.rdtype == dns.rdatatype.AAAA:
-                        server.start_srv((rd.address, 53), socket.AF_INET6)
 
     # Play test scenario
     try:

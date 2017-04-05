@@ -64,6 +64,7 @@ class TestServer:
         self.active = True
         self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
         self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
+        self._bind_sockets()
 
     def stop(self):
         """ Stop socket server operation. """
@@ -221,6 +222,30 @@ class TestServer:
         self.srv_socks.append(sock)
         sockname = sock.getsockname()
         return sockname, proto
+
+    def _bind_sockets(self):
+        """
+        Bind test server to port 53 on all addresses referenced by test scenario.
+        """
+        # Bind to test servers
+        for r in self.scenario.ranges:
+            for addr in r.addresses:
+                family = socket.AF_INET6 if ':' in addr else socket.AF_INET
+                self.start_srv((addr, 53), family)
+
+        # Bind addresses in ad-hoc REPLYs
+        for s in self.scenario.steps:
+            if s.type == 'REPLY':
+                reply = s.data[0].message
+                for rr in itertools.chain(reply.answer,
+                                          reply.additional,
+                                          reply.question,
+                                          reply.authority):
+                    for rd in rr:
+                        if rd.rdtype == dns.rdatatype.A:
+                            self.start_srv((rd.address, 53), socket.AF_INET)
+                        elif rd.rdtype == dns.rdatatype.AAAA:
+                            self.start_srv((rd.address, 53), socket.AF_INET6)
 
     def play(self, subject_addr):
         paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
