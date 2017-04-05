@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import argparse
+import fileinput
 import logging
 import threading
 import select
@@ -11,6 +13,7 @@ import dns.rdatatype
 import itertools
 
 from pydnstest import scenario
+
 
 def get_local_addr_str(family, iface):
     """ Returns pattern string for localhost address  """
@@ -280,6 +283,16 @@ if __name__ == '__main__':
     # Self-test code
     # Usage: $PYTHON -m pydnstest.testserver
     logging.basicConfig(level=logging.DEBUG)
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--scenario', help='path to test scenario',
+                           required=False)
+    args = argparser.parse_args()
+    if args.scenario:
+        test_scenario, test_config = scenario.parse_file(fileinput.input(args.scenario))
+    else:
+        test_scenario, test_config = empty_test_case()
+    test_scenario.current_step = test_scenario.steps[0]
+
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -288,9 +301,9 @@ if __name__ == '__main__':
         DEFAULT_IFACE = 10
         os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
 
-    test_scenario, test_config = empty_test_case()
     server = TestServer(test_scenario, test_config, DEFAULT_IFACE)
     server.start()
+
     logging.info("[==========] Mirror server running at %s", server.address())
     try:
         while True:
