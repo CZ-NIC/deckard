@@ -718,9 +718,7 @@ class Scenario:
         Returns:
             (answer, boolean "is the answer binary blob?")
         """
-        current_step_id = 0
-        if self.current_step is not None:
-            current_step_id = self.current_step.id
+        current_step_id = self.current_step.id
         # Unknown address, select any match
         # TODO: workaround until the server supports stub zones
         all_addresses = set()

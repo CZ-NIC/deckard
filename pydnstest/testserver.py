@@ -134,10 +134,7 @@ class TestServer:
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
-        response = dns.message.make_response(query)
-        is_raw_data = False
-        if self.scenario is not None:
-            response, is_raw_data = self.scenario.reply(query, server_addr)
+        response, is_raw_data = self.scenario.reply(query, server_addr)
         if response:
             if is_raw_data is False:
                 data_to_wire = response.to_wire(max_size=65535)
@@ -229,6 +226,31 @@ class TestServer:
         paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
         self.scenario.play({'': (paddr, 53)})
 
+
+def empty_test_case():
+    """
+    Return (scenario, config) pair which answers to any query on 127.0.0.10.
+    """
+    # Mirror server
+    entry = scenario.Entry()
+    entry.set_match([])  # match everything
+    entry.set_adjust(['copy_id', 'copy_query'])
+
+    rng = scenario.Range(0, 100)
+    rng.add(entry)
+    rng.addresses.add('127.0.0.10')
+
+    step = scenario.Step(1, 'QUERY', [])
+
+    test_scenario = scenario.Scenario('empty replies')
+    test_scenario.ranges.append(rng)
+    test_scenario.steps.append(step)
+    test_scenario.current_step = step
+
+    test_config = [('stub-addr', '127.0.0.10')]
+
+    return (test_scenario, test_config)
+
 if __name__ == '__main__':
     # Self-test code
     # Usage: $PYTHON -m pydnstest.testserver
@@ -240,8 +262,9 @@ if __name__ == '__main__':
     if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254:
         DEFAULT_IFACE = 10
         os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
-    # Mirror server
-    server = TestServer(None, None, DEFAULT_IFACE)
+
+    test_scenario, test_config = empty_test_case()
+    server = TestServer(test_scenario, test_config, DEFAULT_IFACE)
     server.start()
     logging.info("[==========] Mirror server running at %s", server.address())
     try:
