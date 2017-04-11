@@ -6,6 +6,8 @@ CONFIG_END
 
 SCENARIO_BEGIN Test resolution with parent child differ in names.
 ; the parent has an extra name that is the only working one.
+; To understand the commented-out authority records see
+; https://mailarchive.ietf.org/arch/msg/dnsop/CYjPDlwtpxzdQV_qycB-WfnW6CI
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
@@ -155,7 +157,7 @@ ns.example.com. IN A
 SECTION ANSWER
 ns.example.com. IN A	1.2.3.55
 SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
+;example.com.	IN NS	ns.example.com.
 ENTRY_END
 
 ENTRY_BEGIN
@@ -165,7 +167,7 @@ REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
 SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
+;example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
 ns.example.com. IN A	1.2.3.55
 ENTRY_END
@@ -191,7 +193,7 @@ www.example.com. IN A
 SECTION ANSWER
 www.example.com. IN A	10.20.30.40
 SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
+;example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
 ns.example.com. IN A 1.2.3.55
 ENTRY_END
@@ -205,7 +207,7 @@ mail.example.com. IN A
 SECTION ANSWER
 mail.example.com. IN A	10.20.30.20
 SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
+;example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
 ns.example.com. IN A 1.2.3.55
 ENTRY_END
