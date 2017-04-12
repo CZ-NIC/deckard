@@ -6,6 +6,9 @@ Code taken from http://stackoverflow.com/questions/38924421/is-there-a-standard-
 
 import logging
 
+import dns.message
+import dns.set
+
 
 def equivalence_partition(iterable, relation):
     """Partitions a set of objects into equivalence classes
@@ -34,6 +37,32 @@ def equivalence_partition(iterable, relation):
             classes.append(set([o]))
             partitions[o] = classes[-1]
     return classes, partitions
+
+
+def equivalence_named(named_iterable, relation):
+    """Partitions a set of named objects into equivalence classes
+
+    Args:
+        iterable: collection of tuples (name, object) to be partitioned
+                  objects are subject of partitioning, names are just metadata
+        relation: equivalence relation. I.e. relation(o1,o2) evaluates to True
+            if and only if o1 and o2 are equivalent
+
+    Returns: {names: value} dict for containing one value for each equivalent class
+    """
+    named_classes = []
+    for obj_name, obj in named_iterable:  # for each object
+        # find the class it is in
+        found = False
+        for cls_names, cls in named_classes:
+            if relation(next(iter(cls)), obj):  # is it equivalent to this class?
+                cls.add(obj)
+                cls_names.add(obj_name)
+                found = True
+                break
+        if not found:  # it is in a new class
+            named_classes.append((dns.set.Set([obj_name]), dns.set.Set([obj])))
+    return dict([(frozenset(names), next(iter(objs))) for names, objs in named_classes])
 
 
 def equivalence_enumeration(iterable, relation):
@@ -105,6 +134,7 @@ def merge_rrsets(rrsets):
         merged.append(origrrs.copy())
     return merged
 
+
 def compare_rrsets(x, y):
     """ordering relation based on rdtype"""
     relation, order, nlabels = x.name.fullcompare(y.name)
@@ -113,8 +143,12 @@ def compare_rrsets(x, y):
     else:
         return max(-1, min(1, x.rdtype - y.rdtype))
 
+
 def compare_dns_messages(m1, m2, merge_rrsets_first=True, sort_rrsets=True):
     """Compare two dns.message.Message instances"""
+    assert isinstance(m1, dns.message.Message) or isinstance(m2, dns.message.Message)
+    if isinstance(m1, dns.message.Message) != isinstance(m2, dns.message.Message):
+        return False
     ignored_attrs = set(['id', 'index', 'time', 'hack_source_ip', 'payload'])
     sections = ['question', 'answer', 'authority', 'additional']
     for m in (m1, m2):
@@ -139,17 +173,3 @@ def compare_dns_messages(m1, m2, merge_rrsets_first=True, sort_rrsets=True):
                           m2.hack_source_ip, getattr(m2, attr))
             return False
     return True
-
-def partition_messages(answers):
-    """Partition DNS messages into equivalence classes
-
-    Returns: {(ip, addresses, with, equivalent, answer): DNS_message}
-    """
-    classes, partitions =  equivalence_partition(answers, compare_dns_messages)
-    ip_cls = {}
-    for cls in classes:
-        ips = []
-        for a in cls:
-            ips.append(a.hack_source_ip)
-        ip_cls[tuple(ips)] = a
-    return ip_cls
