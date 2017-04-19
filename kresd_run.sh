@@ -16,9 +16,9 @@ CONFIG=${CONFIG:-"config"}
 export TESTS DAEMON TEMPLATE CONFIG
 
 MAKEDIR="$(dirname "$(readlink -f "$0")")"
-echo '=== Testing WITHOUT query minimization ==='
-export QMIN="false"
-make -C "${MAKEDIR}"
 echo '=== Testing WITH query minimization ==='
 export QMIN="true"
+make -C "${MAKEDIR}"
+echo '=== Testing WITHOUT query minimization ==='
+export QMIN="false"
 make -C "${MAKEDIR}"
