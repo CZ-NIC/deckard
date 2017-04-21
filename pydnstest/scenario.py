@@ -17,7 +17,6 @@ import random
 import string
 import time
 from datetime import datetime
-from pydnstest.testserver import recvfrom_msg, sendto_msg
 
 
 # Global statistics
@@ -46,7 +45,7 @@ def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
     rdtype = args.pop(0)
     rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
     if len(args) > 0:
-        if (rr.rdtype == dns.rdatatype.DS):
+        if rr.rdtype == dns.rdatatype.DS:
             # convert textual algorithm identifier to number
             args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
         rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
@@ -82,6 +81,54 @@ def compare_sub(got, expected):
     if not expected.is_subdomain(got):
         raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
+
+
+def recvfrom_msg(stream, raw=False):
+    """
+    Receive DNS message from TCP/UDP socket.
+
+    Returns:
+        if raw == False: (DNS message object, peer address)
+        if raw == True: (blob, peer address)
+    """
+    if stream.type & socket.SOCK_DGRAM:
+        data, addr = stream.recvfrom(4096)
+    elif stream.type & socket.SOCK_STREAM:
+        data = stream.recv(2)
+        if len(data) == 0:
+            return None, None
+        msg_len = struct.unpack_from("!H", data)[0]
+        data = b""
+        received = 0
+        while received < msg_len:
+            next_chunk = stream.recv(4096)
+            if len(next_chunk) == 0:
+                return None, None
+            data += next_chunk
+            received += len(next_chunk)
+        addr = stream.getpeername()[0]
+    else:
+        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+    if not raw:
+        data = dns.message.from_wire(data, one_rr_per_rrset=True)
+    return data, addr
+
+
+def sendto_msg(stream, message, addr=None):
+    """ Send DNS/UDP/TCP message. """
+    try:
+        if stream.type & socket.SOCK_DGRAM:
+            if addr is None:
+                stream.send(message)
+            else:
+                stream.sendto(message, addr)
+        elif stream.type & socket.SOCK_STREAM:
+            data = struct.pack("!H", len(message)) + message
+            stream.send(data)
+        else:
+            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
+    except:  # Failure to respond is OK, resolver should recover
+        pass
 
 
 def replay_rrs(rrs, nqueries, destination, args=[]):
@@ -671,9 +718,7 @@ class Scenario:
         Returns:
             (answer, boolean "is the answer binary blob?")
         """
-        current_step_id = 0
-        if self.current_step is not None:
-            current_step_id = self.current_step.id
+        current_step_id = self.current_step.id
         # Unknown address, select any match
         # TODO: workaround until the server supports stub zones
         all_addresses = set()
@@ -717,20 +762,20 @@ class Scenario:
             try:
                 step.play(self)
             except Exception as e:
-                if (step.repeat_if_fail > 0):
+                if step.repeat_if_fail > 0:
                     self.log.info("[play] step %d: exception - '%s', retrying step %d (%d left)",
                                   step.id, e, step.next_if_fail, step.repeat_if_fail)
                     step.repeat_if_fail -= 1
-                    if (step.pause_if_fail > 0):
+                    if step.pause_if_fail > 0:
                         time.sleep(step.pause_if_fail)
-                    if (step.next_if_fail != -1):
+                    if step.next_if_fail != -1:
                         next_steps = [j for j in range(len(self.steps)) if self.steps[
                             j].id == step.next_if_fail]
-                        if (len(next_steps) == 0):
+                        if len(next_steps) == 0:
                             raise Exception('step %d: wrong NEXT value "%d"' %
                                             (step.id, step.next_if_fail))
                         next_step = next_steps[0]
-                        if (next_step < len(self.steps)):
+                        if next_step < len(self.steps):
                             i = next_step
                         else:
                             raise Exception('step %d: Can''t branch to NEXT value "%d"' %
