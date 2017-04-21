@@ -169,7 +169,7 @@ class TestServer:
             to_read, _, to_error = select.select(objects, [], objects, 0.1)
             for sock in to_read:
                 if sock in self.srv_socks:
-                    if (sock.proto == socket.IPPROTO_TCP):
+                    if sock.proto == socket.IPPROTO_TCP:
                         conn, addr = sock.accept()
                         self.connections.append(conn)
                     else:
@@ -207,7 +207,7 @@ class TestServer:
         else:
             raise NotImplementedError("[start_srv] unsupported protocol {0}".format(proto))
 
-        if (self.thread is None):
+        if self.thread is None:
             self.thread = threading.Thread(target=self.query_io)
             self.thread.start()
 

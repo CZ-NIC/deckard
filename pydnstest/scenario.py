@@ -45,7 +45,7 @@ def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
     rdtype = args.pop(0)
     rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
     if len(args) > 0:
-        if (rr.rdtype == dns.rdatatype.DS):
+        if rr.rdtype == dns.rdatatype.DS:
             # convert textual algorithm identifier to number
             args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
         rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
@@ -762,20 +762,20 @@ class Scenario:
             try:
                 step.play(self)
             except Exception as e:
-                if (step.repeat_if_fail > 0):
+                if step.repeat_if_fail > 0:
                     self.log.info("[play] step %d: exception - '%s', retrying step %d (%d left)",
                                   step.id, e, step.next_if_fail, step.repeat_if_fail)
                     step.repeat_if_fail -= 1
-                    if (step.pause_if_fail > 0):
+                    if step.pause_if_fail > 0:
                         time.sleep(step.pause_if_fail)
-                    if (step.next_if_fail != -1):
+                    if step.next_if_fail != -1:
                         next_steps = [j for j in range(len(self.steps)) if self.steps[
                             j].id == step.next_if_fail]
-                        if (len(next_steps) == 0):
+                        if len(next_steps) == 0:
                             raise Exception('step %d: wrong NEXT value "%d"' %
                                             (step.id, step.next_if_fail))
                         next_step = next_steps[0]
-                        if (next_step < len(self.steps)):
+                        if next_step < len(self.steps):
                             i = next_step
                         else:
                             raise Exception('step %d: Can''t branch to NEXT value "%d"' %
