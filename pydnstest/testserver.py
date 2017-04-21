@@ -38,14 +38,14 @@ class AddrMapInfo:
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, scenario, config, d_iface):
+    def __init__(self, test_scenario, config, d_iface):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
         self.client_socks = []
         self.connections = []
         self.active = False
-        self.scenario = scenario
+        self.scenario = test_scenario
         self.config = config
         self.addr_map = []
         self.start_iface = 2
@@ -279,9 +279,14 @@ def empty_test_case():
 
     return (test_scenario, test_config)
 
-if __name__ == '__main__':
-    # Self-test code
-    # Usage: $PYTHON -m pydnstest.testserver
+
+def standalone_self_test():
+    """
+    Self-test code
+
+    Usage:
+    LD_PRELOAD=libsocket_wrapper.so SOCKET_WRAPPER_DIR=/tmp $PYTHON -m pydnstest.testserver --help
+    """
     logging.basicConfig(level=logging.DEBUG)
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--scenario', help='path to test scenario',
@@ -322,3 +327,8 @@ if __name__ == '__main__':
         logging.info("[==========] Shutdown.")
         pass
     server.stop()
+
+
+if __name__ == '__main__':
+    # this is done to avoid creating global variables
+    standalone_self_test()
