@@ -26,6 +26,8 @@ class TestServer:
         self.client_socks = []
         self.connections = []
         self.active = False
+        self.active_lock = threading.Lock()
+        self.condition = threading.Condition()
         self.scenario = test_scenario
         self.addr_map = []
         self.start_iface = 2
@@ -35,21 +37,26 @@ class TestServer:
 
     def __del__(self):
         """ Cleanup after deletion. """
-        if self.active is True:
+        with self.active_lock:
+            active = self.active
+        if active:
             self.stop()
 
     def start(self, port=53):
         """ Synchronous start """
-        if self.active is True:
-            raise Exception('TestServer already started')
-        self.active = True
+        with self.active_lock:
+            if self.active:
+                raise Exception('TestServer already started')
+        with self.active_lock:
+            self.active = True
         self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
         self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
         self._bind_sockets()
 
     def stop(self):
         """ Stop socket server operation. """
-        self.active = False
+        with self.active_lock:
+            self.active = False
         if self.thread:
             self.thread.join()
         for conn in self.connections:
@@ -86,7 +93,7 @@ class TestServer:
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
         response, is_raw_data = self.scenario.reply(query, server_addr)
         if response:
-            if is_raw_data is False:
+            if not is_raw_data:
                 data_to_wire = response.to_wire(max_size=65535)
                 log.debug('response: %s', response)
             else:
@@ -108,9 +115,15 @@ class TestServer:
     def query_io(self):
         """ Main server process """
         self.undefined_answers = 0
-        if self.active is False:
-            raise Exception("[query_io] Test server not active")
-        while self.active is True:
+        with self.active_lock:
+            if not self.active:
+                raise Exception(self.scenario.file+" [query_io] Test server not active")
+        while True:
+            with self.condition:
+                self.condition.notify()
+            with self.active_lock:
+                if not self.active:
+                    break
             objects = self.srv_socks + self.connections
             to_read, _, to_error = select.select(objects, [], objects, 0.1)
             for sock in to_read:
@@ -154,6 +167,8 @@ class TestServer:
         if self.thread is None:
             self.thread = threading.Thread(target=self.query_io)
             self.thread.start()
+            with self.condition:
+                self.condition.wait()
 
         for srv_sock in self.srv_socks:
             if (srv_sock.family == family
@@ -203,25 +218,10 @@ def empty_test_case():
     Return (scenario, config) pair which answers to any query on 127.0.0.10.
     """
     # Mirror server
-    entry = scenario.Entry()
-    entry.set_match([])  # match everything
-    entry.set_adjust(['copy_id', 'copy_query'])
-
-    rng = scenario.Range(0, 100)
-    rng.add(entry)
-    rng.addresses.add('127.0.0.10')
-
-    step = scenario.Step(1, 'QUERY', [])
-
-    test_scenario = scenario.Scenario('empty replies')
-    test_scenario.ranges.append(rng)
-    test_scenario.steps.append(step)
-    test_scenario.current_step = step
-
+    empty_test_path = os.path.dirname(os.path.realpath(__file__)) + "/empty.rpl"
     test_config = {'ROOT_ADDR': '127.0.0.10',
                    '_SOCKET_FAMILY': socket.AF_INET}
-
-    return (test_scenario, test_config)
+    return scenario.parse_file(empty_test_path)[0],test_config
 
 
 def standalone_self_test():
@@ -263,6 +263,7 @@ def standalone_self_test():
     except KeyboardInterrupt:
         logging.info("[==========] Shutdown.")
         pass
+    name = server.scenario.file
     server.stop()
 
 

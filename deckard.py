@@ -261,7 +261,7 @@ def play_object(path, args, prog_cfgs):
     daemon_logger_log = logging.getLogger('deckard.daemon.log')
 
     # Parse scenario
-    case, cfg_text = scenario.parse_file(fileinput.input(path))
+    case, cfg_text = scenario.parse_file(os.path.realpath(path))
     cfg_ctx = scenario.parse_config(cfg_text, args.qmin, INSTALLDIR)
 
     # get working directory and environment variables
@@ -289,6 +289,7 @@ def play_object(path, args, prog_cfgs):
     try:
         server.play(prog_under_test_ip)
     finally:
+        name = server.scenario.file
         server.stop()
         for daemon in daemons:
             daemon['proc'].terminate()

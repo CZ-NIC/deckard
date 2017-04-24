@@ -11,5 +11,5 @@ RUN apt-get upgrade -y
 RUN apt-get install -y knot-resolver
 RUN apt-get install -y unbound
 RUN apt-get install -y pdns-recursor
-RUN apt-get install -y python-pep8  pylint  python-dnspython  python-jinja2 python-yaml
-RUN apt-get install -y python3-pep8 pylint3 python3-dnspython python3-jinja2 python3-yaml
+RUN apt-get install -y python-augeas python-pep8  pylint  python-dnspython  python-jinja2 python-yaml
+RUN apt-get install -y python3-augeas python3-pep8 pylint3 python3-dnspython python3-jinja2 python3-yaml
