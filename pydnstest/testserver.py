@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import argparse
+import fileinput
 import logging
 import threading
 import select
@@ -9,56 +11,8 @@ import time
 import dns.message
 import dns.rdatatype
 import itertools
-import struct
-import binascii
 
-
-def recvfrom_msg(stream, raw=False):
-    """
-    Receive DNS message from TCP/UDP socket.
-
-    Returns:
-        if raw == False: (DNS message object, peer address)
-        if raw == True: (blob, peer address)
-    """
-    if stream.type & socket.SOCK_DGRAM:
-        data, addr = stream.recvfrom(4096)
-    elif stream.type & socket.SOCK_STREAM:
-        data = stream.recv(2)
-        if len(data) == 0:
-            return None, None
-        msg_len = struct.unpack_from("!H", data)[0]
-        data = b""
-        received = 0
-        while received < msg_len:
-            next_chunk = stream.recv(4096)
-            if len(next_chunk) == 0:
-                return None, None
-            data += next_chunk
-            received += len(next_chunk)
-        addr = stream.getpeername()[0]
-    else:
-        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    if not raw:
-        data = dns.message.from_wire(data, one_rr_per_rrset=True)
-    return data, addr
-
-
-def sendto_msg(stream, message, addr=None):
-    """ Send DNS/UDP/TCP message. """
-    try:
-        if stream.type & socket.SOCK_DGRAM:
-            if addr is None:
-                stream.send(message)
-            else:
-                stream.sendto(message, addr)
-        elif stream.type & socket.SOCK_STREAM:
-            data = struct.pack("!H", len(message)) + message
-            stream.send(data)
-        else:
-            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
-    except:  # Failure to respond is OK, resolver should recover
-        pass
+from pydnstest import scenario
 
 
 def get_local_addr_str(family, iface):
@@ -84,14 +38,14 @@ class AddrMapInfo:
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, scenario, config, d_iface):
+    def __init__(self, test_scenario, config, d_iface):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
         self.client_socks = []
         self.connections = []
         self.active = False
-        self.scenario = scenario
+        self.scenario = test_scenario
         self.config = config
         self.addr_map = []
         self.start_iface = 2
@@ -113,6 +67,7 @@ class TestServer:
         self.active = True
         self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
         self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
+        self._bind_sockets()
 
     def stop(self):
         """ Stop socket server operation. """
@@ -179,14 +134,11 @@ class TestServer:
         """
         log = logging.getLogger('pydnstest.testserver.handle_query')
         server_addr = client.getsockname()[0]
-        query, client_addr = recvfrom_msg(client)
+        query, client_addr = scenario.recvfrom_msg(client)
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
-        response = dns.message.make_response(query)
-        is_raw_data = False
-        if self.scenario is not None:
-            response, is_raw_data = self.scenario.reply(query, server_addr)
+        response, is_raw_data = self.scenario.reply(query, server_addr)
         if response:
             if is_raw_data is False:
                 data_to_wire = response.to_wire(max_size=65535)
@@ -204,7 +156,7 @@ class TestServer:
                 server_addr,
                 '; '.join([str(rr) for rr in query.question]))
 
-        sendto_msg(client, data_to_wire, client_addr)
+        scenario.sendto_msg(client, data_to_wire, client_addr)
         return True
 
     def query_io(self):
@@ -217,7 +169,7 @@ class TestServer:
             to_read, _, to_error = select.select(objects, [], objects, 0.1)
             for sock in to_read:
                 if sock in self.srv_socks:
-                    if (sock.proto == socket.IPPROTO_TCP):
+                    if sock.proto == socket.IPPROTO_TCP:
                         conn, addr = sock.accept()
                         self.connections.append(conn)
                     else:
@@ -255,7 +207,7 @@ class TestServer:
         else:
             raise NotImplementedError("[start_srv] unsupported protocol {0}".format(proto))
 
-        if (self.thread is None):
+        if self.thread is None:
             self.thread = threading.Thread(target=self.query_io)
             self.thread.start()
 
@@ -274,14 +226,88 @@ class TestServer:
         sockname = sock.getsockname()
         return sockname, proto
 
+    def _bind_sockets(self):
+        """
+        Bind test server to port 53 on all addresses referenced by test scenario.
+        """
+        # Bind to test servers
+        for r in self.scenario.ranges:
+            for addr in r.addresses:
+                family = socket.AF_INET6 if ':' in addr else socket.AF_INET
+                self.start_srv((addr, 53), family)
+
+        # Bind addresses in ad-hoc REPLYs
+        for s in self.scenario.steps:
+            if s.type == 'REPLY':
+                reply = s.data[0].message
+                for rr in itertools.chain(reply.answer,
+                                          reply.additional,
+                                          reply.question,
+                                          reply.authority):
+                    for rd in rr:
+                        if rd.rdtype == dns.rdatatype.A:
+                            self.start_srv((rd.address, 53), socket.AF_INET)
+                        elif rd.rdtype == dns.rdatatype.AAAA:
+                            self.start_srv((rd.address, 53), socket.AF_INET6)
+
     def play(self, subject_addr):
         paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
         self.scenario.play({'': (paddr, 53)})
 
-if __name__ == '__main__':
-    # Self-test code
-    # Usage: $PYTHON -m pydnstest.testserver
+
+def empty_test_case():
+    """
+    Return (scenario, config) pair which answers to any query on 127.0.0.10.
+    """
+    # Mirror server
+    entry = scenario.Entry()
+    entry.set_match([])  # match everything
+    entry.set_adjust(['copy_id', 'copy_query'])
+
+    rng = scenario.Range(0, 100)
+    rng.add(entry)
+    rng.addresses.add('127.0.0.10')
+
+    step = scenario.Step(1, 'QUERY', [])
+
+    test_scenario = scenario.Scenario('empty replies')
+    test_scenario.ranges.append(rng)
+    test_scenario.steps.append(step)
+    test_scenario.current_step = step
+
+    test_config = [('stub-addr', '127.0.0.10')]
+
+    return (test_scenario, test_config)
+
+
+def standalone_self_test():
+    """
+    Self-test code
+
+    Usage:
+    LD_PRELOAD=libsocket_wrapper.so SOCKET_WRAPPER_DIR=/tmp $PYTHON -m pydnstest.testserver --help
+    """
     logging.basicConfig(level=logging.DEBUG)
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--scenario', help='path to test scenario',
+                           required=False)
+    argparser.add_argument('--step', help='step # in the scenario (default: first)',
+                           required=False, type=int)
+    args = argparser.parse_args()
+    if args.scenario:
+        test_scenario, test_config = scenario.parse_file(fileinput.input(args.scenario))
+    else:
+        test_scenario, test_config = empty_test_case()
+
+    if args.step:
+        for step in test_scenario.steps:
+            if step.id == args.step:
+                test_scenario.current_step = step
+        if not test_scenario.current_step:
+            raise ValueError('step ID %s not found in scenario' % args.step)
+    else:
+        test_scenario.current_step = test_scenario.steps[0]
+
     DEFAULT_IFACE = 0
     CHILD_IFACE = 0
     if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
@@ -289,9 +315,10 @@ if __name__ == '__main__':
     if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254:
         DEFAULT_IFACE = 10
         os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
-    # Mirror server
-    server = TestServer(None, None, DEFAULT_IFACE)
+
+    server = TestServer(test_scenario, test_config, DEFAULT_IFACE)
     server.start()
+
     logging.info("[==========] Mirror server running at %s", server.address())
     try:
         while True:
@@ -300,3 +327,8 @@ if __name__ == '__main__':
         logging.info("[==========] Shutdown.")
         pass
     server.stop()
+
+
+if __name__ == '__main__':
+    # this is done to avoid creating global variables
+    standalone_self_test()
