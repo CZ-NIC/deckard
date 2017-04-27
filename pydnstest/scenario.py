@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import calendar
 import logging
 import dns.message
 import dns.rrset
@@ -17,6 +18,11 @@ import random
 import string
 import time
 from datetime import datetime
+
+
+def str2bool(v):
+    """ Return conversion of JSON-ish string value to boolean. """
+    return v.lower() in ('yes', 'true', 'on', '1')
 
 
 # Global statistics
@@ -708,7 +714,6 @@ class Scenario:
         self.steps = []
         self.current_step = None
         self.client = {}
-        self.sockfamily = socket.AF_INET
 
     def reply(self, query, address=None):
         """
@@ -916,6 +921,99 @@ def parse_scenario(op, args, file_in):
         if op == 'STEP':
             out.steps.append(parse_step(op, args, file_in))
     return out
+
+
+def parse_config(scn_cfg, qmin, installdir):
+    """
+    Transform scene config (key, value) pairs into dict filled with defaults.
+    """
+    # defaults
+    do_not_query_localhost = True
+    harden_glue = True
+    sockfamily = 0  # auto-select value for socket.getaddrinfo
+    trust_anchor_list = []
+    stub_addr = None
+    override_timestamp = None
+
+    features = {}
+    feature_list_delimiter = ';'
+    feature_pair_delimiter = '='
+
+    for k, v in scn_cfg:
+        # Enable selectively for some tests
+        if k == 'do-not-query-localhost':
+            do_not_query_localhost = str2bool(v)
+        if k == 'harden-glue':
+            harden_glue = str2bool(v)
+        if k == 'query-minimization':
+            qmin = str2bool(v)
+        elif k == 'trust-anchor':
+            trust_anchor_list.append(v.strip('"\''))
+        elif k == 'val-override-timestamp':
+            override_timestamp_str = v.strip('"\'')
+            override_timestamp = int(override_timestamp_str)
+        elif k == 'val-override-date':
+            override_date_str = v.strip('"\'')
+            ovr_yr = override_date_str[0:4]
+            ovr_mnt = override_date_str[4:6]
+            ovr_day = override_date_str[6:8]
+            ovr_hr = override_date_str[8:10]
+            ovr_min = override_date_str[10:12]
+            ovr_sec = override_date_str[12:]
+            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(
+                ovr_yr, ovr_mnt, ovr_day, ovr_hr, ovr_min, ovr_sec)
+            override_date = time.strptime(override_date_str_arg, "%Y %m %d %H %M %S")
+            override_timestamp = calendar.timegm(override_date)
+        elif k == 'stub-addr':
+            stub_addr = v.strip('"\'')
+        elif k == 'features':
+            feature_list = v.split(feature_list_delimiter)
+            try:
+                for f_item in feature_list:
+                    if f_item.find(feature_pair_delimiter) != -1:
+                        f_key, f_value = [x.strip()
+                                          for x
+                                          in f_item.split(feature_pair_delimiter, 1)]
+                    else:
+                        f_key = f_item.strip()
+                        f_value = ""
+                    features[f_key] = f_value
+            except Exception as e:
+                raise Exception("can't parse features (%s) in config section (%s)" % (v, str(e)))
+        elif k == 'feature-list':
+            try:
+                f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
+                if f_key not in features:
+                    features[f_key] = []
+                f_value = f_value.replace("{{INSTALL_DIR}}", installdir)
+                features[f_key].append(f_value)
+            except Exception as e:
+                raise Exception("can't parse feature-list (%s) in config section (%s)"
+                                % (v, str(e)))
+        elif k == 'force-ipv6' and v.upper() == 'TRUE':
+            sockfamily = socket.AF_INET6
+
+    ctx = {
+        "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
+        "FEATURES": features,
+        "HARDEN_GLUE": str(harden_glue).lower(),
+        "INSTALL_DIR": installdir,
+        "QMIN": str(qmin).lower(),
+        "TRUST_ANCHORS": trust_anchor_list,
+    }
+    if stub_addr:
+        ctx['ROOT_ADDR'] = stub_addr
+        # determine and verify socket family for specified root address
+        gai = socket.getaddrinfo(stub_addr, 53, sockfamily, 0,
+                                 socket.IPPROTO_UDP, socket.AI_NUMERICHOST)
+        assert len(gai) == 1
+        sockfamily = gai[0][0]
+    if not sockfamily:
+        sockfamily = socket.AF_INET  # default to IPv4
+    ctx['_SOCKET_FAMILY'] = sockfamily
+    if override_timestamp:
+        ctx['_OVERRIDE_TIMESTAMP'] = override_timestamp
+    return ctx
 
 
 def parse_file(file_in):

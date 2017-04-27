@@ -19,6 +19,7 @@ Deckard requires next software to be installed:
 - Python >= 2.7
 - dnspython_ - DNS library for Python.
 - Jinja2_ - template engine for generating config files.
+- PyYAML_ - YAML parser for Python.
 - `socket_wrapper`_ - a modification of `initial socket_wrapper`_ library (part of the cwrap_ tool set for creating an isolated networks).
 
 It also depends on libfaketime_, but it is embedded as it requires a rather recent version (automatically synchronised with ``make``).
@@ -128,21 +129,18 @@ See `scenario guide <https://gitlab.labs.nic.cz/knot/deckard/blob/master/SCENARI
 Setting up socket wrapper library (cwrap)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Detailed instructions on using cwrap you can read here_
+Detailed instructions on using cwrap you can be found here_
 
-Generally, explicit environment setup for cwrap is not required. 
-When cwrap environment is absent, default values will be used :
+cwrap environment is managed by Deckard. Default values are sufficient, do not touch the environment unless you are trying to debug something. Variables available for direct use are:
 
-- ``SOCKET_WRAPPER_DEFAULT_IFACE`` = 2
-- ``SOCKET_WRAPPER_DIR`` will be created in default temporary directory with 
-  randomly generated name, prefixed by ``/tmp``
-- ``SOCKET_WRAPPER_DEBUGLEVEL`` will not be set
+- ``SOCKET_WRAPPER_DIR`` is a generic working directory. It defaults
+  to a new temporary directory with randomly generated name,
+  prefixed by ``tmpdeckard``. When a test fails, the work directory can contain useful
+  information for post-mortem analysis. You can explicitly set ``SOCKET_WRAPPER_DIR``
+  to a custom path for more convenient analysis.
+- ``SOCKET_WRAPPER_DEBUGLEVEL`` is not set by default.
 
-``SOCKET_WRAPPER_DIR`` can also be used as a work directory for binary under test. When a test 
-fails, the work directory can contain useful information for post-mortem analysis. You can explicitly
-set ``SOCKET_WRAPPER_DIR`` to a custom path for more convenient analysis.
-
-If ``SOCKET_WRAPPER_PCAP_FILE`` contains a path to a writeable file, all the network traffic will be appended to specified file.
+Deckard automatically sets ``SOCKET_WRAPPER_PCAP_FILE`` to create separate PCAP files in working directory for Deckard itself and each daemon. Feel free to inspect them.
 
 Acknowledgments
 ---------------
@@ -153,6 +151,7 @@ The original test case format is described in the `Doxygen documentation <http:/
 .. _cwrap: https://cwrap.org/
 .. _`dnspython`: http://www.dnspython.org/
 .. _Jinja2: http://jinja.pocoo.org/
+.. _`PyYAML`: http://pyyaml.org/
 .. _`socket_wrapper`: https://gitlab.labs.nic.cz/labs/socket_wrapper
 .. _`initial socket_wrapper`: https://cwrap.org/socket_wrapper.html
 .. _Libfaketime: https://github.com/wolfcw/libfaketime

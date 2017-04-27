@@ -19,7 +19,8 @@ kwargs = {
     'packages': ['pydnstest'],
     'install_requires': [
         'dnspython',
-        'jinja2'
+        'jinja2',
+        'PyYAML'
     ],
     'classifiers': [
         "Intended Audience :: Developers",
