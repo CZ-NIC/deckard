@@ -160,6 +160,7 @@ Format
     ENTRY_BEGIN
     MATCH <field list>
     ADJUST <field list>
+    OPCODE <opcode>
     REPLY <flags>
     SECTION <type>
        ...
@@ -196,6 +197,10 @@ Format
   - **copy_id**    - query id and domain name (question section QNAME field) only 
     will be copied from incoming message
   - **copy_query** - whole question section will be copied from incoming message
+
+- **OPCODE** <opcode> - message opcode in text format:
+
+  - **QUERY** (default), **IQUERY**, **STATUS**, **NOTIFY**, **UPDATE**
 
 - **REPLY** <flags> - space-separated list of flags will be set in reply values
   can be used:
