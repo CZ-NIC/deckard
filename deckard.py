@@ -10,15 +10,9 @@ import tempfile
 import shutil
 import socket
 import time
-import signal
-import stat
-import errno
 import jinja2
-import dns.rdatatype
 from pydnstest import scenario, testserver, test
 from datetime import datetime
-import random
-import string
 import yaml
 
 

@@ -11,9 +11,7 @@ import binascii
 import socket
 import struct
 import os
-import sys
 import errno
-import itertools
 import random
 import string
 import time
