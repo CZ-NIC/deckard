@@ -121,3 +121,21 @@ test:python3:latest:kresd:
     - docker
     - linux
     - amd64
+
+# sanity check that Unbound under Deckard still works
+# I've selected the only tests which are working
+# on kresd and Unbound 1.5.8 as well as 1.6.0
+test:python3:sanity:unbound:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - export PYTHON=python3
+    - TESTS=sets/resolver/iter_hint_lame.rpl ./unbound_run.sh
+    - TESTS=sets/resolver/iter_lame_root.rpl ./unbound_run.sh
+    # these do not work with Unbound 1.5.8 which is in CI container
+      #- TESTS=sets/resolver/nsec_wildcard_answer_response.rpl ./unbound_run.sh
+      #- TESTS=sets/resolver/world_cz_lidovky_www.rpl ./unbound_run.sh
+  tags:
+    - docker
+    - linux
+    - amd64

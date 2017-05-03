@@ -29,7 +29,7 @@ The automated download and installation require working Git, make, and a C compi
 Compatibility
 -------------
 
-Works well on Linux, Mac OS X [#]_ and probably all BSDs. Tested with `Knot DNS Resolver`_ and `PowerDNS Recursor`_.
+Works well on Linux, Mac OS X [#]_ and probably all BSDs. Tested with `Knot DNS Resolver`_, `Unbound`_, and `PowerDNS Recursor`_.
 
 .. [#] Python from Homebrew must be used, as the built-in Python is protected by the CSR_ from OS X 10.11 and prevents library injection.
 
@@ -161,3 +161,4 @@ The original test case format is described in the `Doxygen documentation <http:/
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
 .. _here: https://git.samba.org/?p=socket_wrapper.git;a=blob;f=doc/socket_wrapper.1.txt;hb=HEAD
 .. _CSR: http://apple.stackexchange.com/questions/193368/what-is-the-rootless-feature-in-el-capitan-really
+.. _`Unbound`: https://www.unbound.net/
