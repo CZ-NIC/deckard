@@ -210,7 +210,7 @@ def setup_daemon_files(tmpdir, prog_cfg, template_ctx):
     j2template_loader = jinja2.FileSystemLoader(
         searchpath=os.path.dirname(os.path.abspath(__file__)))
     j2template_env = jinja2.Environment(loader=j2template_loader)
-    log.debug('template for program "%s": %s', name, subst)
+    logging.getLogger('deckard.daemon.%s.template' % name).debug(subst)
 
     assert len(prog_cfg['templates']) == len(prog_cfg['configs'])
     for template_name, config_name in zip(prog_cfg['templates'], prog_cfg['configs']):
@@ -315,7 +315,8 @@ def test_platform(*args):
     if sys.platform == 'windows':
         raise NotImplementedError('not supported at all on Windows')
 
-if __name__ == '__main__':
+
+def deckard():
     # auxilitary classes for argparse
     class ColonSplitter(argparse.Action):  # pylint: disable=too-few-public-methods
         """Split argument string into list holding items separated by colon."""
@@ -424,8 +425,13 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Scan for scenarios
-    test = test.Test()
+    testset = test.Test()
     objects = find_objects(args.scenario)
     for path in objects:
-        test.add(path, play_object, args, config)
-    sys.exit(test.run())
+        testset.add(path, play_object, args, config)
+    sys.exit(testset.run())
+
+
+if __name__ == '__main__':
+    # this is done to avoid creating global variables
+    deckard()
