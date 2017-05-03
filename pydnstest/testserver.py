@@ -2,15 +2,16 @@ from __future__ import absolute_import
 
 import argparse
 import fileinput
+import itertools
 import logging
-import threading
+import os
 import select
 import socket
-import os
+import threading
 import time
+
 import dns.message
 import dns.rdatatype
-import itertools
 
 from pydnstest import scenario
 

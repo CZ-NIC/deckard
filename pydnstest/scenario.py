@@ -1,21 +1,22 @@
 from __future__ import absolute_import
 
-import calendar
-import logging
-import dns.message
-import dns.rrset
-import dns.rcode
-import dns.dnssec
-import dns.tsigkeyring
 import binascii
-import socket
-import struct
-import os
-import errno
-import random
-import string
-import time
+import calendar
 from datetime import datetime
+import errno
+import logging
+import os
+import random
+import socket
+import string
+import struct
+import time
+
+import dns.dnssec
+import dns.message
+import dns.rcode
+import dns.rrset
+import dns.tsigkeyring
 
 
 def str2bool(v):

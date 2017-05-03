@@ -1,19 +1,21 @@
 #!/usr/bin/env python
+import argparse
+from datetime import datetime
+import fileinput
 import logging
 import logging.config
-import argparse
-import sys
 import os
-import fileinput
-import subprocess
-import tempfile
 import shutil
 import socket
+import subprocess
+import sys
+import tempfile
 import time
+
 import jinja2
-from pydnstest import scenario, testserver, test
-from datetime import datetime
 import yaml
+
+from pydnstest import scenario, testserver, test
 
 
 # path to Deckard files
