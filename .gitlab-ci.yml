@@ -139,3 +139,18 @@ test:python3:sanity:unbound:
     - docker
     - linux
     - amd64
+
+# sanity check that PowerDNS recursor under Deckard still works
+# I've selected couple tests which are working
+# on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
+test:python3:sanity:pdnsrecursor:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - export PYTHON=python3
+    - TESTS=sets/resolver/iter_recurse.rpl ./pdns_run.sh
+    - TESTS=sets/resolver/iter_tcbit.rpl ./pdns_run.sh
+  tags:
+    - docker
+    - linux
+    - amd64
