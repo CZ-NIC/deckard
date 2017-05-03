@@ -14,15 +14,17 @@ Test cases are written in `scenarios <SCENARIO_GUIDE.rst>`_, that contain:
 Requirements
 ------------
 
-Deckard requires next software to be installed:
+Deckard requires following software to be installed:
 
 - Python >= 2.7
 - dnspython_ - DNS library for Python.
 - Jinja2_ - template engine for generating config files.
 - PyYAML_ - YAML parser for Python.
-- `socket_wrapper`_ - a modification of `initial socket_wrapper`_ library (part of the cwrap_ tool set for creating an isolated networks).
 
-It also depends on libfaketime_, but it is embedded as it requires a rather recent version (automatically synchronised with ``make``).
+Following software will be downloaded and installed automatically during ``make``:
+- libfaketime_ - embedded because Decakrd requires a rather recent version
+- `socket_wrapper`_ - custom modification of `initial socket_wrapper`_ library (part of the cwrap_ tool set for creating an isolated networks).
+The automated download and installation require working Git, make, and a C compiler.
 
 Compatibility
 -------------
