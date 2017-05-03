@@ -115,7 +115,7 @@ class TestServer:
             for sock in to_read:
                 if sock in self.srv_socks:
                     if sock.proto == socket.IPPROTO_TCP:
-                        conn, addr = sock.accept()
+                        conn, _ = sock.accept()
                         self.connections.append(conn)
                     else:
                         self.handle_query(sock)

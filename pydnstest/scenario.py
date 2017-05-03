@@ -153,7 +153,6 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
             msg.want_dnssec(True)
         queries.append(msg.to_wire())
     # Make a UDP connected socket to the destination
-    tstart = datetime.now()
     family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
     sock = socket.socket(family, socket.SOCK_DGRAM)
     sock.connect(destination)
@@ -283,7 +282,7 @@ class Entry:
             match_fields += ['flags'] + ['rcode'] + self.sections
         for code in match_fields:
             try:
-                res = self.match_part(code, msg)
+                self.match_part(code, msg)
             except Exception as e:
                 errstr = '%s in the response:\n%s' % (str(e), msg.to_text())
                 raise Exception("line %d, \"%s\": %s" % (self.lineno, code, errstr))
@@ -368,9 +367,9 @@ class Entry:
                 opts.append(dns.edns.GenericOption(dns.edns.NSID, '' if v is True else v))
             if k.lower() == 'subnet':
                 net = v.split('/')
-                family = socket.AF_INET6 if ':' in net[0] else socket.AF_INET
                 subnet_addr = net[0]
-                addr = socket.inet_pton(family, net[0])
+                family = socket.AF_INET6 if ':' in subnet_addr else socket.AF_INET
+                addr = socket.inet_pton(family, subnet_addr)
                 prefix = len(addr) * 8
                 if len(net) > 1:
                     prefix = int(net[1])
@@ -483,7 +482,7 @@ class Range:
                 self.sent += 1
                 candidate.fired += 1
                 return resp
-            except Exception as e:
+            except Exception:
                 pass
         return None
 
