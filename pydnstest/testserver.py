@@ -15,26 +15,6 @@ import itertools
 from pydnstest import scenario
 
 
-def get_local_addr_str(family, iface):
-    """ Returns pattern string for localhost address  """
-    if family == socket.AF_INET:
-        addr_local_pattern = "127.0.0.{}"
-    elif family == socket.AF_INET6:
-        addr_local_pattern = "fd00::5357:5f{:02X}"
-    else:
-        raise NotImplementedError("[get_local_addr_str] family not supported '%i'" % family)
-    return addr_local_pattern.format(int(iface))
-
-
-class AddrMapInfo:
-    """ Saves mapping info between adresses from rpl and cwrap adresses """
-
-    def __init__(self, family, local, external):
-        self.family = family
-        self.local = local
-        self.external = external
-
-
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
@@ -81,16 +61,6 @@ class TestServer:
         self.srv_socks = []
         self.connections = []
         self.scenario = None
-
-    def check_family(self, addr, family):
-        """ Determines if address matches family """
-        test_addr = None
-        try:
-            n = socket.inet_pton(family, addr)
-            test_addr = socket.inet_ntop(family, n)
-        except socket.error:
-            return False
-        return True
 
     def address(self):
         """ Returns opened sockets list """
