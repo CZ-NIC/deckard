@@ -561,7 +561,7 @@ class Step:
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES':
             self.log.info('')
-            return self.__time_passes(ctx)
+            return self.__time_passes()
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
         elif self.type == 'LOG':
@@ -589,7 +589,7 @@ class Step:
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __replay(self, ctx, chunksize=8):
+    def __replay(self, ctx):
         nqueries = len(self.queries)
         if len(self.args) > 0 and self.args[0].isdigit():
             nqueries = int(self.args.pop(0))
@@ -675,7 +675,7 @@ class Step:
             self.answer = None
         ctx.last_answer = self.answer
 
-    def __time_passes(self, ctx):
+    def __time_passes(self):
         """ Modify system time. """
         time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'r')
         line = time_file.readline().strip()

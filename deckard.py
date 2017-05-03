@@ -195,7 +195,7 @@ def _fixme_prebind_hack(sockfamily, childaddr):
                 sock.listen(5)
 
 
-def setup_daemon_files(tmpdir, prog_cfg, template_ctx):
+def setup_daemon_files(prog_cfg, template_ctx):
     name = prog_cfg['name']
     # add program-specific variables
     subst = template_ctx.copy()
@@ -278,7 +278,7 @@ def play_object(path, args, prog_cfgs):
     daemons = []
     for prog_cfg in prog_cfgs['programs']:
         daemon_env = setup_daemon_env(prog_cfg, tmpdir)
-        setup_daemon_files(tmpdir, prog_cfg, template_ctx)
+        setup_daemon_files(prog_cfg, template_ctx)
         daemon_proc = run_daemon(prog_cfg, daemon_env)
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
@@ -311,7 +311,7 @@ def play_object(path, args, prog_cfgs):
         raise ValueError('the scenario does not define all necessary answers (see error log)')
 
 
-def test_platform(*args):
+def test_platform():
     if sys.platform == 'windows':
         raise NotImplementedError('not supported at all on Windows')
 
