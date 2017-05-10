@@ -1,22 +1,27 @@
 from __future__ import absolute_import
 
-import logging
-import dns.message
-import dns.rrset
-import dns.rcode
-import dns.dnssec
-import dns.tsigkeyring
 import binascii
-import socket
-import struct
-import os
-import sys
-import errno
-import itertools
-import random
-import string
-import time
+import calendar
 from datetime import datetime
+import errno
+import logging
+import os
+import random
+import socket
+import string
+import struct
+import time
+
+import dns.dnssec
+import dns.message
+import dns.rcode
+import dns.rrset
+import dns.tsigkeyring
+
+
+def str2bool(v):
+    """ Return conversion of JSON-ish string value to boolean. """
+    return v.lower() in ('yes', 'true', 'on', '1')
 
 
 # Global statistics
@@ -147,7 +152,6 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
             msg.want_dnssec(True)
         queries.append(msg.to_wire())
     # Make a UDP connected socket to the destination
-    tstart = datetime.now()
     family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
     sock = socket.socket(family, socket.SOCK_DGRAM)
     sock.connect(destination)
@@ -277,7 +281,7 @@ class Entry:
             match_fields += ['flags'] + ['rcode'] + self.sections
         for code in match_fields:
             try:
-                res = self.match_part(code, msg)
+                self.match_part(code, msg)
             except Exception as e:
                 errstr = '%s in the response:\n%s' % (str(e), msg.to_text())
                 raise Exception("line %d, \"%s\": %s" % (self.lineno, code, errstr))
@@ -362,9 +366,9 @@ class Entry:
                 opts.append(dns.edns.GenericOption(dns.edns.NSID, '' if v is True else v))
             if k.lower() == 'subnet':
                 net = v.split('/')
-                family = socket.AF_INET6 if ':' in net[0] else socket.AF_INET
                 subnet_addr = net[0]
-                addr = socket.inet_pton(family, net[0])
+                family = socket.AF_INET6 if ':' in subnet_addr else socket.AF_INET
+                addr = socket.inet_pton(family, subnet_addr)
                 prefix = len(addr) * 8
                 if len(net) > 1:
                     prefix = int(net[1])
@@ -477,7 +481,7 @@ class Range:
                 self.sent += 1
                 candidate.fired += 1
                 return resp
-            except Exception as e:
+            except Exception:
                 pass
         return None
 
@@ -555,7 +559,7 @@ class Step:
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES':
             self.log.info('')
-            return self.__time_passes(ctx)
+            return self.__time_passes()
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
         elif self.type == 'LOG':
@@ -583,7 +587,7 @@ class Step:
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __replay(self, ctx, chunksize=8):
+    def __replay(self, ctx):
         nqueries = len(self.queries)
         if len(self.args) > 0 and self.args[0].isdigit():
             nqueries = int(self.args.pop(0))
@@ -669,7 +673,7 @@ class Step:
             self.answer = None
         ctx.last_answer = self.answer
 
-    def __time_passes(self, ctx):
+    def __time_passes(self):
         """ Modify system time. """
         time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'r')
         line = time_file.readline().strip()
@@ -708,7 +712,6 @@ class Scenario:
         self.steps = []
         self.current_step = None
         self.client = {}
-        self.sockfamily = socket.AF_INET
 
     def reply(self, query, address=None):
         """
@@ -916,6 +919,99 @@ def parse_scenario(op, args, file_in):
         if op == 'STEP':
             out.steps.append(parse_step(op, args, file_in))
     return out
+
+
+def parse_config(scn_cfg, qmin, installdir):
+    """
+    Transform scene config (key, value) pairs into dict filled with defaults.
+    """
+    # defaults
+    do_not_query_localhost = True
+    harden_glue = True
+    sockfamily = 0  # auto-select value for socket.getaddrinfo
+    trust_anchor_list = []
+    stub_addr = None
+    override_timestamp = None
+
+    features = {}
+    feature_list_delimiter = ';'
+    feature_pair_delimiter = '='
+
+    for k, v in scn_cfg:
+        # Enable selectively for some tests
+        if k == 'do-not-query-localhost':
+            do_not_query_localhost = str2bool(v)
+        if k == 'harden-glue':
+            harden_glue = str2bool(v)
+        if k == 'query-minimization':
+            qmin = str2bool(v)
+        elif k == 'trust-anchor':
+            trust_anchor_list.append(v.strip('"\''))
+        elif k == 'val-override-timestamp':
+            override_timestamp_str = v.strip('"\'')
+            override_timestamp = int(override_timestamp_str)
+        elif k == 'val-override-date':
+            override_date_str = v.strip('"\'')
+            ovr_yr = override_date_str[0:4]
+            ovr_mnt = override_date_str[4:6]
+            ovr_day = override_date_str[6:8]
+            ovr_hr = override_date_str[8:10]
+            ovr_min = override_date_str[10:12]
+            ovr_sec = override_date_str[12:]
+            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(
+                ovr_yr, ovr_mnt, ovr_day, ovr_hr, ovr_min, ovr_sec)
+            override_date = time.strptime(override_date_str_arg, "%Y %m %d %H %M %S")
+            override_timestamp = calendar.timegm(override_date)
+        elif k == 'stub-addr':
+            stub_addr = v.strip('"\'')
+        elif k == 'features':
+            feature_list = v.split(feature_list_delimiter)
+            try:
+                for f_item in feature_list:
+                    if f_item.find(feature_pair_delimiter) != -1:
+                        f_key, f_value = [x.strip()
+                                          for x
+                                          in f_item.split(feature_pair_delimiter, 1)]
+                    else:
+                        f_key = f_item.strip()
+                        f_value = ""
+                    features[f_key] = f_value
+            except Exception as e:
+                raise Exception("can't parse features (%s) in config section (%s)" % (v, str(e)))
+        elif k == 'feature-list':
+            try:
+                f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
+                if f_key not in features:
+                    features[f_key] = []
+                f_value = f_value.replace("{{INSTALL_DIR}}", installdir)
+                features[f_key].append(f_value)
+            except Exception as e:
+                raise Exception("can't parse feature-list (%s) in config section (%s)"
+                                % (v, str(e)))
+        elif k == 'force-ipv6' and v.upper() == 'TRUE':
+            sockfamily = socket.AF_INET6
+
+    ctx = {
+        "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
+        "FEATURES": features,
+        "HARDEN_GLUE": str(harden_glue).lower(),
+        "INSTALL_DIR": installdir,
+        "QMIN": str(qmin).lower(),
+        "TRUST_ANCHORS": trust_anchor_list,
+    }
+    if stub_addr:
+        ctx['ROOT_ADDR'] = stub_addr
+        # determine and verify socket family for specified root address
+        gai = socket.getaddrinfo(stub_addr, 53, sockfamily, 0,
+                                 socket.IPPROTO_UDP, socket.AI_NUMERICHOST)
+        assert len(gai) == 1
+        sockfamily = gai[0][0]
+    if not sockfamily:
+        sockfamily = socket.AF_INET  # default to IPv4
+    ctx['_SOCKET_FAMILY'] = sockfamily
+    if override_timestamp:
+        ctx['_OVERRIDE_TIMESTAMP'] = override_timestamp
+    return ctx
 
 
 def parse_file(file_in):

@@ -2,43 +2,24 @@ from __future__ import absolute_import
 
 import argparse
 import fileinput
+import itertools
 import logging
-import threading
+import os
 import select
 import socket
-import os
+import threading
 import time
+
 import dns.message
 import dns.rdatatype
-import itertools
 
 from pydnstest import scenario
-
-
-def get_local_addr_str(family, iface):
-    """ Returns pattern string for localhost address  """
-    if family == socket.AF_INET:
-        addr_local_pattern = "127.0.0.{}"
-    elif family == socket.AF_INET6:
-        addr_local_pattern = "fd00::5357:5f{:02X}"
-    else:
-        raise NotImplementedError("[get_local_addr_str] family not supported '%i'" % family)
-    return addr_local_pattern.format(iface)
-
-
-class AddrMapInfo:
-    """ Saves mapping info between adresses from rpl and cwrap adresses """
-
-    def __init__(self, family, local, external):
-        self.family = family
-        self.local = local
-        self.external = external
 
 
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, test_scenario, config, d_iface):
+    def __init__(self, test_scenario, root_addr, addr_family):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -46,14 +27,11 @@ class TestServer:
         self.connections = []
         self.active = False
         self.scenario = test_scenario
-        self.config = config
         self.addr_map = []
         self.start_iface = 2
         self.cur_iface = self.start_iface
-        self.kroot_local = None
-        self.addr_family = None
-        self.default_iface = d_iface
-        self.set_initial_address()
+        self.kroot_local = root_addr
+        self.addr_family = addr_family
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -84,38 +62,6 @@ class TestServer:
         self.srv_socks = []
         self.connections = []
         self.scenario = None
-
-    def check_family(self, addr, family):
-        """ Determines if address matches family """
-        test_addr = None
-        try:
-            n = socket.inet_pton(family, addr)
-            test_addr = socket.inet_ntop(family, n)
-        except socket.error:
-            return False
-        return True
-
-    def set_initial_address(self):
-        """ Set address for starting thread """
-        if self.config is None:
-            self.addr_family = socket.AF_INET
-            self.kroot_local = get_local_addr_str(self.addr_family, self.default_iface)
-            return
-        # Default address is localhost
-        kroot_addr = None
-        for k, v in self.config:
-            if k == 'stub-addr':
-                kroot_addr = v
-        if kroot_addr is not None:
-            if self.check_family(kroot_addr, socket.AF_INET):
-                self.addr_family = socket.AF_INET
-                self.kroot_local = kroot_addr
-            elif self.check_family(kroot_addr, socket.AF_INET6):
-                self.addr_family = socket.AF_INET6
-                self.kroot_local = kroot_addr
-        else:
-            self.addr_family = socket.AF_INET
-            self.kroot_local = get_local_addr_str(self.addr_family, self.default_iface)
 
     def address(self):
         """ Returns opened sockets list """
@@ -170,7 +116,7 @@ class TestServer:
             for sock in to_read:
                 if sock in self.srv_socks:
                     if sock.proto == socket.IPPROTO_TCP:
-                        conn, addr = sock.accept()
+                        conn, _ = sock.accept()
                         self.connections.append(conn)
                     else:
                         self.handle_query(sock)
@@ -184,20 +130,18 @@ class TestServer:
             for sock in to_error:
                 raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
 
-    def start_srv(self, address=None, family=socket.AF_INET, proto=socket.IPPROTO_UDP):
+    def start_srv(self, address, family, proto=socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
+        assert address
+        assert address[0]  # host
+        assert address[1]  # port
         assert family
         assert proto
-        if family == socket.AF_INET:
-            if address[0] is None:
-                address = (get_local_addr_str(family, self.default_iface), 53)
-        elif family == socket.AF_INET6:
-            if socket.has_ipv6 is not True:
+        if family == socket.AF_INET6:
+            if not socket.has_ipv6:
                 raise NotImplementedError("[start_srv] IPv6 is not supported by socket {0}"
                                           .format(socket))
-            if address[0] is None:
-                address = (get_local_addr_str(family, self.default_iface), 53)
-        else:
+        elif family != socket.AF_INET:
             raise NotImplementedError("[start_srv] unsupported protocol family {0}".format(family))
 
         if proto == socket.IPPROTO_TCP:
@@ -251,8 +195,7 @@ class TestServer:
                             self.start_srv((rd.address, 53), socket.AF_INET6)
 
     def play(self, subject_addr):
-        paddr = get_local_addr_str(self.scenario.sockfamily, subject_addr)
-        self.scenario.play({'': (paddr, 53)})
+        self.scenario.play({'': (subject_addr, 53)})
 
 
 def empty_test_case():
@@ -275,7 +218,8 @@ def empty_test_case():
     test_scenario.steps.append(step)
     test_scenario.current_step = step
 
-    test_config = [('stub-addr', '127.0.0.10')]
+    test_config = {'ROOT_ADDR': '127.0.0.10',
+                   '_SOCKET_FAMILY': socket.AF_INET}
 
     return (test_scenario, test_config)
 
@@ -295,7 +239,8 @@ def standalone_self_test():
                            required=False, type=int)
     args = argparser.parse_args()
     if args.scenario:
-        test_scenario, test_config = scenario.parse_file(fileinput.input(args.scenario))
+        test_scenario, test_config_text = scenario.parse_file(fileinput.input(args.scenario))
+        test_config = scenario.parse_config(test_config_text, True, os.getcwd())
     else:
         test_scenario, test_config = empty_test_case()
 
@@ -308,15 +253,7 @@ def standalone_self_test():
     else:
         test_scenario.current_step = test_scenario.steps[0]
 
-    DEFAULT_IFACE = 0
-    CHILD_IFACE = 0
-    if "SOCKET_WRAPPER_DEFAULT_IFACE" in os.environ:
-        DEFAULT_IFACE = int(os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"])
-    if DEFAULT_IFACE < 2 or DEFAULT_IFACE > 254:
-        DEFAULT_IFACE = 10
-        os.environ["SOCKET_WRAPPER_DEFAULT_IFACE"] = "{}".format(DEFAULT_IFACE)
-
-    server = TestServer(test_scenario, test_config, DEFAULT_IFACE)
+    server = TestServer(test_scenario, test_config['ROOT_ADDR'], test_config['_SOCKET_FAMILY'])
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())

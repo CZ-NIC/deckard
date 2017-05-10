@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 import logging
-import os
-import time
 
 
 class Test:
@@ -11,9 +9,9 @@ class Test:
     def __init__(self):
         self.tests = []
 
-    def add(self, name, test, args):
+    def add(self, name, test, args, config):
         """ Add named test to set. """
-        self.tests.append((name, test, args))
+        self.tests.append((name, test, args, config))
 
     def run(self):
         """ Run planned tests. """
@@ -22,9 +20,9 @@ class Test:
         if planned == 0:
             return
 
-        for name, test_callback, args in self.tests:
+        for name, test_callback, args, config in self.tests:
             try:
-                test_callback(name, args)
+                test_callback(name, args, config)
                 passed += 1
                 self.log.info('[  OK  ] %s', name)
             except Exception as e:
