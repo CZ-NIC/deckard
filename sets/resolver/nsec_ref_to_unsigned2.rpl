@@ -34,6 +34,18 @@ com.	IN NS	a.gtld-servers.net.
 SECTION ADDITIONAL
 a.gtld-servers.net.		IN A		192.5.6.30
 ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+net. IN A
+SECTION AUTHORITY
+net.	IN NS	e.gtld-servers.net.
+SECTION ADDITIONAL
+e.gtld-servers.net.	IN 	A	192.12.94.30
+ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
@@ -61,6 +73,77 @@ SECTION AUTHORITY
 example.com.			IN NS		ns.example.com.
 SECTION ADDITIONAL
 ns.example.com.			IN A		1.2.3.4
+ENTRY_END
+RANGE_END
+
+; e.gtld-servers.net.
+RANGE_BEGIN 0 100
+	ADDRESS 192.12.94.30
+; net.
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION ANSWER
+net.	IN NS	e.gtld-servers.net.
+SECTION ADDITIONAL
+e.gtld-servers.net.	IN 	A	192.12.94.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	IN 	A
+SECTION ANSWER
+a.gtld-servers.net.	IN 	A	192.5.6.30
+SECTION ADDITIONAL
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	IN 	AAAA
+SECTION AUTHORITY
+gtld-servers.net.	IN	SOA	. . 0 0 0 0 0
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+e.gtld-servers.net.	IN 	A
+SECTION ANSWER
+e.gtld-servers.net.	IN 	A	192.12.94.30
+SECTION ADDITIONAL
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+e.gtld-servers.net.	IN 	AAAA
+SECTION AUTHORITY
+gtld-servers.net.	IN	SOA	. . 0 0 0 0 0
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+gtld-servers.net. IN NS
+SECTION ANSWER
+gtld-servers.net.	IN NS	a.gtld-servers.net.
+SECTION ADDITIONAL
+a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 RANGE_END
 
@@ -99,21 +182,6 @@ ns.example.com.		3600 	IN A		1.2.3.4
 ns.example.com.		3600	IN RRSIG	A 10 3 3600 20251231235959 20160308093040 2843 example.com. VSq+DkxJYr9Z+uh3KgpyPNwtuim4WVXnTdhRW7HX90CP5tyOVjDDTehA UmCxB8iFjUFE3hlwDx0Y71g+8Oso1t0JGkvDtWf5RDx1w+4K/1pQ2JMG lZTh7juaGJzXtltxqBoY67z1FBp9MI59O0hkABtz1CElj9LrhDr9wQa4 OUo=
 ENTRY_END
 
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR NOERROR
-SECTION QUESTION
-a.sub.example.com.		IN A
-SECTION AUTHORITY
-sub.example.com.	3600	IN NS		ns.sub.example.com.
-; no ds, no nsec
-;sub.example.com.	3600	IN NSEC		example.com. NS RRSIG NSEC
-;sub.example.com.	3600	IN RRSIG	NSEC 10 3 18000 20251231235959 20160308093040 2843 example.com. extoqd9mqaALMQf5kY5deuxZDL6INjsEKEUSfDibHTEAdNxfnmOJ9wcf hfpQfmgFLUAHsN0V/YB8qq6JhzkEkMV9f7BI/nZpuKCbSHo4ZOEUTflX mGM+VRBQc8gb25K03N0nwb6AvueSVA1PRizrRpQm/wvVWfDNZ+rM/lO6 +i4=
-SECTION ADDITIONAL
-ns.sub.example.com.	3600	IN A		1.2.3.10
-ENTRY_END
-
 ; response to DNSKEY priming query
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -145,6 +213,21 @@ example.com.		3600	IN SOA		ns.example.com. hostmaster.example.com. 2016022600 28
 example.com.		3600	IN RRSIG	SOA 10 2 3600 20251231235959 20160308093040 2843 example.com. s3pCq6ZK3DEUkWYX3XKvr5v9Z4AhbJ4P7/AKQkhe3zymnTba7Bo5Uhmb Vav/A+u8gsoo9yBumReXLAv047btO+jdCOLD/yXvmaSt/yGGcipFoX6r 4kQWzUHby4NlQEdO3YykiZx7FtCGsMp0cfwPae4glkDsAPnIhhQurzzE VP4=
 sub.example.com.	3600	IN NSEC		example.com. NS RRSIG NSEC
 sub.example.com.	3600	IN RRSIG	NSEC 10 3 18000 20251231235959 20160308093040 2843 example.com. extoqd9mqaALMQf5kY5deuxZDL6INjsEKEUSfDibHTEAdNxfnmOJ9wcf hfpQfmgFLUAHsN0V/YB8qq6JhzkEkMV9f7BI/nZpuKCbSHo4ZOEUTflX mGM+VRBQc8gb25K03N0nwb6AvueSVA1PRizrRpQm/wvVWfDNZ+rM/lO6 +i4=
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+sub.example.com.		IN A
+SECTION AUTHORITY
+sub.example.com.	3600	IN NS		ns.sub.example.com.
+; no ds, no nsec
+;sub.example.com.	3600	IN NSEC		example.com. NS RRSIG NSEC
+;sub.example.com.	3600	IN RRSIG	NSEC 10 3 18000 20251231235959 20160308093040 2843 example.com. extoqd9mqaALMQf5kY5deuxZDL6INjsEKEUSfDibHTEAdNxfnmOJ9wcf hfpQfmgFLUAHsN0V/YB8qq6JhzkEkMV9f7BI/nZpuKCbSHo4ZOEUTflX mGM+VRBQc8gb25K03N0nwb6AvueSVA1PRizrRpQm/wvVWfDNZ+rM/lO6 +i4=
+SECTION ADDITIONAL
+ns.sub.example.com.	3600	IN A		1.2.3.10
 ENTRY_END
 RANGE_END
 
