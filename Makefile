@@ -45,7 +45,7 @@ depend: $(libfaketime) $(libcwrap)
 # Generic rule to run test
 $(SOURCES): depend
 %.out: %.rpl
-	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- -f 1 $(ADDITIONAL)
+	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
 
 # Synchronize submodules
 submodules: .gitmodules

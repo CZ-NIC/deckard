@@ -3,6 +3,8 @@
 
 REALPATH=$(command -v realpath)
 
+ADDITIONAL="-f 1"
+
 if [ -n "${REALPATH}" ]; then
     DECKARD_ROOT="$(dirname "$(realpath "${0}")")/"
 else
@@ -11,7 +13,7 @@ fi
 
 if [ -n "${1}" ]; then
     BUILD_ROOT="${1}/"
-    export ADDITIONAL="-m ${BUILD_ROOT}"
+    ADDITIONAL="${ADDITIONAL} -m \"${BUILD_ROOT}\""
 else
     BUILD_ROOT=""
 fi
@@ -22,9 +24,12 @@ else
     SOURCE_ROOT=""
 fi
 
+export ADDITIONAL
+
 echo "Deckard root: ${DECKARD_ROOT}"
 echo "Source root:  ${SOURCE_ROOT}"
 echo "Build root:   ${BUILD_ROOT}"
+echo "Additional:   ${ADDITIONAL}"
 
 export TESTS="${TESTS:-sets/resolver}"
 export DAEMON="${DAEMON:-${BUILD_ROOT}kresd}"
