@@ -11,6 +11,7 @@ fi
 
 if [ -n "${1}" ]; then
     BUILD_ROOT="${1}/"
+    export ADDITIONAL="-m ${BUILD_ROOT}"
 else
     BUILD_ROOT=""
 fi
