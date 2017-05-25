@@ -1,7 +1,13 @@
 #!/bin/bash -x
 #set -o errexit -o nounset
 
-DECKARD_ROOT="$(dirname "$(readlink -f "${0}")")/"
+REALPATH=$(command -v realpath)
+
+if [ -n "${REALPATH}" ]; then
+    DECKARD_ROOT="$(dirname "$(realpath "${0}")")/"
+else
+    DECKARD_ROOT="$(dirname "${0}")"
+fi
 
 if [ -n "${1}" ]; then
     BUILD_ROOT="${1}/"
