@@ -1,24 +1,32 @@
-#!/bin/bash
-set -o errexit -o nounset
+#!/bin/bash -x
+#set -o errexit -o nounset
 
-# Path to scenario files
-TESTS=${TESTS:-"sets/resolver"}
+DECKARD_ROOT="$(dirname "$(readlink -f "${0}")")/"
 
-# Path to daemon
-DAEMON=${DAEMON:-"kresd"}
+if [ -n "${1}" ]; then
+    BUILD_ROOT="${1}/"
+else
+    BUILD_ROOT=""
+fi
 
-# Template file name
-TEMPLATE=${TEMPLATE:-"template/kresd.j2"}
+if [ -n "${2}" ]; then
+    SOURCE_ROOT="${2}/"
+else
+    SOURCE_ROOT=""
+fi
 
-# Config file name
-CONFIG=${CONFIG:-"config"}
+echo "Deckard root: ${DECKARD_ROOT}"
+echo "Source root:  ${SOURCE_ROOT}"
+echo "Build root:   ${BUILD_ROOT}"
 
-export TESTS DAEMON TEMPLATE CONFIG
+export TESTS="${TESTS:-sets/resolver}"
+export DAEMON="${DAEMON:-${BUILD_ROOT}kresd}"
+export TEMPLATE="${TEMPLATE:-template/kresd.j2}"
+export CONFIG="${CONFIG:-config}"
 
-MAKEDIR="$(dirname "$(readlink -f "$0")")"
 echo '=== Testing WITH query minimization ==='
 export QMIN="true"
-make -C "${MAKEDIR}"
+make -C "${DECKARD_ROOT}"
 echo '=== Testing WITHOUT query minimization ==='
 export QMIN="false"
-make -C "${MAKEDIR}"
+make -C "${DECKARD_ROOT}"
