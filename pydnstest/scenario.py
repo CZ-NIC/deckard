@@ -52,7 +52,7 @@ def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
         pass  # optional
     rdtype = args.pop(0)
     rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
-    if len(args) > 0:
+    if args:
         if rr.rdtype == dns.rdatatype.DS:
             # convert textual algorithm identifier to number
             args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
@@ -103,14 +103,14 @@ def recvfrom_msg(stream, raw=False):
         data, addr = stream.recvfrom(4096)
     elif stream.type & socket.SOCK_STREAM:
         data = stream.recv(2)
-        if len(data) == 0:
+        if not data:
             return None, None
         msg_len = struct.unpack_from("!H", data)[0]
         data = b""
         received = 0
         while received < msg_len:
             next_chunk = stream.recv(4096)
-            if len(next_chunk) == 0:
+            if not next_chunk:
                 return None, None
             data += next_chunk
             received += len(next_chunk)
@@ -168,7 +168,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
     import select
     while nsent - nwait < nqueries:
         to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.5)
-        if len(to_write) > 0:
+        if to_write:
             try:
                 while nsent < nqueries and nwait < chunksize:
                     sock.send(queries[nsent % navail])
@@ -176,7 +176,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
                     nsent += 1
             except socket.error:
                 pass  # EINVAL
-        if len(to_read) > 0:
+        if to_read:
             try:
                 while nwait > 0:
                     sock.recv_into(rcvbuf)
@@ -184,7 +184,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
                     nrcvd += 1
             except socket.error:
                 pass
-        if len(to_write) == 0 and len(to_read) == 0:
+        if not to_write and not to_read:
             nwait = 0  # Timeout, started dropping packets
             break
     return nsent, nrcvd
@@ -281,7 +281,7 @@ class Entry:
                 rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
                 if section_name != "question":
                     rd = record['/data'].value.split()
-                    if len(rd) > 0:
+                    if rd:
                         if rdtype == dns.rdatatype.DS:
                             rd[1] = str(dns.dnssec.algorithm_from_text(rd[1]))
                         rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
@@ -334,18 +334,18 @@ class Entry:
         if code == 'opcode':
             return compare_val(expected.opcode(), msg.opcode())
         elif code == 'qtype':
-            if len(expected.question) == 0:
+            if not expected.question:
                 return True
             return compare_val(expected.question[0].rdtype, msg.question[0].rdtype)
         elif code == 'qname':
-            if len(expected.question) == 0:
+            if not expected.question:
                 return True
             qname = dns.name.from_text(msg.question[0].name.to_text().lower())
             return compare_val(expected.question[0].name, qname)
         elif code == 'qcase':
             return compare_val(msg.question[0].name.labels, expected.question[0].name.labels)
         elif code == 'subdomain':
-            if len(expected.question) == 0:
+            if not expected.question:
                 return True
             qname = dns.name.from_text(msg.question[0].name.to_text().lower())
             return compare_sub(expected.question[0].name, qname)
@@ -420,7 +420,7 @@ class Entry:
         if 'copy_id' in self.adjust_fields:
             answer.id = query.id
             # Copy letter-case if the template has QD
-            if len(answer.question) > 0:
+            if answer.question:
                 answer.question[0].name = query.question[0].name
         if 'copy_query' in self.adjust_fields:
             answer.question = query.question
@@ -437,9 +437,9 @@ class Entry:
         """ Set EDNS version and bufsize. """
         version = 0
         bufsize = 4096
-        if len(fields) > 0 and fields[0].isdigit():
+        if fields and fields[0].isdigit():
             version = int(fields.pop(0))
-        if len(fields) > 0 and fields[0].isdigit():
+        if fields and fields[0].isdigit():
             bufsize = int(fields.pop(0))
         if bufsize == 0:
             self.message.use_edns(False)
@@ -636,7 +636,7 @@ class Step:
 
     def __check_answer(self, ctx):
         """ Compare answer from previously resolved query. """
-        if len(self.data) == 0:
+        if not self.data:
             raise Exception("response definition required")
         expected = self.data[0]
         if expected.is_raw_data_entry is True:
@@ -677,14 +677,14 @@ class Step:
 
         The received answer is stored in self.answer and ctx.last_answer.
         """
-        if len(self.data) == 0:
+        if not self.data:
             raise Exception("query definition required")
         if self.data[0].is_raw_data_entry is True:
             data_to_wire = self.data[0].raw_data
         else:
             # Don't use a message copy as the EDNS data portion is not copied.
             data_to_wire = self.data[0].message.to_wire()
-        if choice is None or len(choice) == 0:
+        if choice is None or not choice:
             choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
             raise Exception('step %03d invalid QUERY target: %s' % (self.id, choice))
@@ -847,7 +847,7 @@ class Scenario:
                     if step.next_if_fail != -1:
                         next_steps = [j for j in range(len(self.steps)) if self.steps[
                             j].id == step.next_if_fail]
-                        if len(next_steps) == 0:
+                        if not next_steps:
                             raise Exception('step %d: wrong NEXT value "%d"' %
                                             (step.id, step.next_if_fail))
                         next_step = next_steps[0]
@@ -872,7 +872,7 @@ def get_next(file_in, skip_empty=True):
     """ Return next token from the input stream. """
     while True:
         line = file_in.readline()
-        if len(line) == 0:
+        if not line:
             return False
         quoted, escaped = False, False
         for i in range(len(line)):
@@ -886,7 +886,7 @@ def get_next(file_in, skip_empty=True):
             if line[i] != '\\':
                 escaped = False
         tokens = ' '.join(line.strip().split()).split()
-        if len(tokens) == 0:
+        if not tokens:
             if skip_empty:
                 continue
             else:

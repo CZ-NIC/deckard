@@ -117,7 +117,7 @@ class AugeasWrapper(object):
     def match(self, path):
         """Yield AugeasNodes matching given expression."""
         assert self._loaded
-        assert len(path) > 0
+        assert path
         log.debug('tree match %s', path)
         for matched_path in self._aug.match(path):
             yield AugeasNode(self._aug, matched_path)
