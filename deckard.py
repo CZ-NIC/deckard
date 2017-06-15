@@ -249,7 +249,7 @@ def conncheck_daemon(process, cfg, sockfamily):
             raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
         try:
             sock.connect((cfg['ipaddr'], 53))
-        except:
+        except socket.error:
             continue
         break
     sock.close()

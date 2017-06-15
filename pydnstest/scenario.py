@@ -43,12 +43,12 @@ def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
     try:
         ttl = dns.ttl.from_text(args[0])
         args.pop(0)
-    except:
+    except dns.ttl.BadTTL:
         pass  # optional
     try:
         rdclass = dns.rdataclass.from_text(args[0])
         args.pop(0)
-    except:
+    except ValueError:
         pass  # optional
     rdtype = args.pop(0)
     rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
@@ -134,9 +134,10 @@ def sendto_msg(stream, message, addr=None):
             data = struct.pack("!H", len(message)) + message
             stream.send(data)
         else:
-            assert False, "[sendto_msg]: unknown socket type '%i'" % stream.type
-    except:  # Failure to respond is OK, resolver should recover
-        pass
+            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % stream.type)
+    except socket.error as ex:
+        if ex.errno != errno.ECONNREFUSED:  # TODO Investigate how this can happen
+            raise
 
 
 def replay_rrs(rrs, nqueries, destination, args=[]):
@@ -173,7 +174,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
                     sock.send(queries[nsent % navail])
                     nwait += 1
                     nsent += 1
-            except:
+            except socket.error:
                 pass  # EINVAL
         if len(to_read) > 0:
             try:
@@ -181,7 +182,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
                     sock.recv_into(rcvbuf)
                     nwait -= 1
                     nrcvd += 1
-            except:
+            except socket.error:
                 pass
         if len(to_write) == 0 and len(to_read) == 0:
             nwait = 0  # Timeout, started dropping packets
@@ -232,7 +233,7 @@ class Entry:
                 continue
             try:
                 rcode = dns.rcode.from_text(code)
-            except:
+            except dns.rcode.UnknownRcode:
                 flags.append(code)
         self.message.flags = dns.flags.from_text(' '.join(flags))
         self.message.set_rcode(rcode)
