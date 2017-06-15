@@ -117,7 +117,7 @@ class TestServer:
         self.undefined_answers = 0
         with self.active_lock:
             if not self.active:
-                raise Exception(self.scenario.file+" [query_io] Test server not active")
+                raise Exception("[query_io] Test server not active")
         while True:
             with self.condition:
                 self.condition.notify()
@@ -221,7 +221,7 @@ def empty_test_case():
     empty_test_path = os.path.dirname(os.path.realpath(__file__)) + "/empty.rpl"
     test_config = {'ROOT_ADDR': '127.0.0.10',
                    '_SOCKET_FAMILY': socket.AF_INET}
-    return scenario.parse_file(empty_test_path)[0],test_config
+    return scenario.parse_file(empty_test_path)[0], test_config
 
 
 def standalone_self_test():

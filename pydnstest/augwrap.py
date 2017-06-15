@@ -10,13 +10,12 @@ import sys
 
 from augeas import Augeas
 
-#from IPython.core.debugger import Tracer
-
 AUGEAS_LOAD_PATH = '/augeas/load/'
 AUGEAS_FILES_PATH = '/files/'
 AUGEAS_ERROR_PATH = '//error'
 
 log = logging.getLogger('augeas')
+
 
 def join(*paths):
     """
@@ -67,10 +66,8 @@ class AugeasWrapper(object):
         aug_load_path = join(AUGEAS_LOAD_PATH, lens)
         # /augeas/load/{lens}/lens = {lens}.lns
         self._aug.set(join(aug_load_path, 'lens'), '%s.lns' % lens)
-        #print(join(aug_load_path, 'lens'), '%s.lns' % lens)
         # /augeas/load/{lens}/incl[0] = {confpath}
         self._aug.set(join(aug_load_path, 'incl[0]'), confpath)
-        #print(join(aug_load_path, 'incl[0]'), confpath)
         self._aug.load()
 
         errors = self._aug.match(AUGEAS_ERROR_PATH)
@@ -142,7 +139,6 @@ class AugeasNode(collections.MutableMapping):
         assert path.startswith('/')
         self._aug = aug
         self._path = path
-
 
     @property
     def path(self):

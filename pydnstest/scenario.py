@@ -208,7 +208,7 @@ class Entry:
         self.message.use_edns(edns=0, payload=4096)
         self.fired = 0
 
-        #RAW
+        # RAW
         try:
             self.raw_data = binascii.unhexlify(node["/raw"].value)
             self.is_raw_data_entry = True
@@ -217,20 +217,18 @@ class Entry:
             self.raw_data = None
             self.is_raw_data_entry = False
 
-        #MATCH
+        # MATCH
         self.match_fields = [m.value for m in node.match("/match")]
         if not self.match_fields:
             self.match_fields = ['opcode', 'qtype', 'qname']
-        #print("match_fields", self.match_fields)
 
-        #FLAGS
+        # FLAGS
         self.fields = [f.value for f in node.match("/reply")]
         flags = []
         rcode = dns.rcode.from_text(self.default_rc)
         for code in self.fields:
             if code == 'DO':
                 self.message.want_dnssec(True)
-                #print("dnssec")
                 continue
             try:
                 rcode = dns.rcode.from_text(code)
@@ -239,33 +237,29 @@ class Entry:
         self.message.flags = dns.flags.from_text(' '.join(flags))
         self.message.set_rcode(rcode)
 
-        #ADJUST
+        # ADJUST
         self.adjust_fields = [m.value for m in node.match("/adjust")]
         if not self.adjust_fields:
             self.adjust_fields = ['copy_id']
-        #print("adjust", self.adjust_fields)
 
-        #MANDATORY
+        # MANDATORY
         try:
             mandatory = list(node.match("/mandatory"))[0].value
             self.mandatory = True
         except (KeyError, IndexError):
             self.mandatory = False
-        #print("mandatory", self.mandatory)
 
-        #TSIG
+        # TSIG
         try:
             tsig = list(node.match("/tsig"))[0]
             tsig_keyname = tsig["/keyname"].value
             tsig_secret = tsig["/secret"].value
             keyring = dns.tsigkeyring.from_text({tsig_keyname: tsig_secret})
             self.message.use_tsig(keyring=keyring, keyname=tsig_keyname)
-            #print("tsig:", tsig_keyname, tsig_secret)
         except (KeyError, IndexError):
             pass
 
-
-        #SECTIONS & RECORDS
+        # SECTIONS & RECORDS
         self.sections = []
         for section in node.match("/section/*"):
             section_name = posixpath.basename(section.path)
@@ -273,7 +267,7 @@ class Entry:
             for record in section.match("/record"):
                 owner = record['/domain'].value
                 if not owner.endswith("."):
-                    owner+=self.origin
+                    owner += self.origin
                 try:
                     ttl = dns.ttl.from_text(record['/ttl'].value)
                 except KeyError:
@@ -281,7 +275,7 @@ class Entry:
                 try:
                     rdclass = dns.rdataclass.from_text(record['/class'].value)
                 except KeyError:
-                    cls = self.default_cls
+                    rdclass = dns.rdataclass.from_text(self.default_cls)
                 rdtype = dns.rdatatype.from_text(record['/type'].value)
                 rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
                 if section_name != "question":
@@ -302,9 +296,6 @@ class Entry:
                     self.__rr_add(self.message.authority, rr)
                 elif section_name == 'additional':
                     self.__rr_add(self.message.additional, rr)
-                #print(rr)
-        #self.message.id = 0
-        #print(self.message)
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
@@ -406,7 +397,7 @@ class Entry:
                 self.match_part(code, msg)
             except Exception as e:
                 errstr = '%s in the response:\n%s' % (str(e), msg.to_text())
-                raise Exception("line %d, \"%s\": %s" % (42, code, errstr)) #TODO: cisla radku
+                raise Exception("line %d, \"%s\": %s" % (42, code, errstr))  # TODO: cisla radku
 
     def cmp_raw(self, raw_value):
         assert self.is_raw_data_entry
@@ -577,7 +568,7 @@ class Step:
         self.pause_if_fail = 0
         self.next_if_fail = -1
 
-        # TODO Parser currently can't parse CHECK_ANSWER args, player does not understand them anyways
+        # TODO Parser currently can't parse CHECK_ANSWER args, player doesn't understand them anyway
         # if type == 'CHECK_ANSWER':
         #     for arg in extra_args:
         #         param = arg.split('=')
@@ -814,7 +805,7 @@ class Scenario:
         for rng in self.ranges:
             if rng.eligible(current_step_id, address):
                 self.current_range = rng
-                return (rng.reply(query), False)
+                return rng.reply(query), False
         # Find any prescripted one-shot replies
         for step in self.steps:
             if step.id < current_step_id or step.type != 'REPLY':
@@ -825,13 +816,13 @@ class Scenario:
                     candidate.match(query)
                     step.data.remove(candidate)
                     answer = candidate.adjust_reply(query)
-                    return (answer, False)
+                    return answer, False
                 else:
                     answer = candidate.raw_data
-                    return (answer, True)
+                    return answer, True
             except:
                 pass
-        return (None, True)
+        return None, True
 
     def play(self, paddr):
         """ Play given scenario. """
@@ -872,7 +863,8 @@ class Scenario:
         for r in self.ranges:
             for e in r.stored:
                 if e.mandatory is True and e.fired == 0:
-                    raise Exception('Mandatory section at line %d is not fired' % 42) #TODO: cisla radku
+                    # TODO: cisla radku
+                    raise Exception('Mandatory section at line %d is not fired' % 42)
 
 
 def get_next(file_in, skip_empty=True):
@@ -887,7 +879,7 @@ def get_next(file_in, skip_empty=True):
                 escaped = not escaped
             if not escaped and line[i] == '"':
                 quoted = not quoted
-            if line[i] in (';') and not quoted:
+            if line[i] in ';' and not quoted:
                 line = line[0:i]
                 break
             if line[i] != '\\':
@@ -998,7 +990,8 @@ def parse_config(scn_cfg, qmin, installdir):
 def parse_file(path):
     """ Parse scenario from a file. """
 
-    aug = pydnstest.augwrap.AugeasWrapper(confpath=path, lens='Deckard', loadpath=os.path.dirname(__file__))
+    aug = pydnstest.augwrap.AugeasWrapper(
+        confpath=path, lens='Deckard', loadpath=os.path.dirname(__file__))
     node = aug.tree
     try:
         config = []
@@ -1015,4 +1008,4 @@ def parse_file(path):
         # print(scenario)
         return scenario, config
     except Exception as e:
-        raise #Exception('%s#%d: %s' % (file_in.filename(), file_in.lineno(), str(e)))
+        raise  # Exception('%s#%d: %s' % (file_in.filename(), file_in.lineno(), str(e)))

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 from datetime import datetime
-import fileinput
 import logging
 import logging.config
 import os
