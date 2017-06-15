@@ -126,7 +126,7 @@ class AugeasWrapper(object):
 class AugeasNode(collections.MutableMapping):
     """One Augeas tree node with dict-like interface."""
 
-    def __init__(self, aug, path, exists=True):
+    def __init__(self, aug, path):
         """
         Args:
             aug (AugeasWrapper or Augeas): Augeas library instance

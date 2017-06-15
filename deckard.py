@@ -288,7 +288,6 @@ def play_object(path, args, prog_cfgs):
     try:
         server.play(prog_under_test_ip)
     finally:
-        name = server.scenario.file
         server.stop()
         for daemon in daemons:
             daemon['proc'].terminate()

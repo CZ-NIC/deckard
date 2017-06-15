@@ -36,32 +36,6 @@ g_nqueries = 0
 #
 
 
-def create_rr(owner, args, ttl=3600, rdclass='IN', origin='.'):
-    """ Parse RR from tokenized string. """
-    if not owner.endswith('.'):
-        owner += origin
-    try:
-        ttl = dns.ttl.from_text(args[0])
-        args.pop(0)
-    except dns.ttl.BadTTL:
-        pass  # optional
-    try:
-        rdclass = dns.rdataclass.from_text(args[0])
-        args.pop(0)
-    except ValueError:
-        pass  # optional
-    rdtype = args.pop(0)
-    rr = dns.rrset.from_text(owner, ttl, rdclass, rdtype)
-    if args:
-        if rr.rdtype == dns.rdatatype.DS:
-            # convert textual algorithm identifier to number
-            args[1] = str(dns.dnssec.algorithm_from_text(args[1]))
-        rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
-            args), origin=dns.name.from_text(origin), relativize=False)
-        rr.add(rd)
-    return rr
-
-
 def compare_rrs(expected, got):
     """ Compare lists of RR sets, throw exception if different. """
     for rr in expected:
@@ -149,7 +123,7 @@ def replay_rrs(rrs, nqueries, destination, args=[]):
         name = rr.name
         if 'RAND' in args:
             prefix = ''.join([random.choice(string.ascii_letters + string.digits)
-                              for n in range(8)])
+                              for _ in range(8)])
             name = prefix + '.' + rr.name.to_text()
         msg = dns.message.make_query(name, rr.rdtype, rr.rdclass)
         if 'DO' in args:
@@ -214,7 +188,7 @@ class Entry:
             self.raw_data = binascii.unhexlify(node["/raw"].value)
             self.is_raw_data_entry = True
             return
-        except KeyError as e:
+        except KeyError:
             self.raw_data = None
             self.is_raw_data_entry = False
 
@@ -245,7 +219,7 @@ class Entry:
 
         # MANDATORY
         try:
-            mandatory = list(node.match("/mandatory"))[0].value
+            _ = list(node.match("/mandatory"))[0].value
             self.mandatory = True
         except (KeyError, IndexError):
             self.mandatory = False
@@ -290,13 +264,13 @@ class Entry:
                 if section_name == 'question':
                     if rr.rdtype == dns.rdatatype.AXFR:
                         self.message.xfr = True
-                    self.__rr_add(self.message.question, rr)
+                    self.message.question.append(rr)
                 elif section_name == 'answer':
-                    self.__rr_add(self.message.answer, rr)
+                    self.message.answer.append(rr)
                 elif section_name == 'authority':
-                    self.__rr_add(self.message.authority, rr)
+                    self.message.authority.append(rr)
                 elif section_name == 'additional':
-                    self.__rr_add(self.message.additional, rr)
+                    self.message.additional.append(rr)
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
@@ -464,10 +438,6 @@ class Entry:
                     "!HBB", 1 if family == socket.AF_INET else 2, prefix, 0) + addr))
         self.message.use_edns(edns=version, payload=bufsize, options=opts)
 
-    def __rr_add(self, section, rr):
-        """Append to given section."""
-        section.append(rr)
-
 
 class Range:
     """
@@ -535,7 +505,7 @@ class Range:
         return None
 
 
-class StepLogger(logging.LoggerAdapter):
+class StepLogger(logging.LoggerAdapter):  # pylint: disable=too-few-public-methods
     """
     Prepent Step identification before each log message.
     """

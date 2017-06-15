@@ -263,7 +263,6 @@ def standalone_self_test():
     except KeyboardInterrupt:
         logging.info("[==========] Shutdown.")
         pass
-    name = server.scenario.file
     server.stop()
 
 
