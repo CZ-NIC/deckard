@@ -91,9 +91,11 @@ def recvfrom_msg(stream, raw=False):
         addr = stream.getpeername()[0]
     else:
         raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    if not raw:
-        data = dns.message.from_wire(data, one_rr_per_rrset=True)
-    return data, addr
+    if raw:
+        return data, addr
+    else:
+        msg = dns.message.from_wire(data, one_rr_per_rrset=True)
+        return msg, addr
 
 
 def sendto_msg(stream, message, addr=None):
