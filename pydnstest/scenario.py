@@ -177,7 +177,7 @@ class Entry:
 
     def __init__(self, node):
         """ Initialize data entry. """
-
+        self.node = node
         self.origin = '.'
         self.message = dns.message.Message()
         self.message.use_edns(edns=0, payload=4096)
@@ -194,6 +194,7 @@ class Entry:
 
         # MATCH
         self.match_fields = [m.value for m in node.match("/match")]
+
         if not self.match_fields:
             self.match_fields = ['opcode', 'qtype', 'qname']
 
@@ -219,10 +220,9 @@ class Entry:
 
         # MANDATORY
         try:
-            _ = list(node.match("/mandatory"))[0].value
-            self.mandatory = True
+            self.mandatory = list(node.match("/mandatory"))[0]
         except (KeyError, IndexError):
-            self.mandatory = False
+            self.mandatory = None
 
         # TSIG
         try:
@@ -372,7 +372,8 @@ class Entry:
                 self.match_part(code, msg)
             except ValueError as ex:
                 errstr = '%s in the response:\n%s' % (str(ex), msg.to_text())
-                raise ValueError("line %d, \"%s\": %s" % (42, code, errstr))  # TODO: cisla radku
+                # TODO: cisla radku
+                raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr))
 
     def cmp_raw(self, raw_value):
         assert self.is_raw_data_entry
@@ -447,6 +448,7 @@ class Range:
 
     def __init__(self, node):
         """ Initialize reply range. """
+        self.node = node
         self.a = int(node['/from'].value)
         self.b = int(node['/to'].value)
 
@@ -522,6 +524,7 @@ class Step:
 
     def __init__(self, node):
         """ Initialize single scenario step. """
+        self.node = node
         self.id = int(node.value)
         self.type = node["/type"].value
         self.log = StepLogger(logging.getLogger('pydnstest.scenario.Step'),
@@ -736,6 +739,7 @@ class Scenario:
 
     def __init__(self, node, filename):
         """ Initialize scenario with description. """
+        self.node = node
         self.info = node.value
         self.file = filename
         self.ranges = [Range(n) for n in node.match("/range")]
@@ -833,9 +837,9 @@ class Scenario:
 
         for r in self.ranges:
             for e in r.stored:
-                if e.mandatory is True and e.fired == 0:
+                if e.mandatory and e.fired == 0:
                     # TODO: cisla radku
-                    raise RuntimeError('Mandatory section at line %d is not fired' % 42)
+                    raise RuntimeError('Mandatory section at %s not fired' % e.mandatory.span)
 
 
 def get_next(file_in, skip_empty=True):

@@ -47,7 +47,7 @@ class AugeasWrapper(object):
     """
 
     def __init__(self, confpath, lens, root=None, loadpath=None,
-                 flags=Augeas.NO_MODL_AUTOLOAD | Augeas.NO_LOAD):
+                 flags=Augeas.NO_MODL_AUTOLOAD | Augeas.NO_LOAD | Augeas.ENABLE_SPAN):
         """Parse configuration file using given lens.
 
         Params:
@@ -139,6 +139,7 @@ class AugeasNode(collections.MutableMapping):
         assert path.startswith('/')
         self._aug = aug
         self._path = path
+        self._span = None
 
     @property
     def path(self):
@@ -153,6 +154,12 @@ class AugeasNode(collections.MutableMapping):
         value = self._aug.get(self._path)
         log.debug('tree get: %s = %s', self._path, value)
         return value
+
+    @property
+    def span(self):
+        if self._span is None:
+            self._span = "char position %s" % self._aug.span(self._path)[5]
+        return self._span
 
     @value.setter
     def value(self, value):
