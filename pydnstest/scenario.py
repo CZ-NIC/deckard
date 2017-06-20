@@ -40,28 +40,28 @@ def compare_rrs(expected, got):
     """ Compare lists of RR sets, throw exception if different. """
     for rr in expected:
         if rr not in got:
-            raise Exception("expected record '%s'" % rr.to_text())
+            raise ValueError("expected record '%s'" % rr.to_text())
     for rr in got:
         if rr not in expected:
-            raise Exception("unexpected record '%s'" % rr.to_text())
+            raise ValueError("unexpected record '%s'" % rr.to_text())
     if len(expected) != len(got):
-        raise Exception("expected %s records but got %s records "
-                        "(a duplicate RR somewhere?)"
-                        % (len(expected), len(got)))
+        raise ValueError("expected %s records but got %s records "
+                         "(a duplicate RR somewhere?)"
+                         % (len(expected), len(got)))
     return True
 
 
 def compare_val(expected, got):
     """ Compare values, throw exception if different. """
     if expected != got:
-        raise Exception("expected '%s', got '%s'" % (expected, got))
+        raise ValueError("expected '%s', got '%s'" % (expected, got))
     return True
 
 
 def compare_sub(got, expected):
     """ Check if got subdomain of expected, throw exception if different. """
     if not expected.is_subdomain(got):
-        raise Exception("expected subdomain of '%s', got '%s'" % (expected, got))
+        raise ValueError("expected subdomain of '%s', got '%s'" % (expected, got))
     return True
 
 
@@ -337,10 +337,10 @@ class Entry:
             return compare_rrs(expected.additional, msg.additional)
         elif code == 'edns':
             if msg.edns != expected.edns:
-                raise Exception('expected EDNS %d, got %d' % (expected.edns, msg.edns))
+                raise ValueError('expected EDNS %d, got %d' % (expected.edns, msg.edns))
             if msg.payload != expected.payload:
-                raise Exception('expected EDNS bufsize %d, got %d'
-                                % (expected.payload, msg.payload))
+                raise ValueError('expected EDNS bufsize %d, got %d'
+                                 % (expected.payload, msg.payload))
         elif code == 'nsid':
             nsid_opt = None
             for opt in expected.options:
@@ -351,15 +351,15 @@ class Entry:
             for opt in msg.options:
                 if opt.otype == dns.edns.NSID:
                     if not nsid_opt:
-                        raise Exception('unexpected NSID value "%s"' % opt.data)
+                        raise ValueError('unexpected NSID value "%s"' % opt.data)
                     if opt == nsid_opt:
                         return True
                     else:
-                        raise Exception('expected NSID "%s", got "%s"' % (nsid_opt.data, opt.data))
+                        raise ValueError('expected NSID "%s", got "%s"' % (nsid_opt.data, opt.data))
             if nsid_opt:
-                raise Exception('expected NSID "%s"' % nsid_opt.data)
+                raise ValueError('expected NSID "%s"' % nsid_opt.data)
         else:
-            raise Exception('unknown match request "%s"' % code)
+            raise ValueError('unknown match request "%s"' % code)
 
     def match(self, msg):
         """ Compare scripted reply to given message based on match criteria. """
@@ -370,9 +370,9 @@ class Entry:
         for code in match_fields:
             try:
                 self.match_part(code, msg)
-            except Exception as e:
-                errstr = '%s in the response:\n%s' % (str(e), msg.to_text())
-                raise Exception("line %d, \"%s\": %s" % (42, code, errstr))  # TODO: cisla radku
+            except ValueError as ex:
+                errstr = '%s in the response:\n%s' % (str(ex), msg.to_text())
+                raise ValueError("line %d, \"%s\": %s" % (42, code, errstr))  # TODO: cisla radku
 
     def cmp_raw(self, raw_value):
         assert self.is_raw_data_entry
@@ -383,7 +383,7 @@ class Entry:
         if raw_value is not None:
             got = binascii.hexlify(raw_value)
         if expected != got:
-            raise Exception("raw message comparsion failed: expected %s got %s" % (expected, got))
+            raise ValueError("raw message comparsion failed: expected %s got %s" % (expected, got))
 
     def adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
@@ -500,7 +500,7 @@ class Range:
                 self.sent += 1
                 candidate.fired += 1
                 return resp
-            except Exception:
+            except ValueError:
                 pass
         return None
 
@@ -602,19 +602,19 @@ class Step:
         # elif self.type == 'ASSERT':
         #     self.__assert(ctx)
         else:
-            raise Exception('step %03d type %s unsupported' % (self.id, self.type))
+            raise NotImplementedError('step %03d type %s unsupported' % (self.id, self.type))
 
     def __check_answer(self, ctx):
         """ Compare answer from previously resolved query. """
         if not self.data:
-            raise Exception("response definition required")
+            raise ValueError("response definition required")
         expected = self.data[0]
         if expected.is_raw_data_entry is True:
             self.log.debug("raw answer: %s", ctx.last_raw_answer.to_text())
             expected.cmp_raw(ctx.last_raw_answer)
         else:
             if ctx.last_answer is None:
-                raise Exception("no answer from preceding query")
+                raise ValueError("no answer from preceding query")
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
@@ -648,7 +648,7 @@ class Step:
         The received answer is stored in self.answer and ctx.last_answer.
         """
         if not self.data:
-            raise Exception("query definition required")
+            raise ValueError("query definition required")
         if self.data[0].is_raw_data_entry is True:
             data_to_wire = self.data[0].raw_data
         else:
@@ -657,7 +657,7 @@ class Step:
         if choice is None or not choice:
             choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
-            raise Exception('step %03d invalid QUERY target: %s' % (self.id, choice))
+            raise ValueError('step %03d invalid QUERY target: %s' % (self.id, choice))
         # Create socket to test subject
         sock = None
         destination = ctx.client[choice]
@@ -676,9 +676,9 @@ class Step:
             try:
                 sendto_msg(sock, data_to_wire)
                 break
-            except OSError as e:
+            except OSError as ex:
                 # ENOBUFS, throttle sending
-                if e.errno == errno.ENOBUFS:
+                if ex.errno == errno.ENOBUFS:
                     time.sleep(0.1)
         # Wait for a response for a reasonable time
         answer = None
@@ -687,8 +687,8 @@ class Step:
                 try:
                     answer, _ = recvfrom_msg(sock, True)
                     break
-                except OSError as e:
-                    if e.errno == errno.ENOBUFS:
+                except OSError as ex:
+                    if ex.errno == errno.ENOBUFS:
                         time.sleep(0.1)
         # Track RTT
         rtt = (datetime.now() - tstart).total_seconds() * 1000
@@ -791,7 +791,7 @@ class Scenario:
                 else:
                     answer = candidate.raw_data
                     return answer, True
-            except:
+            except (IndexError, ValueError):
                 pass
         return None, True
 
@@ -807,10 +807,10 @@ class Scenario:
             self.current_step = step
             try:
                 step.play(self)
-            except Exception as e:
+            except ValueError as ex:
                 if step.repeat_if_fail > 0:
                     self.log.info("[play] step %d: exception - '%s', retrying step %d (%d left)",
-                                  step.id, e, step.next_if_fail, step.repeat_if_fail)
+                                  step.id, ex, step.next_if_fail, step.repeat_if_fail)
                     step.repeat_if_fail -= 1
                     if step.pause_if_fail > 0:
                         time.sleep(step.pause_if_fail)
@@ -818,24 +818,24 @@ class Scenario:
                         next_steps = [j for j in range(len(self.steps)) if self.steps[
                             j].id == step.next_if_fail]
                         if not next_steps:
-                            raise Exception('step %d: wrong NEXT value "%d"' %
-                                            (step.id, step.next_if_fail))
+                            raise ValueError('step %d: wrong NEXT value "%d"' %
+                                             (step.id, step.next_if_fail))
                         next_step = next_steps[0]
                         if next_step < len(self.steps):
                             i = next_step
                         else:
-                            raise Exception('step %d: Can''t branch to NEXT value "%d"' %
-                                            (step.id, step.next_if_fail))
+                            raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
+                                             (step.id, step.next_if_fail))
                     continue
                 else:
-                    raise Exception('%s step %d %s' % (self.file, step.id, str(e)))
-            i = i + 1
+                    raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+            i += 1
 
         for r in self.ranges:
             for e in r.stored:
                 if e.mandatory is True and e.fired == 0:
                     # TODO: cisla radku
-                    raise Exception('Mandatory section at line %d is not fired' % 42)
+                    raise RuntimeError('Mandatory section at line %d is not fired' % 42)
 
 
 def get_next(file_in, skip_empty=True):
@@ -920,8 +920,8 @@ def parse_config(scn_cfg, qmin, installdir):
                         f_key = f_item.strip()
                         f_value = ""
                     features[f_key] = f_value
-            except Exception as e:
-                raise Exception("can't parse features (%s) in config section (%s)" % (v, str(e)))
+            except KeyError as ex:
+                raise KeyError("can't parse features (%s) in config section (%s)" % (v, str(ex)))
         elif k == 'feature-list':
             try:
                 f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
@@ -929,9 +929,9 @@ def parse_config(scn_cfg, qmin, installdir):
                     features[f_key] = []
                 f_value = f_value.replace("{{INSTALL_DIR}}", installdir)
                 features[f_key].append(f_value)
-            except Exception as e:
-                raise Exception("can't parse feature-list (%s) in config section (%s)"
-                                % (v, str(e)))
+            except KeyError as ex:
+                raise KeyError("can't parse feature-list (%s) in config section (%s)"
+                               % (v, str(ex)))
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
 
@@ -964,9 +964,9 @@ def parse_file(path):
     aug = pydnstest.augwrap.AugeasWrapper(
         confpath=path, lens='Deckard', loadpath=os.path.dirname(__file__))
     node = aug.tree
-    try:
-        config = []
-        for line in [c.value for c in node.match("/config/*")]:
+    config = []
+    for line in [c.value for c in node.match("/config/*")]:
+        if line:
             if not line.startswith(';'):
                 if '#' in line:
                     line = line[0:line.index('#')]
@@ -975,8 +975,5 @@ def parse_file(path):
                 kv = [x.strip() for x in line.split(':', 1)]
                 if len(kv) >= 2:
                     config.append(kv)
-        scenario = Scenario(node["/scenario"], posixpath.basename(node.path))
-        # print(scenario)
-        return scenario, config
-    except Exception as e:
-        raise  # Exception('%s#%d: %s' % (file_in.filename(), file_in.lineno(), str(e)))
+    scenario = Scenario(node["/scenario"], posixpath.basename(node.path))
+    return scenario, config

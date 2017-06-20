@@ -25,9 +25,9 @@ class Test:
                 test_callback(name, args, config)
                 passed += 1
                 self.log.info('[  OK  ] %s', name)
-            except Exception as e:
+            except Exception as ex:
                 self.log.error('[ FAIL ] %s', name)
-                self.log.exception(e)
+                self.log.exception(ex)
 
         # Clear test set
         self.tests = []
