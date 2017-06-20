@@ -5,11 +5,18 @@ WORKDIR /root
 CMD ["/bin/bash"]
 
 # knot-resolver used for comparative tests
-# we do not care that much about particular version
+# we do not care that much about particular version of resolvers
+# we want to install newer version of Augeas because those from Ubuntu repositories are incredibly slow on some operations
+# context: https://www.redhat.com/archives/augeas-devel/2017-June/msg00000.html
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:raphink/augeas -y
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y knot-resolver
 RUN apt-get install -y unbound
 RUN apt-get install -y pdns-recursor
-RUN apt-get install -y python-pep8  pylint  python-dnspython  python-jinja2 python-yaml
-RUN apt-get install -y python3-pep8 pylint3 python3-dnspython python3-jinja2 python3-yaml
+RUN apt-get install -y python-augeas python-pep8  pylint  python-pip  python-jinja2 python-yaml
+RUN apt-get install -y python3-augeas python3-pep8 pylint3 python3-pip python3-jinja2 python3-yaml
+# version of dnspython in Ubuntu repository is f**ked up
+RUN pip install --upgrade dnspython
+RUN pip3 install --upgrade dnspython
+

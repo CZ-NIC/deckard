@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 from datetime import datetime
-import fileinput
 import logging
 import logging.config
 import os
@@ -250,7 +249,7 @@ def conncheck_daemon(process, cfg, sockfamily):
             raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
         try:
             sock.connect((cfg['ipaddr'], 53))
-        except:
+        except socket.error:
             continue
         break
     sock.close()
@@ -261,7 +260,7 @@ def play_object(path, args, prog_cfgs):
     daemon_logger_log = logging.getLogger('deckard.daemon.log')
 
     # Parse scenario
-    case, cfg_text = scenario.parse_file(fileinput.input(path))
+    case, cfg_text = scenario.parse_file(os.path.realpath(path))
     cfg_ctx = scenario.parse_config(cfg_text, args.qmin, INSTALLDIR)
 
     # get working directory and environment variables
