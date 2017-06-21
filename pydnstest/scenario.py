@@ -530,7 +530,7 @@ class Step:
         self.id = int(node.value)
         self.type = node["/type"].value
         self.log = StepLogger(logging.getLogger('pydnstest.scenario.Step'),
-                              {'id': id, 'type': type})
+                              {'id': self.id, 'type': self.type})
         try:
             self.delay = int(node["/timestamp"].value)
         except KeyError:
