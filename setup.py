@@ -21,7 +21,7 @@ kwargs = {
         'dnspython>=1.15',
         'jinja2',
         'PyYAML',
-	'python-augeas'
+        'python-augeas'
     ],
     'classifiers': [
         "Intended Audience :: Developers",
