@@ -1,2 +1,4 @@
-dnspython==1.11
+dnspython>=1.15
 Jinja2>=2.8
+PyYAML
+python-augeas

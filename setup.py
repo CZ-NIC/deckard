@@ -18,9 +18,10 @@ kwargs = {
     'url': 'https://github.com/CZ-NIC/deckard',
     'packages': ['pydnstest'],
     'install_requires': [
-        'dnspython',
+        'dnspython>=1.15',
         'jinja2',
-        'PyYAML'
+        'PyYAML',
+	'python-augeas'
     ],
     'classifiers': [
         "Intended Audience :: Developers",
