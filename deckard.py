@@ -255,20 +255,36 @@ def conncheck_daemon(process, cfg, sockfamily):
     sock.close()
 
 
-def play_object(path, args, prog_cfgs):
-    """ Play scenario from a file object. """
-    daemon_logger_log = logging.getLogger('deckard.daemon.log')
-
+def process_file(path, args, prog_cfgs):
+    """Parse scenario from a file object and create workdir."""
     # Parse scenario
     case, cfg_text = scenario.parse_file(os.path.realpath(path))
     cfg_ctx = scenario.parse_config(cfg_text, args.qmin, INSTALLDIR)
-
-    # get working directory and environment variables
-    tmpdir = setup_common_env(cfg_ctx)
     template_ctx = setup_network(cfg_ctx['_SOCKET_FAMILY'], prog_cfgs)
     # merge variables from scenario with generated network variables (scenario has priority)
     template_ctx.update(cfg_ctx)
+    # Deckard will communicate with first program
+    prog_under_test = prog_cfgs['programs'][0]['name']
+    prog_under_test_ip = template_ctx['IPADDRS'][prog_under_test]
 
+    # get working directory and environment variables
+    tmpdir = setup_common_env(cfg_ctx)
+    try:
+        daemons = setup_daemons(tmpdir, prog_cfgs, template_ctx)
+        run_testcase(daemons,
+                     case,
+                     template_ctx['ROOT_ADDR'],
+                     template_ctx['_SOCKET_FAMILY'],
+                     prog_under_test_ip)
+        shutil.rmtree(tmpdir)
+    except:
+        logging.getLogger('deckard.hint').info(
+            'test failed, inspect working directory %s', tmpdir)
+        raise
+
+
+def setup_daemons(tmpdir, prog_cfgs, template_ctx):
+    """Configure daemons and run the test"""
     # Setup daemon environment
     daemons = []
     for prog_cfg in prog_cfgs['programs']:
@@ -277,14 +293,14 @@ def play_object(path, args, prog_cfgs):
         daemon_proc = run_daemon(prog_cfg, daemon_env)
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
+    return daemons
 
-    # Play test scenario
-    server = testserver.TestServer(case, template_ctx['ROOT_ADDR'], template_ctx['_SOCKET_FAMILY'])
+
+def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
+    """Run actual test and raise exception if the test failed"""
+    server = testserver.TestServer(case, root_addr, addr_family)
     server.start()
 
-    # Deckard will communicate with first program
-    prog_under_test = prog_cfgs['programs'][0]['name']
-    prog_under_test_ip = template_ctx['IPADDRS'][prog_under_test]
     try:
         server.play(prog_under_test_ip)
     finally:
@@ -303,7 +319,6 @@ def play_object(path, args, prog_cfgs):
     # Do not clear files if the server crashed (for analysis)
     if server.undefined_answers > 0:
         raise ValueError('the scenario does not define all necessary answers (see error log)')
-    shutil.rmtree(tmpdir)
 
 
 def test_platform():
@@ -381,6 +396,7 @@ def deckard():
                 'version': 1,
                 'incremental': True,
                 'loggers': {
+                    'deckard.hint': {'level': 'INFO'},
                     'pydnstest.test.Test': {'level': 'INFO'}
                 }
             })
@@ -423,7 +439,7 @@ def deckard():
     testset = test.Test()
     objects = find_objects(args.scenario)
     for path in objects:
-        testset.add(path, play_object, args, config)
+        testset.add(path, process_file, args, config)
     sys.exit(testset.run())
 
 
