@@ -301,9 +301,9 @@ def play_object(path, args, prog_cfgs):
                 raise ValueError('process %s terminated with return code %s'
                                  % (daemon['cfg']['name'], daemon['proc'].returncode))
     # Do not clear files if the server crashed (for analysis)
-    shutil.rmtree(tmpdir)
     if server.undefined_answers > 0:
         raise ValueError('the scenario does not define all necessary answers (see error log)')
+    shutil.rmtree(tmpdir)
 
 
 def test_platform():
