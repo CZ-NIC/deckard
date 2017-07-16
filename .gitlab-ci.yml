@@ -112,7 +112,7 @@ test:python3:latest:kresd:
   image: cznic/deckard-ci
   stage: test
   script:
-    - git clone --depth=1 https://gitlab.labs.nic.cz/knot/resolver.git kresd-local-build
+    - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - GIT_DIR=$(pwd)/kresd-local-build/.git git log -1
     - PREFIX=$(pwd)/.local make -C kresd-local-build -k all
     - PREFIX=$(pwd)/.local make -C kresd-local-build install
