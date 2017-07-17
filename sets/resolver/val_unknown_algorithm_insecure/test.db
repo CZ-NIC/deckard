@@ -1,0 +1,5 @@
+test.			86400	IN	SOA	rootns. you.test. 2017071100 1800 900 604800 86400
+
+test.			518400	IN	NS	rootns.
+
+test.	86000	IN DNSKEY 257 3 253	aGVsbG93b3JsZAo=
