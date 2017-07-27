@@ -64,3 +64,7 @@ $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
 
 
 .PHONY: submodules depend all
+
+check:
+	@echo Running unittests using pytest
+	${PYTHON} -m pytest
