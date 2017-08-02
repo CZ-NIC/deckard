@@ -161,6 +161,10 @@ class AugeasNode(collections.MutableMapping):
             self._span = "char position %s" % self._aug.span(self._path)[5]
         return self._span
 
+    @property
+    def char(self):
+        return self._aug.span(self._path)[5]
+
     @value.setter
     def value(self, value):
         """
