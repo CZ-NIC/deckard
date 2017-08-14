@@ -34,6 +34,16 @@ test:python2:pylint:
     - linux
     - amd64
 
+test:python2:unittests:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - make check PYTHON=python2
+  tags:
+    - docker
+    - linux
+    - amd64
+
 test:python2:comparative:kresd:
   image: cznic/deckard-ci
   stage: test
@@ -80,6 +90,16 @@ test:python3:pylint:
     paths:
       - base.log
       - head.log
+  tags:
+    - docker
+    - linux
+    - amd64
+
+test:python3:unittests:
+  image: cznic/deckard-ci
+  stage: test
+  script:
+    - make check PYTHON=python3
   tags:
     - docker
     - linux
