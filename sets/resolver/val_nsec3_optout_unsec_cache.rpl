@@ -17,7 +17,20 @@ REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
 SECTION ANSWER
-. IN NS	M.ROOT-SERVERS.NET.
+.      518400 IN	NS	a.root-servers.net.
+.      518400 IN	NS	b.root-servers.net.
+.      518400 IN	NS	c.root-servers.net.
+.      518400 IN	NS	d.root-servers.net.
+.      518400 IN	NS	e.root-servers.net.
+.      518400 IN	NS	f.root-servers.net.
+.      518400 IN	NS	g.root-servers.net.
+.      518400 IN	NS	h.root-servers.net.
+.      518400 IN	NS	i.root-servers.net.
+.      518400 IN	NS	j.root-servers.net.
+.      518400 IN	NS	k.root-servers.net.
+.      518400 IN	NS	l.root-servers.net.
+.      518400 IN	NS	m.root-servers.net.
+.      518400 IN	RRSIG	NS 8 0 518400 20160227170000 20160217160000 54549 . Qtgnr2k192gjdx3bLZgzkvqoEhTE4LXfFcPtrGPKawn/78LX6M4LuCZh rSXYMJERXVDQcQbX88EYh8kN3ALgLKpGdyu8HJ6B0vZiDc8yMbn2TuA0 RDqEPTp5om1LbQ0nEWa5XnrTi1fJTNzhT6eBJlcmkJ1/jMfmPG9J4dKJ x/Q=
 SECTION ADDITIONAL
 M.ROOT-SERVERS.NET.	IN	A	202.12.27.33
 ENTRY_END
