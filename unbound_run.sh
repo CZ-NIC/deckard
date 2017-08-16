@@ -8,10 +8,10 @@ TESTS=${TESTS:-"sets/resolver"}
 DAEMON=${DAEMON:-"unbound"}
 
 # Template file name
-TEMPLATE=${TEMPLATE:-"template/unbound.j2:template/hints_zone.j2:template/unbound_dnssec.j2"}
+TEMPLATE=${TEMPLATE:-"template/unbound.j2:template/hints_zone.j2"}
 
 # Config file name
-CONFIG=${CONFIG:-"unbound.conf:hints.zone:ta.keys"}
+CONFIG=${CONFIG:-"unbound.conf:hints.zone"}
 
 # Additional parameter for unbound
 # it means configuration file can be found in working directory

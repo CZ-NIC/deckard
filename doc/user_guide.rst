@@ -94,7 +94,7 @@ Commented default values taken from ``unbound_run.sh`` follow:
    ADDITIONAL="-d -c unbound.conf"
 
    # Template file names
-   TEMPLATE="template/unbound.j2:template/hints_zone.j2:template/unbound_dnssec.j2"
+   TEMPLATE="template/unbound.j2:template/hints_zone.j2"
 
    # Config file names: generated respectively from templates above
    CONFIG="unbound.conf:hints.zone:ta.keys"
@@ -208,7 +208,7 @@ Custom templates can be used in the same way as templates listed in existing [ru
         TESTS="sets/resolver"                                                            \
         DAEMON="unbound"                                                                 \
         ADDITIONAL="-d -c unbound.conf"                                                  \
-        TEMPLATE="template/unbound.j2:template/hints_zone.j2:template/unbound_dnssec.j2" \
+        TEMPLATE="template/unbound.j2:template/hints_zone.j2"                            \
         CONFIG="unbound.conf:hints.zone:ta.keys"
 
 (These are the default values for Unbound.)
@@ -309,7 +309,6 @@ The YAML file contains **ordered** list of binaries and their parameters. Deckar
     templates:
       - template/unbound.j2
       - template/hints_zone.j2  # this template uses variable ROOT_ADDR
-      - template/unbound_dnssec.j2
     configs:
       - unbound.conf
       - hints.zone
