@@ -134,6 +134,7 @@ test:python3:latest:kresd:
   script:
     - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - GIT_DIR=$(pwd)/kresd-local-build/.git git log -1
+    - ( cd kresd-local-build ; git submodule update --init --recursive )
     - PREFIX=$(pwd)/.local make -C kresd-local-build -k all
     - PREFIX=$(pwd)/.local make -C kresd-local-build install
     - LD_LIBRARY_PATH=$(pwd)/.local/lib DAEMON=$(pwd)/.local/sbin/kresd MAKEFLAGS="-j $(nproc) --keep-going" ./kresd_run.sh
