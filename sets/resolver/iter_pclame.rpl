@@ -4,6 +4,8 @@
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
+;test from testbound
+
 SCENARIO_BEGIN Test resolution with recursion, parent child differ, lame domain
 ; make sure it stops probing once is has cached all the badness.
 
