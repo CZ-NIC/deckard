@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 from datetime import datetime
+import errno
 import logging
 import logging.config
 import os
@@ -19,6 +20,8 @@ from pydnstest import scenario, testserver, test
 
 # path to Deckard files
 INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
+# relative to working directory
+TRUST_ANCHOR_SUBDIR = 'ta'
 
 
 class IfaceManager(object):
@@ -190,7 +193,33 @@ def _fixme_prebind_hack(sockfamily, childaddr):
                 sock.listen(5)
 
 
-def setup_daemon_files(prog_cfg, template_ctx):
+def create_trust_anchor_files(ta_files, work_dir):
+    """
+    Write trust anchor files in specified working directory.
+
+    Params:
+      ta_files Dict {domain name: [TA lines]}
+    Returns:
+      List of absolute filesystem paths to TA files.
+    """
+    full_paths = []
+    for domain, ta_lines in ta_files.items():
+        file_name = u'{}.key'.format(domain)
+        full_path = os.path.realpath(
+            os.path.join(work_dir, TRUST_ANCHOR_SUBDIR, file_name))
+        full_paths.append(full_path)
+        dir_path = os.path.dirname(full_path)
+        try:
+            os.makedirs(dir_path)
+        except OSError as ex:
+            if ex.errno != errno.EEXIST:
+                raise
+        with open(full_path, "w") as ta_file:
+            ta_file.writelines('{0}\n'.format(l) for l in ta_lines)
+    return full_paths
+
+
+def setup_daemon_files(prog_cfg, template_ctx, ta_files):
     name = prog_cfg['name']
     # add program-specific variables
     subst = template_ctx.copy()
@@ -198,8 +227,11 @@ def setup_daemon_files(prog_cfg, template_ctx):
 
     subst['WORKING_DIR'] = prog_cfg['dir']
     os.mkdir(prog_cfg['dir'])
-
     subst['SELF_ADDR'] = prog_cfg['ipaddr']
+
+    # daemons might write to TA files so every daemon gets its own copy
+    subst['TRUST_ANCHOR_FILES'] = create_trust_anchor_files(
+        ta_files, prog_cfg['dir'])
 
     # generate configuration files
     j2template_loader = jinja2.FileSystemLoader(
@@ -259,7 +291,7 @@ def process_file(path, args, prog_cfgs):
     """Parse scenario from a file object and create workdir."""
     # Parse scenario
     case, cfg_text = scenario.parse_file(os.path.realpath(path))
-    cfg_ctx = scenario.parse_config(cfg_text, args.qmin, INSTALLDIR)
+    cfg_ctx, ta_files = scenario.parse_config(cfg_text, args.qmin, INSTALLDIR)
     template_ctx = setup_network(cfg_ctx['_SOCKET_FAMILY'], prog_cfgs)
     # merge variables from scenario with generated network variables (scenario has priority)
     template_ctx.update(cfg_ctx)
@@ -270,7 +302,7 @@ def process_file(path, args, prog_cfgs):
     # get working directory and environment variables
     tmpdir = setup_common_env(cfg_ctx)
     try:
-        daemons = setup_daemons(tmpdir, prog_cfgs, template_ctx)
+        daemons = setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files)
         run_testcase(daemons,
                      case,
                      template_ctx['ROOT_ADDR'],
@@ -283,13 +315,13 @@ def process_file(path, args, prog_cfgs):
         raise
 
 
-def setup_daemons(tmpdir, prog_cfgs, template_ctx):
+def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
     """Configure daemons and run the test"""
     # Setup daemon environment
     daemons = []
     for prog_cfg in prog_cfgs['programs']:
         daemon_env = setup_daemon_env(prog_cfg, tmpdir)
-        setup_daemon_files(prog_cfg, template_ctx)
+        setup_daemon_files(prog_cfg, template_ctx, ta_files)
         daemon_proc = run_daemon(prog_cfg, daemon_env)
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
@@ -327,6 +359,8 @@ def test_platform():
 
 
 def deckard():
+    """Entrypoint for script"""
+
     # auxilitary classes for argparse
     class ColonSplitter(argparse.Action):  # pylint: disable=too-few-public-methods
         """Split argument string into list holding items separated by colon."""

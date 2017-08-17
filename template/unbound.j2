@@ -451,6 +451,10 @@ server:
 	# and under the terms of our LICENSE (see that file in the source).
 	# auto-trust-anchor-file: "/var/lib/unbound/root.key"
 
+	{% for TAF in TRUST_ANCHOR_FILES %}
+	auto-trust-anchor-file: "{{TAF}}"
+	{% endfor %}
+
 	# File with DLV trusted keys. Same format as trust-anchor-file.
 	# There can be only one DLV configured, it is trusted from root down.
 	# DLV is going to be decommissioned.  Please do not use it any more.
@@ -460,7 +464,6 @@ server:
 	# with several entries, one file per entry.
 	# Zone file format, with DS and DNSKEY entries.
 	# Note this gets out of date, use auto-trust-anchor-file please.
-	trust-anchor-file: "ta.keys"
 
 	# Trusted key for validation. DS or DNSKEY. specify the RR on a
 	# single line, surrounded by "". TTL is ignored. class is IN default.

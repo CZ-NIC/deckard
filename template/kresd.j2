@@ -22,8 +22,9 @@ mode('permissive')
 {% endif %}
 -- Always retry failing resolver
 option('NO_THROTTLE', true)
-{% for TA in TRUST_ANCHORS %}
-trust_anchors.add('{{TA}}')
+
+{% for TAF in TRUST_ANCHOR_FILES %}
+trust_anchors.add_file('{{TAF}}')
 {% endfor %}
 
 {% if FEATURES.min_ttl is defined %}

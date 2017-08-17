@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import binascii
 import calendar
-from datetime import datetime
 import errno
 import logging
 import os
@@ -12,9 +11,11 @@ import socket
 import string
 import struct
 import time
+from datetime import datetime
 
 import dns.dnssec
 import dns.message
+import dns.name
 import dns.rcode
 import dns.rrset
 import dns.tsigkeyring
@@ -874,12 +875,16 @@ def get_next(file_in, skip_empty=True):
 def parse_config(scn_cfg, qmin, installdir):
     """
     Transform scene config (key, value) pairs into dict filled with defaults.
+    Returns tuple:
+      context dict: {Jinja2 variable: value}
+      trust anchor dict: {domain: [TA lines for particular domain]}
     """
     # defaults
     do_not_query_localhost = True
     harden_glue = True
     sockfamily = 0  # auto-select value for socket.getaddrinfo
     trust_anchor_list = []
+    trust_anchor_files = {}
     stub_addr = None
     override_timestamp = None
 
@@ -896,7 +901,12 @@ def parse_config(scn_cfg, qmin, installdir):
         if k == 'query-minimization':
             qmin = str2bool(v)
         elif k == 'trust-anchor':
-            trust_anchor_list.append(v.strip('"\''))
+            trust_anchor = v.strip('"\'')
+            trust_anchor_list.append(trust_anchor)
+            domain = dns.name.from_text(trust_anchor.split()[0]).canonicalize()
+            if domain not in trust_anchor_files:
+                trust_anchor_files[domain] = []
+            trust_anchor_files[domain].append(trust_anchor)
         elif k == 'val-override-timestamp':
             override_timestamp_str = v.strip('"\'')
             override_timestamp = int(override_timestamp_str)
@@ -948,6 +958,7 @@ def parse_config(scn_cfg, qmin, installdir):
         "INSTALL_DIR": installdir,
         "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
+        "TRUST_ANCHOR_FILES": trust_anchor_files.keys()
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr
@@ -961,7 +972,7 @@ def parse_config(scn_cfg, qmin, installdir):
     ctx['_SOCKET_FAMILY'] = sockfamily
     if override_timestamp:
         ctx['_OVERRIDE_TIMESTAMP'] = override_timestamp
-    return ctx
+    return (ctx, trust_anchor_files)
 
 
 def parse_file(path):
