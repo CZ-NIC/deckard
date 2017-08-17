@@ -4,25 +4,25 @@ variables:
 stages:
   - test
 
-test:python2:pep8:
+test:pep8:
   image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
     - cp ci/compare-pep8.sh /tmp
-    - PYTHON=python2 /tmp/compare-pep8.sh
+    - /tmp/compare-pep8.sh
   tags:
     - docker
     - linux
     - amd64
 
-test:python2:pylint:
+test:pylint:
   image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
     - cp ci/compare-pylint.sh /tmp
-    - PYTHON=python2 /tmp/compare-pylint.sh
+    - /tmp/compare-pylint.sh
   artifacts:
     when: on_failure
     expire_in: '1 hour'
@@ -34,84 +34,23 @@ test:python2:pylint:
     - linux
     - amd64
 
-test:python2:unittests:
+test:unittests:
   image: cznic/deckard-ci
   stage: test
   script:
-    - make check PYTHON=python2
+    - make check
   tags:
     - docker
     - linux
     - amd64
 
-test:python2:comparative:kresd:
+test:comparative:kresd:
   image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
     - cp ci/compare-tests.sh /tmp
-    - PYTHON=python2 /tmp/compare-tests.sh $(pwd)/kresd_run.sh
-  artifacts:
-    when: always
-    expire_in: '1 hour'
-    paths:
-      - modified_tests
-      - base.log
-      - base.tests
-      - head.log
-      - head.tests
-  tags:
-    - docker
-    - linux
-    - amd64
-
-test:python3:pep8:
-  image: cznic/deckard-ci
-  stage: test
-  script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pep8.sh /tmp
-    - PYTHON=python3 /tmp/compare-pep8.sh
-  tags:
-    - docker
-    - linux
-    - amd64
-
-test:python3:pylint:
-  image: cznic/deckard-ci
-  stage: test
-  script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pylint.sh /tmp
-    - PYTHON=python3 /tmp/compare-pylint.sh
-  artifacts:
-    when: on_failure
-    expire_in: '1 hour'
-    paths:
-      - base.log
-      - head.log
-  tags:
-    - docker
-    - linux
-    - amd64
-
-test:python3:unittests:
-  image: cznic/deckard-ci
-  stage: test
-  script:
-    - make check PYTHON=python3
-  tags:
-    - docker
-    - linux
-    - amd64
-
-test:python3:comparative:kresd:
-  image: cznic/deckard-ci
-  stage: test
-  script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-tests.sh /tmp
-    - PYTHON=python3 /tmp/compare-tests.sh $(pwd)/kresd_run.sh
+    - /tmp/compare-tests.sh $(pwd)/kresd_run.sh
   artifacts:
     when: always
     expire_in: '1 hour'
@@ -128,7 +67,7 @@ test:python3:comparative:kresd:
 
 # Run all tests on the latest kresd version to ensure that we not push tests
 # which do not work on latest kresd. It would lead to breakage in kresd CI.
-test:python3:latest:kresd:
+test:latest:kresd:
   image: cznic/deckard-ci
   stage: test
   script:
@@ -146,11 +85,10 @@ test:python3:latest:kresd:
 # sanity check that Unbound under Deckard still works
 # I've selected the only tests which are working
 # on kresd and Unbound 1.5.8 as well as 1.6.0
-test:python3:sanity:unbound:
+test:sanity:unbound:
   image: cznic/deckard-ci
   stage: test
   script:
-    - export PYTHON=python3
     - TESTS=sets/resolver/iter_hint_lame.rpl ./unbound_run.sh
     - TESTS=sets/resolver/iter_lame_root.rpl ./unbound_run.sh
     # these do not work with Unbound 1.5.8 which is in CI container
@@ -164,11 +102,10 @@ test:python3:sanity:unbound:
 # sanity check that PowerDNS recursor under Deckard still works
 # I've selected couple tests which are working
 # on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
-test:python3:sanity:pdnsrecursor:
+test:sanity:pdnsrecursor:
   image: cznic/deckard-ci
   stage: test
   script:
-    - export PYTHON=python3
     - TESTS=sets/resolver/iter_recurse.rpl ./pdns_run.sh
     - TESTS=sets/resolver/iter_tcbit.rpl ./pdns_run.sh
   tags:

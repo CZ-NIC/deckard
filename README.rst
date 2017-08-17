@@ -23,7 +23,7 @@ Requirements
 
 Deckard requires following software to be installed:
 
-- Python >= 2.7
+- Python >= 3.3
 - dnspython_ - DNS library for Python
 - Jinja2_ - template engine for generating config files
 - PyYAML_ - YAML parser for Python

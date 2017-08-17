@@ -4,7 +4,7 @@ DAEMON ?= kresd
 TEMPLATE ?= template/kresd.j2
 CONFIG ?= config
 
-PYTHON ?= python
+PYTHON ?= python3
 LIBEXT := .so
 PLATFORM := $(shell uname -s)
 ifeq ($(PLATFORM),Darwin)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 from distutils.core import setup
 
@@ -17,6 +17,7 @@ kwargs = {
     'license': 'BSD',
     'url': 'https://github.com/CZ-NIC/deckard',
     'packages': ['pydnstest'],
+    'python_requires': '>=3.3',
     'install_requires': [
         'dnspython>=1.15',
         'jinja2',
