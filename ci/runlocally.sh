@@ -19,22 +19,17 @@ test -n "${STATUS}" && echo "Working tree is dirty, commit your changes now." &&
 trap checkout_back EXIT
 trap "{ FAILURE_DETECTED=1; }" ERR
 
-for PYTHON in python2 python3
-do
-	export PYTHON
+"${CIDIR}"/compare-pylint.sh
+checkout_back
+git clean -xdf
 
-	"${CIDIR}"/compare-pylint.sh
-	checkout_back
-	git clean -xdf
+"${CIDIR}"/compare-pep8.sh
+checkout_back
+git clean -xdf
 
-	"${CIDIR}"/compare-pep8.sh
-	checkout_back
-	git clean -xdf
-
-	"${CIDIR}"/compare-tests.sh "${CIDIR}/../kresd_run.sh"
-	checkout_back
-	git clean -xdf
-done
+"${CIDIR}"/compare-tests.sh "${CIDIR}/../kresd_run.sh"
+checkout_back
+git clean -xdf
 
 # at this point all the tests passed so we can clean up
 git clean -xdf
