@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
-import sys
 from distutils.core import setup
 
-version = '0.1.2'
+version = '3.0'
 
 kwargs = {
-    'name': 'pydnstest',
+    'name': 'deckard',
     'version': version,
     'description': 'DNS toolkit',
     'long_description':
-    """pydnstest is a DNS software testing library.
+    """Deckard is a DNS software testing based on library pydnstest.
        It supports parsing and running Unbound-like test scenarios,
        and setting up a mock DNS server. It's based on dnspython.""",
-    'author': 'Marek Vavrusa',
-    'author_email': 'marek@vavrusa.com',
+    'author': 'CZ.NIC',
+    'author_email': 'knot-dns-users@lists.nic.cz',
     'license': 'BSD',
-    'url': 'https://github.com/CZ-NIC/deckard',
+    'url': 'https://gitlab.labs.nic.cz/knot/deckard',
     'packages': ['pydnstest'],
     'python_requires': '>=3.3',
     'install_requires': [
@@ -25,11 +24,14 @@ kwargs = {
         'python-augeas'
     ],
     'classifiers': [
-        "Intended Audience :: Developers",
-        "Intended Audience :: System Administrators",
-        "Programming Language :: Python",
-        "Topic :: Internet :: Name Service (DNS)",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python :: 3 :: Only'
+        'Operating System :: POSIX :: Linux',
+        'Topic :: Internet :: Name Service (DNS)',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Software Development :: Quality Assurance',
+        'Topic :: Software Development :: Testing',
     ],
 }
 
