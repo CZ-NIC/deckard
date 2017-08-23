@@ -1,6 +1,6 @@
 [submodule "contrib/libfaketime"]
 	path = contrib/libfaketime
-	url = https://github.com/wolfcw/libfaketime.git
+	url = git://github.com/wolfcw/libfaketime.git
 [submodule "contrib/libswrap"]
 	path = contrib/libswrap
 	url = https://gitlab.labs.nic.cz/labs/socket_wrapper.git
