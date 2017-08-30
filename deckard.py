@@ -324,7 +324,11 @@ def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
         setup_daemon_files(prog_cfg, template_ctx, ta_files)
         daemon_proc = run_daemon(prog_cfg, daemon_env)
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
-        conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
+        try:
+            conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
+        except:
+            daemon_proc.terminate()
+            raise
     return daemons
 
 
