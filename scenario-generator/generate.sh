@@ -14,8 +14,9 @@ BUILDLOG="$LOGDIR/build.log"
 PADDING=80
 FLAGS=""
 DATE=`date +%Y-%m-%d_%H-%M-%S`
-RESOLVERS="unbound bind kresd"
-BROWSERS="firefox"
+RESOLVERS="unbound kresd bind"
+BROWSERS="firefox chrome chrome-android chrome-ios"
+IMAGES="firefox chrome"
 # FUNCTIONS
 # padding $1 - string, $2 - size
 function padding {
@@ -29,17 +30,16 @@ function run_capture {
 	FAILED=0
 	for BROWSER in $BROWSERS
 	do
+		IMAGE=$(echo $BROWSER | awk -F- '{print $1}')
 		for RESOLVER in $RESOLVERS
 		do
 			for PAGE in $*;
 			do
-				docker run -v "$DIR$CAPSUBDIR:$CAPSUBDIR" -w $CAPSUBDIR -it deckard/$RESOLVER:local $CAPSUBDIR/test.sh $BROWSER $RESOLVER $PAGE $DATE
+				ID=$(docker run -v "$DIR$CAPSUBDIR:$CAPSUBDIR" -w $CAPSUBDIR -it deckard/$IMAGE:local)
+				docker exec -it $ID $CAPSUBDIR/test.sh $BROWSER $RESOLVER $PAGE $DATE
 				STATUS=$?
-				CONTAINER=$(docker ps -aq | head -1)
-				if [ -n "$CONTAINER" ]; then
-					docker stop $CONTAINER &>/dev/null
-					docker rm $CONTAINER &>/dev/null
-				fi
+				docker stop $ID &>/dev/null
+				docker rm $ID &>/dev/null
 				ALL=$(($ALL+1))
 				if [ ! $STATUS == 0 ]; then
 					echo -e "[FAIL]\t[$BROWSER]\t[$RESOLVER]\t[$PAGE]"
@@ -121,16 +121,16 @@ fi
 # PREPARE
 mkdir -p $LOGDIR $SCENARIO "$DIR$CAPSUBDIR" $CAPDATADIR $CAPLOGDIR
 # BUILDING DOCKER IMAGES
-for IMAGE in $RESOLVERS
+for IMAGE in $IMAGES
 do
-	echo -e "[DOCKER]\t[BUILD]\t[$IMAGE]\t[start]"
-	docker build -t deckard/$IMAGE:local $DIR/$IMAGE > $BUILDLOG
+	echo -e "[START] Building $IMAGE docker image"
+	docker build -t deckard/$IMAGE:local $DIR/dockerfiles/$IMAGE > $BUILDLOG
 	STATUS=$?
 	if [ $STATUS -ne 0 ]; then
 		echo Failed to build $IMAGE docker image. See $BUILDLOG
 		exit $STATUS
 	else
-		echo -e "[DOCKER]\t[BUILD]\t[$IMAGE]\t[FINISHED]"
+		echo -e "[FINISH] Building $IMAGE docker image"
 	fi
 done
 # RUN CAPTURE
