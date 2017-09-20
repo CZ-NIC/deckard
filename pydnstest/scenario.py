@@ -597,6 +597,8 @@ class Step:
             return self.__time_passes()
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
+        elif self.type == 'TIMEOUT':
+            self.log.info('')
         # Parser currently doesn't support step types LOG, REPLAY and ASSERT.
         # No test uses them.
         # elif self.type == 'LOG':
