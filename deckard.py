@@ -308,7 +308,11 @@ def process_file(path, args, prog_cfgs):
                      template_ctx['ROOT_ADDR'],
                      template_ctx['_SOCKET_FAMILY'],
                      prog_under_test_ip)
-        shutil.rmtree(tmpdir)
+        if prog_cfgs.get('noclean'):
+            logging.getLogger('deckard.hint').info(
+                'test working directory %s', tmpdir)
+        else:
+            shutil.rmtree(tmpdir)
     except:
         logging.getLogger('deckard.hint').info(
             'test failed, inspect working directory %s', tmpdir)
@@ -403,6 +407,8 @@ def deckard():
                            action=EnvDefault, envvar='VERBOSE',
                            type=loglevel2number, required=False)
     argparser.add_argument('scenario', help='path to test scenario')
+    argparser.add_argument('--noclean', action='store_true',
+                           help='don\'t delete working directory')
 
     subparsers = argparser.add_subparsers(
         dest='cmd', title='sub-commands',
@@ -456,7 +462,9 @@ def deckard():
                 'configs': args.configs,
                 'additional': args.additional,
                 'name': os.path.basename(args.binary),
-            }]}
+            }],
+            'noclean': args.noclean,
+        }
 
     mandatory_keys = {'name', 'binary', 'templates', 'configs', 'additional'}
     for cfg in config['programs']:
