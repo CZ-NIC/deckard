@@ -712,15 +712,16 @@ class Step:
 
     def __time_passes(self):
         """ Modify system time. """
-        time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'r')
-        line = time_file.readline().strip()
-        time_file.close()
+        file_old = os.environ["FAKETIME_TIMESTAMP_FILE"]
+        file_next = os.environ["FAKETIME_TIMESTAMP_FILE"] + ".next"
+        with open(file_old, 'r') as time_file:
+            line = time_file.readline().strip()
         t = time.mktime(datetime.strptime(line, '@%Y-%m-%d %H:%M:%S').timetuple())
         t += self.delay
-        time_file = open(os.environ["FAKETIME_TIMESTAMP_FILE"], 'w')
-        time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
-        time_file.flush()
-        time_file.close()
+        with open(file_next, 'w') as time_file:
+            time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
+            time_file.flush()
+        os.replace(file_next, file_old)
 
     # def __assert(self, ctx):
     #     """ Assert that a passed expression evaluates to True. """
