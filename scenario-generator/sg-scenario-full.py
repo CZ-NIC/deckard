@@ -178,23 +178,72 @@ class Query:
 class Server_alternatives:
     """List of name servers covering same domains"""
     def __init__(self):
-        self.ips = set()            # IPs of name servers
         # All servers must contain IP of for the others and given NS
         self.names = dict()         # Names of name servers ([ip] = name)
-        self.content = set()        # Queries that these servers should contain
         self.servers = []           # Servers
-        self.servers_queries = []   # Queries containing A/AAAA for each server
+        self.content = []           # Queries that every alternative should contain
+
+    def __str__(self):
+        names = ''
+        servers = ''
+        content = ''
+        if self.names:
+            names = '\n\t\t'.join(sorted(['%s:: %s' % (key, value if value else 'missing')
+                                          for (key, value) in self.names.items()]))
+        if self.servers:
+            servers = '\n\t\t'.join(sorted(str(x) for x in self.servers))
+        if self.content:
+            content = '\n\t\t'.join(sorted(['Query %s Class %s Type %s Flags %s' %
+                                     (dns_query.to_text().lower(), dns_class, dns_type, dns_flags) for
+                                     (dns_query, dns_class, dns_type, dns_flags) in self.content]))
+        return "Server alternatives\n\tIP's and names:\n\t\t" +\
+               names + '\n\tServers:\n\t\t' + servers + '\n\tContent:\n\t\t' +\
+               content + '\n\n'
+
+    def get_server(self, ip):
+        for server in self.servers:
+            if server.ip == ip:
+                return server
+        s = Server()
+        s.ip = ip
+        self.servers.append(s)
+        return s
+
+    def add_content(self, name, rdclass, rdtype, flags):
+        for item in self.content:
+            if item[0] == name and item[1] == rdclass and item[2] == rdtype and item[3] == flags:
+                return
+        self.content.append([name,rdclass, rdtype, flags])
+
+    def update_content(self, content):
+        for item in content:
+            self.add_content(item[0], item[1], item[2], item[3])
+
+    def merge_alternatives(self, alternative):
+        self.names.update(alternative.names)
+        self.update_content(alternative.content)
+        for server in alternative.servers:
+            merged = False
+            for s in self.servers:
+                if server.ip == s.ip:
+                    merged = True
+                    s.queries = s.queries + server.queries
+                    break
+            if not merged:
+                self.servers.add(server)
 
 class Server:
     """DNS name server class for deckard scenarios"""
 
     def __init__(self):
         self.ip = ''
-        self.name = 'No name'
         self.min_range = 0
         self.max_range = 100
-        self.final_queries = [] # Records containing domains IP
+        # self.final_queries = [] # Records containing domains IP
         self.queries = []       # Records containing NS, self
+
+    def __str__(self):
+        return "IP: {0} Queries: {1}\n".format(self.ip, len(self.queries))
 
     def set_range(self, set_min=0, set_max=100):
         self.min_range = set_min
@@ -203,18 +252,9 @@ class Server:
     def set_ip(self, ip):
         self.ip = ip
 
-    def add_query(self, query, scope=None, opt=False):
-        if scope:
-            if not scope & self.ip:
-                return False
-            else:
-                self.ip |= scope
-        if type(query) is not list:
-            query = [query]
-        for qry in query:
-            if not opt or self.missing(qry):
-                self.queries.append(qry)
-        return True
+    def add_query(self, query):
+        if self.missing(query):
+            self.queries.append(query)
 
     def missing(self, query):
         for qry in self.queries:
@@ -286,62 +326,15 @@ class Steps:
 class Scenario:
     """deckard scenario container"""
     def __init__(self):
-        self.root = Server()
         self.steps = Steps()
-        self.roots = set()
         self.servers = set()
-        self.alter = []
         self.name = "Unnamed"
-        self.optional = []
-        self.A_presence = set()
-        self.AAAA_presence = set()
-        self.NS_CNAME_SOA_presence = set()
-        self.presence = set()
 
     def add_name(self, name):
         self.name = name
 
     def add_step(self, step):
         self.steps.add_query(step)
-
-    def add_roots(self, roots):
-        if len(roots):
-            self.roots |= roots
-
-    def add_alternatives(self, alter):
-        if len(alter):
-            self.alter.append(alter)
-
-    def add_to_servers(self, source_ip, query, opt=False):
-        query_list = query if type(query) is list else [query]
-        if (not query_list[0].is_answer()) or query_list[0].answer_empty():
-            return
-
-        curr_alter = set()
-        if type(source_ip) is set:
-            curr_alter |= source_ip
-        else:
-            curr_alter.add(source_ip)
-
-        for alternatives in self.alter:
-            if curr_alter & alternatives:
-                curr_alter |= alternatives
-                break
-
-        if query_list[0].top_level or self.roots & curr_alter:
-            self.roots |= curr_alter
-            self.root.add_query(query_list, opt=opt)
-        else:
-            added = False
-            for server in self.servers:
-                added = server.add_query(query_list, curr_alter, opt=opt)
-                if added:
-                    break
-            if not added:
-                server = Server()
-                server.set_ips(curr_alter)
-                server.add_query(query_list, opt=opt)
-                self.servers.append(server)
 
     def to_string(self):
         scenario_string = ''
@@ -365,13 +358,7 @@ class Scenario:
         scenario_string += "SCENARIO_END"
         return scenario_string
 
-    def add_optional(self):
-        if self.optional:
-            for op in self.optional:
-                for qry in op[0]:
-                    self.add_to_servers(op[1], qry, opt=True)
-
-    def step_from_packet(self, dnsmsg):
+    def query_from_packet(self, dnsmsg):
         # Query
         q = Query()
         q.set_flags(dnsmsg.flags)
@@ -388,112 +375,109 @@ class Scenario:
         # Authority section
         for authority in dnsmsg.authority:
             q.add_authoritative(authority.to_text())
+        return q
+
+    def step_from_packet(self, dnsmsg):
+        # Query
+        q = self.query_from_packet(dnsmsg)
         self.add_step(q)
+
+    def get_server_alternative(self, ip):
+        for servers in self.servers:
+            if ip in servers.names.keys():
+                return servers
+
+        destination = Server_alternatives()
+        if ip not in destination.names:
+            destination.names[ip] = ''
+        self.servers.add(destination)
+        return destination
+
+    def process_ns(self, rrset):
+        queries = []
+        names = set()
+        for item in rrset:
+            if item.rdtype == dns.rdatatype.NS:
+                for rdata in item:
+                    queries.append([rdata.target, dns.rdataclass.IN, dns.rdatatype.A, 0])
+                    names.add(rdata.target.to_text().lower())
+        return queries, names
+
+    def find_ips_for_names(self, rrset, names):
+        ips_names = {}
+        for item in rrset:
+            if item.rdtype == dns.rdatatype.A or item.rdtype == dns.rdatatype.AAAA:
+                name = item.name.to_text().lower()
+                if name in names:
+                    for rdata in item:
+                        ips_names[rdata.address] = name
+        return ips_names
+
+    def merge_servers(self):
+        new_servers = set()
+        for server in self.servers:
+            merged = False
+            for new_s in new_servers:
+                if server.names.keys() & new_s.names.keys():
+                    new_s.merge_alternatives(server)
+                    merged = True
+                    break
+            if not merged:
+                new_servers.add(server)
+
+        self.servers = new_servers
+
+
+    def update_servers(self, names, queries):
+        updated = False
+        for server in self.servers:
+            if names.keys() & server.names.keys():
+                updated = True
+                server.names.update(names)
+                server.update_content(queries)
+                break
+        if not updated:
+            server = Server_alternatives()
+            server.names.update(names)
+            server.update_content(queries)
+            self.servers.add(server)
+        self.merge_servers()
+
 
     def process_dns(self, dnsmsg, src_ip, dst_ip, step=0):
         # TODO: Completing sets of servers, completing content
-        # TODO: Rework top level
-        # TODO: Possibility of multiple ips per NS domain name?
-
-        # Local variables
-        destination = ''  # Servers to store response
         # Browser - Resolver
         if src_ip == '127.0.0.1' and dst_ip == '127.0.0.1':
             self.step_from_packet(dnsmsg)
             return
 
-        # Skip questions as they are useless
         if dnsmsg.flags & dns.flags.QR == 0:
-            for servers in self.servers:
-                if dst_ip in servers.ips:
-                    destination = servers
-                    break
-            if not destination:
-                destination = Server_alternatives()
-                destination.ips.add(dst_ip)
-                # TODO: cant find name - try and fill the rest from authority section
-                destination.names[dst_ip] = socket.gethostbyaddr(dst_ip)[0]
+            destination = self.get_server_alternative(dst_ip)
             # Content - name, class, type, flags - for each server
             for question in dnsmsg.question:
-                destination.content = [question.name, question.rdclass, question.rdtype,
-                                       dnsmsg.flags]
-            self.servers.add(destination)
-            return
-        # TODO: continue here
-        return
-        # Find origin of the answer
-        for servers in self.servers:
-            if src_ip in servers.ips:
-                destination = servers
-                break
-        if not destination:
-            destination = Server_alternatives()
-            destination.ips.add(src_ip)
-            destination.names[src_ip] = socket.gethostbyaddr(src_ip)[0]
-
-
-
-        alternatives = set()
-        query_name = ''
-        answer_name = set()
-        # Query
-        q = Query()
-        q.set_step(step)
-        q.set_flags(dnsmsg.flags)
-        q.set_id(dnsmsg.id)
-        # Complementary queries - NS
-        comp = [] # Add to every NS alternative
-        # TODO: rework NS of super domain - detect if exists
-        #  Process question
-        for question in dnsmsg.question:
-            q.add_question(question.to_text())
-            query_name = question.name
-        # Additional section
-        for additional in dnsmsg.additional:
-            q.add_additional(additional.to_text())
-            # Create separate A/AAAA record for each NS server
-            comp.append(query_from_rrset(step, dnsmsg.flags, additional))
-            # Create list of NS covering same domains
-            if additional.rdtype == dns.rdatatype.A or additional.rdtype == dns.rdatatype.AAAA:
-                for rdata in additional:
-                    alternatives.add(rdata.to_text())
-        # Answer section
-        cname_queries = []
-        cnames = []
-        for answer in dnsmsg.answer:
-            q.add_answer(answer.to_text())
-            answer_name.add(answer.name)
-            if answer.rdtype == dns.rdatatype.CNAME:
-                for rdata in answer:
-                    cnames.append(rdata.target)
-            elif answer.rdtype == dns.rdatatype.A or answer.rdtype == dns.rdatatype.AAAA:
-                if answer.name in cnames:
-                    cname_queries.append(query_from_rrset(step, dnsmsg.flags, answer))
-        # Authority section
-        for authority in dnsmsg.authority:
-            q.add_authoritative(authority.to_text())
-            # Server is NS - send resolver to the next
-            if authority.rdtype == dns.rdatatype.NS:
-                relation = authority.name.fullcompare(query_name)
-                if relation[0] == dns.name.NAMERELN_SUPERDOMAIN and query_name not in answer_name:
-                    q.set_covets_sub(True)
-                    q.set_question("{0} IN NS".format(authority.name))
-            if authority.name.to_text() == '.':
-                q.set_top_level(True)
-                self.add_roots(alternatives)
-            elif authority.name.split(2)[1] == authority.name:
-                q.set_top_level(True)
-        # Decide what to send
-        #if src_ip == "127.0.0.1" and dst_ip == "127.0.0.1":
-        #    self.add_step(q)
-        #else:
-            #if cname_queries:
-            #    self.optional.append([cname_queries, src_ip])
-            #self.add_alternatives(alternatives)
-            #self.add_to_servers(src_ip, q)
-            #if comp:  # Add complentary records to parent and child zone
-            #    self.add_to_servers(src_ip, comp)
-            #    self.add_to_servers(alternatives, comp)
+                destination.add_content(question.name, question.rdclass, question.rdtype,
+                                        dnsmsg.flags)
+        else:
+            alternatives = self.get_server_alternative(src_ip)
+            source = alternatives.get_server(src_ip)
+            # Query
+            q = self.query_from_packet(dnsmsg)
+            source.add_query(q)
+            # Additional section
+            queries = []
+            names = set()
+            names_ips = {}
+            # Find NS names
+            for item in [dnsmsg.additional, dnsmsg.answer, dnsmsg.authority]:
+                local_q, local_n = self.process_ns(item)
+                queries = queries + local_q
+                names = names | local_n
+            # Find NS ips
+            for item in [dnsmsg.additional, dnsmsg.answer, dnsmsg.authority]:
+                local_pn = self.find_ips_for_names(item, names)
+                names_ips.update(local_pn)
+            if names_ips and queries:
+                self.update_servers(names_ips, queries)
 
 
 def process_file(file, name):
@@ -524,9 +508,11 @@ def process_file(file, name):
                 continue
             sc.process_dns(dnsmsg, src_ip, dst_ip)
     # Return scenario
-    print(sc.servers)
+    for server in sc.servers:
+        print(server)
 
-
+# TODO: content to class?
+# TODO: multiple names per server
 def main(argv):
     if len(argv) != 3:
         sys.stderr.write("Invalid argument count\n")
