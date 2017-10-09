@@ -6,7 +6,6 @@ import dns.resolver
 import dns
 import sys
 
-
 def class_to_string(rrclass):
     if rrclass == '':
         return rrclass
@@ -41,6 +40,24 @@ def get_superdomain(dname):
         add.add(dnames[1])
         return add
 
+def query_from_packet(dnsmsg):
+    # Query
+    q = Query()
+    q.set_flags(dnsmsg.flags)
+    q.set_id(dnsmsg.id)
+    #  Question section
+    for question in dnsmsg.question:
+        q.add_question(question.to_text())
+    # Additional section
+    for additional in dnsmsg.additional:
+        q.add_additional(additional.to_text())
+    # Answer section
+    for answer in dnsmsg.answer:
+        q.add_answer(answer.to_text())
+    # Authority section
+    for authority in dnsmsg.authority:
+        q.add_authoritative(authority.to_text())
+    return q
 
 class Query:
     """DNS question class for deckard scenarios"""
@@ -194,7 +211,7 @@ class Server_alternatives:
             servers = '\n\t\t'.join(sorted(str(x) for x in self.servers))
         if self.content:
             content = '\n\t\t'.join(sorted(['Query %s Class %s Type %s Flags %s' %
-                                     (dns_query.to_text().lower(), dns_class, dns_type, dns_flags) for
+                                     (dns_query, dns_class, dns_type, dns_flags) for
                                      (dns_query, dns_class, dns_type, dns_flags) in self.content]))
         return "Server alternatives\n\tIP's and names:\n\t\t" +\
                names + '\n\tServers:\n\t\t' + servers + '\n\tContent:\n\t\t' +\
@@ -210,6 +227,8 @@ class Server_alternatives:
         return s
 
     def add_content(self, name, rdclass, rdtype, flags):
+        if isinstance(name, dns.name.Name):
+            name = name.to_text().lower()
         for item in self.content:
             if item[0] == name and item[1] == rdclass and item[2] == rdtype and item[3] == flags:
                 return
@@ -218,6 +237,12 @@ class Server_alternatives:
     def update_content(self, content):
         for item in content:
             self.add_content(item[0], item[1], item[2], item[3])
+
+    def fix_content_pairs(self):
+        # TODO: bez A/AAAA?
+        for item in self.content:
+            type = dns.rdatatype.A if item[2] == dns.rdatatype.AAAA else dns.rdatatype.AAAA
+            self.add_content(item[0], item[1], type, item[3])
 
     def merge_alternatives(self, alternative):
         self.names.update(alternative.names)
@@ -231,6 +256,32 @@ class Server_alternatives:
                     break
             if not merged:
                 self.servers.add(server)
+
+    def fill_servers(self):
+        present_s = set()
+        res = dns.resolver.Resolver()
+        for server in self.servers:
+            present_s.add(server.ip)
+            for item in self.content:
+                res.nameservers = [server.ip]
+                res.set_flags(item[3])
+                try:
+                    resp = res.query(item[0], rdclass=item[1], rdtype=item[2]).response
+                except:
+                    # TODO???? -> Refused, No Answer, ...
+                    continue
+                q = query_from_packet(resp)
+                server.add_query(q)
+
+    def postprocessing(self):
+        ''' Fill missing queries'''
+        # TODO: bez A/AAAA?
+        self.fix_content_pairs()
+        for ip in self.names:
+            if self.names[ip]:
+                self.add_content(self.names[ip], dns.rdataclass.IN, dns.rdatatype.A, 0)
+                self.add_content(self.names[ip], dns.rdataclass.IN, dns.rdatatype.AAAA, 0)
+        self.fill_servers()
 
 class Server:
     """DNS name server class for deckard scenarios"""
@@ -329,6 +380,7 @@ class Scenario:
         self.steps = Steps()
         self.servers = set()
         self.name = "Unnamed"
+        self.other_names = dict() # names from A/AAAA
 
     def add_name(self, name):
         self.name = name
@@ -358,28 +410,9 @@ class Scenario:
         scenario_string += "SCENARIO_END"
         return scenario_string
 
-    def query_from_packet(self, dnsmsg):
-        # Query
-        q = Query()
-        q.set_flags(dnsmsg.flags)
-        q.set_id(dnsmsg.id)
-        #  Question section
-        for question in dnsmsg.question:
-            q.add_question(question.to_text())
-        # Additional section
-        for additional in dnsmsg.additional:
-            q.add_additional(additional.to_text())
-        # Answer section
-        for answer in dnsmsg.answer:
-            q.add_answer(answer.to_text())
-        # Authority section
-        for authority in dnsmsg.authority:
-            q.add_authoritative(authority.to_text())
-        return q
-
     def step_from_packet(self, dnsmsg):
         # Query
-        q = self.query_from_packet(dnsmsg)
+        q = query_from_packet(dnsmsg)
         self.add_step(q)
 
     def get_server_alternative(self, ip):
@@ -392,6 +425,14 @@ class Scenario:
             destination.names[ip] = ''
         self.servers.add(destination)
         return destination
+
+    def process_a(self, rrset):
+        names = dict()
+        for item in rrset:
+            if item.rdtype == dns.rdatatype.A or item.rdtype == dns.rdatatype.AAAA:
+                for rdata in item:
+                    names[rdata.address] = item.name.to_text().lower()
+        return names
 
     def process_ns(self, rrset):
         queries = []
@@ -443,9 +484,19 @@ class Scenario:
             self.servers.add(server)
         self.merge_servers()
 
+    def postprocessing(self):
+        ''' Fill all possible content after all packets were processed'''
+        for server in self.servers:
+            for ip in self.other_names:
+                if ip in server.names.keys():
+                    server.names[ip] = self.other_names[ip]
+        self.merge_servers()
+        for server in self.servers:
+            server.postprocessing()
 
     def process_dns(self, dnsmsg, src_ip, dst_ip, step=0):
         # TODO: Completing sets of servers, completing content
+	    # TODO: NS names from responses
         # Browser - Resolver
         if src_ip == '127.0.0.1' and dst_ip == '127.0.0.1':
             self.step_from_packet(dnsmsg)
@@ -461,12 +512,16 @@ class Scenario:
             alternatives = self.get_server_alternative(src_ip)
             source = alternatives.get_server(src_ip)
             # Query
-            q = self.query_from_packet(dnsmsg)
+            q = query_from_packet(dnsmsg)
             source.add_query(q)
             # Additional section
             queries = []
             names = set()
             names_ips = {}
+            # Find A/AAAA names
+            for item in [dnsmsg.additional, dnsmsg.answer, dnsmsg.authority]:
+                other_names = self.process_a(item)
+                self.other_names.update(other_names)
             # Find NS names
             for item in [dnsmsg.additional, dnsmsg.answer, dnsmsg.authority]:
                 local_q, local_n = self.process_ns(item)
@@ -507,12 +562,15 @@ def process_file(file, name):
             except:  # Skip unsupported dns packet
                 continue
             sc.process_dns(dnsmsg, src_ip, dst_ip)
+    sc.postprocessing()
     # Return scenario
     for server in sc.servers:
         print(server)
+    #print(sc.other_names)
 
 # TODO: content to class?
 # TODO: multiple names per server
+# TODO: test on smaller pcaps - takes too long to resolve everything
 def main(argv):
     if len(argv) != 3:
         sys.stderr.write("Invalid argument count\n")
