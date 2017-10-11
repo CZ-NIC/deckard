@@ -198,6 +198,7 @@ class Server_alternatives:
         # All servers must contain IP of for the others and given NS
         self.names = dict()         # Names of name servers ([ip] = name)
         self.servers = []           # Servers
+        #TODO: content: name class flags [TYPES] - only if not A/AAAA, those include allways
         self.content = []           # Queries that every alternative should contain
 
     def __str__(self):
@@ -257,21 +258,33 @@ class Server_alternatives:
             if not merged:
                 self.servers.add(server)
 
+    def fill_server(self, server):
+        res = dns.resolver.Resolver()
+        for item in self.content:
+            res.nameservers = [server.ip]
+            res.set_flags(item[3])
+            try:
+                resp = res.query(item[0], rdclass=item[1], rdtype=item[2]).response
+            except:
+                # TODO???? -> Refused, No Answer, ...
+                continue
+            q = query_from_packet(resp)
+            server.add_query(q)
+
     def fill_servers(self):
         present_s = set()
-        res = dns.resolver.Resolver()
+        # Fill servers with queries
         for server in self.servers:
             present_s.add(server.ip)
-            for item in self.content:
-                res.nameservers = [server.ip]
-                res.set_flags(item[3])
-                try:
-                    resp = res.query(item[0], rdclass=item[1], rdtype=item[2]).response
-                except:
-                    # TODO???? -> Refused, No Answer, ...
-                    continue
-                q = query_from_packet(resp)
-                server.add_query(q)
+            self.fill_server(server)
+        # Add missing servers
+        ips = self.names.keys()
+        ips = ips - present_s
+        for ip in ips:
+            s = Server()
+            s.set_ip(ip)
+            self.servers.append(s)
+            self.fill_server(s)
 
     def postprocessing(self):
         ''' Fill missing queries'''
