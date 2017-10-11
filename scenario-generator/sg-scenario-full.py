@@ -263,10 +263,10 @@ class Server_alternatives:
         for item in self.content:
             res.nameservers = [server.ip]
             res.set_flags(item[3])
+            # TODO: Use dig instead of dnspython
             try:
                 resp = res.query(item[0], rdclass=item[1], rdtype=item[2]).response
             except:
-                # TODO???? -> Refused, No Answer, ...
                 continue
             q = query_from_packet(resp)
             server.add_query(q)
@@ -280,7 +280,10 @@ class Server_alternatives:
         # Add missing servers
         ips = self.names.keys()
         ips = ips - present_s
+
         for ip in ips:
+            if ':' in ip:
+                continue
             s = Server()
             s.set_ip(ip)
             self.servers.append(s)
@@ -584,6 +587,7 @@ def process_file(file, name):
 # TODO: content to class?
 # TODO: multiple names per server
 # TODO: test on smaller pcaps - takes too long to resolve everything
+# TODO: ON/OFF ipv6
 def main(argv):
     if len(argv) != 3:
         sys.stderr.write("Invalid argument count\n")
