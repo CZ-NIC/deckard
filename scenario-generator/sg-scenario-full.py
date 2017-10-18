@@ -259,17 +259,19 @@ class Server_alternatives:
                 self.servers.add(server)
 
     def fill_server(self, server):
-        res = dns.resolver.Resolver()
         for item in self.content:
-            res.nameservers = [server.ip]
-            res.set_flags(item[3])
-            # TODO: Use dig instead of dnspython
+            msg = dns.message.make_query(item[0], rdtype=item[2], rdclass=item[1])
+            msg.flags = item[3]
+            # TODO: TCP / UDP testing for thesis
+            resp = ""
             try:
-                resp = res.query(item[0], rdclass=item[1], rdtype=item[2]).response
+                resp = dns.query.udp(msg, server.ip, 2)
             except:
+                # TODO: detect ipv6 not working
                 continue
-            q = query_from_packet(resp)
-            server.add_query(q)
+            if resp:
+                q = query_from_packet(resp)
+                server.add_query(q)
 
     def fill_servers(self):
         present_s = set()
@@ -282,8 +284,6 @@ class Server_alternatives:
         ips = ips - present_s
 
         for ip in ips:
-            if ':' in ip:
-                continue
             s = Server()
             s.set_ip(ip)
             self.servers.append(s)
@@ -349,9 +349,7 @@ class Server:
     def to_string(self):
         self.remove_duplicate()
         server_string = 'RANGE_BEGIN {0} {1}\n'.format(self.min_range, self.max_range)
-        ips = sorted(self.ip)
-        for ip in ips:
-            server_string += '\tADDRESS {0}\n'.format(ip)
+        server_string += '\tADDRESS {0}\n'.format(self.ip)
         server_string += '\n'
         for qry in self.queries:
             if not qry.covers_sub:
@@ -406,21 +404,11 @@ class Scenario:
 
     def to_string(self):
         scenario_string = ''
-        for i in range(len(self.servers) - 1, -1, -1):
-            server = self.servers[i]
-            if server.ip & self.roots:
-                for qry in server.qrys:
-                    self.root.add_query(qry)
-                del self.servers[i]
-        if len(self.roots) <= 0:
-            raise Exception('No root servers found')
-        roots = sorted(self.roots)
-        scenario_string += "\tname: \'.\'\n\tstub-addr: {0}\n".format(roots[0])
+        scenario_string += "\tname: \'.\'\n\tstub-addr: 198.41.0.4\n"
         scenario_string += "CONFIG_END\n\nSCENARIO_BEGIN {0}\n\n".format(self.name)
-        self.root.set_ips(self.roots)
-        scenario_string += self.root.to_string()
-        for server in self.servers:
-            scenario_string += server.to_string()
+        for alter in self.servers:
+            for server in alter.servers:
+                scenario_string += server.to_string()
         scenario_string += "\n\n; Sequence of queries made by browser\n\n"
         scenario_string += self.steps.to_string()
         scenario_string += "SCENARIO_END"
@@ -580,8 +568,7 @@ def process_file(file, name):
             sc.process_dns(dnsmsg, src_ip, dst_ip)
     sc.postprocessing()
     # Return scenario
-    for server in sc.servers:
-        print(server)
+    print(sc.to_string())
     #print(sc.other_names)
 
 # TODO: content to class?
