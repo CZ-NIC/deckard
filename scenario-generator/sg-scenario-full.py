@@ -5,6 +5,7 @@ import socket
 import dns.resolver
 import dns
 import sys
+import difflib
 
 def class_to_string(rrclass):
     if rrclass == '':
@@ -200,6 +201,7 @@ class Server_alternatives:
         self.servers = []           # Servers
         #TODO: content: name class flags [TYPES] - only if not A/AAAA, those include allways
         self.content = []           # Queries that every alternative should contain
+        self.content_diff = dict()
 
     def __str__(self):
         names = ''
@@ -210,10 +212,13 @@ class Server_alternatives:
                                           for (key, value) in self.names.items()]))
         if self.servers:
             servers = '\n\t\t'.join(sorted(str(x) for x in self.servers))
-        if self.content:
+        '''if self.content:
             content = '\n\t\t'.join(sorted(['Query %s Class %s Type %s Flags %s' %
                                      (dns_query, dns_class, dns_type, dns_flags) for
-                                     (dns_query, dns_class, dns_type, dns_flags) in self.content]))
+                                     (dns_query, dns_class, dns_type, dns_flags) in self.content]))'''
+        if self.content_diff:
+            content = '\n\t\t'.join(sorted(['%s:: %s' % (key, value)
+                                          for (key, value) in self.content_diff.items()]))
         return "Server alternatives\n\tIP's and names:\n\t\t" +\
                names + '\n\tServers:\n\t\t' + servers + '\n\tContent:\n\t\t' +\
                content + '\n\n'
@@ -299,6 +304,53 @@ class Server_alternatives:
                 self.add_content(self.names[ip], dns.rdataclass.IN, dns.rdatatype.AAAA, 0)
         self.fill_servers()
 
+    def check_answer_difference(self):
+        d = difflib.Differ()
+        questions = set()
+        flags = dict()
+        answ = dict()
+        auth = dict()
+        add = dict()
+        for server in self.servers:
+            for qry in server.queries:
+                questions.add(qry.question)
+                if qry.question not in flags:
+                    flags[qry.question] = {qry.flags}
+                else:
+                    flags[qry.question].add(qry.flags)
+                if qry.question not in answ:
+                    answ[qry.question] = {qry.answer}
+                else:
+                    answ[qry.question].add(qry.answer)
+                if qry.question not in auth:
+                    auth[qry.question] = {qry.auth}
+                else:
+                    auth[qry.question].add(qry.auth)
+                if qry.question not in add:
+                    add[qry.question] = {qry.additional}
+                else:
+                    add[qry.question].add(qry.additional)
+        for question in questions:
+            #if (len(flags[question]) != 1 or len(answ[question]) != 1 or len(auth[question]) != 1 or len(add[question]) != 1):
+            self.content_diff[question.rstrip()] = "Flag {0} Answ {1} Auth {2} Add {3}".format(len(flags[question]),
+                                                                                    len(answ[question]),
+                                                                                        len(auth[question]),
+                                                                                            len(add[question]))
+
+
+'''
+                self.content_diff[qry.question] = ''
+                for other in self.servers:
+                    for otherq in other.queries:
+                        i = 0
+                        y = 0
+                        qrystr = list(filter(None, qry.to_string().split('\n')))
+                        othstr = list(filter(None,otherq.to_string().split('\n')))
+                        if otherq.question == qry.question:
+                            print("\n\t\t\t".join(list(difflib.unified_diff(qrystr, othstr, n=2))))
+
+                #self.content_diff[qry.question] += '\n'.join(list(diff))'''
+
 class Server:
     """DNS name server class for deckard scenarios"""
 
@@ -348,6 +400,8 @@ class Server:
 
     def to_string(self):
         self.remove_duplicate()
+        if not self.queries:
+            return ""
         server_string = 'RANGE_BEGIN {0} {1}\n'.format(self.min_range, self.max_range)
         server_string += '\tADDRESS {0}\n'.format(self.ip)
         server_string += '\n'
@@ -568,8 +622,12 @@ def process_file(file, name):
             sc.process_dns(dnsmsg, src_ip, dst_ip)
     sc.postprocessing()
     # Return scenario
-    print(sc.to_string())
+    #print(sc.to_string())
     #print(sc.other_names)
+    # TODO - into xml
+    for server in sc.servers:
+        server.check_answer_difference()
+        print(server)
 
 # TODO: content to class?
 # TODO: multiple names per server
