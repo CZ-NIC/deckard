@@ -5,7 +5,8 @@ import socket
 import dns.resolver
 import dns
 import sys
-import difflib
+import xml.etree.ElementTree as ET
+from xml.dom.minidom import parseString
 
 def class_to_string(rrclass):
     if rrclass == '':
@@ -266,7 +267,6 @@ class Server_alternatives:
     def fill_server(self, server):
         for item in self.content:
             msg = dns.message.make_query(item[0], rdtype=item[2], rdclass=item[1])
-            msg.flags = item[3]
             # TODO: TCP / UDP testing for thesis
             resp = ""
             try:
@@ -305,7 +305,6 @@ class Server_alternatives:
         self.fill_servers()
 
     def check_answer_difference(self):
-        d = difflib.Differ()
         questions = set()
         flags = dict()
         answ = dict()
@@ -313,6 +312,7 @@ class Server_alternatives:
         add = dict()
         for server in self.servers:
             for qry in server.queries:
+                qry.sort_records()
                 questions.add(qry.question)
                 if qry.question not in flags:
                     flags[qry.question] = {qry.flags}
@@ -320,8 +320,10 @@ class Server_alternatives:
                     flags[qry.question].add(qry.flags)
                 if qry.question not in answ:
                     answ[qry.question] = {qry.answer}
+
                 else:
                     answ[qry.question].add(qry.answer)
+                print(qry.answer)
                 if qry.question not in auth:
                     auth[qry.question] = {qry.auth}
                 else:
@@ -331,25 +333,11 @@ class Server_alternatives:
                 else:
                     add[qry.question].add(qry.additional)
         for question in questions:
-            #if (len(flags[question]) != 1 or len(answ[question]) != 1 or len(auth[question]) != 1 or len(add[question]) != 1):
-            self.content_diff[question.rstrip()] = "Flag {0} Answ {1} Auth {2} Add {3}".format(len(flags[question]),
+            if (len(flags[question]) != 1 or len(answ[question]) != 1 or len(auth[question]) != 1 or len(add[question]) != 1):
+                self.content_diff[question.rstrip()] = "Flag {0} Answ {1} Auth {2} Add {3}".format(len(flags[question]),
                                                                                     len(answ[question]),
                                                                                         len(auth[question]),
                                                                                             len(add[question]))
-
-
-'''
-                self.content_diff[qry.question] = ''
-                for other in self.servers:
-                    for otherq in other.queries:
-                        i = 0
-                        y = 0
-                        qrystr = list(filter(None, qry.to_string().split('\n')))
-                        othstr = list(filter(None,otherq.to_string().split('\n')))
-                        if otherq.question == qry.question:
-                            print("\n\t\t\t".join(list(difflib.unified_diff(qrystr, othstr, n=2))))
-
-                #self.content_diff[qry.question] += '\n'.join(list(diff))'''
 
 class Server:
     """DNS name server class for deckard scenarios"""
@@ -552,7 +540,14 @@ class Scenario:
         for server in self.servers:
             server.postprocessing()
 
+    def check_answer_difference(self):
+        for server in self.servers:
+            server.check_answer_difference()
+
     def process_dns(self, dnsmsg, src_ip, dst_ip, step=0):
+        # TODO: instead of creating new dnsmsg - use the original, change only name when alternatives
+            # TODO: What if they are not present - imitate?
+            # TODO: remove CD flag if present
         # TODO: Completing sets of servers, completing content
 	    # TODO: NS names from responses
         # Browser - Resolver
@@ -560,18 +555,21 @@ class Scenario:
             self.step_from_packet(dnsmsg)
             return
 
+        flags = dnsmsg.flags if dnsmsg.flags and not 16 else dnsmsg.flags - 16
+
         if dnsmsg.flags & dns.flags.QR == 0:
             destination = self.get_server_alternative(dst_ip)
             # Content - name, class, type, flags - for each server
             for question in dnsmsg.question:
-                destination.add_content(question.name, question.rdclass, question.rdtype,
-                                        dnsmsg.flags)
+                destination.add_content(question.name, question.rdclass, question.rdtype, flags)
         else:
             alternatives = self.get_server_alternative(src_ip)
-            source = alternatives.get_server(src_ip)
+            #source = alternatives.get_server(src_ip)
             # Query
-            q = query_from_packet(dnsmsg)
-            source.add_query(q)
+            #q = query_from_packet(dnsmsg)
+            #source.add_query(q)
+            for question in dnsmsg.question:
+                alternatives.add_content(question.name, question.rdclass, question.rdtype, flags)
             # Additional section
             queries = []
             names = set()
@@ -593,11 +591,10 @@ class Scenario:
                 self.update_servers(names_ips, queries)
 
 
-def process_file(file, name):
+def process_file(file):
     file_pcap = open(file, 'rb')
     pcap = dpkt.pcap.Reader(file_pcap)
     sc = Scenario()
-    sc.add_name(name)
     # Process each packet
     for ts, server in pcap:
         # Process layers
@@ -621,24 +618,63 @@ def process_file(file, name):
                 continue
             sc.process_dns(dnsmsg, src_ip, dst_ip)
     sc.postprocessing()
+    return sc
+
+
+def response_difference(file, output):
+    sc = process_file(file)
+    sc.check_answer_difference()
+
+    f = ET.Element("File")
+    f.set("file", file)
+    for alter in sc.servers:
+        print(server)
+        a = ET.SubElement(f, "Alternatives")
+        s = ET.SubElement(a, "Servers")
+        for ip in alter.names:
+            i = ET.SubElement(s, "Server")
+            i.set("IP", ip)
+            i.set("name",alter.names[ip])
+        qq = ET.SubElement(a, "Queries")
+        for query in alter.content_diff:
+            q = ET.SubElement(qq, "Query")
+            q.set("name", query)
+            content = alter.content_diff[query].split()
+            for i in range(0, len(content), 2):
+                q.set(content[i], content[i + 1])
+    string = ET.tostring(f)
+    string = parseString(string).toprettyxml()
+
+    if not output:
+        print(string)
+    else:
+        file = open(output, "w")
+        file.write(string)
+        file.close()
+
+
+def print_scenario(file, name="No name"):
+    sc = process_file(file)
+    sc.add_name(name)
     # Return scenario
-    #print(sc.to_string())
-    #print(sc.other_names)
+    # print(sc.to_string())
+    # print(sc.other_names)
     # TODO - into xml
     for server in sc.servers:
         server.check_answer_difference()
-        print(server)
 
 # TODO: content to class?
 # TODO: multiple names per server
 # TODO: test on smaller pcaps - takes too long to resolve everything
 # TODO: ON/OFF ipv6
+# TODO: parallels response difference for 100/1000 qrys
 def main(argv):
-    if len(argv) != 3:
+    if len(argv) < 2 and len(argv) > 3:
         sys.stderr.write("Invalid argument count\n")
         sys.exit(1)
     #try:
-    process_file(sys.argv[1], sys.argv[2])
+    #print_scenario(sys.argv[1], sys.argv[2])
+    response_difference(sys.argv[1], sys.argv[2])
     #except Exception as e:
     #    print(e)
     #    exit(1)
