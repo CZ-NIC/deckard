@@ -19,6 +19,10 @@ test -n "${STATUS}" && echo "Working tree is dirty, commit your changes now." &&
 trap checkout_back EXIT
 trap "{ FAILURE_DETECTED=1; }" ERR
 
+"${CIDIR}"/compare-rplint.sh
+checkout_back
+git clean -xdf
+
 "${CIDIR}"/compare-pylint.sh
 checkout_back
 git clean -xdf

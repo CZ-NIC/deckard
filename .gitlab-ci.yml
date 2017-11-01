@@ -33,6 +33,17 @@ test:pylint:
     - linux
     - amd64
 
+test:rplint:
+  stage: test
+  script:
+    - cp ci/common.sh /tmp
+    - cp ci/compare-rplint.sh /tmp
+    - /tmp/compare-rplint.sh
+  tags:
+    - docker
+    - linux
+    - amd64
+
 test:unittests:
   stage: test
   script:
