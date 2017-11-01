@@ -18655,7 +18655,7 @@ cz. IN A
 SECTION AUTHORITY
 cz. IN NS ns1.cz.
 SECTION ADDITIONAL
-ns1.cz. IN A 168.192.2.2
+ns1.cz. IN A 193.0.14.129
 ENTRY_END
 
 ; this is the formerr answer
@@ -18682,7 +18682,7 @@ cz. IN A 10.20.30.40
 SECTION AUTHORITY
 cz. IN NS ns1.cz.
 SECTION ADDITIONAL
-ns1.cz. IN A 168.192.2.2
+ns1.cz. IN A 193.0.14.129
 ENTRY_END
 
 ; is the final answer correct?
