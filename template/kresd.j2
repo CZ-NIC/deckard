@@ -68,6 +68,11 @@ modules.load( 'view')
 modules = { 'workarounds < iterate' }
 {% endif %}
 
+-- Disable RFC8145 signaling, scenario doesn't provide expected ansers
+if ta_signal_query then
+	modules.unload('ta_signal_query')
+end
+
 verbose(true)
 
 -- Self-checks on globals
