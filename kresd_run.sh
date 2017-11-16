@@ -13,7 +13,10 @@ TEMPLATE=${TEMPLATE:-"template/kresd.j2"}
 # Config file name
 CONFIG=${CONFIG:-"config"}
 
-export TESTS DAEMON TEMPLATE CONFIG
+# Additional parameters for kresd - non-interactive mode
+ADDITIONAL="-f 1"
+
+export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
 MAKEDIR="$(dirname "$(readlink -f "$0")")"
 echo '=== Testing WITH query minimization ==='
