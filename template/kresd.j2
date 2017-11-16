@@ -2,6 +2,8 @@ net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
 -- test. domain is used by some tests, allow it
 policy.add(policy.suffix(policy.PASS, {todname('test.')}))
+-- extra verbose logging for answers received from network
+policy.add(policy.all(policy.QTRACE))
 cache.size = 2*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
 {% if QMIN == "false" %}
