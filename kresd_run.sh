@@ -14,7 +14,7 @@ TEMPLATE=${TEMPLATE:-"template/kresd.j2"}
 CONFIG=${CONFIG:-"config"}
 
 # Additional parameters for kresd - non-interactive mode
-ADDITIONAL="-f 1"
+ADDITIONAL=${ADDITIONAL:-"-f 1"}
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
