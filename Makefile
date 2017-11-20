@@ -3,7 +3,7 @@ TESTS ?= sets/resolver
 DAEMON ?= kresd
 TEMPLATE ?= template/kresd.j2
 CONFIG ?= config
-ADDITIONAL ?=
+ADDITIONAL ?= -f 1
 OPTS ?=
 
 PYTHON ?= python3
