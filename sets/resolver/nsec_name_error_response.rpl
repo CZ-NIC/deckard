@@ -233,38 +233,8 @@ mail.nsec.example.      3600    IN      RRSIG   NSEC 13 3 3600 20151015124917 20
 nsec.example.           3600    IN      RRSIG   NSEC 13 2 3600 20151015124917 20150915124917 54343 nsec.example. STcV7Lc1a794i9DTgflI+d0N0KXTMws0G8VGc0Wo4tVI8lvFJcG1SFXW /jJaXkQstdZ2EM63fIs/u1hhBaV2Gw==
 ENTRY_END
 
-STEP 5 QUERY
-ENTRY_BEGIN
-REPLY RD DO
-SECTION QUESTION
-missing1.nsec.example. IN MX
-ENTRY_END
-
-STEP 6 CHECK_ANSWER
-ENTRY_BEGIN
-MATCH all
-ADJUST copy_id
-REPLY QR RD RA SERVFAIL
-SECTION QUESTION
-missing1.nsec.example. IN MX
-SECTION AUTHORITY
-ENTRY_END
-
-STEP 7 QUERY
-ENTRY_BEGIN
-REPLY RD DO
-SECTION QUESTION
-missing2.nsec.example. IN MX
-ENTRY_END
-
-STEP 8 CHECK_ANSWER
-ENTRY_BEGIN
-MATCH all
-ADJUST copy_id
-REPLY QR RD RA SERVFAIL
-SECTION QUESTION
-missing2.nsec.example. IN MX
-SECTION AUTHORITY
-ENTRY_END
+;; TODO: use INCLUDE when it's available.
+;; Aggressive cache can answer STEP 5 and 7 without asking,
+;; from the record in previous answer, as `missing*` is between `mail` and `multiple`.
 
 SCENARIO_END

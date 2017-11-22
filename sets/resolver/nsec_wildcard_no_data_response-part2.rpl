@@ -236,47 +236,22 @@ ENTRY_END
 
 RANGE_END
 
-STEP 10 QUERY
+
+STEP 20 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-aaa.local.nsec.example. IN CNAME
+missing-nsec-nodata.local.nsec.example. IN CNAME
 ENTRY_END
 
-; recursion happens here, we expect NODATA with wildcard proof
-STEP 11 CHECK_ANSWER
-ENTRY_BEGIN
-MATCH all
-ADJUST copy_id
-REPLY QR RD RA AD NOERROR
-SECTION QUESTION
-aaa.local.nsec.example. IN CNAME
-SECTION AUTHORITY
-nsec.example.		3600	IN	SOA	ns.nsec.example. root.nsec.example. 6 60 60 120 3600
-*.nsec.example.		3600	IN	NSEC	ns.nsec.example. A RRSIG NSEC
-nsec.example.		3600	IN	RRSIG	SOA 8 2 3600 20170419140236 20170320140236 41524 nsec.example. gZCIxxFWL04vgzuNbZYq3Ghb7OZsZCp1WCcByM602yEgf0IUk8KSqkol pTem3IXQELhFTzbddGFV3Cis5MxZq8XjNbSwXelbUkOkKE4EzDcpldtR yqGnp+ZdZhBrymZvS8dOhwOGllF6AobXx7iFHaY7wtC17XvODduxOBdV mQ/t2QDUnl+Io3s1KfDRf4e22WvtatlQNr9NW+PueeGtGhEdDeyR7VMA fxEqL6Lds7NWN7DPKfsCVgUNkwHzy9opQ64AyVyQAmwRohuon652jKiu MbvJ1vaLxJLeDBnnT3hbMrI/CIfmjqucSOgM9JNXXggIcfBxok5Ze2R5 SL35VA==
-*.nsec.example.		3600	IN	RRSIG	NSEC 8 2 3600 20170419140236 20170320140236 41524 nsec.example. Hp/6sgDgYZuewpSkAugLRERgVAGgAIAN9vAqfuAGcqCxfQXLIXcXD8ji o4rjuSMmAaRw0AQ70pEWldc2Yqre+++/lnEJt5tpGrIhH2raJU9RS/Ix NaN40vwspRdN7tDNLH1T0oTDll76bVc/D4VFtnpGOlM3eIGjFVVdACvZ V0oVW8xp686xwB3uP2DqA0fxMjs4p9PC1FrnTAlGvTX0ThgZR6EmmWJH HCy4kpjfTFR93k/nuAendDVVZNkHL+EncojmUX+U0PRSZPXWBWXbb0kq h1OVaT4HpyWKet+PxKkTGaoNbXRk0BAKC/4Qg4A/+kRk+1OXG4dQMdsS zLnt/Q==
-ENTRY_END
-
-;; TODO: use INCLUDE when it's available.
-;; Aggressive cache can answer STEP20 without asking,
-;; from the record in previous answer, so it has been split-out for now.
-
-; missing data in NOERROR answer synthtesized from wildcard must be detected
-STEP 30 QUERY
-ENTRY_BEGIN
-REPLY RD DO
-SECTION QUESTION
-missing-nsec-masked-data.local.nsec.example. IN A
-ENTRY_END
-
-STEP 31 CHECK_ANSWER
+STEP 21 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
 ADJUST copy_id
 REPLY QR RD RA SERVFAIL
 SECTION QUESTION
-missing-nsec-masked-data.local.nsec.example. IN A
+missing-nsec-nodata.local.nsec.example. IN CNAME
 ENTRY_END
+
 
 SCENARIO_END
