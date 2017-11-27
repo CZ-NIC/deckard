@@ -1,3 +1,4 @@
+image: cznic/ci-debian-kresd
 variables:
   LC_ALL: C.UTF-8
 
@@ -5,7 +6,6 @@ stages:
   - test
 
 test:pep8:
-  image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
@@ -17,7 +17,6 @@ test:pep8:
     - amd64
 
 test:pylint:
-  image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
@@ -35,7 +34,6 @@ test:pylint:
     - amd64
 
 test:unittests:
-  image: cznic/deckard-ci
   stage: test
   script:
     - make check
@@ -45,7 +43,6 @@ test:unittests:
     - amd64
 
 test:comparative:kresd:
-  image: cznic/deckard-ci
   stage: test
   script:
     - cp ci/common.sh /tmp
@@ -68,7 +65,6 @@ test:comparative:kresd:
 # Run all tests on the latest kresd version to ensure that we not push tests
 # which do not work on latest kresd. It would lead to breakage in kresd CI.
 test:latest:kresd:
-  image: cznic/deckard-ci
   stage: test
   script:
     - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
@@ -86,7 +82,6 @@ test:latest:kresd:
 # I've selected the only tests which are working
 # on kresd and Unbound 1.5.8 as well as 1.6.0
 test:sanity:unbound:
-  image: cznic/deckard-ci
   stage: test
   script:
     - TESTS=sets/resolver/iter_hint_lame.rpl ./unbound_run.sh
@@ -103,7 +98,6 @@ test:sanity:unbound:
 # I've selected couple tests which are working
 # on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
 test:sanity:pdnsrecursor:
-  image: cznic/deckard-ci
   stage: test
   script:
     - TESTS=sets/resolver/iter_recurse.rpl ./pdns_run.sh
