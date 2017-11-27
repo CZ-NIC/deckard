@@ -133,6 +133,7 @@ Particular use of data in an ``ENTRY`` depends on context and is different
 for ``STEP`` types and ``RANGE`` blocks, see details below.
 
 In any case, entry starts with ``ENTRY_BEGIN`` and ends with ``ENTRY_END`` keywords and share ``REPLY`` and ``SECTION`` definitions.
+Some fields in DNS messages have default values which can be overriden by explicit specification.
 
 Format of query messages (for ``STEP QUERY``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -142,9 +143,9 @@ Format of query messages (for ``STEP QUERY``)
 
     STEP <n> QUERY
     ENTRY_BEGIN
-    REPLY <flags>          ; REPLY is a bad keyword name, these flags will be sent out!
-    SECTION QUESTION       ; it is possible to replace QUESTION section or omit it
-    <name> <class> <type>  ; to simulate weird queries
+    REPLY <OPCODE flags>    ; REPLY is a bad keyword name, OPCODE and flags will be sent out!
+    SECTION QUESTION        ; it is possible to replace QUESTION section or omit it
+    <name> <class> <type>   ; to simulate weird queries
     ENTRY_END
 
 The message will be assigned a random message ID, converted into DNS wire format, and sent to the binary under test.
@@ -160,7 +161,7 @@ Format of expected messages (for ``STEP CHECK_ANSWER``)
 
     ENTRY_BEGIN
     MATCH <match element list>  ; MATCH elements define what message fields will be compared
-    REPLY <RCODE flags>         ; REPLY field here defines expected RCODE as well as flags!
+    REPLY <OPCODE RCODE flags>  ; REPLY field here defines expected OPCODE, RCODE as well as flags!
     SECTION QUESTION
     <name> <class> <type>       ; to simulate weird queries
     SECTION <type2>
@@ -179,7 +180,7 @@ Entries in ``RANGE`` blocks are used to answer queries *from binaries under test
     ENTRY_BEGIN
     MATCH <match element list>    ; all MATCH elements must match before using this answer template
     ADJUST <adjust element list>  ; ADJUST fields will be modified before answering
-    REPLY <RCODE flags>           ; RCODE and flags to be set in the outgoing answer
+    REPLY <OPCODE RCODE flags>    ; OPCODE, RCODE, and flags to be set in the outgoing answer
     SECTION <type1>
     <RR sets>
     SECTION <type2>
@@ -202,7 +203,10 @@ Entries present in Deckard scenario define values *expected* in DNS messages. Th
 ============ =========================================================================================
 element      DNS message fields and additional rules
 ============ =========================================================================================
-opcode       message ``OPCODE`` = standard query (value 0)
+opcode       ``OPCODE`` as `defined in IANA registry <https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-5>`_
+
+             - *expected* message ``OPCODE`` is defined by ``REPLY`` keyword
+
 qtype        RR type in question section [qmatch]_
 qname        name in question section (case insensitive) [qmatch]_
 qcase        name in question section (case sensitive) [qmatch]_
@@ -301,6 +305,19 @@ Example:
    example.com.	IN NS	ns.example.com.
    SECTION ADDITIONAL
    ns.example.com.	IN A	1.2.3.4
+
+
+Default values for DNS messages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+========== ===========================================================================================
+feature    default value
+========== ===========================================================================================
+ADJUST     copy_id
+EDNS       version 0 with buffer size 4096 B
+MATCH      opcode, qtype, qname
+REPLY      QUERY, NOERROR
+========== ===========================================================================================
+
 
 Entry with RAW data
 ^^^^^^^^^^^^^^^^^^^
