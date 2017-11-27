@@ -202,19 +202,7 @@ class Entry:
             self.match_fields = ['opcode', 'qtype', 'qname']
 
         # FLAGS
-        self.fields = [f.value for f in node.match("/reply")]
-        flags = []
-        rcode = dns.rcode.from_text(self.default_rc)
-        for code in self.fields:
-            if code == 'DO':
-                self.message.want_dnssec(True)
-                continue
-            try:
-                rcode = dns.rcode.from_text(code)
-            except dns.rcode.UnknownRcode:
-                flags.append(code)
-        self.message.flags = dns.flags.from_text(' '.join(flags))
-        self.message.set_rcode(rcode)
+        self.process_reply_line(node)
 
         # ADJUST
         self.adjust_fields = [m.value for m in node.match("/adjust")]
@@ -302,6 +290,67 @@ class Entry:
             txt += '\n'
         txt += 'ENTRY_END\n'
         return txt
+
+    def process_reply_line(self, node):
+        """Extracts flags, rcode and opcode from given node and adjust dns message accordingly"""
+        self.fields = [f.value for f in node.match("/reply")]
+        if 'DO' in self.fields:
+            self.message.want_dnssec(True)
+        opcode = self.get_opcode(fields=self.fields)
+        rcode = self.get_rcode(fields=self.fields)
+        self.message.flags = self.get_flags(fields=self.fields)
+        if rcode is not None:
+            self.message.set_rcode(rcode)
+        if opcode is not None:
+            self.message.set_opcode(opcode)
+
+    @classmethod
+    def get_flags(cls, fields):
+        """From `fields` extracts and returns flags"""
+        flags = []
+        for code in fields:
+            try:
+                dns.flags.from_text(code)  # throws KeyError on failure
+                flags.append(code)
+            except KeyError:
+                pass
+        return dns.flags.from_text(' '.join(flags))
+
+    @classmethod
+    def get_rcode(cls, fields):
+        """
+        From `fields` extracts and returns rcode.
+        Throws `ValueError` if there are more then one rcodes
+        """
+        rcodes = []
+        for code in fields:
+            try:
+                rcodes.append(dns.rcode.from_text(code))
+            except dns.rcode.UnknownRcode:
+                pass
+        if len(rcodes) > 1:
+            raise ValueError("Parse failed, too many rcode values.", rcodes)
+        if len(rcodes) == 0:
+            return None
+        return rcodes[0]
+
+    @classmethod
+    def get_opcode(cls, fields):
+        """
+        From `fields` extracts and returns opcode.
+        Throws `ValueError` if there are more then one opcodes
+        """
+        opcodes = []
+        for code in fields:
+            try:
+                opcodes.append(dns.opcode.from_text(code))
+            except dns.opcode.UnknownOpcode:
+                pass
+        if len(opcodes) > 1:
+            raise ValueError("Parse failed, too many opcode values.")
+        if len(opcodes) == 0:
+            return None
+        return opcodes[0]
 
     def match_part(self, code, msg):
         """ Compare scripted reply to given message using single criteria. """
