@@ -102,6 +102,7 @@ test:sanity:unbound:
   script:
     - TESTS=sets/resolver/iter_hint_lame.rpl TMPDIR=$(pwd) ./unbound_run.sh
     - TESTS=sets/resolver/iter_lame_root.rpl TMPDIR=$(pwd) ./unbound_run.sh
+    - TESTS=sets/resolver/iter_opcode_notimp.rpl TMPDIR=$(pwd) ./unbound_run.sh
     # these do not work with Unbound 1.5.8 which is in CI container
       #- TESTS=sets/resolver/nsec_wildcard_answer_response.rpl ./unbound_run.sh
       #- TESTS=sets/resolver/world_cz_lidovky_www.rpl ./unbound_run.sh
