@@ -3,6 +3,8 @@
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
+;test from testbound
+
 SCENARIO_BEGIN Test lameness detection after scrubber.
 
 ; K.ROOT-SERVERS.NET.

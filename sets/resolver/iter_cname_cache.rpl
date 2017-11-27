@@ -4,6 +4,8 @@
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
+;test from testbound
+
 SCENARIO_BEGIN Test iterative resolve with cached cname for nameserver
 ; example.com NS ns.example.com   en ns2.example.com
 ; ns.example.com CNAME ns.bla.nl

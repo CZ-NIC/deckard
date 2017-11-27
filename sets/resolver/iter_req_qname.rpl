@@ -7,6 +7,8 @@ stub-zone:
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 
+;test from testbound
+
 SCENARIO_BEGIN Test a query name in the reply is required by resolver
 
 ; K.ROOT-SERVERS.NET.
