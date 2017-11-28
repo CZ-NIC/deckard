@@ -75,6 +75,11 @@ if ta_signal_query then
 	modules.unload('ta_signal_query')
 end
 
+-- Disable RFC8109 priming, scenario doesn't provide expected ansers
+if priming then
+	modules.unload('priming')
+end
+
 verbose(true)
 
 -- Self-checks on globals
