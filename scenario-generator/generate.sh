@@ -14,8 +14,8 @@ BUILDLOG="$LOGDIR/build.log"
 PADDING=80
 FLAGS=""
 DATE=`date +%Y-%m-%d_%H-%M-%S`
-RESOLVERS="unbound kresd bind"
-BROWSERS="firefox chrome chrome-android chrome-ios"
+RESOLVERS="kresd" #"unbound kresd bind"
+BROWSERS="firefox" #"firefox-dig chrome chrome-android chrome-ios"
 IMAGES="firefox chrome"
 # FUNCTIONS
 # padding $1 - string, $2 - size
@@ -35,7 +35,7 @@ function run_capture {
 		do
 			for PAGE in $*;
 			do
-				ID=$(docker run -v "$DIR$CAPSUBDIR:$CAPSUBDIR" -w $CAPSUBDIR -it deckard/$IMAGE:local)
+				ID=$(docker run -d -v "$DIR$CAPSUBDIR:$CAPSUBDIR" -w $CAPSUBDIR -it deckard/$IMAGE:local)
 				docker exec -it $ID $CAPSUBDIR/test.sh $BROWSER $RESOLVER $PAGE $DATE
 				STATUS=$?
 				docker stop $ID &>/dev/null
@@ -141,6 +141,9 @@ if [ $STATUS -ne 0 ]; then
 fi
 
 # CONTINUE WITH PROCESSING
+
+exit
+
 mkdir -p $TMP
 for DOMAIN in $FILE
 do

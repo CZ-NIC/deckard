@@ -36,10 +36,14 @@ elif [ "$BROWSER" = "chrome-android" ]; then
 	./chrome-android.py  $PAGE &> $LOG
 elif [ "$BROWSER" = "chrome-ios" ]; then
 	./chrome-ios.py  $PAGE &> $LOG
+elif [ "$BROWSER" = "firefox-dig" ]; then
+	dig $PAGE &> $LOG
 else
 	echo "Invalid or unsuported browser" > $LOG
 	exit 1
 fi
+
+sleep 2
 
 PID=$(ps -e | pgrep tcpdump)
 kill -2 $PID

@@ -323,7 +323,6 @@ class Server_alternatives:
 
                 else:
                     answ[qry.question].add(qry.answer)
-                print(qry.answer)
                 if qry.question not in auth:
                     auth[qry.question] = {qry.auth}
                 else:
@@ -621,65 +620,8 @@ def process_file(file):
     return sc
 
 
-def response_difference(file, output):
-    sc = process_file(file)
-    sc.check_answer_difference()
-
-    f = ET.Element("File")
-    f.set("file", file)
-    for alter in sc.servers:
-        print(server)
-        a = ET.SubElement(f, "Alternatives")
-        s = ET.SubElement(a, "Servers")
-        for ip in alter.names:
-            i = ET.SubElement(s, "Server")
-            i.set("IP", ip)
-            i.set("name",alter.names[ip])
-        qq = ET.SubElement(a, "Queries")
-        for query in alter.content_diff:
-            q = ET.SubElement(qq, "Query")
-            q.set("name", query)
-            content = alter.content_diff[query].split()
-            for i in range(0, len(content), 2):
-                q.set(content[i], content[i + 1])
-    string = ET.tostring(f)
-    string = parseString(string).toprettyxml()
-
-    if not output:
-        print(string)
-    else:
-        file = open(output, "w")
-        file.write(string)
-        file.close()
-
-
-def print_scenario(file, name="No name"):
-    sc = process_file(file)
-    sc.add_name(name)
-    # Return scenario
-    # print(sc.to_string())
-    # print(sc.other_names)
-    # TODO - into xml
-    for server in sc.servers:
-        server.check_answer_difference()
-
 # TODO: content to class?
 # TODO: multiple names per server
 # TODO: test on smaller pcaps - takes too long to resolve everything
 # TODO: ON/OFF ipv6
 # TODO: parallels response difference for 100/1000 qrys
-def main(argv):
-    if len(argv) < 2 and len(argv) > 3:
-        sys.stderr.write("Invalid argument count\n")
-        sys.exit(1)
-    #try:
-    #print_scenario(sys.argv[1], sys.argv[2])
-    response_difference(sys.argv[1], sys.argv[2])
-    #except Exception as e:
-    #    print(e)
-    #    exit(1)
-    exit(0)
-
-
-if __name__ == "__main__":
-    main(sys.argv)
