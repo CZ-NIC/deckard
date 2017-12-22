@@ -40,6 +40,24 @@ else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
 
+# Test coverage measurement
+# User has to provide own coverage_env.sh to generate environment variables for daemon under test
+ifdef COVERAGE
+ifndef COVERAGE_ENV_SCRIPT
+$(error COVERAGE requires COVERAGE_ENV_SCRIPT with path to scripts/coverage_env.sh for given daemon)
+endif
+ifndef DAEMONSRCDIR
+$(error COVERAGE requires DAEMONSRCDIR pointing to source directory of daemon under test)
+endif
+ifndef COVERAGE_STATSDIR
+$(error COVERAGE requires COVERAGE_STATSDIR pointing to output directory)
+endif
+define set_coverage_env
+$(shell "$(COVERAGE_ENV_SCRIPT)" "$(DAEMONSRCDIR)" "$(COVERAGE_STATSDIR)" "$(1)")
+endef
+endif
+
+
 # Targets
 all: $(TARGETS)
 depend: $(libfaketime) $(libcwrap)
@@ -47,12 +65,12 @@ depend: $(libfaketime) $(libcwrap)
 # Generic rule to run test
 $(SOURCES): depend
 %.out-qmin: %.rpl
-	@test "$${QMIN:-true}" == "true" || exit 0 && \
-	$(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin true $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+	@test "$${QMIN:-true}" = "true" || exit 0 && \
+	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin true $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
 
 %.out-noqmin: %.rpl
-	@test "$${QMIN:-false}" == "false" || exit 0 && \
-	$(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin false $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+	@test "$${QMIN:-false}" = "false" || exit 0 && \
+	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin false $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
 
 # Synchronize submodules
 submodules: .gitmodules
