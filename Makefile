@@ -19,7 +19,7 @@ ifeq (,$(findstring .rpl,$(TESTS)))
 TARGETS := $(wildcard $(TESTS)/*.rpl)
 endif
 SOURCES := $(TARGETS)
-TARGETS := $(sort $(patsubst %.rpl,%.out,$(SOURCES)))
+TARGETS := $(sort $(patsubst %.rpl,%.out-qmin,$(SOURCES))) $(sort $(patsubst %.rpl,%.out-noqmin,$(SOURCES)))
 
 # Dependencies
 include platform.mk
@@ -46,8 +46,13 @@ depend: $(libfaketime) $(libcwrap)
 
 # Generic rule to run test
 $(SOURCES): depend
-%.out: %.rpl
-	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+%.out-qmin: %.rpl
+	@test "$${QMIN:-true}" == "true" || exit 0 && \
+	$(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin true $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+
+%.out-noqmin: %.rpl
+	@test "$${QMIN:-false}" == "false" || exit 0 && \
+	$(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin false $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
 
 # Synchronize submodules
 submodules: .gitmodules
