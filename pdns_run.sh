@@ -22,5 +22,5 @@ IGNORE_EXIT_CODE=1
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL IGNORE_EXIT_CODE
 
-MAKEDIR="$(dirname "$(readlink -f "$0")")"
+MAKEDIR="$(dirname "$0")"
 make -C "${MAKEDIR}"

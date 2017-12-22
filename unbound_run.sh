@@ -19,5 +19,5 @@ ADDITIONAL=${ADDITIONAL:-"-d -c unbound.conf"}
 
 export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
 
-MAKEDIR="$(dirname "$(readlink -f "$0")")"
+MAKEDIR="$(dirname "$0")"
 make -C "${MAKEDIR}"

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o nounset -o errexit
-CIDIR="$(dirname "$(readlink -f "$0")")"
+CIDIR="$(dirname "$0")"
 ORIGNAME="$(git symbolic-ref -q --short HEAD || git describe --all --always HEAD)"
 FAILURE_DETECTED="?"
 
