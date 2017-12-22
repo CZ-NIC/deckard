@@ -1,13 +1,3 @@
--- measure code coverage if the module is available
-local ok, runner = pcall(require, 'luacov.runner')
-if ok then
-	runner.init({
-		statsfile = '{{INSTALL_DIR}}/luacov.stats.out',
-		exclude = {'test', 'tapered', 'lua/5.1'},
-	})
-	jit.off()
-end
-
 net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
 -- test. domain is used by some tests, allow it
