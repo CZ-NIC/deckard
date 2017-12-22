@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o nounset -o xtrace -o errexit
-source "$(dirname "$(readlink -f "$0")")/common.sh"
+source "$(dirname "$0")/common.sh"
 
 PYFILES=$(find . \
 	-path ./.git -prune -o \

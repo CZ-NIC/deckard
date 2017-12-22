@@ -19,7 +19,7 @@ ifeq (,$(findstring .rpl,$(TESTS)))
 TARGETS := $(wildcard $(TESTS)/*.rpl)
 endif
 SOURCES := $(TARGETS)
-TARGETS := $(sort $(patsubst %.rpl,%.out,$(SOURCES)))
+TARGETS := $(sort $(patsubst %.rpl,%.out-qmin,$(SOURCES))) $(sort $(patsubst %.rpl,%.out-noqmin,$(SOURCES)))
 
 # Dependencies
 include platform.mk
@@ -40,14 +40,37 @@ else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
 
+# Test coverage measurement
+# User has to provide own coverage_env.sh to generate environment variables for daemon under test
+ifdef COVERAGE
+ifndef COVERAGE_ENV_SCRIPT
+$(error COVERAGE requires COVERAGE_ENV_SCRIPT with path to scripts/coverage_env.sh for given daemon)
+endif
+ifndef DAEMONSRCDIR
+$(error COVERAGE requires DAEMONSRCDIR pointing to source directory of daemon under test)
+endif
+ifndef COVERAGE_STATSDIR
+$(error COVERAGE requires COVERAGE_STATSDIR pointing to output directory)
+endif
+define set_coverage_env
+$(shell "$(COVERAGE_ENV_SCRIPT)" "$(DAEMONSRCDIR)" "$(COVERAGE_STATSDIR)" "$(1)")
+endef
+endif
+
+
 # Targets
 all: $(TARGETS)
 depend: $(libfaketime) $(libcwrap)
 
 # Generic rule to run test
 $(SOURCES): depend
-%.out: %.rpl
-	@$(preload_syms) $(PYTHON) $(abspath ./deckard.py) $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+%.out-qmin: %.rpl
+	@test "$${QMIN:-true}" = "true" || exit 0 && \
+	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin true $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+
+%.out-noqmin: %.rpl
+	@test "$${QMIN:-false}" = "false" || exit 0 && \
+	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin false $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
 
 # Synchronize submodules
 submodules: .gitmodules
