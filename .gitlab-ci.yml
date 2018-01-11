@@ -73,10 +73,8 @@ test:comparative:kresd:
     expire_in: '1 hour'
     paths:
       - modified_tests
-      - base.log
-      - base.tests
-      - head.log
-      - head.tests
+      - base.xml
+      - head.xml
   tags:
     - docker
     - linux
@@ -92,7 +90,7 @@ test:latest:kresd:
     - ( cd kresd-local-build ; git submodule update --init --recursive )
     - PREFIX=$(pwd)/.local make -C kresd-local-build -k all
     - PREFIX=$(pwd)/.local make -C kresd-local-build install
-    - TMPDIR=$(pwd) LD_LIBRARY_PATH=$(pwd)/.local/lib DAEMON=$(pwd)/.local/sbin/kresd MAKEFLAGS="-j $(nproc) --keep-going" ./kresd_run.sh
+    - TMPDIR=$(pwd) LD_LIBRARY_PATH=$(pwd)/.local/lib DAEMON=$(pwd)/.local/sbin/kresd ./kresd_run.sh -n $(nproc)
   artifacts:
     when: on_failure
     expire_in: 1 week
@@ -109,8 +107,8 @@ test:latest:kresd:
 test:sanity:unbound:
   stage: test
   script:
-    - TESTS=sets/resolver/iter_hint_lame.rpl TMPDIR=$(pwd) ./unbound_run.sh
-    - TESTS=sets/resolver/iter_lame_root.rpl TMPDIR=$(pwd) ./unbound_run.sh
+    - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_hint_lame.rpl
+    - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_lame_root.rpl
     # these do not work with Unbound 1.5.8 which is in CI container
       #- TESTS=sets/resolver/nsec_wildcard_answer_response.rpl ./unbound_run.sh
       #- TESTS=sets/resolver/world_cz_lidovky_www.rpl ./unbound_run.sh
@@ -130,8 +128,8 @@ test:sanity:unbound:
 test:sanity:pdnsrecursor:
   stage: test
   script:
-    - TESTS=sets/resolver/iter_recurse.rpl TMPDIR=$(pwd) ./pdns_run.sh
-    - TESTS=sets/resolver/iter_tcbit.rpl TMPDIR=$(pwd) ./pdns_run.sh
+    - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_recurse.rpl
+    - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_tcbit.rpl
   artifacts:
     when: on_failure
     expire_in: 1 week

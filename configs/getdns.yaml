@@ -1,0 +1,12 @@
+programs:
+- name: getdns
+  binary: getdns_query
+  additional:
+    - -C
+    - getdns.conf
+  templates:
+    - template/getdns.j2
+    - template/dnssec_getdns.j2
+  configs:
+    - getdns.conf
+    - getdns-root.key

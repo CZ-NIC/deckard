@@ -1,0 +1,10 @@
+programs:
+- name: knotd
+  binary: knotd
+  additional:
+    - -c
+    - ./knotd.conf 
+  templates:
+    - "template/knotd_slave.j2"
+  configs:
+    - "knotd.conf"

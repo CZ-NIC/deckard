@@ -1,0 +1,13 @@
+programs:
+- name: unbound
+  binary: unbound
+  additional:
+    - -d
+    - -c
+    - unbound.conf
+  templates:
+    - template/unbound.j2
+    - template/hints_zone.j2
+  configs:
+    - unbound.conf
+    - hints.zone

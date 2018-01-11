@@ -1,0 +1,10 @@
+programs:
+- name: kresd
+  binary: kresd
+  additional:
+    - -f
+    - "1"
+  templates:
+    - template/kresd.j2
+  configs:
+    - config
