@@ -32,22 +32,11 @@ MODIFIED_TESTS_FILE="/tmp/modified_tests"
 find_modified_tests
 LOGS[0]="${MODIFIED_TESTS_FILE}"
 
-: get results from all tests, including the failing ones
-export MAKEFLAGS="--output-sync=target --keep-going -j$(nproc)"
-
 : get test results from version under test
-PYTHON=${PYTHON} "${TESTRUNNER}" &> /tmp/head.log || :
-LOGS[1]="/tmp/head.log"
-extract_test_results /tmp/head.log | filter_test_results &> /tmp/head.tests || (: "no tests left, huh?" && cat /tmp/head.log)
-LOGS[2]="/tmp/head.tests"
+"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/head.xml
 
 : get test results from common ancestor with master branch
 git checkout --force --detach "${MERGEBASE}"
 git clean -xdf
-PYTHON=${PYTHON} "${TESTRUNNER}" &> /tmp/base.log || :
-LOGS[3]="/tmp/base.log"
-extract_test_results /tmp/base.log | filter_test_results &> /tmp/base.tests || (: "no tests left, huh?" && cat /tmp/base.log)
-LOGS[4]="/tmp/base.tests"
-
-: tests which were not modified should produce the same results
-diff -U0 /tmp/base.tests /tmp/head.tests && echo "OK, no differences found"
+"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/base.xml
+test -z "$(./junit_compare.py /tmp/head.xml /tmp/base.xml /tmp/modified_tests)" && echo "OK, no differences found"

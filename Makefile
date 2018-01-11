@@ -1,25 +1,10 @@
 # Defaults
-TESTS ?= sets/resolver
-DAEMON ?= kresd
-TEMPLATE ?= template/kresd.j2
-CONFIG ?= config
-ADDITIONAL ?= -f 1
-OPTS ?=
-
 PYTHON ?= python3
 LIBEXT := .so
 PLATFORM := $(shell uname -s)
 ifeq ($(PLATFORM),Darwin)
 	LIBEXT := .dylib
 endif
-
-# Find all sub-targets
-TARGETS := $(TESTS)
-ifeq (,$(findstring .rpl,$(TESTS)))
-TARGETS := $(wildcard $(TESTS)/*.rpl)
-endif
-SOURCES := $(TARGETS)
-TARGETS := $(sort $(patsubst %.rpl,%.out-qmin,$(SOURCES))) $(sort $(patsubst %.rpl,%.out-noqmin,$(SOURCES)))
 
 # Dependencies
 include platform.mk
@@ -40,37 +25,13 @@ else
 	preload_syms := LD_PRELOAD="$(libfaketime):$(libcwrap)"
 endif
 
-# Test coverage measurement
-# User has to provide own coverage_env.sh to generate environment variables for daemon under test
-ifdef COVERAGE
-ifndef COVERAGE_ENV_SCRIPT
-$(error COVERAGE requires COVERAGE_ENV_SCRIPT with path to scripts/coverage_env.sh for given daemon)
-endif
-ifndef DAEMONSRCDIR
-$(error COVERAGE requires DAEMONSRCDIR pointing to source directory of daemon under test)
-endif
-ifndef COVERAGE_STATSDIR
-$(error COVERAGE requires COVERAGE_STATSDIR pointing to output directory)
-endif
-define set_coverage_env
-$(shell "$(COVERAGE_ENV_SCRIPT)" "$(DAEMONSRCDIR)" "$(COVERAGE_STATSDIR)" "$(1)")
-endef
-endif
-
 
 # Targets
-all: $(TARGETS)
+all:
+	@echo "Deckard is now run using *run.sh scripts in its root directory.\n\
+	To build the dependencies (libfaketime and libcwrap) run 'make depend'."
 depend: $(libfaketime) $(libcwrap)
-
-# Generic rule to run test
-$(SOURCES): depend
-%.out-qmin: %.rpl
-	@test "$${QMIN:-true}" = "true" || exit 0 && \
-	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin true $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
-
-%.out-noqmin: %.rpl
-	@test "$${QMIN:-false}" = "false" || exit 0 && \
-	$(call set_coverage_env,$@) $(preload_syms) $(PYTHON) $(abspath ./deckard.py) --qmin false $(OPTS) $< one $(DAEMON) $(TEMPLATE) $(CONFIG) -- $(ADDITIONAL)
+	@echo "export $(preload_syms)" > env.sh
 
 # Synchronize submodules
 submodules: .gitmodules
@@ -92,4 +53,4 @@ $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
 
 check:
 	@echo Running unittests using pytest
-	${PYTHON} -m pytest
+	${PYTHON} -m pytest --ignore=tests/test_runner.py
