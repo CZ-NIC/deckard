@@ -1,5 +1,5 @@
 net = { '{{SELF_ADDR}}' }
-modules = {'stats', 'policy', 'hints'}
+modules = {'stats', 'policy', 'hints', 'kskroll-sentinel'}
 -- test. domain is used by some tests, allow it
 policy.add(policy.suffix(policy.PASS, {todname('test.')}))
 -- extra verbose logging for answers received from network

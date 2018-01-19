@@ -1,0 +1,20 @@
+.			86400	IN	SOA	rootns. you.test. 2017071100 1800 900 604800 86400
+
+.			518400	IN	NS	rootns.
+
+rootns.	518400	IN	A	198.41.0.4
+rootns.	518400	IN	AAAA	2001:503:ba3e::2:30
+
+_is-ta-bd19.test.	1	IN	TXT	"it works"
+_is-ta-bd19.test.	1	IN	A	192.0.2.1
+_is-ta-bd19.test.	1	IN	AAAA	2001:DB8::
+_not-ta-bd19.test.	1	IN	TXT	"it works"
+_not-ta-bd19.test.	1	IN	A	192.0.2.1
+_not-ta-bd19.test.	1	IN	AAAA	2001:DB8::
+
+_is-ta-0000.test.	1	IN	TXT	"it works"
+_is-ta-0000.test.	1	IN	A	192.0.2.1
+_is-ta-0000.test.	1	IN	AAAA	2001:DB8::
+_not-ta-0000.test.	1	IN	TXT	"it works"
+_not-ta-0000.test.	1	IN	A	192.0.2.1
+_not-ta-0000.test.	1	IN	AAAA	2001:DB8::
