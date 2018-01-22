@@ -1,11 +1,11 @@
 ; config options
-server:
+;server:
 	trust-anchor: ". 3600 IN DS 17272 13 4 B87AD8C76DC2244E7AA57285057BF533F2E248CC8D7E1A071D8A3837A711A5EA705C4707E6E8911DA653BE1AE019927B"
 	val-override-timestamp: "1442323400"
 	do-not-query-localhost: off
 
-stub-zone:
-	name: "."
+;stub-zone:
+;	name: "."
 	stub-addr: 127.0.0.1 	# ns.
 CONFIG_END
 

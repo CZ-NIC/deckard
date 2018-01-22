@@ -1,5 +1,5 @@
 net = { '{{SELF_ADDR}}' }
-modules = {'stats', 'policy', 'hints'}
+modules = {'stats', 'policy', 'hints', 'kskroll-sentinel'}
 -- test. domain is used by some tests, allow it
 policy.add(policy.suffix(policy.PASS, {todname('test.')}))
 -- extra verbose logging for answers received from network
@@ -28,6 +28,12 @@ option('NO_THROTTLE', true)
 {% for TAF in TRUST_ANCHOR_FILES %}
 trust_anchors.add_file('{{TAF}}')
 {% endfor %}
+trust_anchors.set_insecure({
+{% for DI in NEGATIVE_TRUST_ANCHORS %}
+"{{DI}}",
+{% endfor %}
+})
+
 
 {% if FEATURES.min_ttl is defined %}
 cache.min_ttl({{FEATURES.min_ttl}})

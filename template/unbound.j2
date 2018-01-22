@@ -483,6 +483,10 @@ server:
 
 	# Ignore chain of trust. Domain is treated as insecure.
 	# domain-insecure: "example.com"
+	{% for DI in NEGATIVE_TRUST_ANCHORS %}
+	domain-insecure: "{{DI}}"
+	{% endfor %}
+
 
 	# Override the date for validation with a specific fixed date.
 	# Do not set this unless you are debugging signature inception

@@ -1,7 +1,7 @@
 ; config options
-	harden-referral-path: no
-	target-fetch-policy: "0 0 0 0 0"
-        name: "."
+;	harden-referral-path: no
+;	target-fetch-policy: "0 0 0 0 0"
+;        name: "."
 	stub-addr: 193.0.14.129         # K.ROOT-SERVERS.NET.
 CONFIG_END
 

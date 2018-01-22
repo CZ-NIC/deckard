@@ -1,10 +1,10 @@
 ; config options
-server:
+;server:
 	trust-anchor: "nsec.example.           IN DS 41524 8 2 D6B102667845D6CDDC05B44466426D9CCC189989BF67ADB23605EED0 BFE2A443"
 	val-override-date: "20170401000000"
 
-stub-zone:
-	name: "."
+;stub-zone:
+;	name: "."
 	stub-addr: 192.0.2.1 	# ns.
 CONFIG_END
 

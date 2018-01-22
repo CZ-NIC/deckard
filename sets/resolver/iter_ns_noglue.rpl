@@ -1,6 +1,6 @@
 ; config options
-	target-fetch-policy: "3 2 1 0 0"
-	name: "."
+;	target-fetch-policy: "3 2 1 0 0"
+;	name: "."
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 CONFIG_END
 

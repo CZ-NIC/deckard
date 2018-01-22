@@ -1,6 +1,6 @@
 ; config options
-	target-fetch-policy: "0 0 0 0 0"
-	name: "."
+;	target-fetch-policy: "0 0 0 0 0"
+;	name: "."
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
 	; minimization does not affect priming query
 	query-minimization: off
