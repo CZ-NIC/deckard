@@ -190,6 +190,7 @@ DNS specifics:
 - ``HARDEN_GLUE``     [bool]_ - enables or disables additional checks on glue addresses
 - ``QMIN``            [bool]_ - enables or disables query minimization respectively
 - ``TRUST_ANCHORS`` - list of trust anchors in form of a DS records, see `scenario guide <doc/scenario_guide.rst>`_
+- ``NEGATIVE_TRUST_ANCHORS`` - list of domain names with explicitly disabled DNSSEC validation
 
 .. [bool] boolean expressed as string ``true``/``false``
 

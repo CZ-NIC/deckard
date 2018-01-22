@@ -416,6 +416,7 @@ Format is list of "key: value" pairs, one pair per line. There is no explicit st
 config option              default meaning
 ========================== ======= =====================================================================
 do-not-query-localhost     on      on = queries cannot be sent to 127.0.0.1/8 or ::1/128 addresses
+domain-insecure            (none)  domain name specifying DNS sub-tree with explicitly disabled DNSSEC validation
 force-ipv6                 off     use a IPv6 address as ``stub-addr``
 harden-glue                on      additional checks on glue addresses
 query-minimization         on      RFC 7816 query algorithm enabled; default inherited from QMIN environment variable

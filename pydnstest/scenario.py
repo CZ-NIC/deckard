@@ -935,6 +935,7 @@ def parse_config(scn_cfg, qmin, installdir):
     sockfamily = 0  # auto-select value for socket.getaddrinfo
     trust_anchor_list = []
     trust_anchor_files = {}
+    negative_ta_list = []
     stub_addr = None
     override_timestamp = None
 
@@ -946,6 +947,8 @@ def parse_config(scn_cfg, qmin, installdir):
         # Enable selectively for some tests
         if k == 'do-not-query-localhost':
             do_not_query_localhost = str2bool(v)
+        if k == 'domain-insecure':
+            negative_ta_list.append(v)
         if k == 'harden-glue':
             harden_glue = str2bool(v)
         if k == 'query-minimization':
@@ -1003,6 +1006,7 @@ def parse_config(scn_cfg, qmin, installdir):
 
     ctx = {
         "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
+        "NEGATIVE_TRUST_ANCHORS": negative_ta_list,
         "FEATURES": features,
         "HARDEN_GLUE": str(harden_glue).lower(),
         "INSTALL_DIR": installdir,
