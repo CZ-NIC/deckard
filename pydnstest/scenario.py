@@ -947,11 +947,11 @@ def parse_config(scn_cfg, qmin, installdir):
         # Enable selectively for some tests
         if k == 'do-not-query-localhost':
             do_not_query_localhost = str2bool(v)
-        if k == 'domain-insecure':
+        elif k == 'domain-insecure':
             negative_ta_list.append(v)
-        if k == 'harden-glue':
+        elif k == 'harden-glue':
             harden_glue = str2bool(v)
-        if k == 'query-minimization':
+        elif k == 'query-minimization':
             qmin = str2bool(v)
         elif k == 'trust-anchor':
             trust_anchor = v.strip('"\'')
@@ -1003,6 +1003,8 @@ def parse_config(scn_cfg, qmin, installdir):
                                % (v, str(ex)))
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
+        else:
+            raise NotImplementedError('unsupported CONFIG key "%s"' % k)
 
     ctx = {
         "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),

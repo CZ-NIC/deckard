@@ -1,10 +1,10 @@
 ; config options
-server:
+;server:
 	trust-anchor: ". IN DS 41524 8 2 5175938255D97A88F9D16A5A46ED3AE373441DF5058C1666D953005D A6BD57F3"
 	val-override-date: "20170501000000"
 
-stub-zone:
-	name: "."
+;stub-zone:
+;	name: "."
 	stub-addr: 10.1.1.1 	# ns.
 CONFIG_END
 
