@@ -272,6 +272,12 @@ explicita2.nsec.example. 0	IN	NSEC	ns. A RRSIG NSEC
 explicita2.nsec.example. 0	IN	RRSIG	NSEC 8 3 0 20170418145253 20170319145253 41524 . kam1hKBwoeTPR0wpvPs2Jyik3hB+Q0Ek4rpD3BNhUa+gTbBk1Z0q5yEs RFVsp6EZlpcP357QiipC2wrPfd3SunGVTVfAD4h6gn1/e5mPN4kJJfOa nMgwZQATF/vilnGu2+5Xtup3blFhg43UJB//iyTcn8c+phMaySbyT5uG xXaM1Gv2maHeJQNOB8cwFWHpYy/Uoph5rpEcZoxGjGkTLNE8pvhlSAgB wYEtMvli3KJH6hjBnOzhMAtOl+ZHy3VFo/UVm/Lwyzmlg+OQ8LCz+NY0 kmAH8z7ZNKZMxyvBpLzxAU2O+j4uSmp5ENuLcqvEyofr2xrq5Fm7OSoH qZvQ1A==
 ENTRY_END
 
+; missing-nsec.local.nsec.example. is covered by explicita2.nsec.example. -> ns.
+; and then the *.nsec.example. wildcard applies (both from the last answer above)
+; kresd by default caches even zero-TTL records for 5 seconds, so let's expire those,
+; so that the aggressive cache won't use them.
+STEP 19 TIME_PASSES ELAPSE 10
+
 ; NSEC record is missing
 STEP 20 QUERY
 ENTRY_BEGIN
@@ -303,6 +309,7 @@ REPLY QR RD RA SERVFAIL
 SECTION QUESTION
 missing-nsec.local.nsec.example. IN A
 ENTRY_END
+
 
 ; NSEC answer was copied to another name in the same zone
 STEP 30 QUERY
