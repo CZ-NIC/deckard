@@ -618,10 +618,3 @@ def process_file(file):
             sc.process_dns(dnsmsg, src_ip, dst_ip)
     sc.postprocessing()
     return sc
-
-
-# TODO: content to class?
-# TODO: multiple names per server
-# TODO: test on smaller pcaps - takes too long to resolve everything
-# TODO: ON/OFF ipv6
-# TODO: parallels response difference for 100/1000 qrys

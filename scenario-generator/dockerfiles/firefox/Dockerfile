@@ -22,4 +22,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:cz.nic-labs/knot-resolver
 RUN apt-get update && apt-get install -y \
 knot-resolver
 
+# workaround for apparmor bug
+RUN mv /usr/sbin/tcpdump /usr/bin/tcpdump
+
 RUN pip3 install selenium xvfbwrapper
