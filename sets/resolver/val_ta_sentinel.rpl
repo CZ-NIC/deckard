@@ -312,7 +312,7 @@ kskroll-sentinel-not-ta-0000.test. IN TXT "it works"
 ENTRY_END
 
 ; keyid 0xbd19 is trusted
-; _is-ta hit for keyid 0xbd19 -> SERVFAIL
+; is-ta hit for keyid 0xbd19 -> NOERROR
 STEP 211 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -322,10 +322,12 @@ ENTRY_END
 
 STEP 212 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-is-ta-bd19.test. IN A
+SECTION ANSWER
+kskroll-sentinel-is-ta-bd19.test. 1 IN A 192.0.2.1
 ENTRY_END
 
 STEP 221 QUERY
@@ -337,13 +339,15 @@ ENTRY_END
 
 STEP 222 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-is-ta-bd19.test. IN AAAA
+SECTION ANSWER
+kskroll-sentinel-is-ta-bd19.test. 1 IN AAAA 2001:db8::
 ENTRY_END
 
-; _not-ta miss for keyid 0xbd19 -> NOERROR
+; not-ta miss for keyid 0xbd19 -> SERVFAIL
 STEP 311 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -353,12 +357,10 @@ ENTRY_END
 
 STEP 312 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA AD NOERROR
+REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-not-ta-bd19.test. IN A
-SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. IN A 192.0.2.1
 ENTRY_END
 
 STEP 322 QUERY
@@ -370,16 +372,14 @@ ENTRY_END
 
 STEP 322 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA AD NOERROR
+REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-not-ta-bd19.test. IN AAAA
-SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. IN AAAA 2001:db8::
 ENTRY_END
 
 ; keyid 0x0000 is not trusted
-; _not-ta miss for keyid 0x0000 -> NOERROR
+; is-ta miss for keyid 0x0000 -> SERVFAIL
 STEP 411 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -389,12 +389,10 @@ ENTRY_END
 
 STEP 412 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA AD NOERROR
+REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-is-ta-0000.test. IN A
-SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. IN A 192.0.2.1
 ENTRY_END
 
 STEP 422 QUERY
@@ -406,15 +404,13 @@ ENTRY_END
 
 STEP 422 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA AD NOERROR
+REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-is-ta-0000.test. IN AAAA
-SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. IN AAAA 2001:db8::
 ENTRY_END
 
-; _not-ta hit for keyid 0x0000 -> SERVFAIL
+; not-ta hit for keyid 0x0000 -> NOERROR
 STEP 511 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -424,10 +420,12 @@ ENTRY_END
 
 STEP 512 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-not-ta-0000.test. IN A
+SECTION ANSWER
+kskroll-sentinel-not-ta-0000.test. IN A 192.0.2.1
 ENTRY_END
 
 STEP 521 QUERY
@@ -439,14 +437,16 @@ ENTRY_END
 
 STEP 522 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-not-ta-0000.test. IN AAAA
+SECTION ANSWER
+kskroll-sentinel-not-ta-0000.test. IN AAAA 2001:db8::
 ENTRY_END
 
 ; TA for non-root domains are interpreted correctly
-; _not-ta hit for keyid 0x1297 -> SERVFAIL
+; not-ta ignores existing non-root TA keyid 0x1297 -> NOERROR
 STEP 611 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -456,13 +456,15 @@ ENTRY_END
 
 STEP 612 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA SERVFAIL
+REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-not-ta-1297.test. IN A
+SECTION ANSWER
+kskroll-sentinel-not-ta-1297.test. 1 IN A 192.0.2.33
 ENTRY_END
 
-; _is-ta ignores non-root keyid 0x1297 -> NOERROR
+; is-ta ignores existing non-root TA keyid 0x1297 -> SERVFAIL
 STEP 621 QUERY
 ENTRY_BEGIN
 REPLY RD AD
@@ -472,12 +474,10 @@ ENTRY_END
 
 STEP 622 CHECK_ANSWER
 ENTRY_BEGIN
-REPLY QR RD RA AD NOERROR
+REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
 kskroll-sentinel-is-ta-1297.test. IN A
-SECTION ANSWER
-kskroll-sentinel-is-ta-1297.test. IN A 192.0.2.33
 ENTRY_END
 
 SCENARIO_END
