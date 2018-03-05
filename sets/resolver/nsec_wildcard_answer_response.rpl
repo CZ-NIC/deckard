@@ -346,7 +346,6 @@ ENTRY_END
 ; explicitly defined records gets properly validated even with cached wildcard
 STEP 40 QUERY
 ENTRY_BEGIN
-MATCH all
 REPLY RD DO AD
 SECTION QUESTION
 explicita.nsec.example. IN A
