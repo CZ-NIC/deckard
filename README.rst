@@ -27,6 +27,8 @@ Deckard requires following software to be installed:
 - dnspython_ - DNS library for Python
 - Jinja2_ - template engine for generating config files
 - PyYAML_ - YAML parser for Python
+- pytest_ - testing framework for Python, used for running the test cases
+- pytest-xdist_ - module for pytest for distributed testing
 - custom C libraries (installed automatically, see below)
 
 For convenient use it is strongly recommended to have a C compiler, Git, and ``make`` available.
@@ -88,3 +90,5 @@ Happy testing.
 .. _`libfaketime`: https://github.com/wolfcw/libfaketime
 .. _`modified socket_wrapper`: https://gitlab.labs.nic.cz/labs/socket_wrapper
 .. _`original socket_wrapper`: https://cwrap.org/socket_wrapper.html
+.. _`pytest`: https://pytest.org/
+.. _`pytest-xdist`: https://pypi.python.org/pypi/pytest-xdist
