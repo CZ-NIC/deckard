@@ -76,6 +76,10 @@ modules.load( 'view')
 modules = { 'workarounds < iterate' }
 {% endif %}
 
+{% if FEATURES.serve_stale is defined %}
+modules = { 'serve_stale < cache' }
+{% endif %}
+
 -- Disable RFC8145 signaling, scenario doesn't provide expected ansers
 if ta_signal_query then
 	modules.unload('ta_signal_query')
