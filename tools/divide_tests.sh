@@ -3,64 +3,68 @@
 # Sorts .rpl tests into several categories.
 # Takes a diretory with the tests as an argument and moves the test to its subdirectories.
 
-source=$1
+set -o nounset
+set -o errexit
+
+SOURCE="$1"
 
 
 # Test with the same name is already imported in deckard/sets/resolver
 echo Already imported:
-mkdir -p $source/imported
-for test in `comm -12 <(ls -F ../sets/resolver/*.rpl | xargs -n 1 basename) <(ls -F $source/*.rpl | xargs -n 1 basename)`
+mkdir -p "$SOURCE/imported"
+for TEST in `comm -12 <(ls -F ../sets/resolver/*.rpl | xargs -n 1 basename) <(ls -F "$SOURCE"/*.rpl | xargs -n 1 basename)`
 do
-    echo -e '\t' $test
-    mv $source/$test $source/imported
+    echo -e '\t' "$TEST"
+    mv "$SOURCE/$TEST" "$SOURCE/imported"
 done
 
 # Parse failed
 echo Parse failed:
-mkdir -p $source/parsefail
-for test in $source/*.rpl
+mkdir -p "$SOURCE/parsefail"
+for TEST in "$SOURCE/"*.rpl
 do
-    if ! python3 parse.py $test >/dev/null 2>/dev/null
+    if ! python3 parse.py "$TEST" >/dev/null 2>/dev/null
     then
-        echo -e '\t' $test
-        mv $test $source/parsefail
+        echo -e '\t' "$TEST"
+        mv "$TEST" "$SOURCE/parsefail"
     fi
 done
 
 
 # Invalid DSA signatures (common in old testbound tests)
 echo Invalid DSA signatures:
-mkdir -p $source/invaliddsa
-for test in $source/*.rpl
+mkdir -p "$SOURCE/invaliddsa"
+for TEST in "$SOURCE"/*.rpl
 do
-    if ! python3 invalid_dsa.py $test >/dev/null 2>/dev/null
+    if ! python3 invalid_dsa.py "$TEST" >/dev/null 2>/dev/null
     then 
-        echo -e '\t' $test
-        mv $test $source/invaliddsa
+        echo -e '\t' "$TEST"
+        mv "$TEST" "$SOURCE/invaliddsa"
     fi
 done
 
 
 # Working on kresd in deckard
 echo Working:
-mkdir -p $source/working
+mkdir -p "$SOURCE/working"
 
-for test in $source/*.rpl
+for TEST in "$SOURCE/"*.rpl
 do
-    path=$(readlink -m $test)
-    if TESTS=$path ./../kresd_run.sh >/dev/null 2>/dev/null
+    PATH=$(readlink -m "$TEST")
+    if $TESTS="$PATH" ./../kresd_run.sh >/dev/null 2>/dev/null
     then 
-        echo -e '\t' $test
-        mv $test $source/working
+        echo -e '\t' "$TEST"
+        mv "$TEST" "$SOURCE/working"
     fi
 done
 
 
 # Others
 echo Others:
-mkdir -p $source/others
-for test in $source/*.rpl
+mkdir -p "$SOURCE/others"
+for test in "$SOURCE/*.rpl"
 do
-    echo -e '\t' $test
-    mv $test $source/others
+    echo -e '\t' "$TEST"
+    mv "$TEST" "$SOURCE/others"
 done
+
