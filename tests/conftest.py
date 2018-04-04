@@ -44,7 +44,7 @@ def get_qmin_config(path):
 def scenarios(scenarios_path):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
     filelist = [Scenario(scenario, get_qmin_config(scenario))
-            for scenario in sorted(glob.glob(os.path.join(scenarios_path, "*.rpl")))]
+                for scenario in sorted(glob.glob(os.path.join(scenarios_path, "*.rpl")))]
     if not filelist:
         raise ValueError('no *.rpl files found in directory {}'.format(scenarios_path))
     return filelist
@@ -59,8 +59,8 @@ def pytest_generate_tests(metafunc):
     """This is pytest weirdness to parametrize the test over all the *.rpl files."""
     if 'scenario' in metafunc.fixturenames:
         if metafunc.config.option.scenarios is not None:
-            paths = metafunc.config.option.scenarios
-            metafunc.parametrize("scenario", scenarios(paths[0]), ids=str)
+            path = metafunc.config.option.scenarios
+            metafunc.parametrize("scenario", scenarios(path), ids=str)
         else:
             # If no --config option is given, we use the default from Deckard repository
             metafunc.parametrize("scenario", scenarios("sets/resolver"), ids=str)
