@@ -43,8 +43,11 @@ def get_qmin_config(path):
 
 def scenarios(scenarios_path):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
-    return [Scenario(scenario, get_qmin_config(scenario))
+    filelist = [Scenario(scenario, get_qmin_config(scenario))
             for scenario in sorted(glob.glob(os.path.join(scenarios_path, "*.rpl")))]
+    if not filelist:
+        raise ValueError('no *.rpl files found in directory {}'.format(scenarios_path))
+    return filelist
 
 
 def pytest_addoption(parser):
