@@ -28,8 +28,9 @@ endif
 
 # Targets
 all:
-	@echo "Deckard is now run using *run.sh scripts in its root directory.\n\
-	To build the dependencies (libfaketime and libcwrap) run 'make depend'."
+	@echo "Deckard is now run using *run.sh scripts in its root directory."
+	@echo "To build the dependencies (libfaketime and libcwrap) run 'make depend'."
+	exit 1
 depend: $(libfaketime) $(libcwrap)
 	@echo "export $(preload_syms)" > env.sh
 
