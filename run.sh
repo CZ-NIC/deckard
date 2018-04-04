@@ -4,7 +4,7 @@ LDPRELOAD=$(make depend -C "${MAKEDIR}")
 
 source ${MAKEDIR}/env.sh
 
-py.test -q tests/test_runner.py "$@"
+python3 -m pytest -q tests/test_runner.py "$@"
 
 RETVAL=$?
 
