@@ -51,8 +51,8 @@ def scenarios(scenarios_path):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--config", action="store")
-    parser.addoption("--scenarios", action="store")
+    parser.addoption("--config", action="store", help="Deckard configuration file")
+    parser.addoption("--scenarios", action="store", help="directory with .rpl files")
 
 
 def pytest_generate_tests(metafunc):
