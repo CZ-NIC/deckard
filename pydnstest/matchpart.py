@@ -3,6 +3,11 @@
 import dns.rcode
 import dns.edns
 
+from typing import (  # noqa
+    Any, Sequence, Union)
+
+MismatchValue = Union[str, Sequence[Any]]
+
 
 class DataMismatch(Exception):
     def __init__(self, exp_val, got_val):
@@ -10,8 +15,17 @@ class DataMismatch(Exception):
         self.exp_val = exp_val
         self.got_val = got_val
 
-    def __str__(self):
-        return 'expected "{0.exp_val}" got "{0.got_val}"'.format(self)
+    @staticmethod
+    def format_value(value: MismatchValue) -> str:
+        if isinstance(value, list):
+            return ' '.join([str(val) for val in value])
+        else:
+            return str(value)
+
+    def __str__(self) -> str:
+        return 'expected "{}" got "{}"'.format(
+            self.format_value(self.exp_val),
+            self.format_value(self.got_val))
 
     def __hash__(self):
         return hash((self.exp_val, self.got_val))
