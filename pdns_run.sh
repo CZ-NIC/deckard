@@ -2,4 +2,4 @@
 set -o errexit -o nounset
 
 RUNDIR="$(dirname "$0")"
-cd $RUNDIR && ./run.sh --config configs/pdns.yaml "$@"
+cd "$RUNDIR" && ./run.sh --config configs/pdns.yaml "$@"
