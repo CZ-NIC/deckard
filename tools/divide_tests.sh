@@ -25,7 +25,7 @@ for TEST in "$SOURCE/"*.rpl
 do
     if ! python3 parse.py "$TEST" >/dev/null 2>/dev/null
     then
-        echo -e '\t' "$TEST"
+        echo -e '\t' $(basename "$TEST")
         mv "$TEST" "$SOURCE/parsefail"
     fi
 done
@@ -34,37 +34,37 @@ done
 # Invalid DSA signatures (common in old testbound tests)
 echo Invalid DSA signatures:
 mkdir -p "$SOURCE/invaliddsa"
-for TEST in "$SOURCE"/*.rpl
+for TEST in "$SOURCE/"*.rpl
 do
     if ! python3 invalid_dsa.py "$TEST" >/dev/null 2>/dev/null
     then 
-        echo -e '\t' "$TEST"
+        echo -e '\t' $(basename "$TEST")
         mv "$TEST" "$SOURCE/invaliddsa"
     fi
 done
 
 
-# Working on kresd in deckard
+# Working on kresd in deckard 
 echo Working:
 mkdir -p "$SOURCE/working"
 
 for TEST in "$SOURCE/"*.rpl
 do
-    PATH=$(readlink -m "$TEST")
-    if $TESTS="$PATH" ./../kresd_run.sh >/dev/null 2>/dev/null
+    if TESTS="$(readlink -m $TEST)" ./../kresd_run.sh >/dev/null 2>/dev/null
     then 
-        echo -e '\t' "$TEST"
+        echo -e '\t' $(basename "$TEST")
         mv "$TEST" "$SOURCE/working"
     fi
 done
 
 
-# Others
+
+# Others TODO: sem nic nepadá a to je divný, asi chyba, neviem
 echo Others:
 mkdir -p "$SOURCE/others"
-for test in "$SOURCE/*.rpl"
+for TEST in "$SOURCE/"*.rpl
 do
-    echo -e '\t' "$TEST"
+    echo -e '\t' $(basename "$TEST")
     mv "$TEST" "$SOURCE/others"
 done
 
