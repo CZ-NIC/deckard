@@ -3,7 +3,6 @@
 import sys
 import os
 import argparse
-# sys.path.insert(0, '..')
 import pydnstest
 import pydnstest.scenario
 

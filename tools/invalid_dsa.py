@@ -4,9 +4,8 @@
 
 import os
 import sys
-import base64
 import argparse
-# sys.path.insert(0, '..')
+import dns
 import pydnstest
 import pydnstest.scenario
 import pydnstest.augwrap
@@ -57,9 +56,11 @@ def check_rrsig(node, dsakeys):
 
             for record in records:
                 if record["/type"].value == "RRSIG":
-                    rrsig_data = record["/data"].value.split()
-                    if rrsig_data[6] == key:
-                        if len(base64.b64decode(rrsig_data[8])) != 41:
+                    rrset = dns.rrset.from_text(record["/domain"].value, 300,
+                                                1, dns.rdatatype.RRSIG,
+                                                record["/data"].value)
+                    if rrset.items[0].key_tag == int(key):
+                        if len(rrset.items[0].signature) != 41:
                             return True
     return False
 
@@ -74,10 +75,8 @@ def main():
     dsakeys = get_dsakeys(config, node)
     bad_rrsig = check_rrsig(node, dsakeys)
     if bad_rrsig:
-        print(1)
         sys.exit(1)
     else:
-        print(0)
         sys.exit(0)
 
 main()
