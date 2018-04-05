@@ -24,7 +24,8 @@ let domain = [ label "domain" . store domain_re ]
 let ttl = [label "ttl" . store /[0-9]+/]
 let class = [label "class" . store class_re ]
 let type = [label "type" . store ((/[^0-9#;\n \t][^\t\n\/#; ]*/) - class_re) ]
-let data_re = /([^ \t\n#;][^\n#;]*[^ \t\n#;])|[^ \t\n#;]/ (*Can not start nor end with whitespace but can have whitespace in the middle. Disjunction is there so we match strings of length one.*)
+(* RFC 3597 section 5 rdata syntax is "\# 1 ab"*)
+let data_re = /((\\\#[ \t])?[^ \t\n#;][^\n#;]*[^ \t\n#;])|[^ \t\n#;]/ (*Can not start nor end with whitespace but can have whitespace in the middle. Disjunction is there so we match strings of length one.*)
 let data = [label "data" . store data_re ]
 
 let ip_re = /[0-9a-f.:]+/
