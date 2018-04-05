@@ -60,5 +60,4 @@ set -o errexit -o nounset
 ## iter_minim_a.rpl           val_nsec3_optout_unsec_cache.rpl
 
 RUNDIR="$(dirname "$0")"
-cd $RUNDIR && ./run.sh --config configs/getdns.yaml "$@"
-
+cd "$RUNDIR" && ./run.sh --config configs/getdns.yaml "$@"
