@@ -286,6 +286,7 @@ def process_file(path, qmin, prog_cfgs):
 
     # get working directory and environment variables
     tmpdir = setup_common_env(cfg_ctx)
+    shutil.copy2(path, os.path.join(tmpdir))
     try:
         daemons = setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files)
         run_testcase(daemons,
