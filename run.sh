@@ -4,7 +4,9 @@ LDPRELOAD=$(make depend -C "${MAKEDIR}")
 
 source ${MAKEDIR}/env.sh
 
-python3 -m pytest -q tests/test_runner.py "$@"
+# compatibility with old TESTS= env variable
+# add --scenarios= only if the variable TESTS is non-empty
+python3 -m pytest -q tests/test_runner.py ${TESTS:+"--scenarios=${TESTS}"} "$@"
 
 RETVAL=$?
 
