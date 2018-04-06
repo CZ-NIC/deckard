@@ -19,10 +19,10 @@ find_modified_tests
 LOGS[0]="${MODIFIED_TESTS_FILE}"
 
 : get test results from version under test
-"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/head.xml
+"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/head.xml || : some tests on HEAD ${HEAD} failed
 
 : get test results from common ancestor with master branch
 git checkout --force --detach "${MERGEBASE}"
 git clean -xdf
-"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/base.xml
-test -z "$(./junit_compare.py /tmp/head.xml /tmp/base.xml /tmp/modified_tests)" && echo "OK, no differences found"
+"${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/base.xml || : some tests on merge base ${MERGEBASE} failed
+test -z "$("${CIDIR}/junit_compare.py" /tmp/head.xml /tmp/base.xml /tmp/modified_tests)" && echo "OK, no differences found"
