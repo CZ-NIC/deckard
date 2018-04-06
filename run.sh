@@ -2,8 +2,9 @@
 set -o errexit -o nounset
 
 MAKEDIR="$(dirname "$0")"
-rm -f "${MAKEDIR}/env.sh"
-LDPRELOAD="$(make depend -C "${MAKEDIR}")"
+# build env.sh only if needed
+# it is handy if someone is executing run.sh in parallel
+test ! -f "${MAKEDIR}/env.sh" && make depend -C "${MAKEDIR}"
 source "${MAKEDIR}/env.sh"
 
 # compatibility with old TESTS= env variable
