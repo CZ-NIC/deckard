@@ -25,4 +25,4 @@ LOGS[0]="${MODIFIED_TESTS_FILE}"
 git checkout --force --detach "${MERGEBASE}"
 git clean -xdf
 "${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/base.xml || : some tests on merge base ${MERGEBASE} failed
-test -z "$("${CIDIR}/junit_compare.py" /tmp/head.xml /tmp/base.xml /tmp/modified_tests)" && echo "OK, no differences found"
+"${CIDIR}/junit_compare.py" /tmp/head.xml /tmp/base.xml /tmp/modified_tests && echo "OK, no differences found"
