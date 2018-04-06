@@ -15,12 +15,12 @@ def set_coverage_env(path, qmin):
     """Sets up enviroment variables so code coverage utility can work."""
     if os.environ.get("COVERAGE"):
         exports = subprocess.check_output([os.environ["COVERAGE_ENV_SCRIPT"],
-                                           os.environ["DEAMONSRCDIR"],
+                                           os.environ["DAEMONSRCDIR"],
                                            os.environ["COVERAGE_STATSDIR"],
                                            path + "-qmin-" + str(qmin)]).decode()
         for export in exports.split():
-            key = export.split("=")[0]
-            value = export.split("=")[1]
+            key, value = export.split("=", 1)
+            value = value.strip('"')
             os.environ[key] = value
 
 
