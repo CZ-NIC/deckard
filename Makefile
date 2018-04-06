@@ -54,4 +54,4 @@ $(libcwrap): $(libcwrap_cmake_DIR)/Makefile
 
 check:
 	@echo Running unittests using pytest
-	${PYTHON} -m pytest --ignore=tests/test_runner.py
+	${PYTHON} -m pytest
