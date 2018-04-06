@@ -1,10 +1,15 @@
 #!/usr/bin/python3
 
-import xml.etree.ElementTree as xml
 import sys
 
+import xml.etree.ElementTree as xml
 
-def parse_xml(filename):
+
+def parse_junit_xml(filename):
+    """
+    Transform junit XML file into set of tuples:
+    (test description, file name, test result)
+    """
     results = set()
     root = xml.parse(filename).getroot()
     for case in root:
@@ -21,7 +26,11 @@ new = sys.argv[1]
 old = sys.argv[2]
 modified_tests = [line.strip() for line in open(sys.argv[3]).readlines()]
 
-for diff in parse_xml(old) ^ parse_xml(new):
-    print(diff[1])
-    if diff[1] not in modified_tests:
-        print(diff)
+test_diffs = parse_junit_xml(old) ^ parse_junit_xml(new)
+errorneous_rpls = [diff[1] for diff in test_diffs
+                   if diff[1] not in modified_tests]
+if errorneous_rpls:
+    print('FAIL! Following tests changed their result without test modification:')
+    for rpl in sorted(set(errorneous_rpls)):
+        print(rpl)
+    sys.exit(1)
