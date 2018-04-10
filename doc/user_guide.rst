@@ -95,6 +95,7 @@ Commented contents of ``kresd.yaml`` follows:
       - template/kresd.j2   # list of Jinja2_ template files to generate configuration files
     configs:
       - config              # list of names of configuration files to be generated from Jinja2_ templates
+  noclean: True             # optional, do not remove working dir after a successful test
 
 - 'configs' files will be generated from respective files in 'templates' list
 - i.e. the first file in 'configs' list is the result of processing of the first file from 'templates' list and so on
