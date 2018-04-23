@@ -44,15 +44,15 @@ def run_test(path, qmin, config):
     deckard.process_file(path, qmin, config)
 
 
-def test_passes_qmin_on(scenario, config):
+def test_passes_qmin_on(scenario):
     if scenario.qmin is True or scenario.qmin is None:
-        run_test(scenario.path, True, config)
+        run_test(scenario.path, True, scenario.config)
     else:
         pytest.skip("Query minimization is off in test config")
 
 
-def test_passes_qmin_off(scenario, config):
+def test_passes_qmin_off(scenario):
     if scenario.qmin is False or scenario.qmin is None:
-        run_test(scenario.path, False, config)
+        run_test(scenario.path, False, scenario.config)
     else:
         pytest.skip("Query minimization is on in test config")
