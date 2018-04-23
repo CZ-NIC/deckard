@@ -5,6 +5,15 @@ variables:
 stages:
   - test
 
+test:augeas:
+  stage: test
+  script:
+    - augparse pydnstest/deckard.aug
+  tags:
+    - docker
+    - linux
+    - amd64
+
 test:pep8:
   stage: test
   script:
