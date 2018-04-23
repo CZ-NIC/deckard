@@ -6,26 +6,26 @@ let del_str = Util.del_str
 let space = del /[ \t]+/ " "
 let tab = del /[ \t]+/ "\t"
 let ws = del /[\t ]*/ ""
-let word = /[^\t\n\/#; ]+/
+let word = /[^\t\n\/; ]+/
 
-let comment = del /[;#]/ ";" . [label "comment" . store /[^\n]+/]
+let comment = del /[;]/ ";" . [label "comment" . store /[^\n]+/]
 
-let eol = del /([ \t]*([;#][^\n]*)?\n)+/ "\n" . Util.indent
-let comment_or_eol =  ws . comment? . del_str "\n" . del /([ \t]*([;#][^\n]*)?\n)*/ "\n" . Util.indent
+let eol = del /([ \t]*([;][^\n]*)?\n)+/ "\n" . Util.indent
+let comment_or_eol =  ws . comment? . del_str "\n" . del /([ \t]*([;][^\n]*)?\n)*/ "\n" . Util.indent
 
 
 (*let comment_or_eol = [ label "#comment" . counter "comment" . (ws . [del /[;#]/ ";" . label "" . store /[^\n]*/ ]? . del_str "\n")]+ . Util.indent
 *)
 
 
-let domain_re = (/[^.\t\n\/#; ]+(\.[^.\t\n\/#; ]+)*\.?/ | ".") - "SECTION" (*quick n dirty, sorry to whoever will ever own SECTION TLD*)
+let domain_re = (/[^.\t\n\/; ]+(\.[^.\t\n\/; ]+)*\.?/ | ".") - "SECTION" (*quick n dirty, sorry to whoever will ever own SECTION TLD*)
 let class_re = /CLASS[0-9]+/ | "IN" | "CH" | "HS" | "NONE" | "ANY"
 let domain = [ label "domain" . store domain_re ]
 let ttl = [label "ttl" . store /[0-9]+/]
 let class = [label "class" . store class_re ]
-let type = [label "type" . store ((/[^0-9#;\n \t][^\t\n\/#; ]*/) - class_re) ]
+let type = [label "type" . store ((/[^0-9;\n \t][^\t\n\/; ]*/) - class_re) ]
 (* RFC 3597 section 5 rdata syntax is "\# 1 ab"*)
-let data_re = /((\\\#[ \t])?[^ \t\n#;][^\n#;]*[^ \t\n#;])|[^ \t\n#;]/ (*Can not start nor end with whitespace but can have whitespace in the middle. Disjunction is there so we match strings of length one.*)
+let data_re = /((\\#[ \t])?[^ \t\n;][^\n;]*[^ \t\n;])|[^ \t\n;]/ (*Can not start nor end with whitespace but can have whitespace in the middle. Disjunction is there so we match strings of length one.*)
 let data = [label "data" . store data_re ]
 
 let ip_re = /[0-9a-f.:]+/
@@ -90,6 +90,6 @@ let lns = config? . scenario
 (* TODO: store all comments into the tree instead of ignoring them *)
 
 (*let filter = incl "/home/test/*.rpl"*)
-let filter = incl "/media/test/27159fa1-67d4-4162-8707-cd67900f3b36/stepan/nic/deckard_stable/deckard/sets/resolver/*.rpl"
+let filter = incl "/home/sbalazik/nic/deckard/git/sets/resolver/*.rpl"
 
 let xfm = transform lns filter
