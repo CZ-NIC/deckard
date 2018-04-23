@@ -6,7 +6,7 @@ import re
 import yaml
 
 
-Scenario = namedtuple("Scenario", ["path", "qmin"])
+Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
 
 
 def config_sanity_check(config_dict, config_name):
@@ -41,38 +41,49 @@ def get_qmin_config(path):
                 return False
 
 
-def scenarios(scenarios_path):
+def scenarios(paths, configs):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
-    if os.path.isfile(scenarios_path):
-        filelist = [scenarios_path]  # path to single file, accept it
-    else:
-        filelist = [Scenario(scenario, get_qmin_config(scenario))
-                    for scenario in sorted(glob.glob(os.path.join(scenarios_path, "*.rpl")))]
-    if not filelist:
-        raise ValueError('no *.rpl files found in path "{}"'.format(scenarios_path))
-    return filelist
+
+    assert len(paths) == len(configs), "There should the same number of --config and --scenario arguments"
+
+    scenario_list = []
+
+    for path, config in zip(paths, configs):
+        config_dict = yaml.safe_load(open(config))
+        config_sanity_check(config_dict, config)
+
+        if os.path.isfile(path):
+            filelist = [path]  # path to single file, accept it
+        else:
+            filelist = sorted(glob.glob(os.path.join(path, "*.rpl")))
+
+        if not filelist:
+            raise ValueError('no *.rpl files found in path "{}"'.format(path))
+
+        for file in filelist:
+            scenario_list.append(Scenario(file, get_qmin_config(file), config_dict))
+
+    return scenario_list
+
+
 
 
 def pytest_addoption(parser):
-    parser.addoption("--config", action="store", help="Deckard configuration file")
-    parser.addoption("--scenarios", action="store", help="directory with .rpl files")
+    parser.addoption("--config", action="append", help="path to Deckard configuration .yaml file")
+    parser.addoption("--scenarios", action="append", help="directory with .rpl files")
 
 
 def pytest_generate_tests(metafunc):
     """This is pytest weirdness to parametrize the test over all the *.rpl files."""
     if 'scenario' in metafunc.fixturenames:
-        if metafunc.config.option.scenarios is not None:
-            path = metafunc.config.option.scenarios
-            metafunc.parametrize("scenario", scenarios(path), ids=str)
+        if metafunc.config.option.config is None:
+            configs = []
         else:
-            # If no --config option is given, we use the default from Deckard repository
-            metafunc.parametrize("scenario", scenarios("sets/resolver"), ids=str)
+            configs = metafunc.config.option.config
 
+        if metafunc.config.option.scenarios is None:
+            paths = ["sets/resolver"] * len(configs)
+        else:
+            paths = metafunc.config.option.scenarios
 
-@pytest.fixture
-def config(request):
-    """Parses and checks the config given"""
-    config_file = request.config.getoption("--config")
-    configuration = yaml.safe_load(open(config_file))
-    config_sanity_check(configuration, config_file)
-    return configuration
+        metafunc.parametrize("scenario", scenarios(paths, configs), ids=str)
