@@ -1,0 +1,4717 @@
+	trust-anchor: ". IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5"
+	trust-anchor: ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D"
+	val-override-date: 20180426173022
+	stub-addr: 193.0.14.129
+CONFIG_END
+
+SCENARIO_BEGIN ./data/pcaps/2018-04-10_17-30-22/dig-kresd-www.nrl.navy.mil-1.pcap
+
+
+; Server name: k.root-servers.net. Actual ip: 193.0.14.129
+; a.root-servers.net.
+; b.root-servers.net.
+; c.root-servers.net.
+; d.root-servers.net.
+; e.root-servers.net.
+; f.root-servers.net.
+; g.root-servers.net.
+; h.root-servers.net.
+; i.root-servers.net.
+; j.root-servers.net.
+; l.root-servers.net.
+; m.root-servers.net.
+RANGE_BEGIN 0 1000
+	ADDRESS 193.0.14.129
+	ADDRESS 192.112.36.4
+	ADDRESS 192.203.230.10
+	ADDRESS 192.33.4.12
+	ADDRESS 192.36.148.17
+	ADDRESS 192.5.5.241
+	ADDRESS 192.58.128.30
+	ADDRESS 198.41.0.4
+	ADDRESS 198.97.190.53
+	ADDRESS 199.7.83.42
+	ADDRESS 199.7.91.13
+	ADDRESS 199.9.14.201
+	ADDRESS 2001:500:12::d0d
+	ADDRESS 2001:500:1::53
+	ADDRESS 2001:500:200::b
+	ADDRESS 2001:500:2::c
+	ADDRESS 2001:500:2d::d
+	ADDRESS 2001:500:2f::f
+	ADDRESS 2001:500:9f::42
+	ADDRESS 2001:500:a8::e
+	ADDRESS 2001:503:ba3e::2:30
+	ADDRESS 2001:503:c27::2:30
+	ADDRESS 2001:7fd::1
+	ADDRESS 2001:7fe::53
+	ADDRESS 2001:dc3::35
+	ADDRESS 202.12.27.33
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+. IN NS
+SECTION ANSWER
+. 518400 IN NS a.root-servers.net.
+. 518400 IN NS b.root-servers.net.
+. 518400 IN NS c.root-servers.net.
+. 518400 IN NS d.root-servers.net.
+. 518400 IN NS e.root-servers.net.
+. 518400 IN NS f.root-servers.net.
+. 518400 IN NS g.root-servers.net.
+. 518400 IN NS h.root-servers.net.
+. 518400 IN NS i.root-servers.net.
+. 518400 IN NS j.root-servers.net.
+. 518400 IN NS k.root-servers.net.
+. 518400 IN NS l.root-servers.net.
+. 518400 IN NS m.root-servers.net.
+. 518400 IN RRSIG NS 8 0 518400 20180509050000 20180426040000 39570 . CTtIXjqO9FxBMAsaXI0Bh3SXx6adnG9+ Evoxx4TlBp7Xw2aPwgHNSi+hDcjVCKKR G+nYdI9FkVAxh53WvzN8TYqPLJB3292Y h9Q1Buca4C4FYQ7evt7j9TAQK2xzctck XADjJNiP2xmsKePaWQD+ZfEg9rCj946k 3jLW+I7notEAlcvGWbuD3aMj8uSy7tum JRLqc048ng9w0vM9apyeKICPCBRrbVbR BnyYYHc3GZV9pSZBgrkp058BUwyg0dJJ OOtbtzUyHx8eBoH7jy5ISfgoG5B/7qhK taUr6tFFQ3np18MpLrYI+ZPxCI/kyiHR v49FYQ13w3GbwrXTQqHm+w==
+SECTION ADDITIONAL
+a.root-servers.net. 518400 IN A 198.41.0.4
+a.root-servers.net. 518400 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 518400 IN A 199.9.14.201
+b.root-servers.net. 518400 IN AAAA 2001:500:200::b
+c.root-servers.net. 518400 IN A 192.33.4.12
+c.root-servers.net. 518400 IN AAAA 2001:500:2::c
+d.root-servers.net. 518400 IN A 199.7.91.13
+d.root-servers.net. 518400 IN AAAA 2001:500:2d::d
+e.root-servers.net. 518400 IN A 192.203.230.10
+e.root-servers.net. 518400 IN AAAA 2001:500:a8::e
+f.root-servers.net. 518400 IN A 192.5.5.241
+f.root-servers.net. 518400 IN AAAA 2001:500:2f::f
+g.root-servers.net. 518400 IN A 192.112.36.4
+g.root-servers.net. 518400 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 518400 IN A 198.97.190.53
+h.root-servers.net. 518400 IN AAAA 2001:500:1::53
+i.root-servers.net. 518400 IN A 192.36.148.17
+i.root-servers.net. 518400 IN AAAA 2001:7fe::53
+j.root-servers.net. 518400 IN A 192.58.128.30
+j.root-servers.net. 518400 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 518400 IN A 193.0.14.129
+k.root-servers.net. 518400 IN AAAA 2001:7fd::1
+l.root-servers.net. 518400 IN A 199.7.83.42
+l.root-servers.net. 518400 IN AAAA 2001:500:9f::42
+m.root-servers.net. 518400 IN A 202.12.27.33
+m.root-servers.net. 518400 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+. IN DNSKEY
+SECTION ANSWER
+. 172800 IN DNSKEY 256 3 8 AwEAAdU4aKlDgEpXWWpH5aXHJZI1Vm9C m42mGAsqkz3akFctS6zsZHC3pNNMug99 fKa7OW+tRHIwZEc//mX8Jt6bcw5bPgRH G6u2eT8vUpbXDPVs1ICGR6FhlwFWEOyx bIIiDfd7Eq6eALk5RNcauyE+/ZP+Vdrh WZDeEWZRrPBLjByBWTHl+v/f+xvTJ3St cq2tEqnzS2CCOr6RTJepprYhu+5Yl6aR ZmEVBK27WCW1Zrk1LekJvJXfcyKSKk19 C5M5JWX58px6nB1IS0pMs6aCIK2yaQQV NUEg9XyQzBSv/rMxVNNy3VAqOjvh+OAS pLMm4GECbSSe8jtjwG0I78sfMZc=
+. 172800 IN DNSKEY 257 3 8 AwEAAagAIKlVZrpC6Ia7gEzahOR+9W29 euxhJhVVLOyQbSEW0O8gcCjFFVQUTf6v 58fLjwBd0YI0EzrAcQqBGCzh/RStIoO8 g0NfnfL2MTJRkxoXbfDaUeVPQuYEhg37 NZWAJQ9VnMVDxP/VHL496M/QZxkjf5/E fucp2gaDX6RS6CXpoY68LsvPVjR0ZSwz z1apAzvN9dlzEheX7ICJBBtuA6G3LQpz W5hOA2hzCTMjJPJ8LbqF6dsV6DoBQzgu l0sGIcGOYl7OyQdXfZ57relSQageu+ip AdTTJ25AsRTAoub8ONGcLmqrAmRLKBP1 dfwhYB4N7knNnulqQxA+Uk1ihz0=
+. 172800 IN DNSKEY 257 3 8 AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexT BAvkMgJzkKTOiW1vkIbzxeF3+/4RgWOq 7HrxRixHlFlExOLAJr5emLvN7SWXgnLh 4+B5xQlNVz8Og8kvArMtNROxVQuCaSnI DdD5LKyWbRd2n9WGe2R8PzgCmr3EgVLr jyBxWezF0jLHwVN8efS3rCj/EWgvIWgb 9tarpVUDK/b58Da+sqqls3eNbuv7pr+e oZG+SrDK6nWeL3c6H5Apxz7LjVc1uTId sIXxuOLYA4/ilBmSVIzuDWfdRUfhHdY6 +cn8HFRm+2hM8AnXGXws9555KrUB5qih ylGa8subX2Nn6UwNR1AkUTV74bU=
+. 172800 IN RRSIG DNSKEY 8 0 172800 20180512000000 20180421000000 19036 . e9I0U9vHrWZQN2v3aqxnHdq9BUCO8NG+ 4kNsaADxOndT9bJpUneAYfDz4EJwJggj Pjt6ms3Bh2pGJVOmfnRS5LQWLBKCgi+4 p/vXVajWlZmIDvRrDhyYAS9ktrRLqHvX VZhx+udfvXoFuZnWSKVDFMI2fIL9wniJ KCUdQ+nu0a/iEsDBEVmwWw7T428yIQ6+ NjvYQ36cf5mbchX58CBM7KfUGnsQLIAP 5tnkHM4kdIDbGCr78RCE916blRKETrbq tNi4hHIAscesJfRJsBZ+TlhouyQie/Sj GnvRULjADS5lCWKLDBRUIMzOomK4Tekr drxk1DwcpL68xAHt5D19Iw==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+mil. IN DNSKEY
+SECTION AUTHORITY
+mil. 172800 IN NS con1.nipr.mil.
+mil. 172800 IN NS con2.nipr.mil.
+mil. 172800 IN NS eur1.nipr.mil.
+mil. 172800 IN NS eur2.nipr.mil.
+mil. 172800 IN NS pac1.nipr.mil.
+mil. 172800 IN NS pac2.nipr.mil.
+mil. 86400 IN DS 27319 8 1 b090ca5f985be47393497300f887ef8466e86c8c
+mil. 86400 IN DS 27319 8 2 98332fc2b22d453bd47acdf73c0150a4dab54751450ed679411ec972577cad47
+mil. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . wvMDidq0P8FVsvIwJa3CbpxfUwwqt6Jt NHkiMynkkdHWM7IWOSxNs5Tz7sclz4GM /UMq3YsnVnZdeAinijaVCk6ZbsFbIzZE TLiEUHJ+uyalZn6LWqs/Zj4fbQHOpMXs YaFgmITLfS3+1ChKjmOrLN7ROYXwEFZ3 h17ySrOsmF1JC6o8u+SVyQ9rJGf7IRTq CS7L/q72DLvjd6gJDaFYSh85yYew0oTV TNwkaahSTBotpyX2o2vaTHEV4JZk1c5k 446HMCHQRKKVPec8U6DvwnoMByOD5yo1 z4sbxuzEtXR9W3QTxX5ps/Qnu2/MDAba kxQsVr7dqcVrwGUuhC7kJQ==
+SECTION ADDITIONAL
+con1.nipr.mil. 172800 IN A 199.252.157.234
+con2.nipr.mil. 172800 IN A 199.252.162.234
+eur1.nipr.mil. 172800 IN A 199.252.154.234
+eur2.nipr.mil. 172800 IN A 199.252.143.234
+pac1.nipr.mil. 172800 IN A 199.252.180.234
+pac2.nipr.mil. 172800 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+mil. IN DS
+SECTION ANSWER
+mil. 86400 IN DS 27319 8 1 b090ca5f985be47393497300f887ef8466e86c8c
+mil. 86400 IN DS 27319 8 2 98332fc2b22d453bd47acdf73c0150a4dab54751450ed679411ec972577cad47
+mil. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . wvMDidq0P8FVsvIwJa3CbpxfUwwqt6Jt NHkiMynkkdHWM7IWOSxNs5Tz7sclz4GM /UMq3YsnVnZdeAinijaVCk6ZbsFbIzZE TLiEUHJ+uyalZn6LWqs/Zj4fbQHOpMXs YaFgmITLfS3+1ChKjmOrLN7ROYXwEFZ3 h17ySrOsmF1JC6o8u+SVyQ9rJGf7IRTq CS7L/q72DLvjd6gJDaFYSh85yYew0oTV TNwkaahSTBotpyX2o2vaTHEV4JZk1c5k 446HMCHQRKKVPec8U6DvwnoMByOD5yo1 z4sbxuzEtXR9W3QTxX5ps/Qnu2/MDAba kxQsVr7dqcVrwGUuhC7kJQ==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN A
+SECTION ANSWER
+f.root-servers.net. 3600000 IN A 192.5.5.241
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+net. IN DNSKEY
+SECTION AUTHORITY
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . gcr8Wrzq1Y8PZDFerMWH7UfgSeYt+a2w 6DL4hY1FnkjMKo7FmIkVIHpynFiCMk4V XbBQGZMTEJTDNfoVJvbL+seh2JdxtgOq 6Nl+nZuiU3DIwrEQxzQvitWPHMvunNS4 T/TS9GxVFYg1gL+441C852HxmPKxUJHI eK87yiWbFodcPYq+1QE+gW4zDGBOEOAF o502qJHTP2MbHDSfVWzejEPGKPfLsk3l am01SbGRy9NZFJuOBhLDp4I/lvegro4N YWKkAAyiFyC+px66T6FHUlITaZUBm1OC 8agZ/jDQl4jjVS+N2rn0t3sYSjgqIBr5 vVKWCl0kdwZJKhpruFaiSw==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN DS
+SECTION ANSWER
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . gcr8Wrzq1Y8PZDFerMWH7UfgSeYt+a2w 6DL4hY1FnkjMKo7FmIkVIHpynFiCMk4V XbBQGZMTEJTDNfoVJvbL+seh2JdxtgOq 6Nl+nZuiU3DIwrEQxzQvitWPHMvunNS4 T/TS9GxVFYg1gL+441C852HxmPKxUJHI eK87yiWbFodcPYq+1QE+gW4zDGBOEOAF o502qJHTP2MbHDSfVWzejEPGKPfLsk3l am01SbGRy9NZFJuOBhLDp4I/lvegro4N YWKkAAyiFyC+px66T6FHUlITaZUBm1OC 8agZ/jDQl4jjVS+N2rn0t3sYSjgqIBr5 vVKWCl0kdwZJKhpruFaiSw==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN AAAA
+SECTION ANSWER
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN A
+SECTION ANSWER
+a.root-servers.net. 3600000 IN A 198.41.0.4
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN AAAA
+SECTION ANSWER
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN A
+SECTION ANSWER
+j.root-servers.net. 3600000 IN A 192.58.128.30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN AAAA
+SECTION ANSWER
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN A
+SECTION ANSWER
+e.root-servers.net. 3600000 IN A 192.203.230.10
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN AAAA
+SECTION ANSWER
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN A
+SECTION ANSWER
+i.root-servers.net. 3600000 IN A 192.36.148.17
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN AAAA
+SECTION ANSWER
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN A
+SECTION ANSWER
+d.root-servers.net. 3600000 IN A 199.7.91.13
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN AAAA
+SECTION ANSWER
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN A
+SECTION ANSWER
+m.root-servers.net. 3600000 IN A 202.12.27.33
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN AAAA
+SECTION ANSWER
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN A
+SECTION ANSWER
+h.root-servers.net. 3600000 IN A 198.97.190.53
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN AAAA
+SECTION ANSWER
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN A
+SECTION ANSWER
+c.root-servers.net. 3600000 IN A 192.33.4.12
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN AAAA
+SECTION ANSWER
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN A
+SECTION ANSWER
+l.root-servers.net. 3600000 IN A 199.7.83.42
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN AAAA
+SECTION ANSWER
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN A
+SECTION ANSWER
+g.root-servers.net. 3600000 IN A 192.112.36.4
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN AAAA
+SECTION ANSWER
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN A
+SECTION ANSWER
+b.root-servers.net. 3600000 IN A 199.9.14.201
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN AAAA
+SECTION ANSWER
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN A
+SECTION ANSWER
+k.root-servers.net. 3600000 IN A 193.0.14.129
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN AAAA
+SECTION ANSWER
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+com. IN DNSKEY
+SECTION AUTHORITY
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . hCKDYBWwd7REaBztWFRbMsxhjJCxUft/ R2XUpZA2eoctKGCeSmFZ4d31DiS3YiPi HrvoSfkPKSdUqyXSKNwsq2xiVtu3gg5b hSr0yo6wCqCEfoTL8HKsQTZIUPPd1FgW 7jJdlGdbVcQ/6idnO8QTIhxeQxazv8uL 9VzIp216ZYp4VDH96CM7lzMSLR0ysmG4 pS+vg0BcsDmkNWkETU16Verc6jP2iWmK f2tp27DU1YJV9JsViHJc3dEiVeMbjSqv m0MrT8nUaZsY/1+ASOw6QS3rXIDnDYrg Q4bSqGGhEfIKnP9VcaR99dP8P03G8EWH DW9inlbCxzFGcWFmn/2D0Q==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN DS
+SECTION ANSWER
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . hCKDYBWwd7REaBztWFRbMsxhjJCxUft/ R2XUpZA2eoctKGCeSmFZ4d31DiS3YiPi HrvoSfkPKSdUqyXSKNwsq2xiVtu3gg5b hSr0yo6wCqCEfoTL8HKsQTZIUPPd1FgW 7jJdlGdbVcQ/6idnO8QTIhxeQxazv8uL 9VzIp216ZYp4VDH96CM7lzMSLR0ysmG4 pS+vg0BcsDmkNWkETU16Verc6jP2iWmK f2tp27DU1YJV9JsViHJc3dEiVeMbjSqv m0MrT8nUaZsY/1+ASOw6QS3rXIDnDYrg Q4bSqGGhEfIKnP9VcaR99dP8P03G8EWH DW9inlbCxzFGcWFmn/2D0Q==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018041200 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION ANSWER
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+mil. IN NS
+SECTION AUTHORITY
+mil. 172800 IN NS con1.nipr.mil.
+mil. 172800 IN NS con2.nipr.mil.
+mil. 172800 IN NS eur1.nipr.mil.
+mil. 172800 IN NS eur2.nipr.mil.
+mil. 172800 IN NS pac1.nipr.mil.
+mil. 172800 IN NS pac2.nipr.mil.
+mil. 86400 IN DS 27319 8 1 b090ca5f985be47393497300f887ef8466e86c8c
+mil. 86400 IN DS 27319 8 2 98332fc2b22d453bd47acdf73c0150a4dab54751450ed679411ec972577cad47
+mil. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . wvMDidq0P8FVsvIwJa3CbpxfUwwqt6Jt NHkiMynkkdHWM7IWOSxNs5Tz7sclz4GM /UMq3YsnVnZdeAinijaVCk6ZbsFbIzZE TLiEUHJ+uyalZn6LWqs/Zj4fbQHOpMXs YaFgmITLfS3+1ChKjmOrLN7ROYXwEFZ3 h17ySrOsmF1JC6o8u+SVyQ9rJGf7IRTq CS7L/q72DLvjd6gJDaFYSh85yYew0oTV TNwkaahSTBotpyX2o2vaTHEV4JZk1c5k 446HMCHQRKKVPec8U6DvwnoMByOD5yo1 z4sbxuzEtXR9W3QTxX5ps/Qnu2/MDAba kxQsVr7dqcVrwGUuhC7kJQ==
+SECTION ADDITIONAL
+con1.nipr.mil. 172800 IN A 199.252.157.234
+con2.nipr.mil. 172800 IN A 199.252.162.234
+eur1.nipr.mil. 172800 IN A 199.252.154.234
+eur2.nipr.mil. 172800 IN A 199.252.143.234
+pac1.nipr.mil. 172800 IN A 199.252.180.234
+pac2.nipr.mil. 172800 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+com. IN NS
+SECTION AUTHORITY
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . hCKDYBWwd7REaBztWFRbMsxhjJCxUft/ R2XUpZA2eoctKGCeSmFZ4d31DiS3YiPi HrvoSfkPKSdUqyXSKNwsq2xiVtu3gg5b hSr0yo6wCqCEfoTL8HKsQTZIUPPd1FgW 7jJdlGdbVcQ/6idnO8QTIhxeQxazv8uL 9VzIp216ZYp4VDH96CM7lzMSLR0ysmG4 pS+vg0BcsDmkNWkETU16Verc6jP2iWmK f2tp27DU1YJV9JsViHJc3dEiVeMbjSqv m0MrT8nUaZsY/1+ASOw6QS3rXIDnDYrg Q4bSqGGhEfIKnP9VcaR99dP8P03G8EWH DW9inlbCxzFGcWFmn/2D0Q==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION AUTHORITY
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180509050000 20180426040000 39570 . gcr8Wrzq1Y8PZDFerMWH7UfgSeYt+a2w 6DL4hY1FnkjMKo7FmIkVIHpynFiCMk4V XbBQGZMTEJTDNfoVJvbL+seh2JdxtgOq 6Nl+nZuiU3DIwrEQxzQvitWPHMvunNS4 T/TS9GxVFYg1gL+441C852HxmPKxUJHI eK87yiWbFodcPYq+1QE+gW4zDGBOEOAF o502qJHTP2MbHDSfVWzejEPGKPfLsk3l am01SbGRy9NZFJuOBhLDp4I/lvegro4N YWKkAAyiFyC+px66T6FHUlITaZUBm1OC 8agZ/jDQl4jjVS+N2rn0t3sYSjgqIBr5 vVKWCl0kdwZJKhpruFaiSw==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: eur2.nipr.mil. Actual ip: 199.252.143.234
+; con1.nipr.mil.
+; con2.nipr.mil.
+; eur1.nipr.mil.
+; pac1.nipr.mil.
+; pac2.nipr.mil.
+RANGE_BEGIN 0 1000
+	ADDRESS 199.252.143.234
+	ADDRESS 199.252.154.234
+	ADDRESS 199.252.155.234
+	ADDRESS 199.252.157.234
+	ADDRESS 199.252.162.234
+	ADDRESS 199.252.180.234
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+navy.mil. IN DNSKEY
+SECTION AUTHORITY
+NAVY.mil. 10800 IN DS 33244 8 1 3833f239f4ae4e2e0cd7a64be135b562e3297666
+NAVY.mil. 10800 IN DS 33244 8 2 a778e3cdf82a1e291742eef25e68347addb1a668947fcba150d18e9b0c4ae82c
+NAVY.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. kN9QEMDX2XZGfeQV7nEBNp6xdpLV0zTu oLS6h6/6ikXtDbDl4HtUimFqZ9HSmKsb nfMK+psYJkhFF4RKKF4bBuQIudbtft6e ydY4CmsnmZYo5PXiid6m/9LYgJ8L58WG dmfo5u2DnUAr8wRR7Nko1Jb/PwxvYHEo ommiH4kg9o4=
+NAVY.mil. 21600 IN NS NS.CYBERCOM.MIL.
+NAVY.mil. 21600 IN NS NS.JTFGNO.MIL.
+NAVY.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UFORIFTR01.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UFORIFTR02.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UPDCIFTR01.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UPDCIFTR02.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+UFORIFTR01.CSD.DISA.mil. 21600 IN A 214.23.245.4
+UFORIFTR02.CSD.DISA.mil. 21600 IN A 214.23.245.5
+UPDCIFTR01.CSD.DISA.mil. 21600 IN A 215.65.126.180
+UPDCIFTR02.CSD.DISA.mil. 21600 IN A 215.65.126.181
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+navy.mil. IN DS
+SECTION ANSWER
+NAVY.mil. 10800 IN DS 33244 8 1 3833f239f4ae4e2e0cd7a64be135b562e3297666
+NAVY.mil. 10800 IN DS 33244 8 2 a778e3cdf82a1e291742eef25e68347addb1a668947fcba150d18e9b0c4ae82c
+NAVY.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. kN9QEMDX2XZGfeQV7nEBNp6xdpLV0zTu oLS6h6/6ikXtDbDl4HtUimFqZ9HSmKsb nfMK+psYJkhFF4RKKF4bBuQIudbtft6e ydY4CmsnmZYo5PXiid6m/9LYgJ8L58WG dmfo5u2DnUAr8wRR7Nko1Jb/PwxvYHEo ommiH4kg9o4=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac2.nipr.mil. IN A
+SECTION ANSWER
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+PAC2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. hNzPaQ52QkkpOPrYEMpPSEP02f49fR2W uLiz8nqZA2/h9+RIonRp8rTLvopD35eB 2fSeyj8UNuXrq4R8vSQ3YSpFHAYba42m IRYeeuE2cChEUFZkY5qnK7o51W2ADJGd WVrOOOnXrcF/mcSIqEwr/CTMTanrd42w MqXkTf+9wJ8=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+CON2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. W5PC3viqn6zyJQRk4aohBIjezYM1n70f A7BsnHn+r4tQ4+HNjRBBR5BcnzHPsbfA 4UEY3nf9fPqUxnigW1Ek3mXD2tH5Sw6z piKQGz4aRMcnQwG+7YySkbogDoDo8gDU 4uY7Cm/hCgzCRJng2gVnf/AI+tvLHUUi BrJBpIpsnls=
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nipr.mil. IN DNSKEY
+SECTION ANSWER
+nipr.mil. 10800 IN DNSKEY 256 3 8 AwEAAcPeJUji1qn+BRrHFs0ggYLgDjnW 97xkg73q+P1KFgQNPRpZnY4H87TXmMlP IcjhNBLxL5Tj2m4AjX0auEPPQC5GLNVD fnmIr6MkbK8BfuVdVi3tv1hSexE/ZTW4 yDsTYUvaMvSs6YJgY1F5nubzXhf3FKYw RwXRLtDLszJTcjV/
+nipr.mil. 10800 IN DNSKEY 256 3 8 AwEAAfMk8K+ShjuIs8oxBLm8iozReXLa WZ0gOpF16ucsBfv0RqJi+OZrvS7HEheC +O381hPM4YBv5qio2VoyXdqGUjcAXQrU xfBbrlNgGewbwi3KQPw1gtdZA7jamHai XkUWpNkNsBuZenixwJ5S3MNdZLdr/gMg 78i3E5mEpF9NFKQ/
+nipr.mil. 10800 IN DNSKEY 257 3 8 AwEAAa1c1shhX530SFFSojXUjWMDeqNl QpNm0JjYv/XJIbCDf+iPHkRa77+Yma1f COKiHWPWI4uBquDhdndTx+Zng8COI1Va 6QxrS74sgQTH6ArueVf1+Bg72M75PGJY bEJViskwhFx/NQa05w7LFxWcmEvgj6up ckDUHz3oKVHY8h/KS0je73plVy/ChUoo RHKFuAATS1DsQsMpwSCwbm5hhhk+Pby6 IBj+50uSFYH1Run1x7/avMMb+zNQwr6t dMZF2jg7PFXy50J3RmvHRNSUOZfp0rby WFhzF5C86F22B6z+K0/0izc3WKc9gO4J tRa79PkCHx7sugC4Fd1IHj8i7a8=
+nipr.mil. 10800 IN RRSIG DNSKEY 8 2 10800 20180502164110 20180425164110 12031 nipr.mil. RUHqXzyQuARhIl7EfTRiJEd8g86g/SxD c51JBUCNBxGcjOswZqDLAyoCsPItgCR4 P6QHgNrVepnUuJf+/HL4j8qewaIEeeJp /GWYcQguFjFTrjCqCMYEZXaJrOj8FXYB l1348vJd8hK1M3bVbQ6js0Bbv/TxTvv3 zEW6p4hjga57yFAP5vwf1pVxUCiDHpJL F8OeIlrRaYWbwV4djtLY7uXSU4TS9XKM SRUp16AF4P0ybSBizdmUtXa++mCc2E3W wiEgUVV55JOhuUjbEQX70byohGTiS2Zl 0gjuK/mLTcwYrP0i3b/1iS49A+IHpc75 H29Jfgoa6I/ZsmVT6obePQ==
+nipr.mil. 10800 IN RRSIG DNSKEY 8 2 10800 20180502164110 20180425164110 41931 nipr.mil. jAIu20UBlT/ZiGF5WemKGfRMMJgPqSEE NZa+nH295qmkuzOrAB0/qNVHFT2BbUtF tCRe4zhsH+BbudqrQM+o585ZGElfZYRf eXAClwI0r1EsrImQfncu+xh3xVqK/rm6 Po54Xfw88/6G1hPLBLsXdnWCNcMmphyt Adevsh5MPPs=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nipr.mil. IN DS
+SECTION ANSWER
+NIPR.mil. 10800 IN DS 12031 8 1 93218cd24b53b34c1a1dbc7a0e08bc6547d3f7df
+NIPR.mil. 10800 IN DS 12031 8 2 33d70ce2f64d31ae4d1406541ceb3cf274893925217f48b13315677bdbe2a390
+NIPR.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. g9HJMJ8x4Iqbh1rw/ktWdjR66Z+9y25b bvn5hQTm++KrseUPiwMit4vbFD4cb4cN 2ms0FLZNk8FSghykOX4454z/qUwpKcay 3xyHpH3fdqzw1Ca7ST0zMhgMtWgz1KAJ t8l1xqa65FtsDbKKYd3su65Riz1EmOqF 5YddCWylleI=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac2.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN NSEC3 1 0 10 aded 5covs0i44d9od9od0pbtiddi6oip1r78 A RRSIG
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. heQ8rJrYUzTDC3G4FITV/mGlmjlGX938 lH12ortVjI3GU557kV+6Jkkh780Kl1WH KdWX9V1zqaUID5FtFYfw3nTIIU3ndtIv zxca6qiTBq0R6+bIrYhPXOAof3Khoqlk RkoiiPcir+TNYWuwVZnqXbuX8wZBSl7j X8v9I8b9QU0=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac2.nipr.mil. IN NS
+SECTION AUTHORITY
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN NSEC3 1 0 10 aded 5covs0i44d9od9od0pbtiddi6oip1r78 A RRSIG
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. heQ8rJrYUzTDC3G4FITV/mGlmjlGX938 lH12ortVjI3GU557kV+6Jkkh780Kl1WH KdWX9V1zqaUID5FtFYfw3nTIIU3ndtIv zxca6qiTBq0R6+bIrYhPXOAof3Khoqlk RkoiiPcir+TNYWuwVZnqXbuX8wZBSl7j X8v9I8b9QU0=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac2.nipr.mil. IN DS
+SECTION AUTHORITY
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN NSEC3 1 0 10 aded 5covs0i44d9od9od0pbtiddi6oip1r78 A RRSIG
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. heQ8rJrYUzTDC3G4FITV/mGlmjlGX938 lH12ortVjI3GU557kV+6Jkkh780Kl1WH KdWX9V1zqaUID5FtFYfw3nTIIU3ndtIv zxca6qiTBq0R6+bIrYhPXOAof3Khoqlk RkoiiPcir+TNYWuwVZnqXbuX8wZBSl7j X8v9I8b9QU0=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac2.nipr.mil. IN AAAA
+SECTION AUTHORITY
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN NSEC3 1 0 10 aded 5covs0i44d9od9od0pbtiddi6oip1r78 A RRSIG
+4E4BBBN4CK76DRL1NO9TQMBGFIDBD615.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. heQ8rJrYUzTDC3G4FITV/mGlmjlGX938 lH12ortVjI3GU557kV+6Jkkh780Kl1WH KdWX9V1zqaUID5FtFYfw3nTIIU3ndtIv zxca6qiTBq0R6+bIrYhPXOAof3Khoqlk RkoiiPcir+TNYWuwVZnqXbuX8wZBSl7j X8v9I8b9QU0=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac1.nipr.mil. IN A
+SECTION ANSWER
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+CON2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. W5PC3viqn6zyJQRk4aohBIjezYM1n70f A7BsnHn+r4tQ4+HNjRBBR5BcnzHPsbfA 4UEY3nf9fPqUxnigW1Ek3mXD2tH5Sw6z piKQGz4aRMcnQwG+7YySkbogDoDo8gDU 4uY7Cm/hCgzCRJng2gVnf/AI+tvLHUUi BrJBpIpsnls=
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+PAC2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. hNzPaQ52QkkpOPrYEMpPSEP02f49fR2W uLiz8nqZA2/h9+RIonRp8rTLvopD35eB 2fSeyj8UNuXrq4R8vSQ3YSpFHAYba42m IRYeeuE2cChEUFZkY5qnK7o51W2ADJGd WVrOOOnXrcF/mcSIqEwr/CTMTanrd42w MqXkTf+9wJ8=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac1.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN NSEC3 1 0 10 aded ijl263pukc66jjf65nvjet4t2tpm8c8f A RRSIG
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. O2305AjdTvnqHr4RKC7AUnH42GHOK0tG /72Z7RRm86GbxABmRkXAAcVcnbbRaGSM z2vhPJLuVsqmK7fpLqxPIz7j53WJ0o8F LptNDNyKVJKgiy+aZI96zb2Rlnt8b8nK OtLxbX2IqIix9Xo2wF3l9/ljzcGHIMMB 5OtiNhwe/QI=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac1.nipr.mil. IN NS
+SECTION AUTHORITY
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN NSEC3 1 0 10 aded ijl263pukc66jjf65nvjet4t2tpm8c8f A RRSIG
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. O2305AjdTvnqHr4RKC7AUnH42GHOK0tG /72Z7RRm86GbxABmRkXAAcVcnbbRaGSM z2vhPJLuVsqmK7fpLqxPIz7j53WJ0o8F LptNDNyKVJKgiy+aZI96zb2Rlnt8b8nK OtLxbX2IqIix9Xo2wF3l9/ljzcGHIMMB 5OtiNhwe/QI=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac1.nipr.mil. IN DS
+SECTION AUTHORITY
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN NSEC3 1 0 10 aded ijl263pukc66jjf65nvjet4t2tpm8c8f A RRSIG
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. O2305AjdTvnqHr4RKC7AUnH42GHOK0tG /72Z7RRm86GbxABmRkXAAcVcnbbRaGSM z2vhPJLuVsqmK7fpLqxPIz7j53WJ0o8F LptNDNyKVJKgiy+aZI96zb2Rlnt8b8nK OtLxbX2IqIix9Xo2wF3l9/ljzcGHIMMB 5OtiNhwe/QI=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+pac1.nipr.mil. IN AAAA
+SECTION AUTHORITY
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN NSEC3 1 0 10 aded ijl263pukc66jjf65nvjet4t2tpm8c8f A RRSIG
+IAIQUP5LAPTTVG8EF8OPD4T6K5POOCQQ.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. O2305AjdTvnqHr4RKC7AUnH42GHOK0tG /72Z7RRm86GbxABmRkXAAcVcnbbRaGSM z2vhPJLuVsqmK7fpLqxPIz7j53WJ0o8F LptNDNyKVJKgiy+aZI96zb2Rlnt8b8nK OtLxbX2IqIix9Xo2wF3l9/ljzcGHIMMB 5OtiNhwe/QI=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur2.nipr.mil. IN A
+SECTION ANSWER
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+CON2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. W5PC3viqn6zyJQRk4aohBIjezYM1n70f A7BsnHn+r4tQ4+HNjRBBR5BcnzHPsbfA 4UEY3nf9fPqUxnigW1Ek3mXD2tH5Sw6z piKQGz4aRMcnQwG+7YySkbogDoDo8gDU 4uY7Cm/hCgzCRJng2gVnf/AI+tvLHUUi BrJBpIpsnls=
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+PAC2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. hNzPaQ52QkkpOPrYEMpPSEP02f49fR2W uLiz8nqZA2/h9+RIonRp8rTLvopD35eB 2fSeyj8UNuXrq4R8vSQ3YSpFHAYba42m IRYeeuE2cChEUFZkY5qnK7o51W2ADJGd WVrOOOnXrcF/mcSIqEwr/CTMTanrd42w MqXkTf+9wJ8=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur2.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN NSEC3 1 0 10 aded 66qqrc8ql6cmir07vrfgggaa9m18irp8 A RRSIG
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. d6z1Iyz4NfqRyOQCrblHqgykjXM2j7CC 6qlrcv1S9Jo1+yN5JzY3PCH9NKCo5Gvr jZwt46bDve9/FWA3Un87yghFtyvrfxvc o97naBOXQQhG24pWTSqBPvsLDbkKT0Il /bANVdgcRc9UrsjkxXQtUuoyim/keSEO XbSocvSXR3k=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur2.nipr.mil. IN NS
+SECTION AUTHORITY
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN NSEC3 1 0 10 aded 66qqrc8ql6cmir07vrfgggaa9m18irp8 A RRSIG
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. d6z1Iyz4NfqRyOQCrblHqgykjXM2j7CC 6qlrcv1S9Jo1+yN5JzY3PCH9NKCo5Gvr jZwt46bDve9/FWA3Un87yghFtyvrfxvc o97naBOXQQhG24pWTSqBPvsLDbkKT0Il /bANVdgcRc9UrsjkxXQtUuoyim/keSEO XbSocvSXR3k=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur2.nipr.mil. IN DS
+SECTION AUTHORITY
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN NSEC3 1 0 10 aded 66qqrc8ql6cmir07vrfgggaa9m18irp8 A RRSIG
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. d6z1Iyz4NfqRyOQCrblHqgykjXM2j7CC 6qlrcv1S9Jo1+yN5JzY3PCH9NKCo5Gvr jZwt46bDve9/FWA3Un87yghFtyvrfxvc o97naBOXQQhG24pWTSqBPvsLDbkKT0Il /bANVdgcRc9UrsjkxXQtUuoyim/keSEO XbSocvSXR3k=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur2.nipr.mil. IN AAAA
+SECTION AUTHORITY
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN NSEC3 1 0 10 aded 66qqrc8ql6cmir07vrfgggaa9m18irp8 A RRSIG
+5COVS0I44D9OD9OD0PBTIDDI6OIP1R78.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. d6z1Iyz4NfqRyOQCrblHqgykjXM2j7CC 6qlrcv1S9Jo1+yN5JzY3PCH9NKCo5Gvr jZwt46bDve9/FWA3Un87yghFtyvrfxvc o97naBOXQQhG24pWTSqBPvsLDbkKT0Il /bANVdgcRc9UrsjkxXQtUuoyim/keSEO XbSocvSXR3k=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con2.nipr.mil. IN A
+SECTION ANSWER
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+CON2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. W5PC3viqn6zyJQRk4aohBIjezYM1n70f A7BsnHn+r4tQ4+HNjRBBR5BcnzHPsbfA 4UEY3nf9fPqUxnigW1Ek3mXD2tH5Sw6z piKQGz4aRMcnQwG+7YySkbogDoDo8gDU 4uY7Cm/hCgzCRJng2gVnf/AI+tvLHUUi BrJBpIpsnls=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con2.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN NSEC3 1 0 10 aded 4e4bbbn4ck76drl1no9tqmbgfidbd615 A RRSIG
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. f9BOKX5shQBcc5BRH4Rgk00CE9UAI52Y D5w/BFR1Q6Yvegf5DxciWA1Y/q7p1yrB FBSIXa8YMMti8/n2PX7d2e6zpUF17xhH 9zO6VWjw0gxnFhoExef61ClgJQsLnIU2 nbWBhjLHWRiAHCHfN7LnaYGfnY0oyZxR ZZKP4NZSzUQ=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con2.nipr.mil. IN NS
+SECTION AUTHORITY
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN NSEC3 1 0 10 aded 4e4bbbn4ck76drl1no9tqmbgfidbd615 A RRSIG
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. f9BOKX5shQBcc5BRH4Rgk00CE9UAI52Y D5w/BFR1Q6Yvegf5DxciWA1Y/q7p1yrB FBSIXa8YMMti8/n2PX7d2e6zpUF17xhH 9zO6VWjw0gxnFhoExef61ClgJQsLnIU2 nbWBhjLHWRiAHCHfN7LnaYGfnY0oyZxR ZZKP4NZSzUQ=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con2.nipr.mil. IN DS
+SECTION AUTHORITY
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN NSEC3 1 0 10 aded 4e4bbbn4ck76drl1no9tqmbgfidbd615 A RRSIG
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. f9BOKX5shQBcc5BRH4Rgk00CE9UAI52Y D5w/BFR1Q6Yvegf5DxciWA1Y/q7p1yrB FBSIXa8YMMti8/n2PX7d2e6zpUF17xhH 9zO6VWjw0gxnFhoExef61ClgJQsLnIU2 nbWBhjLHWRiAHCHfN7LnaYGfnY0oyZxR ZZKP4NZSzUQ=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con2.nipr.mil. IN AAAA
+SECTION AUTHORITY
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN NSEC3 1 0 10 aded 4e4bbbn4ck76drl1no9tqmbgfidbd615 A RRSIG
+3L944A4OUJO3UEIDI2TG016GCOVU6F0I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. f9BOKX5shQBcc5BRH4Rgk00CE9UAI52Y D5w/BFR1Q6Yvegf5DxciWA1Y/q7p1yrB FBSIXa8YMMti8/n2PX7d2e6zpUF17xhH 9zO6VWjw0gxnFhoExef61ClgJQsLnIU2 nbWBhjLHWRiAHCHfN7LnaYGfnY0oyZxR ZZKP4NZSzUQ=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur1.nipr.mil. IN A
+SECTION ANSWER
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur1.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN NSEC3 1 0 10 aded uon2ammj9h4gb6us3sfgdlk5e3pi39hu A RRSIG
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. p2EdoSSFs7t6jcHc/RUfaHNo69/n620p +L7d7UASC8x5MBWFymPVUgFfPkVAz1yM EQyFkVRTf6xJo+bkDa4LGPmYmXjec6fF ikTYo6MXQPjtBs8iFaedM2WPw8v1Z1n0 Ti1IUkgFDIuWmi++TZM1lqcUL/V2SZCU mS8bJKlWpNc=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur1.nipr.mil. IN NS
+SECTION AUTHORITY
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN NSEC3 1 0 10 aded uon2ammj9h4gb6us3sfgdlk5e3pi39hu A RRSIG
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. p2EdoSSFs7t6jcHc/RUfaHNo69/n620p +L7d7UASC8x5MBWFymPVUgFfPkVAz1yM EQyFkVRTf6xJo+bkDa4LGPmYmXjec6fF ikTYo6MXQPjtBs8iFaedM2WPw8v1Z1n0 Ti1IUkgFDIuWmi++TZM1lqcUL/V2SZCU mS8bJKlWpNc=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur1.nipr.mil. IN DS
+SECTION AUTHORITY
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN NSEC3 1 0 10 aded uon2ammj9h4gb6us3sfgdlk5e3pi39hu A RRSIG
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. p2EdoSSFs7t6jcHc/RUfaHNo69/n620p +L7d7UASC8x5MBWFymPVUgFfPkVAz1yM EQyFkVRTf6xJo+bkDa4LGPmYmXjec6fF ikTYo6MXQPjtBs8iFaedM2WPw8v1Z1n0 Ti1IUkgFDIuWmi++TZM1lqcUL/V2SZCU mS8bJKlWpNc=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+eur1.nipr.mil. IN AAAA
+SECTION AUTHORITY
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN NSEC3 1 0 10 aded uon2ammj9h4gb6us3sfgdlk5e3pi39hu A RRSIG
+U1FE687SQV1ADUCDPPNBCKME4KV0UL9I.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. p2EdoSSFs7t6jcHc/RUfaHNo69/n620p +L7d7UASC8x5MBWFymPVUgFfPkVAz1yM EQyFkVRTf6xJo+bkDa4LGPmYmXjec6fF ikTYo6MXQPjtBs8iFaedM2WPw8v1Z1n0 Ti1IUkgFDIuWmi++TZM1lqcUL/V2SZCU mS8bJKlWpNc=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con1.nipr.mil. IN A
+SECTION ANSWER
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+SECTION AUTHORITY
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con1.nipr.mil. IN DNSKEY
+SECTION AUTHORITY
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN NSEC3 1 0 10 aded sgukq09oe25pgtafv1i2sga7siqgj7k3 A RRSIG
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. FA385CDcYjxYAD9z3E+SQnIjgWKqqftA jkv5S77TByD66ctS0YR+IQzcmnsUGNbI fXj4MpHrrQryJGgEEcqQk+epxPb1aU/I 2weDAkOLHFPgyb0HJ0q2Xs5tvyUryacI VIe714ATNFh/vg/tSt8ewluKoob4BZeb nLqb0FD5k5Q=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con1.nipr.mil. IN NS
+SECTION AUTHORITY
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN NSEC3 1 0 10 aded sgukq09oe25pgtafv1i2sga7siqgj7k3 A RRSIG
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. FA385CDcYjxYAD9z3E+SQnIjgWKqqftA jkv5S77TByD66ctS0YR+IQzcmnsUGNbI fXj4MpHrrQryJGgEEcqQk+epxPb1aU/I 2weDAkOLHFPgyb0HJ0q2Xs5tvyUryacI VIe714ATNFh/vg/tSt8ewluKoob4BZeb nLqb0FD5k5Q=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con1.nipr.mil. IN DS
+SECTION AUTHORITY
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN NSEC3 1 0 10 aded sgukq09oe25pgtafv1i2sga7siqgj7k3 A RRSIG
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. FA385CDcYjxYAD9z3E+SQnIjgWKqqftA jkv5S77TByD66ctS0YR+IQzcmnsUGNbI fXj4MpHrrQryJGgEEcqQk+epxPb1aU/I 2weDAkOLHFPgyb0HJ0q2Xs5tvyUryacI VIe714ATNFh/vg/tSt8ewluKoob4BZeb nLqb0FD5k5Q=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+con1.nipr.mil. IN AAAA
+SECTION AUTHORITY
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN NSEC3 1 0 10 aded sgukq09oe25pgtafv1i2sga7siqgj7k3 A RRSIG
+R8PM6KC3372CDVQ6CERU242K27HPLIFR.nipr.mil. 10800 IN RRSIG NSEC3 8 3 10800 20180502164110 20180425164110 41931 nipr.mil. FA385CDcYjxYAD9z3E+SQnIjgWKqqftA jkv5S77TByD66ctS0YR+IQzcmnsUGNbI fXj4MpHrrQryJGgEEcqQk+epxPb1aU/I 2weDAkOLHFPgyb0HJ0q2Xs5tvyUryacI VIe714ATNFh/vg/tSt8ewluKoob4BZeb nLqb0FD5k5Q=
+nipr.mil. 10800 IN RRSIG SOA 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. Sx92b+Xu9FjrRK7pAh1gbnvXmdzqhT/t 8NG/mAHqBiIqFn/EMpk9O6F7eLIdh5p7 7i6XOfLqJUAFwysA1zSHz0WDT7b37aad +zitv98qI/il/LHy/g8rN4YSnsUoTUEh 9ad0DA+e0talNZJZFdiV2BW3VkaUhNu/ /sbO2lGZAio=
+nipr.mil. 10800 IN SOA CON1.NIPR.MIL. DISA\.COLUMBUS\.NS\.MBX\.HOSTMASTER-DOD-NIC.MAIL.MIL. 2018042501 3600 900 1209600 10800
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+DISA.mil. 10800 IN DS 8665 8 1 2c75259e1fee495705846db5326486a82bf8ba0f
+DISA.mil. 10800 IN DS 8665 8 2 7052d1a8f7862d35616bf5b0b53bb8cbdb87fbf54ac4c7954cb1ba88a84ff32d
+DISA.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. cFp35KY3gNeCwqJAxSD4SfQSAz6wQS3r 6Lsyka7Lv0T6eHyh5qVvxlIX1eSa/EWV VRnk+hgtYuj9gDTxoSrZjF4QejUd+0Bj AKwLcO+c7M6jiyullTA4WNsd2q8pz0Cx 4qzL5mhw+GQcIOOf194tAxo9+oL1cBCh pL6bCEc2o+s=
+DISA.mil. 21600 IN NS NS.CYBERCOM.MIL.
+DISA.mil. 21600 IN NS NS.JTFGNO.MIL.
+DISA.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+DISA.MIL. IN DS
+SECTION ANSWER
+DISA.mil. 10800 IN DS 8665 8 1 2c75259e1fee495705846db5326486a82bf8ba0f
+DISA.mil. 10800 IN DS 8665 8 2 7052d1a8f7862d35616bf5b0b53bb8cbdb87fbf54ac4c7954cb1ba88a84ff32d
+DISA.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. cFp35KY3gNeCwqJAxSD4SfQSAz6wQS3r 6Lsyka7Lv0T6eHyh5qVvxlIX1eSa/EWV VRnk+hgtYuj9gDTxoSrZjF4QejUd+0Bj AKwLcO+c7M6jiyullTA4WNsd2q8pz0Cx 4qzL5mhw+GQcIOOf194tAxo9+oL1cBCh pL6bCEc2o+s=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+CYBERCOM.MIL. IN DNSKEY
+SECTION AUTHORITY
+CYBERCOM.mil. 10800 IN DS 44410 8 1 66610e5f54c4c7dbce29bcae7490034ede116fd9
+CYBERCOM.mil. 10800 IN DS 44410 8 2 5bf60f931b8884fd96801b78fbb186c8f30bcff7509e5d295e9233a3e635038d
+CYBERCOM.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. q54fw63m0ktoveGE36A7tVJ3vzrk5lnL eEYX7kFxZYwAoqpYHlq1ajnWZrA4dUIp 2IMShBkUf54jOfPf4z98ZhcnTd8cn1pX OApqHDlNBuyw4d8Knm3zPQCWkAV5ddDB BgDHrWNts1sxMt3EiybfKVoE/T9AEhTV qXj1lAUpYAc=
+CYBERCOM.mil. 21600 IN NS NS.CYBERCOM.MIL.
+CYBERCOM.mil. 21600 IN NS NS.JTFGNO.MIL.
+CYBERCOM.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+CYBERCOM.MIL. IN DS
+SECTION ANSWER
+CYBERCOM.mil. 10800 IN DS 44410 8 1 66610e5f54c4c7dbce29bcae7490034ede116fd9
+CYBERCOM.mil. 10800 IN DS 44410 8 2 5bf60f931b8884fd96801b78fbb186c8f30bcff7509e5d295e9233a3e635038d
+CYBERCOM.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. q54fw63m0ktoveGE36A7tVJ3vzrk5lnL eEYX7kFxZYwAoqpYHlq1ajnWZrA4dUIp 2IMShBkUf54jOfPf4z98ZhcnTd8cn1pX OApqHDlNBuyw4d8Knm3zPQCWkAV5ddDB BgDHrWNts1sxMt3EiybfKVoE/T9AEhTV qXj1lAUpYAc=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+JTFGNO.MIL. IN DNSKEY
+SECTION AUTHORITY
+JTFGNO.mil. 10800 IN DS 24169 8 1 eb28a79aa61bb50e356072c84ad557480d19ee6c
+JTFGNO.mil. 10800 IN DS 24169 8 2 ba6fb1c31ee00e755505dc0ae565fea65812af4270d2aa4a7dbc2b6111ecb699
+JTFGNO.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. W/AM2WKohmRnAz477IXyhN29EFGjRYoH LKoCo/awuZQrus1KyzDj3iqRfBa3Mkbv aCAj6UYs9vX3/8oC3cEBHoBgVlkbv2Ib mH/l9zFS8JjzI0c5CCkJwZ36vK/EIitg jxbbYpmgz0DIbOAK7Y0nnJHr0N5mCXxc eaodEECzBl8=
+JTFGNO.mil. 21600 IN NS NS.CYBERCOM.MIL.
+JTFGNO.mil. 21600 IN NS NS.JTFGNO.MIL.
+JTFGNO.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+JTFGNO.MIL. IN DS
+SECTION ANSWER
+JTFGNO.mil. 10800 IN DS 24169 8 1 eb28a79aa61bb50e356072c84ad557480d19ee6c
+JTFGNO.mil. 10800 IN DS 24169 8 2 ba6fb1c31ee00e755505dc0ae565fea65812af4270d2aa4a7dbc2b6111ecb699
+JTFGNO.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. W/AM2WKohmRnAz477IXyhN29EFGjRYoH LKoCo/awuZQrus1KyzDj3iqRfBa3Mkbv aCAj6UYs9vX3/8oC3cEBHoBgVlkbv2Ib mH/l9zFS8JjzI0c5CCkJwZ36vK/EIitg jxbbYpmgz0DIbOAK7Y0nnJHr0N5mCXxc eaodEECzBl8=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+mil. IN DNSKEY
+SECTION ANSWER
+mil. 10800 IN DNSKEY 256 3 8 AwEAAcZcsr1b/UgU7aKRVgz1p3ClQR7q rfH81ssxUHkAnqSQARQQUBJjSPleq6B1 pKtnAkirUoPiv6sgxTL7gAMKB4k3pFQC ndcdqaN950jR9AtElgkmRZcZEtXzx0Hl NZMuhhlORvnPUi2/iVz6Wq20jxrfqjSc T3d6qfeLve1yF3Ht
+mil. 10800 IN DNSKEY 256 3 8 AwEAAdhFUnRglLd8mcRniDtF/YUXwCfc RX+eUbnz860r46PQsszDuOiSk6CFp29n 07OhvBYd7zF4INDaeTzZyZpwn1mPZrTv NydWqTG9WgbfytngyyfVwtOBSpCRhNoD +Wy1HYtlegpGFfkHDBDiIRznScAnC3sR v9Xu/usUaR2tMQIp
+mil. 10800 IN DNSKEY 257 3 8 AwEAAcKFajIRuO7NGpxpS/orHgZfczsa 1X4ZkGz2nMi/BoWsiG//2lR5UdwfdB8e GGEPfnSDpPuOz7L85YhB+NovGfm7OJT5 SJmgEmlg3coQOL7qx4H6Ep2B/aFQhom+ MXl+r9DI9NWsHKpIkmR7vVk1HtM2P3y0 jQlln3fa2EnSFDDE8Trv2tI0xryw6a+q tyQM7zPXJWcS7pwNh0XUKr4OBdkLqzKi 7t/peEiYUIn1eMqKhAIY6gk+E+3rAzub 5PLlTBSAK8Rttzc/JonWUgJVoE5ggvry 6KAyc4cAtIVLQynrBFudSoUWrnpHz8FV USumdGjgCJ5oXeHUD1ni/Rgsu/c=
+mil. 10800 IN RRSIG DNSKEY 8 1 10800 20180502164113 20180425164113 15246 mil. M5wDQs2OIhMDtLRyjLKTmEbF5mdd+4Ny xMOYdjQqQGG3fW0d6zmJHglrud1yr6d6 rH5gGiPTz1UCc/hOWDeIrbW0SXf3CuDb s9MO3FLEhO0JqBl4FMHb2/RP8ZqPa1Mu 5KttdSEpHxSz6XB1Zq+CDX5tonXCUJOe K7RJb+2gxow=
+mil. 10800 IN RRSIG DNSKEY 8 1 10800 20180502164113 20180425164113 27319 mil. TtNjmCGHy0FlAYErJKej47jqnbH6sX22 NTzk4fC0vpeNQM6VPGXqAcbF1BJ1h2Wb fSh5CqNxSY0lnG1bk8t1TxeJ1jHo3I3g 3d2AgxZ6gRe+8HZWyiYazk9wCL3FvnLD EA09ThkyWN0aCCtl9MPTqh2+iw3410c4 ZmvZUrIw2XBzwY8+eocQSkpA/MLDMtCf btFpD5kkLw0YepgRQrnAtxCKYvuoOikB 7OMw2spfvljk2s8sNVH2kfmtL0dVWkvI +73hQtumN2UUUhoh2YhAdOSVkuaq05LP qZ/5FcfahUms2u3byzzeRNCvo8LWTGUx U8OVg5VDC4EcQgAoSQPHTA==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+JTFGNO.MIL. IN NS
+SECTION AUTHORITY
+JTFGNO.mil. 10800 IN DS 24169 8 1 eb28a79aa61bb50e356072c84ad557480d19ee6c
+JTFGNO.mil. 10800 IN DS 24169 8 2 ba6fb1c31ee00e755505dc0ae565fea65812af4270d2aa4a7dbc2b6111ecb699
+JTFGNO.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. W/AM2WKohmRnAz477IXyhN29EFGjRYoH LKoCo/awuZQrus1KyzDj3iqRfBa3Mkbv aCAj6UYs9vX3/8oC3cEBHoBgVlkbv2Ib mH/l9zFS8JjzI0c5CCkJwZ36vK/EIitg jxbbYpmgz0DIbOAK7Y0nnJHr0N5mCXxc eaodEECzBl8=
+JTFGNO.mil. 21600 IN NS NS.CYBERCOM.MIL.
+JTFGNO.mil. 21600 IN NS NS.JTFGNO.MIL.
+JTFGNO.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+DISA.MIL. IN NS
+SECTION AUTHORITY
+DISA.mil. 10800 IN DS 8665 8 1 2c75259e1fee495705846db5326486a82bf8ba0f
+DISA.mil. 10800 IN DS 8665 8 2 7052d1a8f7862d35616bf5b0b53bb8cbdb87fbf54ac4c7954cb1ba88a84ff32d
+DISA.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. cFp35KY3gNeCwqJAxSD4SfQSAz6wQS3r 6Lsyka7Lv0T6eHyh5qVvxlIX1eSa/EWV VRnk+hgtYuj9gDTxoSrZjF4QejUd+0Bj AKwLcO+c7M6jiyullTA4WNsd2q8pz0Cx 4qzL5mhw+GQcIOOf194tAxo9+oL1cBCh pL6bCEc2o+s=
+DISA.mil. 21600 IN NS NS.CYBERCOM.MIL.
+DISA.mil. 21600 IN NS NS.JTFGNO.MIL.
+DISA.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+navy.mil. IN NS
+SECTION AUTHORITY
+NAVY.mil. 10800 IN DS 33244 8 1 3833f239f4ae4e2e0cd7a64be135b562e3297666
+NAVY.mil. 10800 IN DS 33244 8 2 a778e3cdf82a1e291742eef25e68347addb1a668947fcba150d18e9b0c4ae82c
+NAVY.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. kN9QEMDX2XZGfeQV7nEBNp6xdpLV0zTu oLS6h6/6ikXtDbDl4HtUimFqZ9HSmKsb nfMK+psYJkhFF4RKKF4bBuQIudbtft6e ydY4CmsnmZYo5PXiid6m/9LYgJ8L58WG dmfo5u2DnUAr8wRR7Nko1Jb/PwxvYHEo ommiH4kg9o4=
+NAVY.mil. 21600 IN NS NS.CYBERCOM.MIL.
+NAVY.mil. 21600 IN NS NS.JTFGNO.MIL.
+NAVY.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UFORIFTR01.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UFORIFTR02.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UPDCIFTR01.CSD.DISA.MIL.
+NAVY.mil. 21600 IN NS UPDCIFTR02.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+UFORIFTR01.CSD.DISA.mil. 21600 IN A 214.23.245.4
+UFORIFTR02.CSD.DISA.mil. 21600 IN A 214.23.245.5
+UPDCIFTR01.CSD.DISA.mil. 21600 IN A 215.65.126.180
+UPDCIFTR02.CSD.DISA.mil. 21600 IN A 215.65.126.181
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nipr.mil. IN NS
+SECTION ANSWER
+nipr.mil. 21600 IN NS CON1.NIPR.MIL.
+nipr.mil. 21600 IN NS CON2.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR1.NIPR.MIL.
+nipr.mil. 21600 IN NS EUR2.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC1.NIPR.MIL.
+nipr.mil. 21600 IN NS PAC2.NIPR.MIL.
+nipr.mil. 21600 IN RRSIG NS 8 2 21600 20180502164110 20180425164110 41931 nipr.mil. q1joI2q9lB0q5obkRUsWUJjUM75kyRwF WAzi1wcnVQcCMSLgjAgth+iTVYwfbOsd xt0cd0djcfx471s5V6ldl8FZjNN6201I 6ti0X/sdi3s35qEp7+NWQqQjX64cs2qh MrZDdVdwNMHGcOWfEBnRn5qy1LAyg++h jlZ+63hE6Cw=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+EUR2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. VUx/UIb6NGc3u5/NL19B5V046QHOTyMc 4IBmpJIVUClZhzhefA3yPpryjCYoDI8T 9C2jQyaxvJ2CtAhhw0GwD4bTIsoAMoJ6 H91tj5+oyaHGiO6B7TdKa0DezqZEiDSf gHvYErgkhbnf1ewmJMguJd/QNDBObhrj uoDgBg2xddI=
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+CYBERCOM.MIL. IN NS
+SECTION AUTHORITY
+CYBERCOM.mil. 10800 IN DS 44410 8 1 66610e5f54c4c7dbce29bcae7490034ede116fd9
+CYBERCOM.mil. 10800 IN DS 44410 8 2 5bf60f931b8884fd96801b78fbb186c8f30bcff7509e5d295e9233a3e635038d
+CYBERCOM.mil. 10800 IN RRSIG DS 8 2 10800 20180502164113 20180425164113 15246 mil. q54fw63m0ktoveGE36A7tVJ3vzrk5lnL eEYX7kFxZYwAoqpYHlq1ajnWZrA4dUIp 2IMShBkUf54jOfPf4z98ZhcnTd8cn1pX OApqHDlNBuyw4d8Knm3zPQCWkAV5ddDB BgDHrWNts1sxMt3EiybfKVoE/T9AEhTV qXj1lAUpYAc=
+CYBERCOM.mil. 21600 IN NS NS.CYBERCOM.MIL.
+CYBERCOM.mil. 21600 IN NS NS.JTFGNO.MIL.
+CYBERCOM.mil. 21600 IN NS NS1.CSD.DISA.MIL.
+SECTION ADDITIONAL
+NS.CYBERCOM.mil. 21600 IN A 131.77.60.235
+NS.JTFGNO.mil. 21600 IN A 214.3.125.231
+NS1.CSD.DISA.mil. 21600 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+mil. IN NS
+SECTION ANSWER
+mil. 21600 IN NS CON1.NIPR.MIL.
+mil. 21600 IN NS CON2.NIPR.MIL.
+mil. 21600 IN NS EUR1.NIPR.MIL.
+mil. 21600 IN NS EUR2.NIPR.MIL.
+mil. 21600 IN NS PAC1.NIPR.MIL.
+mil. 21600 IN NS PAC2.NIPR.MIL.
+mil. 21600 IN RRSIG NS 8 1 21600 20180502164113 20180425164113 15246 mil. FvNSAAJDMpeIwnPbQgIZgLgj8nhyefH7 oppn+EvwYIv3cuEA2aY7e50YiiDyHq+j LDEaPbPm2CwPC7iSMvjXCIDLVNy4vNoU himQk+8VIxgIBn6+tHnIEgOL7/7QREmM s+3NZehrLyCSgHuk7NJvOXNH+F7bBWfD DYDxC2fmKtI=
+SECTION ADDITIONAL
+CON1.nipr.mil. 21600 IN A 199.252.157.234
+CON1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. utcdoFBPfK1zNvAeLPVn3D51F1N2kP67 ACo8UToBvHTMQ9LkqoTVIvhSz3ANMO3v R/YuG6KTvN7sM4tLxCCxVJv8qXzaxLGA Y3jm8N7lzr1ied9XlMZVLNa5woVFXKWU oI0raQlhNexfOPmdMSN2r/IiJcTQ/lHa MFnLIwQCRCM=
+CON2.nipr.mil. 21600 IN A 199.252.162.234
+CON2.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. W5PC3viqn6zyJQRk4aohBIjezYM1n70f A7BsnHn+r4tQ4+HNjRBBR5BcnzHPsbfA 4UEY3nf9fPqUxnigW1Ek3mXD2tH5Sw6z piKQGz4aRMcnQwG+7YySkbogDoDo8gDU 4uY7Cm/hCgzCRJng2gVnf/AI+tvLHUUi BrJBpIpsnls=
+EUR1.nipr.mil. 21600 IN A 199.252.154.234
+EUR1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. llKYuNafCzo2F4c3Xs2TQpZpQ5MrqsMc VITU6I18hGyeyIU4HttPgmMUql+ykzgk kGZvEUCLgq8rOTzEkAJS08GS/n/KyAMW ZMfPJRVVjEWffxgjEXl/dATYxdgiIDLu NsA9pvKvWaU39gyUeSbIYd0v7Q/a9l/W gZ9K+cHByJ4=
+EUR2.nipr.mil. 21600 IN A 199.252.143.234
+PAC1.nipr.mil. 21600 IN A 199.252.180.234
+PAC1.nipr.mil. 21600 IN RRSIG A 8 3 21600 20180502164110 20180425164110 41931 nipr.mil. KPRHVuK+43yvblxFZKlespJI8bIW9Wqz ePmLZPNspIyzeRQet9WXY1zcAYFfqg8Y OvNTyClfH9jcPWd4u25/U2YYIGj51ZTG viKytUDr7xd0ysfq4Nl7mHVj+mwLa4S+ iV7iVKp37XHix+2WeKoz6pZK4DDMkgw+ b0Aq5NV5V9Y=
+PAC2.nipr.mil. 21600 IN A 199.252.155.234
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: NS.CYBERCOM.MIL. Actual ip: 131.77.60.235
+; NS1.CSD.DISA.MIL.
+; UFORIFTR01.CSD.DISA.MIL.
+; UFORIFTR02.CSD.DISA.MIL.
+; UPDCIFTR01.CSD.DISA.MIL.
+; UPDCIFTR02.CSD.DISA.MIL.
+; NS.JTFGNO.MIL.
+RANGE_BEGIN 0 1000
+	ADDRESS 131.77.60.235
+	ADDRESS 152.229.110.235
+	ADDRESS 214.23.245.4
+	ADDRESS 214.23.245.5
+	ADDRESS 214.3.125.231
+	ADDRESS 215.65.126.180
+	ADDRESS 215.65.126.181
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN A
+SECTION ANSWER
+www.nrl.navy.mil. 2492 IN A 132.250.5.100
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+nrl.navy.mil. IN DNSKEY
+SECTION AUTHORITY
+nrl.navy.mil. 2378 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+nrl.navy.mil. IN DS
+SECTION AUTHORITY
+5ACV6DOMI3UFJM8TRO50714T9B3AHRB8.navy.mil. 1940 IN NSEC3 1 0 10 32313032434343 5advpr8l2hrdp4erfu30rbho8og7u22k NS
+5ACV6DOMI3UFJM8TRO50714T9B3AHRB8.navy.mil. 1940 IN RRSIG NSEC3 8 3 3600 20180524174416 20180424174416 51171 navy.mil. WlxTO9NWjx6ikrz7IvsZwi/SUjkOCste hm/qgTLcDUiEekaoVRbk3R1ylofWfv75 /IfdhrVZNwkikth6QaMbNDP+Z9IGm1YG tcdy/i5issT/gWWy51OEOHfEXO56WGvN 36UqlWqktCNCLUbg1ao1UeC2uDAzMpIl 9UxXN8JqTdI=
+navy.mil. 1940 IN RRSIG SOA 8 2 7200 20180524174416 20180424174416 51171 navy.mil. V185PU5LuogSWovZ/QDI2t9545KpZ0AJ in/zHO+LF6TzROZB1TZLIqNWj6zBDzjK 6A07UfiZkjF7osOalF+gUEl/DsCddEVU LgTtGF+twJX06EshT9xjNagZy0gKZVYK R3Qx95HxV492G10zXsNu0y6iRzUoUQGZ Gll4Id81ug4=
+navy.mil. 1940 IN SOA ns1.csd.disa.mil. hostmaster.navy.mil. 2018042402 7200 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.nrl.navy.mil. IN A
+SECTION ANSWER
+ns1.nrl.navy.mil. 2113 IN A 132.250.4.131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR01.CSD.DISA.MIL. IN A
+SECTION ANSWER
+UPDCIFTR01.CSD.DISA.MIL. 1745 IN A 215.65.126.180
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+DISA.MIL. 2042 IN RRSIG SOA 8 2 14400 20180523140658 20180423140658 13386 disa.mil. d/vtPCzEcAGyXJTWxtR/d4zPZy93MoJV OG8i5sepII7E+n9a3ip+2xdO+j31ij6g MiXnKtiLEglDHwTZy5j78B+7DrRyDbLo YpT+nWQ1Ek3w0vfkFZgWnnNHpVX5f0Ok 3h3p73qGcTnbk7iDsPS47x4wS/gZZKkQ //jrvFkqEC8=
+DISA.MIL. 2042 IN SOA ns1.CSD.DISA.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2018042001 28800 900 2592000 3600
+GM6I8LEDM8NP2IEGIM177GDIHEFF3QVO.DISA.MIL. 2042 IN NSEC3 1 0 10 32313032434343 gm744djbv56jjtju8t1umegp1vrddq5a NS
+GM6I8LEDM8NP2IEGIM177GDIHEFF3QVO.DISA.MIL. 2042 IN RRSIG NSEC3 8 3 3600 20180523140658 20180423140658 13386 disa.mil. MdyabcGEb2YQZqfgO1NbJYNRl6wOUpmo +61V7Vw9yv47J89aFCJO0oqoWeiAp48a uyWW2fuU2i8wmEAbEjQalcAbdCilpVQS 2EyqFyYsfG7ARzXO5rIkrEi7l/M9qqu2 qtEWq/D89WYfBG9iU9s7ZYuUMpQHoFDD wAdP/5S8FKY=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR01.CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR01.CSD.DISA.MIL. IN NS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR01.CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR01.CSD.DISA.MIL. IN AAAA
+SECTION AUTHORITY
+CSD.DISA.MIL. 1433 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.CSD.DISA.MIL. IN A
+SECTION ANSWER
+ns1.CSD.DISA.MIL. 2031 IN A 152.229.110.235
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.CSD.DISA.MIL. IN NS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns1.CSD.DISA.MIL. IN AAAA
+SECTION AUTHORITY
+CSD.DISA.MIL. 1421 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR01.CSD.DISA.MIL. IN A
+SECTION ANSWER
+UFORIFTR01.CSD.DISA.MIL. 1718 IN A 214.23.245.4
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR01.CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR01.CSD.DISA.MIL. IN NS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR01.CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR01.CSD.DISA.MIL. IN AAAA
+SECTION AUTHORITY
+CSD.DISA.MIL. 2006 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR02.CSD.DISA.MIL. IN A
+SECTION ANSWER
+UPDCIFTR02.CSD.DISA.MIL. 1705 IN A 215.65.126.181
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR02.CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR02.CSD.DISA.MIL. IN NS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR02.CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UPDCIFTR02.CSD.DISA.MIL. IN AAAA
+SECTION AUTHORITY
+CSD.DISA.MIL. 1993 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.CYBERCOM.MIL. IN A
+SECTION ANSWER
+NS.CYBERCOM.MIL. 8900 IN A 131.77.60.235
+NS.CYBERCOM.MIL. 8900 IN RRSIG A 8 3 86400 20180520021040 20180420021040 32169 cybercom.mil. 03z57ldylKJY/L3nWlEgw4nqKo0ARmJB 3jRuwjGQXNmRVMMBQdJFVbkq845/JN52 VH6PDoi+10PG3KFayN4QKGwihKouFViw xvwOx9uUdP4lo4TDnq06ETJuAhxVu/SY ZlI/E5BLy2VB+uUmzKFVCh9OrSAjWeAZ t+ynQVSbhuc=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.CYBERCOM.MIL. IN DNSKEY
+SECTION AUTHORITY
+CYBERCOM.MIL. 3600 IN RRSIG SOA 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. q1UTanwsNBqE9iBCU3NG351ei+p75Fq2 x0U6C0acuCXJcFhqYloHtmLkkzW8BmAX eSYY6ZGYlSi3EvHCf+8Zrr7zHhJJ+4BB EDOfGzVqBjlJ0W+vGluo6ilIVdDowV0y 87x07BfW0QBmY6QNC+vgKllUUQKXir5O pyNmZRuGX0Q=
+CYBERCOM.MIL. 3600 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2018041801 28800 1800 2592000 3600
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3600 IN NSEC3 1 0 10 32313032434343 qlhqv3av3uv09mdqiu66pdfgi4opbcqq A RRSIG
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3600 IN RRSIG NSEC3 8 3 3600 20180520021040 20180420021040 32169 cybercom.mil. ZQik1r7lveI7RZ8E/Qb3e1E8/LTI7uVv CwT5RwDaX0Zu1oohGvARTcDbXxjLq805 TtXrRqXjlf3RqgErLeA9h8z7mN10hdPk eiXlKRNezX4rFrJzxj5KA/k1NqwB20du ySIS+/Sr1yQUFS41MDd5z1/7BeX6l57k mG9mvhwa6Aw=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.CYBERCOM.MIL. IN NS
+SECTION AUTHORITY
+CYBERCOM.MIL. 3600 IN RRSIG SOA 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. q1UTanwsNBqE9iBCU3NG351ei+p75Fq2 x0U6C0acuCXJcFhqYloHtmLkkzW8BmAX eSYY6ZGYlSi3EvHCf+8Zrr7zHhJJ+4BB EDOfGzVqBjlJ0W+vGluo6ilIVdDowV0y 87x07BfW0QBmY6QNC+vgKllUUQKXir5O pyNmZRuGX0Q=
+CYBERCOM.MIL. 3600 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2018041801 28800 1800 2592000 3600
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3600 IN NSEC3 1 0 10 32313032434343 qlhqv3av3uv09mdqiu66pdfgi4opbcqq A RRSIG
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3600 IN RRSIG NSEC3 8 3 3600 20180520021040 20180420021040 32169 cybercom.mil. ZQik1r7lveI7RZ8E/Qb3e1E8/LTI7uVv CwT5RwDaX0Zu1oohGvARTcDbXxjLq805 TtXrRqXjlf3RqgErLeA9h8z7mN10hdPk eiXlKRNezX4rFrJzxj5KA/k1NqwB20du ySIS+/Sr1yQUFS41MDd5z1/7BeX6l57k mG9mvhwa6Aw=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.CYBERCOM.MIL. IN DS
+SECTION AUTHORITY
+CYBERCOM.MIL. 3139 IN RRSIG SOA 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. q1UTanwsNBqE9iBCU3NG351ei+p75Fq2 x0U6C0acuCXJcFhqYloHtmLkkzW8BmAX eSYY6ZGYlSi3EvHCf+8Zrr7zHhJJ+4BB EDOfGzVqBjlJ0W+vGluo6ilIVdDowV0y 87x07BfW0QBmY6QNC+vgKllUUQKXir5O pyNmZRuGX0Q=
+CYBERCOM.MIL. 3139 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2018041801 28800 1800 2592000 3600
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3139 IN NSEC3 1 0 10 32313032434343 qlhqv3av3uv09mdqiu66pdfgi4opbcqq A RRSIG
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 3139 IN RRSIG NSEC3 8 3 3600 20180520021040 20180420021040 32169 cybercom.mil. ZQik1r7lveI7RZ8E/Qb3e1E8/LTI7uVv CwT5RwDaX0Zu1oohGvARTcDbXxjLq805 TtXrRqXjlf3RqgErLeA9h8z7mN10hdPk eiXlKRNezX4rFrJzxj5KA/k1NqwB20du ySIS+/Sr1yQUFS41MDd5z1/7BeX6l57k mG9mvhwa6Aw=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.CYBERCOM.MIL. IN AAAA
+SECTION AUTHORITY
+CYBERCOM.MIL. 1689 IN RRSIG SOA 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. q1UTanwsNBqE9iBCU3NG351ei+p75Fq2 x0U6C0acuCXJcFhqYloHtmLkkzW8BmAX eSYY6ZGYlSi3EvHCf+8Zrr7zHhJJ+4BB EDOfGzVqBjlJ0W+vGluo6ilIVdDowV0y 87x07BfW0QBmY6QNC+vgKllUUQKXir5O pyNmZRuGX0Q=
+CYBERCOM.MIL. 1689 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2018041801 28800 1800 2592000 3600
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 1689 IN NSEC3 1 0 10 32313032434343 qlhqv3av3uv09mdqiu66pdfgi4opbcqq A RRSIG
+QFGNMQ1OAQDFUCU8R1BAJCVH5A4DP2VH.CYBERCOM.MIL. 1689 IN RRSIG NSEC3 8 3 3600 20180520021040 20180420021040 32169 cybercom.mil. ZQik1r7lveI7RZ8E/Qb3e1E8/LTI7uVv CwT5RwDaX0Zu1oohGvARTcDbXxjLq805 TtXrRqXjlf3RqgErLeA9h8z7mN10hdPk eiXlKRNezX4rFrJzxj5KA/k1NqwB20du ySIS+/Sr1yQUFS41MDd5z1/7BeX6l57k mG9mvhwa6Aw=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR02.CSD.DISA.MIL. IN A
+SECTION ANSWER
+UFORIFTR02.CSD.DISA.MIL. 1684 IN A 214.23.245.5
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR02.CSD.DISA.MIL. IN DNSKEY
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR02.CSD.DISA.MIL. IN NS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR02.CSD.DISA.MIL. IN DS
+SECTION AUTHORITY
+CSD.DISA.MIL. 3600 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+UFORIFTR02.CSD.DISA.MIL. IN AAAA
+SECTION AUTHORITY
+CSD.DISA.MIL. 1972 IN SOA ns1.CSD.DISA.MIL. root.CSD.DISA.MIL. 2018042600 14400 900 2592000 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.JTFGNO.MIL. IN A
+SECTION ANSWER
+NS.JTFGNO.MIL. 8571 IN A 214.3.125.231
+NS.JTFGNO.MIL. 8571 IN RRSIG A 8 3 86400 20180518175433 20180418175433 42561 jtfgno.mil. haVv0fr5tlywNxCtrrHIHD6iNDYdBtIz rtM+i2LXbd8MDRWAA4hHOQfSOOTegcbX Go2OBfCdm/2u6ODcO8fGRCiKKORFni1e Qcdod3d4U/RKvrjOwkhFwxuSKKdkI0ED 1+F2dYC0TBQbGu0LSqk3rJAFDFQxpypX 1++hwcF5LKo=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.JTFGNO.MIL. IN DNSKEY
+SECTION AUTHORITY
+JTFGNO.MIL. 3600 IN RRSIG SOA 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. VPXDKUuvN/tHIDw5lz2L95lfFiTSdYtQ n/ku1r+A6eOt1y/ix0xhSUaMpsR4VteF BIfYnruByrbIs4fHRj9q4PkNHe+N+j1l n0GWb282fBVaqVIJ7mzx1tx8ABOLv8Ro DskQ/wN2rISNOj8EWgw4pe702o9g2PIj FD6e+q8qtxk=
+JTFGNO.MIL. 3600 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2017053126 3600 900 2592000 3600
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN NSEC3 1 0 10 32313032434343 tlhelcle7bssrd4hkc08tmkavmqqtumn A RRSIG
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN RRSIG NSEC3 8 3 3600 20180518175433 20180418175433 42561 jtfgno.mil. rLKLIVBID7vK4ZncjbPYZNzIu3JnkO62 /ON/BwoK0akIzRggWU0rAyzc/LKxrTBF 2HlkAJ6Q0PgeuQ3e0Q3v983JezQN7/9F mMzlXO1eUmgDeZ2NdVDGcPLkvzC2XY9y cP/53uPrSi78YHiSeUK0qgRl9usd1qyi tS7Mc2wy9KU=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.JTFGNO.MIL. IN NS
+SECTION AUTHORITY
+JTFGNO.MIL. 3600 IN RRSIG SOA 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. VPXDKUuvN/tHIDw5lz2L95lfFiTSdYtQ n/ku1r+A6eOt1y/ix0xhSUaMpsR4VteF BIfYnruByrbIs4fHRj9q4PkNHe+N+j1l n0GWb282fBVaqVIJ7mzx1tx8ABOLv8Ro DskQ/wN2rISNOj8EWgw4pe702o9g2PIj FD6e+q8qtxk=
+JTFGNO.MIL. 3600 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2017053126 3600 900 2592000 3600
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN NSEC3 1 0 10 32313032434343 tlhelcle7bssrd4hkc08tmkavmqqtumn A RRSIG
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN RRSIG NSEC3 8 3 3600 20180518175433 20180418175433 42561 jtfgno.mil. rLKLIVBID7vK4ZncjbPYZNzIu3JnkO62 /ON/BwoK0akIzRggWU0rAyzc/LKxrTBF 2HlkAJ6Q0PgeuQ3e0Q3v983JezQN7/9F mMzlXO1eUmgDeZ2NdVDGcPLkvzC2XY9y cP/53uPrSi78YHiSeUK0qgRl9usd1qyi tS7Mc2wy9KU=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.JTFGNO.MIL. IN DS
+SECTION AUTHORITY
+JTFGNO.MIL. 3600 IN RRSIG SOA 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. VPXDKUuvN/tHIDw5lz2L95lfFiTSdYtQ n/ku1r+A6eOt1y/ix0xhSUaMpsR4VteF BIfYnruByrbIs4fHRj9q4PkNHe+N+j1l n0GWb282fBVaqVIJ7mzx1tx8ABOLv8Ro DskQ/wN2rISNOj8EWgw4pe702o9g2PIj FD6e+q8qtxk=
+JTFGNO.MIL. 3600 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2017053126 3600 900 2592000 3600
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN NSEC3 1 0 10 32313032434343 tlhelcle7bssrd4hkc08tmkavmqqtumn A RRSIG
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 3600 IN RRSIG NSEC3 8 3 3600 20180518175433 20180418175433 42561 jtfgno.mil. rLKLIVBID7vK4ZncjbPYZNzIu3JnkO62 /ON/BwoK0akIzRggWU0rAyzc/LKxrTBF 2HlkAJ6Q0PgeuQ3e0Q3v983JezQN7/9F mMzlXO1eUmgDeZ2NdVDGcPLkvzC2XY9y cP/53uPrSi78YHiSeUK0qgRl9usd1qyi tS7Mc2wy9KU=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NS.JTFGNO.MIL. IN AAAA
+SECTION AUTHORITY
+JTFGNO.MIL. 1963 IN RRSIG SOA 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. VPXDKUuvN/tHIDw5lz2L95lfFiTSdYtQ n/ku1r+A6eOt1y/ix0xhSUaMpsR4VteF BIfYnruByrbIs4fHRj9q4PkNHe+N+j1l n0GWb282fBVaqVIJ7mzx1tx8ABOLv8Ro DskQ/wN2rISNOj8EWgw4pe702o9g2PIj FD6e+q8qtxk=
+JTFGNO.MIL. 1963 IN SOA ns1.csd.disa.MIL. disa\.meade\.esd\.list\.es312-ccc-hostmaster.mail.MIL. 2017053126 3600 900 2592000 3600
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 1963 IN NSEC3 1 0 10 32313032434343 tlhelcle7bssrd4hkc08tmkavmqqtumn A RRSIG
+TIUD9PBM1803Q9K5I7AUMFPHOIBHQUSE.JTFGNO.MIL. 1963 IN RRSIG NSEC3 8 3 3600 20180518175433 20180418175433 42561 jtfgno.mil. rLKLIVBID7vK4ZncjbPYZNzIu3JnkO62 /ON/BwoK0akIzRggWU0rAyzc/LKxrTBF 2HlkAJ6Q0PgeuQ3e0Q3v983JezQN7/9F mMzlXO1eUmgDeZ2NdVDGcPLkvzC2XY9y cP/53uPrSi78YHiSeUK0qgRl9usd1qyi tS7Mc2wy9KU=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN A
+SECTION ANSWER
+ns2.nrl.navy.mil. 1723 IN A 132.250.21.131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+JTFGNO.mil. IN DNSKEY
+SECTION ANSWER
+JTFGNO.mil. 9119 IN DNSKEY 256 3 8 AwEAAcDKQKDabBGr/ajVsdNetD0TgNOB bohhN/6P4btDwLd6Y+2ycE2S0u6N703T A5aKNRasy+neP5aXCtAbQ3N20U1huZ59 Ep4AMPa293iMHtIJHFrg3afElSRMSPFh pfsXd0dZz4T53fO7QN1NKRTNDCdWcm/p k30H5ubjDnchnqD7
+JTFGNO.mil. 9119 IN DNSKEY 257 3 8 AwEAAcAadSJ/AB/li4NKJJwd1ftBuVLs 0s3ddjupgqXujROYYTm/O07AEGqte7rk ywUr/QcjPngS94Aw0GNcoc5BoJufFPLZ XGkq1VAa26ZgizWduq9pJDLYnAbBWxBl xiHLWisgIAMelZedi4I2J5OPYFw8uyEr 85tHEryiperzaxDJcOuC949XpRqqgH/t u9xKha2+gqwVweGk9DORGpiS3r1nAiBv 2IJHy50mGa/0ZAEqVNI/7qxnbHqDbVA0 aqPTAF9FEV/UZUPMfjbYbn1HY+YavDrx o5ogmOjcpcfhzk+hj+UHhHjh5jdgZE0d jgd7U9ZgqgxEYa5LK3GuBLlSHKU=
+JTFGNO.mil. 9119 IN RRSIG DNSKEY 8 2 86400 20180518175433 20180418175433 24169 jtfgno.mil. Ba5oPTbVDv4f+qSrd6gRx9WOs46ldBRm i+z90qISK+oe7bXP7xDY5ShRYySrp55o q0n9WEFdl3PDQL2cA/Xa7dC9/SndU/Ig YQJelc8DL1lp7Ixb7s3BPsq5yB2JN+V2 XOk04+SBx58/N6I7YEMTGLlfstbgZ9rv 8Xhpv4Ocr8Ful+tp4cV8SKPUTJMqfhY7 xM15a3U11ny4bW9pXQI0j1AWO6qWMVXO 5IHx4WYNKf7JwU5cvxjnTM58dZaGynsr Eb89w/LM1/ILXo59I+7TXzaPQpHwB4sm FBOXJBiGefRzH93yRj8d2CTFVhKGFqUU KOQfRGDfo42AXqE5WqUPGg==
+JTFGNO.mil. 9119 IN RRSIG DNSKEY 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. PgsvGfOIpPzx+QriodkqwRjcKr6QSecs q2PjeRhOdCYytbpWluc4oh1SHtVSwX/B YOa7OgDgS8FqiY1AlGg7Q7PBcA+3dZQo BgQNJamlXppF/EwcnMd/f2Won+PEL97u MRbI/SJotFp4PBlfDrs1mzhCINBiU/rO HeZm0KWqFEI=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+CYBERCOM.mil. IN DNSKEY
+SECTION ANSWER
+CYBERCOM.mil. 8519 IN DNSKEY 256 3 8 AwEAAd33Q8ATZFkYVKBpzc01XsXlc3jx tRPEDIu35/YoOhwVjBXLvbspERfCC11D LsEfsBQ3ftAhBhDRch4cajcX2s04lFnx XLY9VwdtOSqxlRnFhECV99F00r77pRha UC7jSjUupgjkvNJq5liwjxMIr865jzyE Ge/cVCL/a0BnXGrh
+CYBERCOM.mil. 8519 IN DNSKEY 257 3 8 AwEAAdV+fvc7CghoIYrys67ZPTvzF9hV +lC7ovQqIENursTKhtHdpQFFDgkSHCAI /pEbTgPueMSp1tfp+9wBDDF9WB0ag6i1 oovyzSpIq6pgalPtL9zMv35CLREpon6W s5VgZ4CyzoCpcrvtrqgjr4Z2bvtWJk6G ykywxg3IyCqPwgia/Oeov47omXZgINYO MUVrK824g1G0/nP6xNPT55aN9DXx58J/ oDxTFA23XunTKms4tUDGz14gDl95Fjnj rhwFVC6/a5PRxBqal/JtV9rMdiT3QpAs x1cYCMJYESNgbRH3I026ESdDwc4W5fo5 LgQOQQ8l/A0fZ/PEM8HwtAVL6Uk=
+CYBERCOM.mil. 8519 IN RRSIG DNSKEY 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. R46wEACxeorwNs1gwn4jCzBvAe+NduuT /T5brWS0S01KKbO0Y8Hv9HTiLTeZ0sBb Cfi6eRcPlNUvmlriBLUykEl+dj8ciCDv dPbxzA/iJWcxQgi3dQmbP/EutcUu5fKg SqZgw7n2pO286ctNg9VQg9J4nDhruH+q RytEpncRfSQ=
+CYBERCOM.mil. 8519 IN RRSIG DNSKEY 8 2 86400 20180520021040 20180420021040 44410 cybercom.mil. Zu1se0WYmGD1fx1MLs16sF0rstPjWhC2 jh78aDfQ16iwjr4wjIDAIzqgb03zHKmZ RXDRQoaIYBlKFCNAcbH/4s1oi9QODQfY ZMCYw9LS8cHupg52urK7JMWrMmHgy1pN 6Bq9j1ouu/n8fdG+kVk/RxzYMiunvSFX tsKCDRlCkYRBInNjodB9r8hjBuMfQQuR Fh8hREq5J6idubCWJLMM/aChoZyn98kw r/L5ohyqhJKlBBdYsy2jspmJf77kW6EM C4sVnah1jug2LvrllJBkng+5MgOrw7h+ knQQt2ZK9bsy9oomI75JLBNNK1Gvg2fQ simZLwiUjli8Ec6NHYPtOg==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+NAVY.mil. IN DNSKEY
+SECTION ANSWER
+NAVY.mil. 1620 IN DNSKEY 256 3 8 AwEAAaXLve0NB09dHg7s1kOLpGR1k5n0 j4IRuw4lm+LikoeL67ShPebp7zw0+NXs Yp8RIftuvC3YBse0C7LzEovqoKKTo6wG +8gemZ/Zw8oUTnQU3SBuTQzxHOZHsoH9 zKEu+5QJw83yvBV7GN1Clc3g6xjqBTKd E1YMklKJeI2Oz1j/
+NAVY.mil. 1620 IN DNSKEY 257 3 8 AwEAAbkKdACJnzTY8DekmkZfhiJ+o5j/ zrgkUCAGhStZqqCdeVBH+UkoXdIq6UbY U+asyas6sfgjpZzKgKgnDCZPDquShXga hZR7b9WwRsKjdeOa4r5eN+BGIa3xraOc nslbmVHVQaErQ+frRSa3jNzDp5vRYV8v HsrHUt67ve7WYqtSG/nVA2lYZlgwzGNb UJEsElDj1X6ImRqkjNdpZtBNeKnzVaEt MaZDuHD6yjcZJqcDg+xAFkISD4OxO/DO dZlvgccHelkOIZRaBqFCAuUit8vxU1FU veoENO5XlvcbqUcwAY0OXLPqM11lQtGE uXZpqp+DERQYXEZEp755cEQ41+U=
+NAVY.mil. 1620 IN RRSIG DNSKEY 8 2 7200 20180524174416 20180424174416 33244 navy.mil. sLo9lkC2RGlW9MBSA0TLcWY51nVoW9xL Lk3Fq9g1eXhk7j7dXYvxjfa9jGMGcnoM 0BcBpoDU/mnIePqq/6aA9FViTGLjIMBV y3oVu4gm2Td+UTieXpVK7XN+0OQFlpsa aCScYawq/GQB2NKtys6NI0irykO3svEa bmamXBQpbuF34FIFLPgKvV/O/0bG2F16 XeIS5w8Lw/MjNzhnxpehnycYezx6czU4 SIXtCWWj4aIe5u5/CZdmRr76JpJNApaa VJ/Ur52I80FCLHIRrI+x7GIdPw2n/s/z kUZoZ8yYHYxARb7ZFaCCPiNfPemPqvcz nqptsLcoXKtxyCo/bTW1Fg==
+NAVY.mil. 1620 IN RRSIG DNSKEY 8 2 7200 20180524174416 20180424174416 51171 navy.mil. KhMec2hjlXVPPoIdY/+qhXYrVd0c6TvR oPt4rzATR+ylH+IVWVSawlzZdgR61teB SfHoRFZz5Hi9oCzZKX+7WvRLIlyW44no LzbLxqsnD2sfv3N6lXGHP5KRXR8NVZZm YIEzo2EmHcTe8cyVRu3HvkiFHb26qIYO fhws1R6aGf0=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+DISA.mil. IN DNSKEY
+SECTION ANSWER
+DISA.mil. 8517 IN DNSKEY 256 3 8 AwEAAcveNZSCsDpZPDFQbuGn03VwuYC6 rVqI4jiGgiquSeaSiGkD2aJhAgEFrP++ 8Nqn0YUst3BQepIPfwKYhlWtCnQYdi1e nk8UXbSvOjNVZKIC8s7GFIEn17mWnqyO U4w/F+wFPAZXzzx0dTW31APdMEyzzzzE 1KZVX01UJZ3LZhNj
+DISA.mil. 8517 IN DNSKEY 257 3 8 AwEAAbqxsjzy/4ul+wjp5SOb2I3Gd0z3 q9M6MHMb7WSA2FHHRTKfydfvm0oIGWQb NgxVNUCKPEm5k2tbSx4DukNVvilSPw6L P/OpTWifFSpXmqKWHx/h4RJOMwih7VVk XzbC2ALmJJ59Qa3NK6Dz6/mlLirmr/RX t+zatvT9L+K+C7LOxfvUgER5di4mvcvH CylpCcH6Q0myPWiM60odEBfkHzi4/t8x uNjRzTVaaSFcTSDo3WHP7txrHm1yPtFj yWbBKfQagkAFwwnEcpP+2gnHKBuwdQkW ChejrbzXliPLnbgWNt0tnUtmf6bIAZHd QW7ls+/3iARv3cgLqxuOmWbC6FU=
+DISA.mil. 8517 IN RRSIG DNSKEY 8 2 14400 20180523140658 20180423140658 13386 disa.mil. kp0fMeqFx7nCyj7W7nODedFNyFeo4l0N 5+R81cf1Itubm6+D+0RQWKQw62OUi8bf Tf0vHT5xLbL6mYDW3CPSexAKad9wJYXr +pLl3gPP2GlJLz1qH09N4HG6nvLQjOkW OxDbk9u5mL7qMKrMBhNqWbk0Lx/oNJP5 6ySYrPo++Bo=
+DISA.mil. 8517 IN RRSIG DNSKEY 8 2 14400 20180523140658 20180423140658 8665 disa.mil. Gdi2/UzNRcKSXvYj+oSLGftEdMQpmeIh gNDZaWsAHmlOpgHO3rutJHqn/0WYrgVK e0WZ70EX5ZUwaMEy1EVe7pGbSM4ylCeD UHmR2AzMm4gOuAIHWWbXdippgA+2hlGX wEx7eQgqPQbuFNO8deuWteRvHcDZSbA2 EXF9CW7rrTYqBKMMm9m0hKw37X/xxLNW SCNUmUshXVneHatu0p6H/bQr2YKLf7Jz G6aOeQojLcMvYB2rGkZzuM8TmW5utfwL Y6vG1JwkPpYXnYbbA8CxmPR+wh6ZFTFO 50WQtubnHacxoBx/aOnJUQn/YVefbEz/ NVoyX+GPjLKbeFN8eERdgA==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+nrl.navy.mil. IN NS
+SECTION ANSWER
+nrl.navy.mil. 1687 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 1687 IN NS ns2.nrl.navy.mil.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+CSD.DISA.MIL. IN NS
+SECTION ANSWER
+CSD.DISA.MIL. 1374 IN NS ns.cybercom.MIL.
+CSD.DISA.MIL. 1374 IN NS ns.jtfgno.MIL.
+CSD.DISA.MIL. 1374 IN NS ns1.CSD.DISA.MIL.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+JTFGNO.MIL. IN NS
+SECTION ANSWER
+JTFGNO.MIL. 30768 IN NS ns.JTFGNO.MIL.
+JTFGNO.MIL. 30768 IN NS ns.cybercom.MIL.
+JTFGNO.MIL. 30768 IN NS ns1.csd.disa.MIL.
+JTFGNO.MIL. 30768 IN RRSIG NS 8 2 86400 20180518175433 20180418175433 42561 jtfgno.mil. rUqC+TXtrAzwq1/WxVLBOvSs8VgbhBms jpRR03xIiKmVnYU8lgUTu8J/Am1j+r2Q VM/TK0rBJf41c8Gt+884YyybSrJF1MAw c60DIqn0smeLJumVvrMvrgtrB2zbEoeN AI5VfK/FVYU8uCsPH7O1avFd+YgnId0K Mb5i+k/TcMU=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+navy.mil. IN NS
+SECTION ANSWER
+navy.mil. 1373 IN NS ns.cybercom.mil.
+navy.mil. 1373 IN NS ns.jtfgno.mil.
+navy.mil. 1373 IN NS ns1.csd.disa.mil.
+navy.mil. 1373 IN NS uforiftr01.csd.disa.mil.
+navy.mil. 1373 IN NS uforiftr02.csd.disa.mil.
+navy.mil. 1373 IN NS updciftr01.csd.disa.mil.
+navy.mil. 1373 IN NS updciftr02.csd.disa.mil.
+navy.mil. 1373 IN RRSIG NS 8 2 7200 20180524174416 20180424174416 51171 navy.mil. OSY9/B5ztO//ewra9X+DzgY5YUrm8TFj Jh9U4ytiLcVnmF+GGpFZAOEPP+ORv/kt alWKtpDySA5EjQFL6A9No0bgWLhnX/yU zLOlPtJvUSfFIArzLj79aGngI6XAKh5L 5JTmjPOXVGzSBVGFtknvsUL3Gc3mOeub KCqaBwM83gs=
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+DISA.MIL. IN NS
+SECTION ANSWER
+DISA.MIL. 14360 IN RRSIG NS 8 2 14400 20180523140658 20180423140658 13386 disa.mil. bgGuwo+5SpgMs0ViIIbMtlxcbIKU8FOa CTbxjOxfz7m3y0V2iFGTP3mMFH98EZad 50wamny2ZMZ4GWCVkHFPjb2LyuX8tgSj f30VoICq/V6UUEJESscqXAoFRHVGP67N nl0IidZjT73MU8t9pFI35bIIsC8PNbI3 hkeGncXOLUI=
+DISA.MIL. 8581 IN NS ns.cybercom.MIL.
+DISA.MIL. 8581 IN NS ns.jtfgno.MIL.
+DISA.MIL. 8581 IN NS ns1.csd.DISA.MIL.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD RA NOERROR
+SECTION QUESTION
+CYBERCOM.MIL. IN NS
+SECTION ANSWER
+CYBERCOM.MIL. 30791 IN NS ns.CYBERCOM.MIL.
+CYBERCOM.MIL. 30791 IN NS ns.jtfgno.MIL.
+CYBERCOM.MIL. 30791 IN NS ns1.csd.disa.MIL.
+CYBERCOM.MIL. 30791 IN RRSIG NS 8 2 86400 20180520021040 20180420021040 32169 cybercom.mil. KH1HXm19DQli3iBJVHM7ZEtMJc1M3FZc bT7bh/D+vFjdwnNlMYRueeVTqT4kw1ia kvSvfw8Xl1T/aof1TEQ1EOVbDmNI2Pze Ej7tVWRwfodA6LigqjxHMaHg1fm1nlUj ZMSczY20Zv7LrsIDfYNgAjijAnEC0ibP gg46rmQ//2A=
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: ns2.nrl.navy.mil. Actual ip: 132.250.21.131
+; ns1.nrl.navy.mil.
+RANGE_BEGIN 0 1000
+	ADDRESS 132.250.21.131
+	ADDRESS 132.250.4.131
+	ADDRESS 2001:480:20:404::53:131
+	ADDRESS 2001:480:20:421::53:131
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN A
+SECTION ANSWER
+www.nrl.navy.mil. 3600 IN A 132.250.5.100
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN DNSKEY
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN NS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN DS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN AAAA
+SECTION ANSWER
+www.nrl.navy.mil. 3600 IN AAAA 2001:480:20:405:5::100
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.nrl.navy.mil. IN A
+SECTION ANSWER
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.nrl.navy.mil. IN DNSKEY
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.nrl.navy.mil. IN NS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.nrl.navy.mil. IN DS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN A
+SECTION ANSWER
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN DNSKEY
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN NS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN DS
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.nrl.navy.mil. IN AAAA
+SECTION ANSWER
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nrl.navy.mil. IN DNSKEY
+SECTION AUTHORITY
+nrl.navy.mil. 3600 IN SOA ns1.nrl.navy.mil. hostmaster.nrl.navy.mil. 2018042602 10800 1800 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nrl.navy.mil. IN NS
+SECTION ANSWER
+nrl.navy.mil. 3600 IN NS ns1.nrl.navy.mil.
+nrl.navy.mil. 3600 IN NS ns2.nrl.navy.mil.
+SECTION ADDITIONAL
+ns1.nrl.navy.mil. 3600 IN A 132.250.4.131
+ns1.nrl.navy.mil. 3600 IN AAAA 2001:480:20:404::53:131
+ns2.nrl.navy.mil. 3600 IN A 132.250.21.131
+ns2.nrl.navy.mil. 3600 IN AAAA 2001:480:20:421::53:131
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: i.gtld-servers.net. Actual ip: 192.43.172.30
+; a.gtld-servers.net.
+; b.gtld-servers.net.
+; c.gtld-servers.net.
+; d.gtld-servers.net.
+; e.gtld-servers.net.
+; f.gtld-servers.net.
+; g.gtld-servers.net.
+; h.gtld-servers.net.
+; j.gtld-servers.net.
+; k.gtld-servers.net.
+; l.gtld-servers.net.
+; m.gtld-servers.net.
+RANGE_BEGIN 0 1000
+	ADDRESS 192.43.172.30
+	ADDRESS 192.12.94.30
+	ADDRESS 192.26.92.30
+	ADDRESS 192.31.80.30
+	ADDRESS 192.33.14.30
+	ADDRESS 192.35.51.30
+	ADDRESS 192.41.162.30
+	ADDRESS 192.42.93.30
+	ADDRESS 192.48.79.30
+	ADDRESS 192.5.6.30
+	ADDRESS 192.52.178.30
+	ADDRESS 192.54.112.30
+	ADDRESS 192.55.83.30
+	ADDRESS 2001:500:856e::30
+	ADDRESS 2001:500:d937::30
+	ADDRESS 2001:501:b1f9::30
+	ADDRESS 2001:502:1ca1::30
+	ADDRESS 2001:502:7094::30
+	ADDRESS 2001:502:8cc::30
+	ADDRESS 2001:503:231d::2:30
+	ADDRESS 2001:503:39c1::30
+	ADDRESS 2001:503:83eb::30
+	ADDRESS 2001:503:a83e::2:30
+	ADDRESS 2001:503:d2d::30
+	ADDRESS 2001:503:d414::30
+	ADDRESS 2001:503:eea3::30
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180502051911 20180425040911 30812 net. dLmmU1BT1C3ohY0qFpiq3ZLxBIJIItdY UmYT6Wp0w0KQY0Y9kbXD8fCHusHgWUmm 2MeXoYj1SgL0tVqm6xGqQwEs3HAi1odw Ywuxy5Ymfq16BH7ZTI7MTTIW+OF9LV+w kyRvnfVXCDGA3Kky4gI3LlEMrrnCwLTF YfjD7xS/dy4=
+root-servers.net. 172800 IN NS a.root-servers.net.
+root-servers.net. 172800 IN NS b.root-servers.net.
+root-servers.net. 172800 IN NS c.root-servers.net.
+root-servers.net. 172800 IN NS d.root-servers.net.
+root-servers.net. 172800 IN NS e.root-servers.net.
+root-servers.net. 172800 IN NS f.root-servers.net.
+root-servers.net. 172800 IN NS g.root-servers.net.
+root-servers.net. 172800 IN NS h.root-servers.net.
+root-servers.net. 172800 IN NS i.root-servers.net.
+root-servers.net. 172800 IN NS j.root-servers.net.
+root-servers.net. 172800 IN NS k.root-servers.net.
+root-servers.net. 172800 IN NS l.root-servers.net.
+root-servers.net. 172800 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 172800 IN A 198.41.0.4
+a.root-servers.net. 172800 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 172800 IN A 199.9.14.201
+b.root-servers.net. 172800 IN AAAA 2001:500:200::b
+c.root-servers.net. 172800 IN A 192.33.4.12
+c.root-servers.net. 172800 IN AAAA 2001:500:2::c
+d.root-servers.net. 172800 IN A 199.7.91.13
+d.root-servers.net. 172800 IN AAAA 2001:500:2d::d
+e.root-servers.net. 172800 IN A 192.203.230.10
+e.root-servers.net. 172800 IN AAAA 2001:500:a8::e
+f.root-servers.net. 172800 IN A 192.5.5.241
+f.root-servers.net. 172800 IN AAAA 2001:500:2f::f
+g.root-servers.net. 172800 IN A 192.112.36.4
+g.root-servers.net. 172800 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 172800 IN A 198.97.190.53
+h.root-servers.net. 172800 IN AAAA 2001:500:1::53
+i.root-servers.net. 172800 IN A 192.36.148.17
+i.root-servers.net. 172800 IN AAAA 2001:7fe::53
+j.root-servers.net. 172800 IN A 192.58.128.30
+j.root-servers.net. 172800 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 172800 IN A 193.0.14.129
+k.root-servers.net. 172800 IN AAAA 2001:7fd::1
+l.root-servers.net. 172800 IN A 199.7.83.42
+l.root-servers.net. 172800 IN AAAA 2001:500:9f::42
+m.root-servers.net. 172800 IN A 202.12.27.33
+m.root-servers.net. 172800 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180502051911 20180425040911 30812 net. dLmmU1BT1C3ohY0qFpiq3ZLxBIJIItdY UmYT6Wp0w0KQY0Y9kbXD8fCHusHgWUmm 2MeXoYj1SgL0tVqm6xGqQwEs3HAi1odw Ywuxy5Ymfq16BH7ZTI7MTTIW+OF9LV+w kyRvnfVXCDGA3Kky4gI3LlEMrrnCwLTF YfjD7xS/dy4=
+net. 900 IN RRSIG SOA 8 1 900 20180503154020 20180426143020 30812 net. rv8InfXz4IRDfrMRDJiqENHp482j/1wN iNyk3rAwJn+z9gncZFSyruXud3blfM4u LK06qJf+qCIRW+ucUHdMwobRTegqTIe/ 3uZ79o10U6DeJeJ9NNheVfcrdj/zbQBD rXm1VjnI1C9hdlkNRI5tlwx3TxKkdiDF w+EXSRuHK50=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757220 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180502051911 20180425040911 30812 net. dLmmU1BT1C3ohY0qFpiq3ZLxBIJIItdY UmYT6Wp0w0KQY0Y9kbXD8fCHusHgWUmm 2MeXoYj1SgL0tVqm6xGqQwEs3HAi1odw Ywuxy5Ymfq16BH7ZTI7MTTIW+OF9LV+w kyRvnfVXCDGA3Kky4gI3LlEMrrnCwLTF YfjD7xS/dy4=
+net. 900 IN RRSIG SOA 8 1 900 20180503154035 20180426143035 30812 net. Ck34WZ2d4eKiG0Ld/H/dPnkJ4u7jnBu0 QHNI8lwAntUOieqLO79RhFewQwBtGzTI rtXK9aOqMdQO7/rIg4j5zC3Nk8MTdiaw ZHUi5bk2IT/wD7SBZmV2p/U9xo44uIsc ngPF+NQo5rCv9L7IyMh9dHeolZ5/6wof wIAqWVBPjPY=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757235 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180502051911 20180425040911 30812 net. dLmmU1BT1C3ohY0qFpiq3ZLxBIJIItdY UmYT6Wp0w0KQY0Y9kbXD8fCHusHgWUmm 2MeXoYj1SgL0tVqm6xGqQwEs3HAi1odw Ywuxy5Ymfq16BH7ZTI7MTTIW+OF9LV+w kyRvnfVXCDGA3Kky4gI3LlEMrrnCwLTF YfjD7xS/dy4=
+net. 900 IN RRSIG SOA 8 1 900 20180503154050 20180426143050 30812 net. uTp/5teNJHzQa9awFflA2SojXyzSEZvd cge+XzHXOdQXGm1Rp4pBcgAlzGB+QMMF UOPJCVL7/hDM+2BVbSXLo9qmSh/Lfy9D bKf3vRx2mgrm8oBmDxqmj6eSFGgGFGzR IsGRBxZJ5ArA6Pmjq1fHTPISGJF6rfyG 9PltdvE5O4o=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757250 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430051808 20180423040808 30812 net. qLPLL7nQdTWB4vQdWG5M5y8f4ZPbOCJT Z1q9EFDU64akdkL7dLYkI4RnoTLY3aEY iR9bh+7ekMeyaULiKC5Ngh6gr/wQWqK9 6itZM5Hpit2RGV40Ke8InhaJPqrm9zXR eMKnaq6wYLhKCyrNVbGCehOpaQ8fiyDj lq6zYdHBLWI=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+gtld-servers.net. 172800 IN NS av1.nstld.com.
+gtld-servers.net. 172800 IN NS av2.nstld.com.
+gtld-servers.net. 172800 IN NS av3.nstld.com.
+gtld-servers.net. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430051808 20180423040808 30812 net. qLPLL7nQdTWB4vQdWG5M5y8f4ZPbOCJT Z1q9EFDU64akdkL7dLYkI4RnoTLY3aEY iR9bh+7ekMeyaULiKC5Ngh6gr/wQWqK9 6itZM5Hpit2RGV40Ke8InhaJPqrm9zXR eMKnaq6wYLhKCyrNVbGCehOpaQ8fiyDj lq6zYdHBLWI=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+net. 900 IN RRSIG SOA 8 1 900 20180503154220 20180426143220 30812 net. ay0tdXC7sWrgehVc+z4cGofYndItVeNu zChv7Elb/2514l+ozma3sIGDxXJJTkV/ BiHtKXrOr3t1jz4+B0/rOcNZlB15N2w/ JzsXAVtEBUu6bZgvUPh9zBDunmPP8Fb8 /AtqyX5/ZlWpAUCBF8OBp7MJz+lbqZ8Z AF1ijamU2L8=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757340 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430051808 20180423040808 30812 net. qLPLL7nQdTWB4vQdWG5M5y8f4ZPbOCJT Z1q9EFDU64akdkL7dLYkI4RnoTLY3aEY iR9bh+7ekMeyaULiKC5Ngh6gr/wQWqK9 6itZM5Hpit2RGV40Ke8InhaJPqrm9zXR eMKnaq6wYLhKCyrNVbGCehOpaQ8fiyDj lq6zYdHBLWI=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+net. 900 IN RRSIG SOA 8 1 900 20180503154235 20180426143235 30812 net. gr1/B+4mUr8gRwOLiTIRAOHHSloZAm4C LHLikOorBDmZBu9IFjwkNtwD9h/q1VCt meL27vA5HUjeCYiMXzm5XCGmw+l+mOvB H5+EpQFT+0UVULImmC0B+8OA6IBDIK// d/uMsYT7mYiKTzIpOZ8RpDAIHW/zqBF9 C6knuUsiKNc=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757355 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430051808 20180423040808 30812 net. qLPLL7nQdTWB4vQdWG5M5y8f4ZPbOCJT Z1q9EFDU64akdkL7dLYkI4RnoTLY3aEY iR9bh+7ekMeyaULiKC5Ngh6gr/wQWqK9 6itZM5Hpit2RGV40Ke8InhaJPqrm9zXR eMKnaq6wYLhKCyrNVbGCehOpaQ8fiyDj lq6zYdHBLWI=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+net. 900 IN RRSIG SOA 8 1 900 20180503154250 20180426143250 30812 net. Udj3QxjWqnQ5wRzBnmfMNOw7Rs3HLRoh YY9F8ZgYTXzAN1Z5xWPE3vKXt/Sx12ZP 1koSHk9AfzzohmtA+1iBnsDhin+u1SPF 6Ms7oci05Ek8oTYGnpo3hKOShRkOa6xw DBUZly4NqelmgT7w7pxHxpHu2zSNlZ/2 Kx/SANrsuns=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757370 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+nstld.com. IN DNSKEY
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180502050951 20180425035951 36707 com. h3WkpFoV7wkz6nurxShjMi0SsgJpK4hn /CVqbJwP/vVCcBHWjgDTI1SXI7rhWl7i YUZuAiTpsgiWfs2w31sVvzNO1tn0ug4G i/1fRG+PQix38r4tW/1EAVqFD2z56Odx JHDlUr/zeECbOiL13WbwpEVuq7554Mz2 fFbdZ03pwA0=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180430044536 20180423033536 36707 com. pRbzm8BXZ1zYUszHxq2ddS9/Zrr0+2J/ HFHjW8Z7Lvz9qa5H/EJRfzjuEMwYcepd niXVqyiHYtW6yBrFfu1Wpb7CiL74Zhau hPsa81mhGJ41aCrtigM40KX+hMhSAKu3 wKyub7G9+Wjxf1Tqxg37P1SnHZI88xei kVljT1t5hVI=
+nstld.com. 172800 IN NS av1.nstld.com.
+nstld.com. 172800 IN NS av2.nstld.com.
+nstld.com. 172800 IN NS av3.nstld.com.
+nstld.com. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180502050951 20180425035951 36707 com. h3WkpFoV7wkz6nurxShjMi0SsgJpK4hn /CVqbJwP/vVCcBHWjgDTI1SXI7rhWl7i YUZuAiTpsgiWfs2w31sVvzNO1tn0ug4G i/1fRG+PQix38r4tW/1EAVqFD2z56Odx JHDlUr/zeECbOiL13WbwpEVuq7554Mz2 fFbdZ03pwA0=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180430044536 20180423033536 36707 com. pRbzm8BXZ1zYUszHxq2ddS9/Zrr0+2J/ HFHjW8Z7Lvz9qa5H/EJRfzjuEMwYcepd niXVqyiHYtW6yBrFfu1Wpb7CiL74Zhau hPsa81mhGJ41aCrtigM40KX+hMhSAKu3 wKyub7G9+Wjxf1Tqxg37P1SnHZI88xei kVljT1t5hVI=
+com. 900 IN RRSIG SOA 8 1 900 20180503154250 20180426143250 36707 com. gSwy3zwi9F0fLr7OUlYfimKT6iwYFB18 Lxdy31DJpNQItJIbpzjNp8Vzdv8nudgo 79mWtTD2U6l8uMIvCYIG2zrd8aiUsV2I JVQvhaWsya23cH94qAly/dIrMNsl8xN/ Lb9EwljefsXe0815BAobs/2daiscmOqZ 3UOzjId1/NA=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757370 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180502050951 20180425035951 36707 com. h3WkpFoV7wkz6nurxShjMi0SsgJpK4hn /CVqbJwP/vVCcBHWjgDTI1SXI7rhWl7i YUZuAiTpsgiWfs2w31sVvzNO1tn0ug4G i/1fRG+PQix38r4tW/1EAVqFD2z56Odx JHDlUr/zeECbOiL13WbwpEVuq7554Mz2 fFbdZ03pwA0=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180430044536 20180423033536 36707 com. pRbzm8BXZ1zYUszHxq2ddS9/Zrr0+2J/ HFHjW8Z7Lvz9qa5H/EJRfzjuEMwYcepd niXVqyiHYtW6yBrFfu1Wpb7CiL74Zhau hPsa81mhGJ41aCrtigM40KX+hMhSAKu3 wKyub7G9+Wjxf1Tqxg37P1SnHZI88xei kVljT1t5hVI=
+com. 900 IN RRSIG SOA 8 1 900 20180503154235 20180426143235 36707 com. l3iYZ75jeVl+4yPoZPY3bSxbfA409I7g IBHOpAhkNdeyQoOT9/91lk5TlkOXRZRR /J7AULTl6FsK3arwgO9h0fWTITMhx8VZ 6XSPIwd+qqv0On/iyBrBh/+SSfWorQqa XrvFjP8N2xFWxcLysRYwEurPmYfq2ckw I/bqlPSLzwo=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1524757355 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN DNSKEY
+SECTION ANSWER
+com. 86400 IN DNSKEY 256 3 8 AQOz+iBqxZtCKBBqKsO/i9JVchZ2Z1pF CWnj+pFHJi3uPWiYWsAMvtMpInRPfV1O t9m+8nHPxSkvOL2+bttj4jEK6uUfTarE T4wAMSh2k9rX2h+9kVQDjcuRwfFXV5bA mFd3j57hic7FEYVSxXtNUVU7BPaFRHuF r3OrQHQXaR4IeQ==
+com. 86400 IN DNSKEY 257 3 8 AQPDzldNmMvZFX4NcNJ0uEnKDg7tmv/F 3MyQR0lpBmVcNcsIszxNFxsBfKNW9JYC Yqpik8366LE7VbIcNRzfp2h9OO8HRl+H +E08zauK8k7evWEmu/6od+2boggPoiEf GNyvNPaSI7FOIroDsnw/taggzHRX1Z7S OiOiPWPNIwSUyWOZ79VmcQ1GLkC6NlYv G3HwYmynQv6oFwGv/KELSw7ZSdrbTQ0H XvZbqMUI7BaMskmvgm1G7oKZ1YiF7O9i oVNc0+7ASbqmZN7Z98EGU/Qh2K/BgUe8 Hs0XVcdPKrtyYnoQHd2ynKPcMMlTEih2 /2HDHjRPJ2aywIpKNnv4oPo/
+com. 86400 IN RRSIG DNSKEY 8 1 86400 20180502182533 20180417182033 30909 com. AficdOuuxYh3TJZyb+KTvZsAAcxzYbeK WkriskB/2UXowTyyAEmCBQCpngDSw1oL CqwjY9SR9PeJVWSfEXng9kbnrLGj4/C1 foMcg3eR8LCKEqaQK+pzZ09abMiDlD9b Muez+dbM24XQr1CHCZyUzgZ+WXXn0uOA IU4eMTQHO7veGwTdWHbC6aVcoIoXo+C6 kzoAv6cDYxVnKPpIz9+iakJW1PrPI2bm /0kHvoMp+Jt919Ea1+50ovAgud4zEPCQ l6jFkHmdblVcFLmCJyWFllEQqockEveu wgd5W/06eJrHV3KfSZyJI0juXJlWrqKy 5uKbUn1vls7kzijlBrYqTw==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN DNSKEY
+SECTION ANSWER
+net. 86400 IN DNSKEY 256 3 8 AQPKhstFAPpY3Ax3eSTVLU0EyQya3nsc pafihLl44gw7cLmFoDAAeKGZ2VFeJQ5V FuZApoqTbLboJuCx/Hi/3svu/uIov2qd FKB036tTgbkQxLqo7nXH9+H7D3VW/zRs Vy+PC0i2cFDwZQt2PS/DmiEyoI0TqA4l 6tDXZJnoeX0fmQ==
+net. 86400 IN DNSKEY 257 3 8 AQOYBnzqWXIEj6mlgXg4LWC0HP2n8eK8 XqgHlmJ/69iuIHsa1TrHDG6TcOra/pye GKwH0nKZhTmXSuUFGh9BCNiwVDuyyb6O BGy2Nte9Kr8NwWg4q+zhSoOf4D+gC9dE zg0yFdwT0DKEvmNPt0K4jbQDS4Yimb+u PKuF6yieWWrPYYCrv8C9KC8JMze2uT6N uWBfsl2fDUoV4l65qMww06D7n+p7Rbdw WkAZ0fA63mXVXBZF6kpDtsYD7SUB9jhh fLQE/r85bvg3FaSs5Wi2BaqN06SzGWI1 DHu7axthIOeHwg00zxlhTpoYCH0ldoQz +S65zWYi/fRJiyLSBb6JZOvn
+net. 86400 IN RRSIG DNSKEY 8 1 86400 20180510153857 20180425153357 35886 net. AHqaDlb3NXckMYLKeTP7BrcP8DQ88LwA uGwY/2RvYjqCAFKZQSPlPTevXJgJ5V6g ups0KFkp1yODSIV7CqMFstiYdiD5LsGi WqHjWB4Rgu0CMNxFPzkeu8Jk9RCPkAlG sTEZt/kZy6kZjxACmcpmxrr7xuRTB4Ee jWR/MItBZVEhXIVYa87ueee7xHXPAHyx 03TbQ+ESYjzo0Te4W9TNi5p6q1sHTBrn HDlb5MghdBIzrh0cf/AZ/KZVshmMv2C2 zFVyO3AcO85Bh3l2O37apDp85r/9NYdY TXNG32NTMnLUCdczUa0ccZKVVXBjhIO5 onKb66xiH7+S+sZ6aUAZFQ==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN NS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430051808 20180423040808 30812 net. qLPLL7nQdTWB4vQdWG5M5y8f4ZPbOCJT Z1q9EFDU64akdkL7dLYkI4RnoTLY3aEY iR9bh+7ekMeyaULiKC5Ngh6gr/wQWqK9 6itZM5Hpit2RGV40Ke8InhaJPqrm9zXR eMKnaq6wYLhKCyrNVbGCehOpaQ8fiyDj lq6zYdHBLWI=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+gtld-servers.net. 172800 IN NS av1.nstld.com.
+gtld-servers.net. 172800 IN NS av2.nstld.com.
+gtld-servers.net. 172800 IN NS av3.nstld.com.
+gtld-servers.net. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180430052536 20180423041536 30812 net. AWPJcnGrsCTNeHVDP5XesOEI+OgHrd9d 9eSmGREMyJAkkrGTko6efrEFJ2jVRW2S 2dGddal2cmIWmDo2hJebpdlzMaCo/g7T rMDXmTxHNGFlEgV88ac2L/AD5/leRbhO zGtmSZV4zRl7PfWra4J6N4ORKO8IyRaQ kmYVe52LsNM=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180502051911 20180425040911 30812 net. dLmmU1BT1C3ohY0qFpiq3ZLxBIJIItdY UmYT6Wp0w0KQY0Y9kbXD8fCHusHgWUmm 2MeXoYj1SgL0tVqm6xGqQwEs3HAi1odw Ywuxy5Ymfq16BH7ZTI7MTTIW+OF9LV+w kyRvnfVXCDGA3Kky4gI3LlEMrrnCwLTF YfjD7xS/dy4=
+root-servers.net. 172800 IN NS a.root-servers.net.
+root-servers.net. 172800 IN NS b.root-servers.net.
+root-servers.net. 172800 IN NS c.root-servers.net.
+root-servers.net. 172800 IN NS d.root-servers.net.
+root-servers.net. 172800 IN NS e.root-servers.net.
+root-servers.net. 172800 IN NS f.root-servers.net.
+root-servers.net. 172800 IN NS g.root-servers.net.
+root-servers.net. 172800 IN NS h.root-servers.net.
+root-servers.net. 172800 IN NS i.root-servers.net.
+root-servers.net. 172800 IN NS j.root-servers.net.
+root-servers.net. 172800 IN NS k.root-servers.net.
+root-servers.net. 172800 IN NS l.root-servers.net.
+root-servers.net. 172800 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 172800 IN A 198.41.0.4
+a.root-servers.net. 172800 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 172800 IN A 199.9.14.201
+b.root-servers.net. 172800 IN AAAA 2001:500:200::b
+c.root-servers.net. 172800 IN A 192.33.4.12
+c.root-servers.net. 172800 IN AAAA 2001:500:2::c
+d.root-servers.net. 172800 IN A 199.7.91.13
+d.root-servers.net. 172800 IN AAAA 2001:500:2d::d
+e.root-servers.net. 172800 IN A 192.203.230.10
+e.root-servers.net. 172800 IN AAAA 2001:500:a8::e
+f.root-servers.net. 172800 IN A 192.5.5.241
+f.root-servers.net. 172800 IN AAAA 2001:500:2f::f
+g.root-servers.net. 172800 IN A 192.112.36.4
+g.root-servers.net. 172800 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 172800 IN A 198.97.190.53
+h.root-servers.net. 172800 IN AAAA 2001:500:1::53
+i.root-servers.net. 172800 IN A 192.36.148.17
+i.root-servers.net. 172800 IN AAAA 2001:7fe::53
+j.root-servers.net. 172800 IN A 192.58.128.30
+j.root-servers.net. 172800 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 172800 IN A 193.0.14.129
+k.root-servers.net. 172800 IN AAAA 2001:7fd::1
+l.root-servers.net. 172800 IN A 199.7.83.42
+l.root-servers.net. 172800 IN AAAA 2001:500:9f::42
+m.root-servers.net. 172800 IN A 202.12.27.33
+m.root-servers.net. 172800 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+nstld.com. IN NS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180502050951 20180425035951 36707 com. h3WkpFoV7wkz6nurxShjMi0SsgJpK4hn /CVqbJwP/vVCcBHWjgDTI1SXI7rhWl7i YUZuAiTpsgiWfs2w31sVvzNO1tn0ug4G i/1fRG+PQix38r4tW/1EAVqFD2z56Odx JHDlUr/zeECbOiL13WbwpEVuq7554Mz2 fFbdZ03pwA0=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180430044536 20180423033536 36707 com. pRbzm8BXZ1zYUszHxq2ddS9/Zrr0+2J/ HFHjW8Z7Lvz9qa5H/EJRfzjuEMwYcepd niXVqyiHYtW6yBrFfu1Wpb7CiL74Zhau hPsa81mhGJ41aCrtigM40KX+hMhSAKu3 wKyub7G9+Wjxf1Tqxg37P1SnHZI88xei kVljT1t5hVI=
+nstld.com. 172800 IN NS av1.nstld.com.
+nstld.com. 172800 IN NS av2.nstld.com.
+nstld.com. 172800 IN NS av3.nstld.com.
+nstld.com. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN NS
+SECTION ANSWER
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 172800 IN RRSIG NS 8 1 172800 20180430044536 20180423033536 36707 com. a5+WasLEgt7s9k3/fllEucCkPxHkzfQg gl7d3gATj6h/I9bcaqXDaCrARQWCjYdN zlhQ2WYTkjFt1F67C9u/wVMBqUPN3UlQ lBcjuTqgh6EdgiQCxAUzKcmL3Lvuu2BJ qwBqXzwxUN9dG9XrtYNl/D1PcMdAldjl OCCiurfA3+Y=
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION ANSWER
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 172800 IN RRSIG NS 8 1 172800 20180502052359 20180425041359 30812 net. QOuGDzJAadIJ/82N5+JmXUnxzheMs96/ cCdMjEdOBE2pPXeHrG/oKNVHe6Twjihi f9WN5gXF+5PNyCRoHvRhwdK4iodQJZPn ex0jspDbNwb31BS2NxWRf2cKqhB1KWXx S9846jT3wPTHORAx8NHu9GHJxpimU3wT atKAzqWNm6s=
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: av4.nstld.com. Actual ip: 192.82.134.30
+; av1.nstld.com.
+; av2.nstld.com.
+; av3.nstld.com.
+RANGE_BEGIN 0 1000
+	ADDRESS 192.82.134.30
+	ADDRESS 192.42.177.30
+	ADDRESS 192.42.178.30
+	ADDRESS 192.82.133.30
+	ADDRESS 2001:500:124::30
+	ADDRESS 2001:500:125::30
+	ADDRESS 2001:500:126::30
+	ADDRESS 2001:500:127::30
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN A
+SECTION ANSWER
+a.gtld-servers.net. 86400 IN A 192.5.6.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN AAAA
+SECTION ANSWER
+a.gtld-servers.net. 86400 IN AAAA 2001:503:a83e::2:30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN A
+SECTION ANSWER
+j.gtld-servers.net. 86400 IN A 192.48.79.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN AAAA
+SECTION ANSWER
+j.gtld-servers.net. 86400 IN AAAA 2001:502:7094::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN A
+SECTION ANSWER
+e.gtld-servers.net. 86400 IN A 192.12.94.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN AAAA
+SECTION ANSWER
+e.gtld-servers.net. 86400 IN AAAA 2001:502:1ca1::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN A
+SECTION ANSWER
+i.gtld-servers.net. 86400 IN A 192.43.172.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN AAAA
+SECTION ANSWER
+i.gtld-servers.net. 86400 IN AAAA 2001:503:39c1::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN A
+SECTION ANSWER
+d.gtld-servers.net. 86400 IN A 192.31.80.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN AAAA
+SECTION ANSWER
+d.gtld-servers.net. 86400 IN AAAA 2001:500:856e::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN A
+SECTION ANSWER
+m.gtld-servers.net. 86400 IN A 192.55.83.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN AAAA
+SECTION ANSWER
+m.gtld-servers.net. 86400 IN AAAA 2001:501:b1f9::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN A
+SECTION ANSWER
+h.gtld-servers.net. 86400 IN A 192.54.112.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN AAAA
+SECTION ANSWER
+h.gtld-servers.net. 86400 IN AAAA 2001:502:8cc::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN A
+SECTION ANSWER
+c.gtld-servers.net. 86400 IN A 192.26.92.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN AAAA
+SECTION ANSWER
+c.gtld-servers.net. 86400 IN AAAA 2001:503:83eb::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN A
+SECTION ANSWER
+l.gtld-servers.net. 86400 IN A 192.41.162.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN AAAA
+SECTION ANSWER
+l.gtld-servers.net. 86400 IN AAAA 2001:500:d937::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN A
+SECTION ANSWER
+g.gtld-servers.net. 86400 IN A 192.42.93.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN AAAA
+SECTION ANSWER
+g.gtld-servers.net. 86400 IN AAAA 2001:503:eea3::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN A
+SECTION ANSWER
+b.gtld-servers.net. 86400 IN A 192.33.14.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN AAAA
+SECTION ANSWER
+b.gtld-servers.net. 86400 IN AAAA 2001:503:231d::2:30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN A
+SECTION ANSWER
+k.gtld-servers.net. 86400 IN A 192.52.178.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN AAAA
+SECTION ANSWER
+k.gtld-servers.net. 86400 IN AAAA 2001:503:d2d::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN A
+SECTION ANSWER
+f.gtld-servers.net. 86400 IN A 192.35.51.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN AAAA
+SECTION ANSWER
+f.gtld-servers.net. 86400 IN AAAA 2001:503:d414::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN A
+SECTION ANSWER
+av1.nstld.com. 300 IN A 192.42.177.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN AAAA
+SECTION ANSWER
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN A
+SECTION ANSWER
+av2.nstld.com. 300 IN A 192.42.178.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN AAAA
+SECTION ANSWER
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN A
+SECTION ANSWER
+av3.nstld.com. 300 IN A 192.82.133.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN AAAA
+SECTION ANSWER
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN A
+SECTION ANSWER
+av4.nstld.com. 300 IN A 192.82.134.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN AAAA
+SECTION ANSWER
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018021600 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN NS
+SECTION ANSWER
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN NS
+SECTION ANSWER
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+RANGE_END
+
+
+
+; Sequence of queries made by browser
+
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD AD
+SECTION QUESTION
+www.nrl.navy.mil. IN A
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.nrl.navy.mil. IN A
+SECTION ANSWER
+www.nrl.navy.mil. 3108 IN A 132.250.5.100
+ENTRY_END
+
+SCENARIO_END
