@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 import glob
 import os
 import re
@@ -6,6 +6,29 @@ import yaml
 
 
 Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
+
+
+def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+    """Make YaML load to OrderedDict.
+    This is done to ensure compability with Python versions prior to 3.6.
+    See docs.python.org/3.6/whatsnew/3.6.html#new-dict-implementation for more information.
+
+    repr(config) is a part of testcase's name in pytest.
+    We need to ensure that it is ordered in the same way.
+    See https://github.com/pytest-dev/pytest/issues/1075.
+    """
+    class OrderedLoader(Loader):
+        pass
+
+    def construct_mapping(loader, node):
+        loader.flatten_mapping(node)
+        return object_pairs_hook(loader.construct_pairs(node))
+
+    OrderedLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+        construct_mapping)
+
+    return yaml.load(stream, OrderedLoader)
 
 
 def config_sanity_check(config_dict, config_name):
@@ -49,7 +72,7 @@ def scenarios(paths, configs):
     scenario_list = []
 
     for path, config in zip(paths, configs):
-        config_dict = yaml.safe_load(open(config))
+        config_dict = ordered_load(open(config), yaml.SafeLoader)
         config_sanity_check(config_dict, config)
 
         if os.path.isfile(path):
