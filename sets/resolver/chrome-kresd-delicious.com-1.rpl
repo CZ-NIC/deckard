@@ -1,0 +1,5093 @@
+	trust-anchor: ". IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5"
+	trust-anchor: ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D"
+	val-override-date: 20180509151948
+	stub-addr: 192.112.36.4
+CONFIG_END
+
+SCENARIO_BEGIN chrome-kresd-delicious.com-1.pcap
+
+
+; Server name: g.root-servers.net. Actual ip: 192.112.36.4
+; a.root-servers.net.
+; b.root-servers.net.
+; c.root-servers.net.
+; d.root-servers.net.
+; e.root-servers.net.
+; f.root-servers.net.
+; h.root-servers.net.
+; i.root-servers.net.
+; j.root-servers.net.
+; k.root-servers.net.
+; l.root-servers.net.
+; m.root-servers.net.
+RANGE_BEGIN 0 1000
+	ADDRESS 192.112.36.4
+	ADDRESS 192.203.230.10
+	ADDRESS 192.33.4.12
+	ADDRESS 192.36.148.17
+	ADDRESS 192.5.5.241
+	ADDRESS 192.58.128.30
+	ADDRESS 193.0.14.129
+	ADDRESS 198.41.0.4
+	ADDRESS 198.97.190.53
+	ADDRESS 199.7.83.42
+	ADDRESS 199.7.91.13
+	ADDRESS 199.9.14.201
+	ADDRESS 2001:500:12::d0d
+	ADDRESS 2001:500:1::53
+	ADDRESS 2001:500:200::b
+	ADDRESS 2001:500:2::c
+	ADDRESS 2001:500:2d::d
+	ADDRESS 2001:500:2f::f
+	ADDRESS 2001:500:9f::42
+	ADDRESS 2001:500:a8::e
+	ADDRESS 2001:503:ba3e::2:30
+	ADDRESS 2001:503:c27::2:30
+	ADDRESS 2001:7fd::1
+	ADDRESS 2001:7fe::53
+	ADDRESS 2001:dc3::35
+	ADDRESS 202.12.27.33
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+. IN NS
+SECTION ANSWER
+. 518400 IN NS a.root-servers.net.
+. 518400 IN NS b.root-servers.net.
+. 518400 IN NS c.root-servers.net.
+. 518400 IN NS d.root-servers.net.
+. 518400 IN NS e.root-servers.net.
+. 518400 IN NS f.root-servers.net.
+. 518400 IN NS g.root-servers.net.
+. 518400 IN NS h.root-servers.net.
+. 518400 IN NS i.root-servers.net.
+. 518400 IN NS j.root-servers.net.
+. 518400 IN NS k.root-servers.net.
+. 518400 IN NS l.root-servers.net.
+. 518400 IN NS m.root-servers.net.
+. 518400 IN RRSIG NS 8 0 518400 20180522050000 20180509040000 39570 . FjMW9Ti3whrbl1Yu8W2+878/QZjyRENj 6yuR198q+8dh+WQO+anTHHqX5UIuDB67 vm7hZRsgSH8cQw8VU9g2agsKXAjQdFR8 hVo77s+0mW8UcH2aQ3xjZ6uIPqeI19SB m0BjwuzGUxF15Jl5b0oqL4oaz73PyB1M 9B5+RMnkxKMplOsLy/AMi35B1HukSZM9 5E/imSPAl8w7ZiXMnxmhGJnnTgq6YIv1 cCGFPzB/0dJeg+vPzMQSuRnXraaigzYG eSIYUcuCEMo/FxHpOq+8wLehXjxs6gIT 8C6euhZ1j71mwSfJ4Milg21DNcpilQo2 3UYdnq10svmN0aVbhDUAZg==
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+. IN DNSKEY
+SECTION ANSWER
+. 172800 IN DNSKEY 256 3 8 AwEAAdU4aKlDgEpXWWpH5aXHJZI1Vm9C m42mGAsqkz3akFctS6zsZHC3pNNMug99 fKa7OW+tRHIwZEc//mX8Jt6bcw5bPgRH G6u2eT8vUpbXDPVs1ICGR6FhlwFWEOyx bIIiDfd7Eq6eALk5RNcauyE+/ZP+Vdrh WZDeEWZRrPBLjByBWTHl+v/f+xvTJ3St cq2tEqnzS2CCOr6RTJepprYhu+5Yl6aR ZmEVBK27WCW1Zrk1LekJvJXfcyKSKk19 C5M5JWX58px6nB1IS0pMs6aCIK2yaQQV NUEg9XyQzBSv/rMxVNNy3VAqOjvh+OAS pLMm4GECbSSe8jtjwG0I78sfMZc=
+. 172800 IN DNSKEY 257 3 8 AwEAAagAIKlVZrpC6Ia7gEzahOR+9W29 euxhJhVVLOyQbSEW0O8gcCjFFVQUTf6v 58fLjwBd0YI0EzrAcQqBGCzh/RStIoO8 g0NfnfL2MTJRkxoXbfDaUeVPQuYEhg37 NZWAJQ9VnMVDxP/VHL496M/QZxkjf5/E fucp2gaDX6RS6CXpoY68LsvPVjR0ZSwz z1apAzvN9dlzEheX7ICJBBtuA6G3LQpz W5hOA2hzCTMjJPJ8LbqF6dsV6DoBQzgu l0sGIcGOYl7OyQdXfZ57relSQageu+ip AdTTJ25AsRTAoub8ONGcLmqrAmRLKBP1 dfwhYB4N7knNnulqQxA+Uk1ihz0=
+. 172800 IN DNSKEY 257 3 8 AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexT BAvkMgJzkKTOiW1vkIbzxeF3+/4RgWOq 7HrxRixHlFlExOLAJr5emLvN7SWXgnLh 4+B5xQlNVz8Og8kvArMtNROxVQuCaSnI DdD5LKyWbRd2n9WGe2R8PzgCmr3EgVLr jyBxWezF0jLHwVN8efS3rCj/EWgvIWgb 9tarpVUDK/b58Da+sqqls3eNbuv7pr+e oZG+SrDK6nWeL3c6H5Apxz7LjVc1uTId sIXxuOLYA4/ilBmSVIzuDWfdRUfhHdY6 +cn8HFRm+2hM8AnXGXws9555KrUB5qih ylGa8subX2Nn6UwNR1AkUTV74bU=
+. 172800 IN RRSIG DNSKEY 8 0 172800 20180522000000 20180501000000 19036 . Mm2wIV8upZjOWo79vGEihnNLCPHTLzO9 7K4whKutzbCJH0UgcO8w3D8h0zfS/nj6 kHtBhUeM9ias+wLRhJsl8D8cok04pJ83 e/1Hg5+IS4qY7u08SFf8wuolbLhcX++G 8JfOWP4iqwGG01W1HXUlZ65aYiOIAxQc maj6K8wq/KTK6Vz2ftczpuNi7KkOHphn ElBPlyxPW5yKTRzOnDVpmJtdJv2LrzC1 aH3pYJIVHHb/C2Wikko5iVZMmF8RDF+T kKJukwurUcpprWOp44PrtcB4CAJXKR1D PJnQ4owEEb2VJWpWM7hN93z+zGNrNbSN 9X/q2GVPEjaPmsNbU4yoLg==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+com. IN DNSKEY
+SECTION AUTHORITY
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . DL5Xmi/SL5u5MZApANFbWZZo229m22hJ VeZbW/VCCbOYomcX7WEFUAWo48tFnkxZ dWoPthvdUgLkRTus+4dBoUgNe0arFwu5 wAu86tkgA0dUA9GZGR6w/5uziA1lvgAa 1yygIpJkV3oSXrPW8prLxDeFKiWyK3qG ZwkJxcbEHLWyQLAJp0s5xQQ/plfU8PKm LL0s7+GG8VoZbM/19bvg6/DsQllYQWh7 R0VTtMFKY2zgwSMuI+d38qm1fmmf3R6g uXEvA6Qxqjs8mABS9n+KYgNcZmcFr9S/ CSSptRYd0/ggKxDy9fQT/wyJ67kqWPkd +Av7B1XM+9RqvICEEdrqTg==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN DS
+SECTION ANSWER
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . DL5Xmi/SL5u5MZApANFbWZZo229m22hJ VeZbW/VCCbOYomcX7WEFUAWo48tFnkxZ dWoPthvdUgLkRTus+4dBoUgNe0arFwu5 wAu86tkgA0dUA9GZGR6w/5uziA1lvgAa 1yygIpJkV3oSXrPW8prLxDeFKiWyK3qG ZwkJxcbEHLWyQLAJp0s5xQQ/plfU8PKm LL0s7+GG8VoZbM/19bvg6/DsQllYQWh7 R0VTtMFKY2zgwSMuI+d38qm1fmmf3R6g uXEvA6Qxqjs8mABS9n+KYgNcZmcFr9S/ CSSptRYd0/ggKxDy9fQT/wyJ67kqWPkd +Av7B1XM+9RqvICEEdrqTg==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN A
+SECTION ANSWER
+f.root-servers.net. 3600000 IN A 192.5.5.241
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+net. IN DNSKEY
+SECTION AUTHORITY
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . qexNIZkzqmz1zm4GggQ0NQIN9/nsoaVd m5CqGzkY4pLDbVwHq494ni1kFdu3aldQ /f92s+a+IdtakXA0xdAkKmd0Gvfpvzq8 my10emvR8gXM9QZ9z4kXtig+pwpgfGIC zXl/6wyfhmup6iDGp75TWqSfbb5jb8jZ Q6TWk/fL8VVO5Iu/kgruImimvViwcYEj 6BqAH/DkhfF0++57skE2s1hgaCSTv81U we1/WAW0TB8iVmH+XJkZKr6BHD1uQchX Crih5eIrwWvqTKikL8AjRxiJvXX5jaAs CCYKz51H6vXB5dpxG5oe3uMrVXSPpZIg 4Lqu/wR+d8fuPVyKt/oE7w==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN DS
+SECTION ANSWER
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . qexNIZkzqmz1zm4GggQ0NQIN9/nsoaVd m5CqGzkY4pLDbVwHq494ni1kFdu3aldQ /f92s+a+IdtakXA0xdAkKmd0Gvfpvzq8 my10emvR8gXM9QZ9z4kXtig+pwpgfGIC zXl/6wyfhmup6iDGp75TWqSfbb5jb8jZ Q6TWk/fL8VVO5Iu/kgruImimvViwcYEj 6BqAH/DkhfF0++57skE2s1hgaCSTv81U we1/WAW0TB8iVmH+XJkZKr6BHD1uQchX Crih5eIrwWvqTKikL8AjRxiJvXX5jaAs CCYKz51H6vXB5dpxG5oe3uMrVXSPpZIg 4Lqu/wR+d8fuPVyKt/oE7w==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.root-servers.net. IN AAAA
+SECTION ANSWER
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN A
+SECTION ANSWER
+a.root-servers.net. 3600000 IN A 198.41.0.4
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.root-servers.net. IN AAAA
+SECTION ANSWER
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN A
+SECTION ANSWER
+j.root-servers.net. 3600000 IN A 192.58.128.30
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.root-servers.net. IN AAAA
+SECTION ANSWER
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN A
+SECTION ANSWER
+e.root-servers.net. 3600000 IN A 192.203.230.10
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.root-servers.net. IN AAAA
+SECTION ANSWER
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN A
+SECTION ANSWER
+i.root-servers.net. 3600000 IN A 192.36.148.17
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.root-servers.net. IN AAAA
+SECTION ANSWER
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN A
+SECTION ANSWER
+d.root-servers.net. 3600000 IN A 199.7.91.13
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.root-servers.net. IN AAAA
+SECTION ANSWER
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN A
+SECTION ANSWER
+m.root-servers.net. 3600000 IN A 202.12.27.33
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.root-servers.net. IN AAAA
+SECTION ANSWER
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN A
+SECTION ANSWER
+h.root-servers.net. 3600000 IN A 198.97.190.53
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.root-servers.net. IN AAAA
+SECTION ANSWER
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN A
+SECTION ANSWER
+c.root-servers.net. 3600000 IN A 192.33.4.12
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.root-servers.net. IN AAAA
+SECTION ANSWER
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN A
+SECTION ANSWER
+l.root-servers.net. 3600000 IN A 199.7.83.42
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.root-servers.net. IN AAAA
+SECTION ANSWER
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN A
+SECTION ANSWER
+g.root-servers.net. 3600000 IN A 192.112.36.4
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.root-servers.net. IN AAAA
+SECTION ANSWER
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN A
+SECTION ANSWER
+b.root-servers.net. 3600000 IN A 199.9.14.201
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.root-servers.net. IN AAAA
+SECTION ANSWER
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN A
+SECTION ANSWER
+k.root-servers.net. 3600000 IN A 193.0.14.129
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN NS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN DS
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.root-servers.net. IN AAAA
+SECTION ANSWER
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+SECTION AUTHORITY
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+root-servers.net. 3600000 IN SOA a.root-servers.net. nstld.verisign-grs.com. 2018050800 14400 7200 1209600 3600000
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION ANSWER
+root-servers.net. 3600000 IN NS a.root-servers.net.
+root-servers.net. 3600000 IN NS b.root-servers.net.
+root-servers.net. 3600000 IN NS c.root-servers.net.
+root-servers.net. 3600000 IN NS d.root-servers.net.
+root-servers.net. 3600000 IN NS e.root-servers.net.
+root-servers.net. 3600000 IN NS f.root-servers.net.
+root-servers.net. 3600000 IN NS g.root-servers.net.
+root-servers.net. 3600000 IN NS h.root-servers.net.
+root-servers.net. 3600000 IN NS i.root-servers.net.
+root-servers.net. 3600000 IN NS j.root-servers.net.
+root-servers.net. 3600000 IN NS k.root-servers.net.
+root-servers.net. 3600000 IN NS l.root-servers.net.
+root-servers.net. 3600000 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 3600000 IN A 198.41.0.4
+a.root-servers.net. 3600000 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 3600000 IN A 199.9.14.201
+b.root-servers.net. 3600000 IN AAAA 2001:500:200::b
+c.root-servers.net. 3600000 IN A 192.33.4.12
+c.root-servers.net. 3600000 IN AAAA 2001:500:2::c
+d.root-servers.net. 3600000 IN A 199.7.91.13
+d.root-servers.net. 3600000 IN AAAA 2001:500:2d::d
+e.root-servers.net. 3600000 IN A 192.203.230.10
+e.root-servers.net. 3600000 IN AAAA 2001:500:a8::e
+f.root-servers.net. 3600000 IN A 192.5.5.241
+f.root-servers.net. 3600000 IN AAAA 2001:500:2f::f
+g.root-servers.net. 3600000 IN A 192.112.36.4
+g.root-servers.net. 3600000 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 3600000 IN A 198.97.190.53
+h.root-servers.net. 3600000 IN AAAA 2001:500:1::53
+i.root-servers.net. 3600000 IN A 192.36.148.17
+i.root-servers.net. 3600000 IN AAAA 2001:7fe::53
+j.root-servers.net. 3600000 IN A 192.58.128.30
+j.root-servers.net. 3600000 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 3600000 IN A 193.0.14.129
+k.root-servers.net. 3600000 IN AAAA 2001:7fd::1
+l.root-servers.net. 3600000 IN A 199.7.83.42
+l.root-servers.net. 3600000 IN AAAA 2001:500:9f::42
+m.root-servers.net. 3600000 IN A 202.12.27.33
+m.root-servers.net. 3600000 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION AUTHORITY
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 86400 IN DS 35886 8 2 7862b27f5f516ebe19680444d4ce5e762981931842c465f00236401d8bd973ee
+net. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . qexNIZkzqmz1zm4GggQ0NQIN9/nsoaVd m5CqGzkY4pLDbVwHq494ni1kFdu3aldQ /f92s+a+IdtakXA0xdAkKmd0Gvfpvzq8 my10emvR8gXM9QZ9z4kXtig+pwpgfGIC zXl/6wyfhmup6iDGp75TWqSfbb5jb8jZ Q6TWk/fL8VVO5Iu/kgruImimvViwcYEj 6BqAH/DkhfF0++57skE2s1hgaCSTv81U we1/WAW0TB8iVmH+XJkZKr6BHD1uQchX Crih5eIrwWvqTKikL8AjRxiJvXX5jaAs CCYKz51H6vXB5dpxG5oe3uMrVXSPpZIg 4Lqu/wR+d8fuPVyKt/oE7w==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+com. IN NS
+SECTION AUTHORITY
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 86400 IN DS 30909 8 2 e2d3c916f6deeac73294e8268fb5885044a833fc5459588f4a9184cfc41a5766
+com. 86400 IN RRSIG DS 8 1 86400 20180522050000 20180509040000 39570 . DL5Xmi/SL5u5MZApANFbWZZo229m22hJ VeZbW/VCCbOYomcX7WEFUAWo48tFnkxZ dWoPthvdUgLkRTus+4dBoUgNe0arFwu5 wAu86tkgA0dUA9GZGR6w/5uziA1lvgAa 1yygIpJkV3oSXrPW8prLxDeFKiWyK3qG ZwkJxcbEHLWyQLAJp0s5xQQ/plfU8PKm LL0s7+GG8VoZbM/19bvg6/DsQllYQWh7 R0VTtMFKY2zgwSMuI+d38qm1fmmf3R6g uXEvA6Qxqjs8mABS9n+KYgNcZmcFr9S/ CSSptRYd0/ggKxDy9fQT/wyJ67kqWPkd +Av7B1XM+9RqvICEEdrqTg==
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: c.gtld-servers.net. Actual ip: 192.26.92.30
+; a.gtld-servers.net.
+; b.gtld-servers.net.
+; d.gtld-servers.net.
+; e.gtld-servers.net.
+; f.gtld-servers.net.
+; g.gtld-servers.net.
+; h.gtld-servers.net.
+; i.gtld-servers.net.
+; j.gtld-servers.net.
+; k.gtld-servers.net.
+; l.gtld-servers.net.
+; m.gtld-servers.net.
+RANGE_BEGIN 0 1000
+	ADDRESS 192.26.92.30
+	ADDRESS 192.12.94.30
+	ADDRESS 192.31.80.30
+	ADDRESS 192.33.14.30
+	ADDRESS 192.35.51.30
+	ADDRESS 192.41.162.30
+	ADDRESS 192.42.93.30
+	ADDRESS 192.43.172.30
+	ADDRESS 192.48.79.30
+	ADDRESS 192.5.6.30
+	ADDRESS 192.52.178.30
+	ADDRESS 192.54.112.30
+	ADDRESS 192.55.83.30
+	ADDRESS 2001:500:856e::30
+	ADDRESS 2001:500:d937::30
+	ADDRESS 2001:501:b1f9::30
+	ADDRESS 2001:502:1ca1::30
+	ADDRESS 2001:502:7094::30
+	ADDRESS 2001:502:8cc::30
+	ADDRESS 2001:503:231d::2:30
+	ADDRESS 2001:503:39c1::30
+	ADDRESS 2001:503:83eb::30
+	ADDRESS 2001:503:a83e::2:30
+	ADDRESS 2001:503:d2d::30
+	ADDRESS 2001:503:d414::30
+	ADDRESS 2001:503:eea3::30
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+google.com. IN DNSKEY
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN NSEC3 1 1 0 - s84cefmdu6abfsn4v0l2vlloascd5iv2 NS DS RRSIG
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513051411 20180506040411 36707 com. kQVTehhrmgeTzalwPVhWotamwKGxGb5V uGsm/T+FGU5pxaSNcutQ+YXIuukidbNu mZGDv7p8hKNWy3C+RZ/o6Cm5puaxwslS BXL8jOiXau7uOnIbqFFN2pWrCsQcBUfX DTZg+mpUBk2DFPV7Ny+QZXnAAzfthbmu 0L9sD+VATBs=
+google.com. 172800 IN NS ns1.google.com.
+google.com. 172800 IN NS ns2.google.com.
+google.com. 172800 IN NS ns3.google.com.
+google.com. 172800 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 172800 IN A 216.239.32.10
+ns1.google.com. 172800 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 172800 IN A 216.239.34.10
+ns2.google.com. 172800 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 172800 IN A 216.239.36.10
+ns3.google.com. 172800 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 172800 IN A 216.239.38.10
+ns4.google.com. 172800 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+google.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN NSEC3 1 1 0 - s84cefmdu6abfsn4v0l2vlloascd5iv2 NS DS RRSIG
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513051411 20180506040411 36707 com. kQVTehhrmgeTzalwPVhWotamwKGxGb5V uGsm/T+FGU5pxaSNcutQ+YXIuukidbNu mZGDv7p8hKNWy3C+RZ/o6Cm5puaxwslS BXL8jOiXau7uOnIbqFFN2pWrCsQcBUfX DTZg+mpUBk2DFPV7Ny+QZXnAAzfthbmu 0L9sD+VATBs=
+com. 900 IN RRSIG SOA 8 1 900 20180516131657 20180509120657 36707 com. FjtkgzLg2h3Ce8gk8Cn+3EJm4CXHLYsk YVO9EHDQLE8CXGPgXgOyhrrR2nL5NgRK iQAAX7UADSVZeK5UHouDKiTPegF+ryAm I48NDWwEqGEtXjhi3tMtSagec2vd+bnT C0ghC06h4ZwD4+pga4lPFSg+/d0KPuf1 8P55r7ldQ5g=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871817 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+gstatic.com. IN DNSKEY
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN NSEC3 1 1 0 - lf7269mage03ekmtqm8lcd6frh27jtg6 NS DS RRSIG
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516050256 20180509035256 36707 com. XPr+JvrYgcc2CYdMfa/tmpnZj6bCEf4c E61iXKYGXyxgb+V0xkTzlRept1rbJP8Q ZgdnvkSnVKFO/TP++OuSDFzIHaO/huaa 5e5xfdy/WR3XhH73r+MslU0vxfXKuoVY EDc6iuxWduWtJwZXykiXE49bxZjn5UWG Tc6mIz+RBpo=
+gstatic.com. 172800 IN NS ns1.google.com.
+gstatic.com. 172800 IN NS ns2.google.com.
+gstatic.com. 172800 IN NS ns3.google.com.
+gstatic.com. 172800 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 172800 IN A 216.239.32.10
+ns1.google.com. 172800 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 172800 IN A 216.239.34.10
+ns2.google.com. 172800 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 172800 IN A 216.239.36.10
+ns3.google.com. 172800 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 172800 IN A 216.239.38.10
+ns4.google.com. 172800 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gstatic.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN NSEC3 1 1 0 - lf7269mage03ekmtqm8lcd6frh27jtg6 NS DS RRSIG
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516050256 20180509035256 36707 com. XPr+JvrYgcc2CYdMfa/tmpnZj6bCEf4c E61iXKYGXyxgb+V0xkTzlRept1rbJP8Q ZgdnvkSnVKFO/TP++OuSDFzIHaO/huaa 5e5xfdy/WR3XhH73r+MslU0vxfXKuoVY EDc6iuxWduWtJwZXykiXE49bxZjn5UWG Tc6mIz+RBpo=
+com. 900 IN RRSIG SOA 8 1 900 20180516131712 20180509120712 36707 com. qYKnvjWXsp9E7fFKEqAqr2cL+JprHNI7 09VVvSLFA0/yB9NBYo22LHaXI7L1DhRf 5MIMu8fOALFYkABEEz/M2cHEWJH1oRGs iMqCrAGiJu3Ywy5aMSfK0DhKlER7DL3/ Gw8Y1uffayqY9jpvo/+Nfc/G0+B1DSA+ h9NyKoNNq8M=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871832 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+delicious.com. IN DNSKEY
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN NSEC3 1 1 0 - fm4jr3gt0620k5rc1cnauf60p6k0dc0m NS DS RRSIG
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514043128 20180507032128 36707 com. b5M7AG/phVLcL0IDiZo0tapk92gZ2VIo THMnafhDm2DKFxFf/5VSBw+LATQ/CxOL YENVpEkcSx0FQRiZQlc+rh5YZqNtqkxH cM848qUwI68SdtezsRddC1+sDhGisrqb QNsMCE/TFd66pEbHkRDPTYYVr5P/iU1T YiQshMDNmsk=
+delicious.com. 172800 IN NS ns73.domaincontrol.com.
+delicious.com. 172800 IN NS ns74.domaincontrol.com.
+SECTION ADDITIONAL
+ns73.domaincontrol.com. 172800 IN A 216.69.185.47
+ns73.domaincontrol.com. 172800 IN AAAA 2607:f208:206::2f
+ns74.domaincontrol.com. 172800 IN A 208.109.255.47
+ns74.domaincontrol.com. 172800 IN AAAA 2607:f208:302::2f
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+delicious.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN NSEC3 1 1 0 - fm4jr3gt0620k5rc1cnauf60p6k0dc0m NS DS RRSIG
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514043128 20180507032128 36707 com. b5M7AG/phVLcL0IDiZo0tapk92gZ2VIo THMnafhDm2DKFxFf/5VSBw+LATQ/CxOL YENVpEkcSx0FQRiZQlc+rh5YZqNtqkxH cM848qUwI68SdtezsRddC1+sDhGisrqb QNsMCE/TFd66pEbHkRDPTYYVr5P/iU1T YiQshMDNmsk=
+com. 900 IN RRSIG SOA 8 1 900 20180516131712 20180509120712 36707 com. qYKnvjWXsp9E7fFKEqAqr2cL+JprHNI7 09VVvSLFA0/yB9NBYo22LHaXI7L1DhRf 5MIMu8fOALFYkABEEz/M2cHEWJH1oRGs iMqCrAGiJu3Ywy5aMSfK0DhKlER7DL3/ Gw8Y1uffayqY9jpvo/+Nfc/G0+B1DSA+ h9NyKoNNq8M=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871832 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN NSEC3 1 1 0 - tr7n0obedk7m9jmebac0ac5s1j6qo9v5 NS DS RRSIG
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513045148 20180506034148 36707 com. e+OxsMm54iVDL61QyjupF4B7QQGi/48p +J9EDzamhnAmhhtDVGOoDGjiH+/xgOgQ OGH9vdiFYKzUavu8OmBtE5l3gvtiFtLt HUakG3qUeNdiNv48eZ8L9HvuUieVgwjq ZgweAa2XYEB0xi1v/lO8p7pi0tXmMFel eqGkCsUQGsI=
+domaincontrol.com. 172800 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 172800 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 172800 IN A 216.69.185.35
+ans01.domaincontrol.com. 172800 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 172800 IN A 208.109.255.35
+ans02.domaincontrol.com. 172800 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN NSEC3 1 1 0 - tr7n0obedk7m9jmebac0ac5s1j6qo9v5 NS DS RRSIG
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513045148 20180506034148 36707 com. e+OxsMm54iVDL61QyjupF4B7QQGi/48p +J9EDzamhnAmhhtDVGOoDGjiH+/xgOgQ OGH9vdiFYKzUavu8OmBtE5l3gvtiFtLt HUakG3qUeNdiNv48eZ8L9HvuUieVgwjq ZgweAa2XYEB0xi1v/lO8p7pi0tXmMFel eqGkCsUQGsI=
+com. 900 IN RRSIG SOA 8 1 900 20180516131712 20180509120712 36707 com. qYKnvjWXsp9E7fFKEqAqr2cL+JprHNI7 09VVvSLFA0/yB9NBYo22LHaXI7L1DhRf 5MIMu8fOALFYkABEEz/M2cHEWJH1oRGs iMqCrAGiJu3Ywy5aMSfK0DhKlER7DL3/ Gw8Y1uffayqY9jpvo/+Nfc/G0+B1DSA+ h9NyKoNNq8M=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871832 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DNSKEY
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+root-servers.net. 172800 IN NS a.root-servers.net.
+root-servers.net. 172800 IN NS b.root-servers.net.
+root-servers.net. 172800 IN NS c.root-servers.net.
+root-servers.net. 172800 IN NS d.root-servers.net.
+root-servers.net. 172800 IN NS e.root-servers.net.
+root-servers.net. 172800 IN NS f.root-servers.net.
+root-servers.net. 172800 IN NS g.root-servers.net.
+root-servers.net. 172800 IN NS h.root-servers.net.
+root-servers.net. 172800 IN NS i.root-servers.net.
+root-servers.net. 172800 IN NS j.root-servers.net.
+root-servers.net. 172800 IN NS k.root-servers.net.
+root-servers.net. 172800 IN NS l.root-servers.net.
+root-servers.net. 172800 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 172800 IN A 198.41.0.4
+a.root-servers.net. 172800 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 172800 IN A 199.9.14.201
+b.root-servers.net. 172800 IN AAAA 2001:500:200::b
+c.root-servers.net. 172800 IN A 192.33.4.12
+c.root-servers.net. 172800 IN AAAA 2001:500:2::c
+e.root-servers.net. 172800 IN A 192.203.230.10
+e.root-servers.net. 172800 IN AAAA 2001:500:a8::e
+f.root-servers.net. 172800 IN A 192.5.5.241
+f.root-servers.net. 172800 IN AAAA 2001:500:2f::f
+g.root-servers.net. 172800 IN A 192.112.36.4
+g.root-servers.net. 172800 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 172800 IN A 198.97.190.53
+h.root-servers.net. 172800 IN AAAA 2001:500:1::53
+i.root-servers.net. 172800 IN A 192.36.148.17
+i.root-servers.net. 172800 IN AAAA 2001:7fe::53
+j.root-servers.net. 172800 IN A 192.58.128.30
+j.root-servers.net. 172800 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 172800 IN A 193.0.14.129
+k.root-servers.net. 172800 IN AAAA 2001:7fd::1
+l.root-servers.net. 172800 IN A 199.7.83.42
+l.root-servers.net. 172800 IN AAAA 2001:500:9f::42
+m.root-servers.net. 172800 IN A 202.12.27.33
+m.root-servers.net. 172800 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+net. 900 IN RRSIG SOA 8 1 900 20180516131713 20180509120713 30812 net. AqjjoYswQQUqaG/Ua0mapfEwH6HI/IXJ ThR0DuMJ/dx5bzSmU6YhJbjSp3bALcGy m9KQLQkw83YbFUvI5V1CnC6hTsyiJN6v t31es4MMwEmPYIJnEgZCmlqe/0kfue/u Pi25gNYvQrb7/LkNUst5DsnsMNbG49dg OIb828Mg3nA=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871833 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+net. 900 IN RRSIG SOA 8 1 900 20180516131728 20180509120728 30812 net. ukbZx55LurQgik/8WQjCcHWpzxOGnuBN zwt3NTR9NpjhHD56WM3Ne/53ygqg/HRL KKIbTeTSzhZ/Gz3EhcMP85Uf3Hlhm3Gg f6bKyDz5GRCdte1vIAsuaPgM3CyY25Z4 ocGHvmDMhi7kxPK8CuHw9jOb0+JxNoOO 6uR5CTAGijA=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871848 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+net. 900 IN RRSIG SOA 8 1 900 20180516131743 20180509120743 30812 net. La5IhACQpfoFzHyI/BSON68c0CGohrNo SxEK62rc/pmhiUYUMPnqshL03orrAZj4 QH744jk13GnabPyBF4MUhDO1ktT6a0BN povdmRN0LjX6OKs1axZRq0MczDAX2MxF 29f3VyaY97TuOtJbq7S3QHkhpBZ0LQzB NDNkzBJjr6M=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871863 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+root-servers.net. IN DS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+net. 900 IN RRSIG SOA 8 1 900 20180516131758 20180509120758 30812 net. Bp9wFi/eHMyvZiLF+dv6HIa6Zmz+M3l3 FL8xmZYeQKY3ePSpY5MdEyv7XUEPmSl/ gqV80PykMBBwR4dFsqCRqF3R5m8F4Y/V +tKsF2gMlbo+ps9MQkYPzg4kQhNZtb8t Kom+YKR6PTqZXJcEZCjypFxHFV5g+544 BGSR0Y64vAQ=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871878 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+gtld-servers.net. 172800 IN NS av1.nstld.com.
+gtld-servers.net. 172800 IN NS av2.nstld.com.
+gtld-servers.net. 172800 IN NS av3.nstld.com.
+gtld-servers.net. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+net. 900 IN RRSIG SOA 8 1 900 20180516131758 20180509120758 30812 net. Bp9wFi/eHMyvZiLF+dv6HIa6Zmz+M3l3 FL8xmZYeQKY3ePSpY5MdEyv7XUEPmSl/ gqV80PykMBBwR4dFsqCRqF3R5m8F4Y/V +tKsF2gMlbo+ps9MQkYPzg4kQhNZtb8t Kom+YKR6PTqZXJcEZCjypFxHFV5g+544 BGSR0Y64vAQ=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871878 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+net. 900 IN RRSIG SOA 8 1 900 20180516131813 20180509120813 30812 net. gGX0hLjGyfINuUwzGTVXrISWS9iU1Uhl BbW99VVtR6jJj786KT+IBArM7SS+PUDa e320HeLoXXgwJBDZIxE7iDsQMMAFXyGS n0FUcY5CxL9MNOAnuhNRLuBvMluv5yyr C/OXIENr4N+YNfF+0a7vmMxmW+1rLlGG SAx6YXEGXMc=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871893 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+net. 900 IN RRSIG SOA 8 1 900 20180516131828 20180509120828 30812 net. gqLyn62bYCs9gvUX9IyHUM0nI4ejJzFE M5KTsaUo3/zktGHOWvRTx/mpvO/yLzb6 W0sPyZSV/S6vP1C/QrNL7bgP+HcEA/qL iZF8KJbF0DpPQI4CAwrybAx9Aw2tpEEe 85Z0hAL+H9/QWCEGzPkoqbd52DedH1so 5z/rDdM+OCM=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871908 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+net. 900 IN RRSIG SOA 8 1 900 20180516131843 20180509120843 30812 net. BoupBNdpL2TUqqpqacOP/Xv0PVpTFN2g hFCDl/8o4jvglPu4EmSn/Bq9pwM/RjQU L41NpvmFvo+1nBq29HPh4XQFyg1ToTxH wdMdTv6jeo5KAjEqbqALVJRqwFMwNUhI FwpF350AuXb1iPXQBZsU99XrxngmBVMo QciwuuzUYHE=
+net. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871923 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+google.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN NSEC3 1 1 0 - s84cefmdu6abfsn4v0l2vlloascd5iv2 NS DS RRSIG
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513051411 20180506040411 36707 com. kQVTehhrmgeTzalwPVhWotamwKGxGb5V uGsm/T+FGU5pxaSNcutQ+YXIuukidbNu mZGDv7p8hKNWy3C+RZ/o6Cm5puaxwslS BXL8jOiXau7uOnIbqFFN2pWrCsQcBUfX DTZg+mpUBk2DFPV7Ny+QZXnAAzfthbmu 0L9sD+VATBs=
+com. 900 IN RRSIG SOA 8 1 900 20180516131857 20180509120857 36707 com. nwgV6vpe3qtXpJMD1tnwTndSor4OpkgC qGdPaHzRGnhswnD1jeO7eGBddhaOdyLF XUAn+0pAg4Pa9QM6Q5tJvAesygbqjba/ BIqFYzhB9o4/tZ/TURWAdUWHQY2qgDxV pf31M1Q7F2Y5t72tOm6xLxMzLsjO4Ijv vkamM3wVrWg=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871937 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN NSEC3 1 1 0 - tr7n0obedk7m9jmebac0ac5s1j6qo9v5 NS DS RRSIG
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513045148 20180506034148 36707 com. e+OxsMm54iVDL61QyjupF4B7QQGi/48p +J9EDzamhnAmhhtDVGOoDGjiH+/xgOgQ OGH9vdiFYKzUavu8OmBtE5l3gvtiFtLt HUakG3qUeNdiNv48eZ8L9HvuUieVgwjq ZgweAa2XYEB0xi1v/lO8p7pi0tXmMFel eqGkCsUQGsI=
+com. 900 IN RRSIG SOA 8 1 900 20180516131912 20180509120912 36707 com. kOp0nRH4S9qwyfowHUbpFC/t7xmQmpvF VOxav7/iTLpvfaVlvDFqtJNROScUu3fM MrPWXeHSBm1GrOsvA4MFYPWwUe/o70FI xWhtx0kPS21YerK/unqiAUP2CgPrShot lZ1m8sZ3pHBo5MiTdnbwMpKmusw5sKZr o9i+yeSOn6M=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871952 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN DS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN NSEC3 1 1 0 - tr7n0obedk7m9jmebac0ac5s1j6qo9v5 NS DS RRSIG
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513045148 20180506034148 36707 com. e+OxsMm54iVDL61QyjupF4B7QQGi/48p +J9EDzamhnAmhhtDVGOoDGjiH+/xgOgQ OGH9vdiFYKzUavu8OmBtE5l3gvtiFtLt HUakG3qUeNdiNv48eZ8L9HvuUieVgwjq ZgweAa2XYEB0xi1v/lO8p7pi0tXmMFel eqGkCsUQGsI=
+com. 900 IN RRSIG SOA 8 1 900 20180516131857 20180509120857 36707 com. nwgV6vpe3qtXpJMD1tnwTndSor4OpkgC qGdPaHzRGnhswnD1jeO7eGBddhaOdyLF XUAn+0pAg4Pa9QM6Q5tJvAesygbqjba/ BIqFYzhB9o4/tZ/TURWAdUWHQY2qgDxV pf31M1Q7F2Y5t72tOm6xLxMzLsjO4Ijv vkamM3wVrWg=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871937 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR RD NOERROR
+SECTION QUESTION
+nstld.com. IN DNSKEY
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514051140 20180507040140 36707 com. SxZ2bWaSpLAb6icf5gSUKDT9N4L+qbVq NJV6ilFPUxxv2IZJV/GCmphSNSp2udiJ 1dB1qAY/L0zp2/prTMd53oYPnsW2lOps WeqRqgFjXmtZTz1ALZBhcJQBUPfjP4EO WByN+/svImjfPNu4JBDABzFJl+oNnXVs nS+KhGuRj1g=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+nstld.com. 172800 IN NS av1.nstld.com.
+nstld.com. 172800 IN NS av2.nstld.com.
+nstld.com. 172800 IN NS av3.nstld.com.
+nstld.com. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514051140 20180507040140 36707 com. SxZ2bWaSpLAb6icf5gSUKDT9N4L+qbVq NJV6ilFPUxxv2IZJV/GCmphSNSp2udiJ 1dB1qAY/L0zp2/prTMd53oYPnsW2lOps WeqRqgFjXmtZTz1ALZBhcJQBUPfjP4EO WByN+/svImjfPNu4JBDABzFJl+oNnXVs nS+KhGuRj1g=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+com. 900 IN RRSIG SOA 8 1 900 20180516131912 20180509120912 36707 com. kOp0nRH4S9qwyfowHUbpFC/t7xmQmpvF VOxav7/iTLpvfaVlvDFqtJNROScUu3fM MrPWXeHSBm1GrOsvA4MFYPWwUe/o70FI xWhtx0kPS21YerK/unqiAUP2CgPrShot lZ1m8sZ3pHBo5MiTdnbwMpKmusw5sKZr o9i+yeSOn6M=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871952 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514051140 20180507040140 36707 com. SxZ2bWaSpLAb6icf5gSUKDT9N4L+qbVq NJV6ilFPUxxv2IZJV/GCmphSNSp2udiJ 1dB1qAY/L0zp2/prTMd53oYPnsW2lOps WeqRqgFjXmtZTz1ALZBhcJQBUPfjP4EO WByN+/svImjfPNu4JBDABzFJl+oNnXVs nS+KhGuRj1g=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+com. 900 IN RRSIG SOA 8 1 900 20180516131927 20180509120927 36707 com. K7ZCHRBPDX0jNxedtRVPUHVCbpPRsypv M7Isaq34BnqdsCEPwNUR4pDUPM1pApdy vQMsAbUrZwu0xAK3PIvAaYLlNwIWTei0 ArN58d1isjL7mgnoQK8MQVPTYjBq0REN Cls1EieCIES8mAiSGxj3O88UC6MlMSIL uF6XrDWl2oI=
+com. 900 IN SOA a.gtld-servers.net. nstld.verisign-grs.com. 1525871967 1800 900 604800 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN DNSKEY
+SECTION ANSWER
+com. 86400 IN DNSKEY 256 3 8 AQOz+iBqxZtCKBBqKsO/i9JVchZ2Z1pF CWnj+pFHJi3uPWiYWsAMvtMpInRPfV1O t9m+8nHPxSkvOL2+bttj4jEK6uUfTarE T4wAMSh2k9rX2h+9kVQDjcuRwfFXV5bA mFd3j57hic7FEYVSxXtNUVU7BPaFRHuF r3OrQHQXaR4IeQ==
+com. 86400 IN DNSKEY 257 3 8 AQPDzldNmMvZFX4NcNJ0uEnKDg7tmv/F 3MyQR0lpBmVcNcsIszxNFxsBfKNW9JYC Yqpik8366LE7VbIcNRzfp2h9OO8HRl+H +E08zauK8k7evWEmu/6od+2boggPoiEf GNyvNPaSI7FOIroDsnw/taggzHRX1Z7S OiOiPWPNIwSUyWOZ79VmcQ1GLkC6NlYv G3HwYmynQv6oFwGv/KELSw7ZSdrbTQ0H XvZbqMUI7BaMskmvgm1G7oKZ1YiF7O9i oVNc0+7ASbqmZN7Z98EGU/Qh2K/BgUe8 Hs0XVcdPKrtyYnoQHd2ynKPcMMlTEih2 /2HDHjRPJ2aywIpKNnv4oPo/
+com. 86400 IN RRSIG DNSKEY 8 1 86400 20180522182533 20180507182033 30909 com. F7/1eje9GeHOQcuokqfTHeLYxVznTnkF 10YAlMTKi7aJiCySWMVwC/0I/om/EvE+ Z4AMG+3B/gFy94PpGnOjpaZcimW1syTK JOPPsGXdQD6F1bxnKCD1r+r9HrSIKTe+ lzXI7kzakHNZx3zsdYO4aFifr/hiR/YV /wirJjiXxgOFCtUquSlIOeZ7rv8wTf34 onLrf2mYk447ByqUWrXJvqJ16pW+ISUF zyroHqgXFluzrMUqlWVJl8mtnQ5ChCk9 8zZTGCQJc60HDeYWSY3Mbpji2VZS2uQV DTzO3AeEv5GIoLF8jC+UCAeYDiQhZ5Ha En5HSLh/jYe3TOuIm0tOiw==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN DNSKEY
+SECTION ANSWER
+net. 86400 IN DNSKEY 256 3 8 AQPKhstFAPpY3Ax3eSTVLU0EyQya3nsc pafihLl44gw7cLmFoDAAeKGZ2VFeJQ5V FuZApoqTbLboJuCx/Hi/3svu/uIov2qd FKB036tTgbkQxLqo7nXH9+H7D3VW/zRs Vy+PC0i2cFDwZQt2PS/DmiEyoI0TqA4l 6tDXZJnoeX0fmQ==
+net. 86400 IN DNSKEY 257 3 8 AQOYBnzqWXIEj6mlgXg4LWC0HP2n8eK8 XqgHlmJ/69iuIHsa1TrHDG6TcOra/pye GKwH0nKZhTmXSuUFGh9BCNiwVDuyyb6O BGy2Nte9Kr8NwWg4q+zhSoOf4D+gC9dE zg0yFdwT0DKEvmNPt0K4jbQDS4Yimb+u PKuF6yieWWrPYYCrv8C9KC8JMze2uT6N uWBfsl2fDUoV4l65qMww06D7n+p7Rbdw WkAZ0fA63mXVXBZF6kpDtsYD7SUB9jhh fLQE/r85bvg3FaSs5Wi2BaqN06SzGWI1 DHu7axthIOeHwg00zxlhTpoYCH0ldoQz +S65zWYi/fRJiyLSBb6JZOvn
+net. 86400 IN RRSIG DNSKEY 8 1 86400 20180520153857 20180505153357 35886 net. KA+mOMtpIBb4ixeP3gmJ899QMvCetwg9 19ndHTAfbDRRZ+R2vX0eY1jr6JZYXsDf y5Mzes/KHX8DfrMsr+50nEwzJ+SPlJzs em5ijpYxCj/jRLa728gqVZy3quedCpRS ajJ25lA02PEsR9BTLW3wBv9LnR90L58j D38eMPq/CxML/ZDLIsrSdpqhYt5Hie55 3vvf7xbSJvkWxdMTlGtF85De6I+s3MUl hkHx6MYu7Wg/IsZ0fVbRJ+4DpIPOWAS5 gVlgYBpvNUKCXAUlGhA70ri5YIu9hr8x rY17JOm25bJX4SkLYSbmYkMJGuuyU+S+ rQjaeg96k5R20lSJmmDK1g==
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+delicious.com. IN NS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN NSEC3 1 1 0 - fm4jr3gt0620k5rc1cnauf60p6k0dc0m NS DS RRSIG
+FM4IU54IVHK1I29FR6UE8QQJP9NDUPS2.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514043128 20180507032128 36707 com. b5M7AG/phVLcL0IDiZo0tapk92gZ2VIo THMnafhDm2DKFxFf/5VSBw+LATQ/CxOL YENVpEkcSx0FQRiZQlc+rh5YZqNtqkxH cM848qUwI68SdtezsRddC1+sDhGisrqb QNsMCE/TFd66pEbHkRDPTYYVr5P/iU1T YiQshMDNmsk=
+delicious.com. 172800 IN NS ns73.domaincontrol.com.
+delicious.com. 172800 IN NS ns74.domaincontrol.com.
+SECTION ADDITIONAL
+ns73.domaincontrol.com. 172800 IN A 216.69.185.47
+ns73.domaincontrol.com. 172800 IN AAAA 2607:f208:206::2f
+ns74.domaincontrol.com. 172800 IN A 208.109.255.47
+ns74.domaincontrol.com. 172800 IN AAAA 2607:f208:302::2f
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+nstld.com. IN NS
+SECTION AUTHORITY
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN NSEC3 1 1 0 - 5v13q049b9ittui4fbdtm34dtev47bgj NS DS RRSIG
+5V12UURISSGGLPAS52GE1V3R0V7KR5BS.com. 86400 IN RRSIG NSEC3 8 2 86400 20180514051140 20180507040140 36707 com. SxZ2bWaSpLAb6icf5gSUKDT9N4L+qbVq NJV6ilFPUxxv2IZJV/GCmphSNSp2udiJ 1dB1qAY/L0zp2/prTMd53oYPnsW2lOps WeqRqgFjXmtZTz1ALZBhcJQBUPfjP4EO WByN+/svImjfPNu4JBDABzFJl+oNnXVs nS+KhGuRj1g=
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+nstld.com. 172800 IN NS av1.nstld.com.
+nstld.com. 172800 IN NS av2.nstld.com.
+nstld.com. 172800 IN NS av3.nstld.com.
+nstld.com. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+gstatic.com. IN NS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN NSEC3 1 1 0 - lf7269mage03ekmtqm8lcd6frh27jtg6 NS DS RRSIG
+LF6T1RKNIBVJM4VK7NRF7J2M7ELUIDMU.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516050256 20180509035256 36707 com. XPr+JvrYgcc2CYdMfa/tmpnZj6bCEf4c E61iXKYGXyxgb+V0xkTzlRept1rbJP8Q ZgdnvkSnVKFO/TP++OuSDFzIHaO/huaa 5e5xfdy/WR3XhH73r+MslU0vxfXKuoVY EDc6iuxWduWtJwZXykiXE49bxZjn5UWG Tc6mIz+RBpo=
+gstatic.com. 172800 IN NS ns1.google.com.
+gstatic.com. 172800 IN NS ns2.google.com.
+gstatic.com. 172800 IN NS ns3.google.com.
+gstatic.com. 172800 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 172800 IN A 216.239.32.10
+ns1.google.com. 172800 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 172800 IN A 216.239.34.10
+ns2.google.com. 172800 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 172800 IN A 216.239.36.10
+ns3.google.com. 172800 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 172800 IN A 216.239.38.10
+ns4.google.com. 172800 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN NS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN NSEC3 1 1 0 - tr7n0obedk7m9jmebac0ac5s1j6qo9v5 NS DS RRSIG
+TR7L9N2AL8K6BEE8C7UCBPTVFO2NG5ME.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513045148 20180506034148 36707 com. e+OxsMm54iVDL61QyjupF4B7QQGi/48p +J9EDzamhnAmhhtDVGOoDGjiH+/xgOgQ OGH9vdiFYKzUavu8OmBtE5l3gvtiFtLt HUakG3qUeNdiNv48eZ8L9HvuUieVgwjq ZgweAa2XYEB0xi1v/lO8p7pi0tXmMFel eqGkCsUQGsI=
+domaincontrol.com. 172800 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 172800 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 172800 IN A 216.69.185.35
+ans01.domaincontrol.com. 172800 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 172800 IN A 208.109.255.35
+ans02.domaincontrol.com. 172800 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN NS
+SECTION AUTHORITY
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN NSEC3 1 1 0 - 5qdppotuk27kkp9ligtrb0k1cbvm9cim NS DS RRSIG
+5QD8VL68T2I9KOBD32KJ8LJVH5OH2PQ0.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052024 20180509041024 30812 net. s+eSuFRREhoif95JVwe8P1PCv/iQnj/+ 1gPXVlIf5aPaLF2TzYkKJZNf6/qMtV1d clkmoR8W50REW1NY0qmpIZWhB2+3YGid +MThRmNx/b/ILHqRemyA2nhAAp4OcNgl tMDFbIM08fW29R5oK59kGzVA5DEveR73 I1ohrt/FUno=
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+gtld-servers.net. 172800 IN NS av1.nstld.com.
+gtld-servers.net. 172800 IN NS av2.nstld.com.
+gtld-servers.net. 172800 IN NS av3.nstld.com.
+gtld-servers.net. 172800 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 172800 IN A 192.42.177.30
+av1.nstld.com. 172800 IN AAAA 2001:500:124::30
+av2.nstld.com. 172800 IN A 192.42.178.30
+av2.nstld.com. 172800 IN AAAA 2001:500:125::30
+av3.nstld.com. 172800 IN A 192.82.133.30
+av3.nstld.com. 172800 IN AAAA 2001:500:126::30
+av4.nstld.com. 172800 IN A 192.82.134.30
+av4.nstld.com. 172800 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION AUTHORITY
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN NSEC3 1 1 0 - a1ruuffjkct2q54p78f8ejgj8jbk7i8b NS SOA RRSIG DNSKEY NSEC3PARAM
+A1RT98BS5QGC9NFI51S9HCI47ULJG6JH.net. 86400 IN RRSIG NSEC3 8 2 86400 20180516052803 20180509041803 30812 net. yiFU9c2NX3m5kAQUqHg50NkkRVOQMgCm RknmQk9ZDR6TZPZQzU+kEYjXzdLgOnek hdEpZopUIBCJdzqesfTXkAPIF/PexjFU Yo/KGvdCDV9UALnxtwGjRlexRWH9KdLW zRT2e4QEt13vgjNQUId9AW2tD3T3uiRc jdHZ3jgqilU=
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN NSEC3 1 1 0 - t2ukct9k5i0uhv7b3m3na6jaigdjm0gr NS DS RRSIG
+T2UF21DR03E0BNPB42UQMVUF38P2TA8D.net. 86400 IN RRSIG NSEC3 8 2 86400 20180514052421 20180507041421 30812 net. m80FWl0y7m7MrKSKFTB+VHSNHrRZLDCV Ryuh7s8lkiwnDqIr7uKNocbUjme/OJtB qAdDep9Hy3jza5pdFmHJ1VHljOlX7qUm 5yogo9KurWxLXDbnC/3xFUAg2hzpwyli mSeMTEeTcop1zrNXNfuI9JPo3wet98rs cUA40qBm1KE=
+root-servers.net. 172800 IN NS a.root-servers.net.
+root-servers.net. 172800 IN NS b.root-servers.net.
+root-servers.net. 172800 IN NS c.root-servers.net.
+root-servers.net. 172800 IN NS d.root-servers.net.
+root-servers.net. 172800 IN NS e.root-servers.net.
+root-servers.net. 172800 IN NS f.root-servers.net.
+root-servers.net. 172800 IN NS g.root-servers.net.
+root-servers.net. 172800 IN NS h.root-servers.net.
+root-servers.net. 172800 IN NS i.root-servers.net.
+root-servers.net. 172800 IN NS j.root-servers.net.
+root-servers.net. 172800 IN NS k.root-servers.net.
+root-servers.net. 172800 IN NS l.root-servers.net.
+root-servers.net. 172800 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+a.root-servers.net. 172800 IN A 198.41.0.4
+a.root-servers.net. 172800 IN AAAA 2001:503:ba3e::2:30
+b.root-servers.net. 172800 IN A 199.9.14.201
+b.root-servers.net. 172800 IN AAAA 2001:500:200::b
+c.root-servers.net. 172800 IN A 192.33.4.12
+c.root-servers.net. 172800 IN AAAA 2001:500:2::c
+e.root-servers.net. 172800 IN A 192.203.230.10
+e.root-servers.net. 172800 IN AAAA 2001:500:a8::e
+f.root-servers.net. 172800 IN A 192.5.5.241
+f.root-servers.net. 172800 IN AAAA 2001:500:2f::f
+g.root-servers.net. 172800 IN A 192.112.36.4
+g.root-servers.net. 172800 IN AAAA 2001:500:12::d0d
+h.root-servers.net. 172800 IN A 198.97.190.53
+h.root-servers.net. 172800 IN AAAA 2001:500:1::53
+i.root-servers.net. 172800 IN A 192.36.148.17
+i.root-servers.net. 172800 IN AAAA 2001:7fe::53
+j.root-servers.net. 172800 IN A 192.58.128.30
+j.root-servers.net. 172800 IN AAAA 2001:503:c27::2:30
+k.root-servers.net. 172800 IN A 193.0.14.129
+k.root-servers.net. 172800 IN AAAA 2001:7fd::1
+l.root-servers.net. 172800 IN A 199.7.83.42
+l.root-servers.net. 172800 IN AAAA 2001:500:9f::42
+m.root-servers.net. 172800 IN A 202.12.27.33
+m.root-servers.net. 172800 IN AAAA 2001:dc3::35
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR RD NOERROR
+SECTION QUESTION
+google.com. IN NS
+SECTION AUTHORITY
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN NSEC3 1 1 0 - ck0q1gin43n1arrc9osm6qpqr81h5m9a NS SOA RRSIG DNSKEY NSEC3PARAM
+CK0POJMG874LJREF7EFN8430QVIT8BSM.com. 86400 IN RRSIG NSEC3 8 2 86400 20180516044717 20180509033717 36707 com. Xkm86vFrbNVaugh3BlcQO/lilO7JAzSs jBatYjDDX1qzTEsrk6kHOQVDne6xww7o GFmgxTfkFKWezOv4bPVTgjs0MgP52/i4 VCAVbtvPhNLve6eD1VhsV0wVA/wmPBa/ 9de6WmVonI0dM4e2k75KZyDdolmJCXTg YY44D05jyX8=
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN NSEC3 1 1 0 - s84cefmdu6abfsn4v0l2vlloascd5iv2 NS DS RRSIG
+S849LHDDSVU9A9N2FIRO5NKMQB321BEP.com. 86400 IN RRSIG NSEC3 8 2 86400 20180513051411 20180506040411 36707 com. kQVTehhrmgeTzalwPVhWotamwKGxGb5V uGsm/T+FGU5pxaSNcutQ+YXIuukidbNu mZGDv7p8hKNWy3C+RZ/o6Cm5puaxwslS BXL8jOiXau7uOnIbqFFN2pWrCsQcBUfX DTZg+mpUBk2DFPV7Ny+QZXnAAzfthbmu 0L9sD+VATBs=
+google.com. 172800 IN NS ns1.google.com.
+google.com. 172800 IN NS ns2.google.com.
+google.com. 172800 IN NS ns3.google.com.
+google.com. 172800 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 172800 IN A 216.239.32.10
+ns1.google.com. 172800 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 172800 IN A 216.239.34.10
+ns2.google.com. 172800 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 172800 IN A 216.239.36.10
+ns3.google.com. 172800 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 172800 IN A 216.239.38.10
+ns4.google.com. 172800 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+com. IN NS
+SECTION ANSWER
+com. 172800 IN NS a.gtld-servers.net.
+com. 172800 IN NS b.gtld-servers.net.
+com. 172800 IN NS c.gtld-servers.net.
+com. 172800 IN NS d.gtld-servers.net.
+com. 172800 IN NS e.gtld-servers.net.
+com. 172800 IN NS f.gtld-servers.net.
+com. 172800 IN NS g.gtld-servers.net.
+com. 172800 IN NS h.gtld-servers.net.
+com. 172800 IN NS i.gtld-servers.net.
+com. 172800 IN NS j.gtld-servers.net.
+com. 172800 IN NS k.gtld-servers.net.
+com. 172800 IN NS l.gtld-servers.net.
+com. 172800 IN NS m.gtld-servers.net.
+com. 172800 IN RRSIG NS 8 1 172800 20180516044717 20180509033717 36707 com. nmXBe6F4losM2dmCryGopjjJLlhQmYsc NgHqvIQ3zbHm59UHe87T6FmHTdtdujmh 3D8rW6g2vx2rzWPxLQigd7xh1KyIfCGZ ODaUB4TPAxadtGCfvu1h00dieCIf/+UI umg5iJBPjlQdCdpAweh1Zw9KUvbWlkRr XLz03jmJ/xg=
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION ANSWER
+net. 172800 IN NS a.gtld-servers.net.
+net. 172800 IN NS b.gtld-servers.net.
+net. 172800 IN NS c.gtld-servers.net.
+net. 172800 IN NS d.gtld-servers.net.
+net. 172800 IN NS e.gtld-servers.net.
+net. 172800 IN NS f.gtld-servers.net.
+net. 172800 IN NS g.gtld-servers.net.
+net. 172800 IN NS h.gtld-servers.net.
+net. 172800 IN NS i.gtld-servers.net.
+net. 172800 IN NS j.gtld-servers.net.
+net. 172800 IN NS k.gtld-servers.net.
+net. 172800 IN NS l.gtld-servers.net.
+net. 172800 IN NS m.gtld-servers.net.
+net. 172800 IN RRSIG NS 8 1 172800 20180514052923 20180507041923 30812 net. AnS2HZvzD7FPPeD8vzkPQ5J57gIS4JKf wVkV7n3T9RR6VgZXw2BVwz9/+yUetZ3i U8QP3ibEKjFGb8A0g9JscUfehSLKO/9q 0tu+yf3YyKvEe0cMJKqQQMoMdofDo9yX CgBtRnN05nUOLFyZPZm74zZfisopugEH Vyc67r/0KVM=
+SECTION ADDITIONAL
+a.gtld-servers.net. 172800 IN A 192.5.6.30
+a.gtld-servers.net. 172800 IN AAAA 2001:503:a83e::2:30
+b.gtld-servers.net. 172800 IN A 192.33.14.30
+b.gtld-servers.net. 172800 IN AAAA 2001:503:231d::2:30
+c.gtld-servers.net. 172800 IN A 192.26.92.30
+c.gtld-servers.net. 172800 IN AAAA 2001:503:83eb::30
+d.gtld-servers.net. 172800 IN A 192.31.80.30
+d.gtld-servers.net. 172800 IN AAAA 2001:500:856e::30
+e.gtld-servers.net. 172800 IN A 192.12.94.30
+e.gtld-servers.net. 172800 IN AAAA 2001:502:1ca1::30
+f.gtld-servers.net. 172800 IN A 192.35.51.30
+f.gtld-servers.net. 172800 IN AAAA 2001:503:d414::30
+g.gtld-servers.net. 172800 IN A 192.42.93.30
+g.gtld-servers.net. 172800 IN AAAA 2001:503:eea3::30
+h.gtld-servers.net. 172800 IN A 192.54.112.30
+h.gtld-servers.net. 172800 IN AAAA 2001:502:8cc::30
+i.gtld-servers.net. 172800 IN A 192.43.172.30
+i.gtld-servers.net. 172800 IN AAAA 2001:503:39c1::30
+j.gtld-servers.net. 172800 IN A 192.48.79.30
+j.gtld-servers.net. 172800 IN AAAA 2001:502:7094::30
+k.gtld-servers.net. 172800 IN A 192.52.178.30
+k.gtld-servers.net. 172800 IN AAAA 2001:503:d2d::30
+l.gtld-servers.net. 172800 IN A 192.41.162.30
+l.gtld-servers.net. 172800 IN AAAA 2001:500:d937::30
+m.gtld-servers.net. 172800 IN A 192.55.83.30
+m.gtld-servers.net. 172800 IN AAAA 2001:501:b1f9::30
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: ns3.google.com. Actual ip: 216.239.36.10
+; ns1.google.com.
+; ns2.google.com.
+; ns4.google.com.
+RANGE_BEGIN 0 1000
+	ADDRESS 216.239.36.10
+	ADDRESS 2001:4860:4802:32::a
+	ADDRESS 2001:4860:4802:34::a
+	ADDRESS 2001:4860:4802:36::a
+	ADDRESS 2001:4860:4802:38::a
+	ADDRESS 216.239.32.10
+	ADDRESS 216.239.34.10
+	ADDRESS 216.239.38.10
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.google.com. IN A
+SECTION ANSWER
+www.google.com. 300 IN A 172.217.22.4
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.google.com. IN NS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.google.com. IN DS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.google.com. IN AAAA
+SECTION ANSWER
+www.google.com. 300 IN AAAA 2a00:1450:4001:81a::2004
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.gstatic.com. IN A
+SECTION ANSWER
+www.gstatic.com. 300 IN A 216.58.201.99
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.gstatic.com. IN DNSKEY
+SECTION AUTHORITY
+gstatic.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.gstatic.com. IN NS
+SECTION AUTHORITY
+gstatic.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.gstatic.com. IN DS
+SECTION AUTHORITY
+gstatic.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+www.gstatic.com. IN AAAA
+SECTION ANSWER
+www.gstatic.com. 300 IN AAAA 2a00:1450:4014:801::2003
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns3.google.com. IN A
+SECTION ANSWER
+ns3.google.com. 345600 IN A 216.239.36.10
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns3.google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns3.google.com. IN NS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns3.google.com. IN DS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns3.google.com. IN AAAA
+SECTION ANSWER
+ns3.google.com. 345600 IN AAAA 2001:4860:4802:36::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns4.google.com. IN A
+SECTION ANSWER
+ns4.google.com. 345600 IN A 216.239.38.10
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns4.google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns4.google.com. IN NS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns4.google.com. IN DS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns4.google.com. IN AAAA
+SECTION ANSWER
+ns4.google.com. 345600 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.google.com. IN A
+SECTION ANSWER
+ns1.google.com. 345600 IN A 216.239.32.10
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.google.com. IN NS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.google.com. IN DS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns1.google.com. IN AAAA
+SECTION ANSWER
+ns1.google.com. 345600 IN AAAA 2001:4860:4802:32::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.google.com. IN A
+SECTION ANSWER
+ns2.google.com. 345600 IN A 216.239.34.10
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.google.com. IN NS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.google.com. IN DS
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns2.google.com. IN AAAA
+SECTION ANSWER
+ns2.google.com. 345600 IN AAAA 2001:4860:4802:34::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gstatic.com. IN DNSKEY
+SECTION AUTHORITY
+gstatic.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195925776 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+google.com. IN DNSKEY
+SECTION AUTHORITY
+google.com. 60 IN SOA ns1.google.com. dns-admin.google.com. 195943832 900 900 1800 60
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+google.com. IN NS
+SECTION ANSWER
+google.com. 345600 IN NS ns1.google.com.
+google.com. 345600 IN NS ns2.google.com.
+google.com. 345600 IN NS ns3.google.com.
+google.com. 345600 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 345600 IN A 216.239.32.10
+ns1.google.com. 345600 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 345600 IN A 216.239.34.10
+ns2.google.com. 345600 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 345600 IN A 216.239.36.10
+ns3.google.com. 345600 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 345600 IN A 216.239.38.10
+ns4.google.com. 345600 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gstatic.com. IN NS
+SECTION ANSWER
+gstatic.com. 345600 IN NS ns1.google.com.
+gstatic.com. 345600 IN NS ns2.google.com.
+gstatic.com. 345600 IN NS ns3.google.com.
+gstatic.com. 345600 IN NS ns4.google.com.
+SECTION ADDITIONAL
+ns1.google.com. 345600 IN A 216.239.32.10
+ns1.google.com. 345600 IN AAAA 2001:4860:4802:32::a
+ns2.google.com. 345600 IN A 216.239.34.10
+ns2.google.com. 345600 IN AAAA 2001:4860:4802:34::a
+ns3.google.com. 345600 IN A 216.239.36.10
+ns3.google.com. 345600 IN AAAA 2001:4860:4802:36::a
+ns4.google.com. 345600 IN A 216.239.38.10
+ns4.google.com. 345600 IN AAAA 2001:4860:4802:38::a
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: ns73.domaincontrol.com. Actual ip: 216.69.185.47
+; ns74.domaincontrol.com.
+RANGE_BEGIN 0 1000
+	ADDRESS 216.69.185.47
+	ADDRESS 208.109.255.47
+	ADDRESS 2607:f208:206::2f
+	ADDRESS 2607:f208:302::2f
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+delicious.com. IN A
+SECTION ANSWER
+delicious.com. 600 IN A 50.63.202.21
+SECTION AUTHORITY
+delicious.com. 3600 IN NS ns73.domaincontrol.com.
+delicious.com. 3600 IN NS ns74.domaincontrol.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+delicious.com. IN AAAA
+SECTION AUTHORITY
+delicious.com. 600 IN SOA ns73.domaincontrol.com. dns.jomax.net. 2017082304 28800 7200 604800 600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+delicious.com. IN DNSKEY
+SECTION AUTHORITY
+delicious.com. 3600 IN SOA ns73.domaincontrol.com. dns.jomax.net. 2017082304 28800 7200 604800 600
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: ans01.domaincontrol.com. Actual ip: 216.69.185.35
+; ans02.domaincontrol.com.
+RANGE_BEGIN 0 1000
+	ADDRESS 216.69.185.35
+	ADDRESS 208.109.255.35
+	ADDRESS 2607:f208:206::23
+	ADDRESS 2607:f208:302::23
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns73.domaincontrol.com. IN A
+SECTION ANSWER
+ns73.domaincontrol.com. 172800 IN A 216.69.185.47
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns73.domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns73.domaincontrol.com. IN NS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns73.domaincontrol.com. IN DS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns73.domaincontrol.com. IN AAAA
+SECTION ANSWER
+ns73.domaincontrol.com. 172800 IN AAAA 2607:f208:206::2f
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns74.domaincontrol.com. IN A
+SECTION ANSWER
+ns74.domaincontrol.com. 172800 IN A 208.109.255.47
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns74.domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns74.domaincontrol.com. IN NS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns74.domaincontrol.com. IN DS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ns74.domaincontrol.com. IN AAAA
+SECTION ANSWER
+ns74.domaincontrol.com. 172800 IN AAAA 2607:f208:302::2f
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans01.domaincontrol.com. IN A
+SECTION ANSWER
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans01.domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans01.domaincontrol.com. IN NS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans01.domaincontrol.com. IN DS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans01.domaincontrol.com. IN AAAA
+SECTION ANSWER
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans02.domaincontrol.com. IN A
+SECTION ANSWER
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans02.domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans02.domaincontrol.com. IN NS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans02.domaincontrol.com. IN DS
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+ans02.domaincontrol.com. IN AAAA
+SECTION ANSWER
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+SECTION AUTHORITY
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN DNSKEY
+SECTION AUTHORITY
+domaincontrol.com. 3600 IN SOA ans01.domaincontrol.com. dns.jomax.net. 2018030200 28800 7200 604800 3600
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+domaincontrol.com. IN NS
+SECTION ANSWER
+domaincontrol.com. 86400 IN NS ans01.domaincontrol.com.
+domaincontrol.com. 86400 IN NS ans02.domaincontrol.com.
+SECTION ADDITIONAL
+ans01.domaincontrol.com. 86400 IN A 216.69.185.35
+ans01.domaincontrol.com. 86400 IN AAAA 2607:f208:206::23
+ans02.domaincontrol.com. 86400 IN A 208.109.255.35
+ans02.domaincontrol.com. 86400 IN AAAA 2607:f208:302::23
+ENTRY_END
+
+
+RANGE_END
+
+
+; Server name: av2.nstld.com. Actual ip: 192.42.178.30
+; av1.nstld.com.
+; av3.nstld.com.
+; av4.nstld.com.
+RANGE_BEGIN 0 1000
+	ADDRESS 192.42.178.30
+	ADDRESS 192.42.177.30
+	ADDRESS 192.82.133.30
+	ADDRESS 192.82.134.30
+	ADDRESS 2001:500:124::30
+	ADDRESS 2001:500:125::30
+	ADDRESS 2001:500:126::30
+	ADDRESS 2001:500:127::30
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN A
+SECTION ANSWER
+a.gtld-servers.net. 86400 IN A 192.5.6.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+a.gtld-servers.net. IN AAAA
+SECTION ANSWER
+a.gtld-servers.net. 86400 IN AAAA 2001:503:a83e::2:30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN A
+SECTION ANSWER
+j.gtld-servers.net. 86400 IN A 192.48.79.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+j.gtld-servers.net. IN AAAA
+SECTION ANSWER
+j.gtld-servers.net. 86400 IN AAAA 2001:502:7094::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN A
+SECTION ANSWER
+e.gtld-servers.net. 86400 IN A 192.12.94.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+e.gtld-servers.net. IN AAAA
+SECTION ANSWER
+e.gtld-servers.net. 86400 IN AAAA 2001:502:1ca1::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN A
+SECTION ANSWER
+i.gtld-servers.net. 86400 IN A 192.43.172.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+i.gtld-servers.net. IN AAAA
+SECTION ANSWER
+i.gtld-servers.net. 86400 IN AAAA 2001:503:39c1::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN A
+SECTION ANSWER
+d.gtld-servers.net. 86400 IN A 192.31.80.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+d.gtld-servers.net. IN AAAA
+SECTION ANSWER
+d.gtld-servers.net. 86400 IN AAAA 2001:500:856e::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN A
+SECTION ANSWER
+m.gtld-servers.net. 86400 IN A 192.55.83.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+m.gtld-servers.net. IN AAAA
+SECTION ANSWER
+m.gtld-servers.net. 86400 IN AAAA 2001:501:b1f9::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN A
+SECTION ANSWER
+h.gtld-servers.net. 86400 IN A 192.54.112.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+h.gtld-servers.net. IN AAAA
+SECTION ANSWER
+h.gtld-servers.net. 86400 IN AAAA 2001:502:8cc::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN A
+SECTION ANSWER
+c.gtld-servers.net. 86400 IN A 192.26.92.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+c.gtld-servers.net. IN AAAA
+SECTION ANSWER
+c.gtld-servers.net. 86400 IN AAAA 2001:503:83eb::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN A
+SECTION ANSWER
+l.gtld-servers.net. 86400 IN A 192.41.162.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+l.gtld-servers.net. IN AAAA
+SECTION ANSWER
+l.gtld-servers.net. 86400 IN AAAA 2001:500:d937::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN A
+SECTION ANSWER
+g.gtld-servers.net. 86400 IN A 192.42.93.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+g.gtld-servers.net. IN AAAA
+SECTION ANSWER
+g.gtld-servers.net. 86400 IN AAAA 2001:503:eea3::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN A
+SECTION ANSWER
+b.gtld-servers.net. 86400 IN A 192.33.14.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+b.gtld-servers.net. IN AAAA
+SECTION ANSWER
+b.gtld-servers.net. 86400 IN AAAA 2001:503:231d::2:30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN A
+SECTION ANSWER
+k.gtld-servers.net. 86400 IN A 192.52.178.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+k.gtld-servers.net. IN AAAA
+SECTION ANSWER
+k.gtld-servers.net. 86400 IN AAAA 2001:503:d2d::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN A
+SECTION ANSWER
+f.gtld-servers.net. 86400 IN A 192.35.51.30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN NS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN DS
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+f.gtld-servers.net. IN AAAA
+SECTION ANSWER
+f.gtld-servers.net. 86400 IN AAAA 2001:503:d414::30
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN A
+SECTION ANSWER
+av1.nstld.com. 300 IN A 192.42.177.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av1.nstld.com. IN AAAA
+SECTION ANSWER
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN A
+SECTION ANSWER
+av2.nstld.com. 300 IN A 192.42.178.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av2.nstld.com. IN AAAA
+SECTION ANSWER
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN A
+SECTION ANSWER
+av3.nstld.com. 300 IN A 192.82.133.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av3.nstld.com. IN AAAA
+SECTION ANSWER
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN A
+SECTION ANSWER
+av4.nstld.com. 300 IN A 192.82.134.30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN NS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN DS
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+av4.nstld.com. IN AAAA
+SECTION ANSWER
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+SECTION AUTHORITY
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN DNSKEY
+SECTION AUTHORITY
+nstld.com. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2018042400 7200 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH qname  qtype
+ADJUST copy_id 
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN DNSKEY
+SECTION AUTHORITY
+gtld-servers.net. 86400 IN SOA av4.nstld.com. nstld.verisign-grs.com. 2017061500 3600 900 1209600 86400
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+gtld-servers.net. IN NS
+SECTION ANSWER
+gtld-servers.net. 86400 IN NS av1.nstld.com.
+gtld-servers.net. 86400 IN NS av2.nstld.com.
+gtld-servers.net. 86400 IN NS av3.nstld.com.
+gtld-servers.net. 86400 IN NS av4.nstld.com.
+ENTRY_END
+
+
+ENTRY_BEGIN
+MATCH subdomain
+ADJUST copy_id copy_query
+REPLY QR AA RD NOERROR
+SECTION QUESTION
+nstld.com. IN NS
+SECTION ANSWER
+nstld.com. 86400 IN NS av1.nstld.com.
+nstld.com. 86400 IN NS av2.nstld.com.
+nstld.com. 86400 IN NS av3.nstld.com.
+nstld.com. 86400 IN NS av4.nstld.com.
+SECTION ADDITIONAL
+av1.nstld.com. 300 IN A 192.42.177.30
+av1.nstld.com. 300 IN AAAA 2001:500:124::30
+av2.nstld.com. 300 IN A 192.42.178.30
+av2.nstld.com. 300 IN AAAA 2001:500:125::30
+av3.nstld.com. 300 IN A 192.82.133.30
+av3.nstld.com. 300 IN AAAA 2001:500:126::30
+av4.nstld.com. 300 IN A 192.82.134.30
+av4.nstld.com. 300 IN AAAA 2001:500:127::30
+ENTRY_END
+
+
+RANGE_END
+
+
+
+; Sequence of queries made by browser
+
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.google.com. IN A
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.google.com. IN A
+SECTION ANSWER
+www.google.com. 300 IN A 172.217.22.4
+ENTRY_END
+
+STEP 3 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+www.gstatic.com. IN A
+ENTRY_END
+
+STEP 4 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+www.gstatic.com. IN A
+SECTION ANSWER
+www.gstatic.com. 300 IN A  216.58.201.99
+ENTRY_END
+
+STEP 5 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+delicious.com. IN A
+ENTRY_END
+
+STEP 6 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+delicious.com. IN A
+SECTION ANSWER
+delicious.com. 600 IN A 50.63.202.21
+ENTRY_END
+
+SCENARIO_END
