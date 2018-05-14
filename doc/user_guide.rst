@@ -145,6 +145,14 @@ When all preparations are finished, run Deckard using following syntax:
 
    $ ./run.sh --config path/to/config.yaml
 
+.. note:: You can run multiple configs in one test instance. Just be aware that ``--scenarios`` must be provided for each config.
+
+.. code-block::
+
+  # This will run scenarios from `scenarios1` folder with configuration from `config1.yaml` and `scenarios2.yaml` with `config2.yaml` respectively.
+  $ ./run.sh --config path/to/config1.yaml --scenarios path/to/scenarios1 --config path/to/config2.yaml --scenarios path/to/scenarios2
+
+
 
 
 Using an existing scenarios with custom configuration template
