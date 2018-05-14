@@ -1,0 +1,15 @@
+programs:
+- name: pdns
+  binary: pdns_recursor
+  additional:
+    - --config-dir=./
+  templates:
+    - template/pdns_recursor.j2
+    - template/hints_zone.j2
+    - template/pdns_dnssec.j2
+  configs:
+    - recursor.conf
+    - hints.pdns
+    - dnssec.lua
+   # SIGTERM leads to return code -15 instead of clean 0 so we have to ignore it
+  ignore_exit_code: true

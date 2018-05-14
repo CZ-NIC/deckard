@@ -1,10 +1,11 @@
 """matchpart is used to compare two DNS messages using a single criterion"""
 
-import dns.rcode
 import dns.edns
+import dns.rcode
+import dns.set
 
 from typing import (  # noqa
-    Any, Sequence, Union)
+    Any, Hashable, Sequence, Tuple, Union)
 
 MismatchValue = Union[str, Sequence[Any]]
 
@@ -27,9 +28,6 @@ class DataMismatch(Exception):
             self.format_value(self.exp_val),
             self.format_value(self.got_val))
 
-    def __hash__(self):
-        return hash((self.exp_val, self.got_val))
-
     def __eq__(self, other):
         return (isinstance(other, DataMismatch)
                 and self.exp_val == other.exp_val
@@ -37,6 +35,19 @@ class DataMismatch(Exception):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    @property
+    def key(self) -> Tuple[Hashable, Hashable]:
+        def make_hashable(value):
+            if isinstance(value, (list, dns.set.Set)):
+                value = (make_hashable(item) for item in value)
+                value = tuple(value)
+            return value
+
+        return (make_hashable(self.exp_val), make_hashable(self.got_val))
+
+    def __hash__(self) -> int:
+        return hash(self.key)
 
 
 def compare_val(exp, got):

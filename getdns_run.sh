@@ -59,22 +59,5 @@ set -o errexit -o nounset
 ## iter_minim_a_nxdomain.rpl  nsec3_wildcard_no_data_response.rpl
 ## iter_minim_a.rpl           val_nsec3_optout_unsec_cache.rpl
 
-
-# Path to scenario files
-TESTS=${TESTS:-"sets/resolver"}
-
-# Path to daemon
-DAEMON=${DAEMON:-"getdns_query"}
-
-# Template file name
-TEMPLATE=${TEMPLATE:-"template/getdns.j2:template/dnssec_getdns.j2"}
-
-# Config file name
-CONFIG=${CONFIG:-"getdns.conf:getdns-root.key"}
-
-ADDITIONAL=${ADDITIONAL:-"-C getdns.conf"}
-
-export TESTS DAEMON TEMPLATE CONFIG ADDITIONAL
-
-MAKEDIR="$(dirname "$0")"
-make -C "${MAKEDIR}"
+RUNDIR="$(dirname "$0")"
+cd "$RUNDIR" && ./run.sh --config configs/getdns.yaml "$@"
