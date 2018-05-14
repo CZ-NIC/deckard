@@ -1,7 +1,3 @@
-"""Usage: run `LD_PRELOAD="«paths to libfaketime and libsocket_wrapper»"
-py.test tests/test_experiment` in deckard's root directory.
-Alternatively add `-n «number of cores»` with `pytest-xdist` module installed.
-"""
 import logging
 import os
 import pytest

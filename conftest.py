@@ -1,7 +1,6 @@
 from collections import namedtuple
 import glob
 import os
-import pytest
 import re
 import yaml
 
@@ -44,7 +43,8 @@ def get_qmin_config(path):
 def scenarios(paths, configs):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
 
-    assert len(paths) == len(configs), "There should the same number of --config and --scenario arguments"
+    assert len(paths) == len(configs),\
+        "Number of --config has to be equal to number of --scenarios arguments."
 
     scenario_list = []
 
@@ -64,8 +64,6 @@ def scenarios(paths, configs):
             scenario_list.append(Scenario(file, get_qmin_config(file), config_dict))
 
     return scenario_list
-
-
 
 
 def pytest_addoption(parser):
