@@ -364,9 +364,9 @@ def sign_zone_tree(top, zones):
     try:
         zone = zones[top]
     except KeyError:
-        return
+        return True
     if zone.signed:
-        return
+        return True
     for record in zone.records:
         record.new = ""
         if record.rrtype == "DS":
@@ -440,7 +440,6 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
             if (record.domain == zone_name and
                     record.original.split()[2] == split_line[5]):
                 record.new = ""
-                print(line)
                 for word in split_line[3:]:
                     record.new += word + " "
     dsset.close()
@@ -503,6 +502,9 @@ def resign_test(test, exist_keys):
     Return:
         True for success, False otherwise.
     """
+    # Copy original keys to working directory
+    copykeys(exist_keys)
+    
     # Parse test
     config, node = parse_test(test)
 
@@ -528,6 +530,7 @@ def resign_test(test, exist_keys):
     # Sign zones
     for anchor_zone in trust_anchor_zones:
         if not sign_zone_tree(anchor_zone, zones):
+            print("Error: Cannot sign zone", zones[anchor_zone].domain)
             return False
 
     # Replace keys and signatures in tests
@@ -540,11 +543,8 @@ def resign_test(test, exist_keys):
     return True
 
 
-def copykeys(keyfiles):
-    """ Copy key files to folder resign/ """
+def getkeys(keyfiles):
     keys = []
-    if not os.path.isdir("resign"):
-        os.mkdir("resign")
     for keyfile in keyfiles:
         if len(keyfile) < 5 or keyfile[-4:] != ".key":
             print(keyfile, "is not .key file, skipping key.")
@@ -552,11 +552,18 @@ def copykeys(keyfiles):
         if not os.path.isfile(keyfile[:-4] + ".private"):
             print("Cannot find", keyfile[:-4] + ".private,", "skipping key.")
             continue
+        keys.append(keyfile)
+    return keys
+
+
+def copykeys(keyfiles):
+    """ Copy key files to folder resign/ """
+    if not os.path.isdir("resign"):
+        os.mkdir("resign")
+    for keyfile in keyfiles:
         shutil.copyfile(keyfile, "resign/" + os.path.basename(keyfile))
         shutil.copyfile(keyfile[:-4] + ".private", "resign/" +
                         os.path.basename(keyfile)[:-4] + ".private")
-        keys.append(keyfile)
-    return keys
 
 
 def check_depedencies():
@@ -585,21 +592,23 @@ def parseargs():
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
     argparser.add_argument("-k", "--keys",
-                           help="files with original keys used in the "
-                           "test you want to use again",
+                           help="files with original keys used in the test you want to use again",
                            nargs="+")
     args = argparser.parse_args()
     if os.path.isfile(args.tests):
         tests = [args.tests]
     elif os.path.isdir(args.tests):
         tests = os.listdir(args.tests)
+        for i, test in enumerate(tests):
+            tests[i] = args.tests + "/" + test
+        print(tests)
     else:
         print("Error:", args.tests, "is not a file or directory.")
         sys.exit(1)
-    origkeytags = []
+    origkeys = []
     if args.keys:
-        origkeytags = copykeys(args.keys)
-    return tests, origkeytags, args.store
+        origkeys = getkeys(args.keys)
+    return tests, origkeys, args.store
 
 
 def clean(test, store):
@@ -630,15 +639,16 @@ def clean(test, store):
 def main():
     """ Resign .rpl tests. """
     check_depedencies()
-    tests, origkeytags, store = parseargs()
+    tests, origkeys, store = parseargs()
     for test in tests:
         if test[-4:] != ".rpl":
             print(test, "is not a .rpl file, skipping.")
         else:
             print("Resigning", test)
-            success = resign_test(test, origkeytags)
+            success = resign_test(test, origkeys)
         clean(test, store)
         if(not success):
+            print("Error")
             sys.exit(1)
 
 
