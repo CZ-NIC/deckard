@@ -17,6 +17,8 @@ function find_modified_tests {
 MODIFIED_TESTS_FILE="/tmp/modified_tests"
 find_modified_tests
 LOGS[0]="${MODIFIED_TESTS_FILE}"
+LOGS[1]="/tmp/base.xml"
+LOGS[2]="/tmp/head.xml"
 
 : get test results from version under test
 "${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/head.xml || : some tests on HEAD ${HEAD} failed
@@ -25,4 +27,4 @@ LOGS[0]="${MODIFIED_TESTS_FILE}"
 git checkout --force --detach "${MERGEBASE}"
 git clean -xdf
 "${TESTRUNNER}" -n $(nproc) --junit-xml=/tmp/base.xml || : some tests on merge base ${MERGEBASE} failed
-"${CIDIR}/junit_compare.py" /tmp/head.xml /tmp/base.xml /tmp/modified_tests && echo "OK, no differences found"
+"${CIDIR}/junit-compare.py" /tmp/head.xml /tmp/base.xml /tmp/modified_tests && echo "OK, no differences found"
