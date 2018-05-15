@@ -79,7 +79,7 @@ All ``*_run.sh`` scripts internally call the ``run.sh`` script and pass command 
    # running ./kresd_run.sh -n 4 -k "iter_" will result in running
    ./run.sh --config configs/kresd.yaml  -n 4 -k "iter_"
 
-As you can see, path to YaML configuration file is passed to ``run.sh``. You can edit one of the prepared ones stored in `config/` or write your own.
+As you can see, path to YaML configuration file is passed to ``run.sh``. You can edit one of the prepared ones stored in `configs/` or write your own.
 
 Commented contents of ``kresd.yaml`` follows:
 
