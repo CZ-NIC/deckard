@@ -75,6 +75,7 @@ test:comparative:kresd:
     # compare results from latest Deckard with results from merge base
     - cp ci/common.sh /tmp
     - cp ci/compare-tests.sh /tmp
+    - cp ci/junit-compare.py /tmp
     - LD_LIBRARY_PATH=/tmp/.local/lib PATH=/tmp/.local/sbin:$PATH /tmp/compare-tests.sh $(pwd)/kresd_run.sh
   artifacts:
     when: always
