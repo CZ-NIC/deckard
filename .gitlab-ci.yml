@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/knot/knot-resolver/ci:debian-stable
+image: $CI_REGISTRY/knot/knot-resolver/ci-unstable-dnspython:debian-stable
 variables:
   LC_ALL: C.UTF-8
 
