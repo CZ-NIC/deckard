@@ -18,7 +18,6 @@ SCENARIO_BEGIN Test validator NSEC3 B.2 no data, without NSEC3.
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -49,7 +48,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.0.2.1
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR REFUSED
 SECTION QUESTION
@@ -58,7 +56,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR REFUSED
 SECTION QUESTION
@@ -67,7 +64,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR REFUSED
 SECTION QUESTION
@@ -78,7 +74,6 @@ ENTRY_END
 ; response to DNSKEY priming query
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example. IN DNSKEY
@@ -90,14 +85,12 @@ ENTRY_END
 
 ; response to DS query
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 ns1.example.        IN DS
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 ns1.example.        IN MX

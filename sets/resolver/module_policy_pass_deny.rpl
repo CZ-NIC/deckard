@@ -9,7 +9,6 @@ SCENARIO_BEGIN PASS, DENY policy test; uses policy.pattern and policy.suffix
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 fake.example.cz. IN A
@@ -18,7 +17,6 @@ fake.example.cz. IN A 5.6.7.8
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 dummy.example.cz. IN A

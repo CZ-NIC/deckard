@@ -17,7 +17,6 @@ ENTRY_END
 ; root prime
 STEP 30 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -30,7 +29,6 @@ ENTRY_END
 ; query sent to root server
 STEP 50 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 cz. IN A
@@ -45,7 +43,6 @@ ENTRY_END
 ; this is the truncated answer
 STEP 60 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA TC NOERROR
 SECTION QUESTION
 cz. IN A
@@ -55,7 +52,6 @@ ENTRY_END
 ; this is the correct answer
 STEP 60 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 cz. IN A

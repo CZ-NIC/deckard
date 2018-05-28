@@ -25,7 +25,6 @@ ENTRY_END
 ; root prime is sent
 STEP 30 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -38,7 +37,6 @@ ENTRY_END
 ; query sent to root server
 STEP 50 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -51,7 +49,6 @@ ENTRY_END
 ; query sent to .com server
 STEP 70 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -67,7 +64,6 @@ ENTRY_END
 ; query to ns1.example.com or ns2.example.com.
 STEP 90 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -84,7 +80,6 @@ ENTRY_END
 ; iterator should try again and ask the other nameserver.
 STEP 110 REPLY
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 www.example.com. IN A

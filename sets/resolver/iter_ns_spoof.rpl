@@ -11,7 +11,6 @@ SCENARIO_BEGIN Test NS record spoof protection.
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -36,7 +35,6 @@ ENTRY_END
 ; for simplicity the root server is authoritative for root-servers.net
 ; and also for gtld-servers.net
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET.	IN	A
@@ -45,7 +43,6 @@ K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	A
@@ -71,7 +68,6 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 com.	IN NS
@@ -86,7 +82,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -99,7 +94,6 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
@@ -112,7 +106,6 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -123,7 +116,6 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -136,7 +128,6 @@ ENTRY_END
 ;; answer to the spoofed query ; spoofed reply answer.
 ; here we put it in the nameserver for ease.
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 bad123.example.com. IN A
@@ -153,7 +144,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 6.6.6.6
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -166,7 +156,6 @@ bad123.example.com. IN A	6.6.6.6
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
@@ -179,7 +168,6 @@ bad123.example.com. IN A	6.6.6.6
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 bad123.example.com. IN A

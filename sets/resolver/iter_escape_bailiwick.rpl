@@ -7,7 +7,6 @@ SCENARIO_BEGIN Test a case where parent NS advertises non-existent zone cut, and
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -30,7 +29,6 @@ ENTRY_END
 
 ; root-servers.net.
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN NS
@@ -50,7 +48,6 @@ root-servers.net.	IN	SOA	. . 0 0 0 0 0
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	A
@@ -60,7 +57,6 @@ SECTION ADDITIONAL
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	AAAA
@@ -70,7 +66,6 @@ ENTRY_END
 
 ; gtld-servers.net.
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN NS
@@ -90,7 +85,6 @@ gtld-servers.net.	IN	SOA	. . 0 0 0 0 0
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	A
@@ -100,7 +94,6 @@ SECTION ADDITIONAL
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	AAAA
@@ -125,7 +118,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -146,7 +138,6 @@ com.	IN SOA	. . 0 0 0 0 0
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -161,7 +152,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -172,7 +162,6 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A

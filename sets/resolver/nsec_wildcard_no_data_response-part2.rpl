@@ -15,7 +15,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.0.2.1
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -26,7 +25,6 @@ ns.                     3600    IN      A       192.0.2.1
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN A
@@ -35,7 +33,6 @@ ns.                     3600    IN      A       192.0.2.1
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN AAAA
@@ -62,7 +59,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.0.2.2
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 example. IN NS
@@ -73,7 +69,6 @@ ns.example.             3600    IN      A       192.0.2.2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example. IN A
@@ -82,7 +77,6 @@ ns.example.             3600    IN      A       192.0.2.2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example. IN AAAA
@@ -109,7 +103,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.0.2.3
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 nsec.example. IN NS
@@ -122,7 +115,6 @@ ns.nsec.example.	3600	IN	RRSIG	A 8 3 3600 20170419140236 20170320140236 41524 ns
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.nsec.example. IN A
@@ -132,7 +124,6 @@ ns.nsec.example.	3600	IN	RRSIG	A 8 3 3600 20170419140236 20170320140236 41524 ns
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.nsec.example. IN AAAA
@@ -144,7 +135,6 @@ ns.nsec.example.	3600	IN	RRSIG	NSEC 8 3 3600 20170419140236 20170320140236 41524
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA NOERROR
 SECTION QUESTION
 nsec.example. IN DNSKEY
@@ -154,7 +144,6 @@ nsec.example.                                 3600 IN RRSIG     DNSKEY 8 2 3600 
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 local.nsec.example. IN A
@@ -168,7 +157,6 @@ ENTRY_END
 
 ; missing NSEC proof
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-nodata.local.nsec.example. IN CNAME
@@ -178,7 +166,6 @@ nsec.example.		3600	IN	RRSIG	SOA 8 2 3600 20170419140236 20170320140236 41524 ns
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-nodata.local.nsec.example. IN RRSIG
@@ -188,7 +175,6 @@ ENTRY_END
 
 ; synthesized A record was removed and replaced with SOA but no NSEC
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-masked-data.local.nsec.example. IN A
@@ -198,7 +184,6 @@ nsec.example.		3600	IN	RRSIG	SOA 8 2 3600 20170419140236 20170320140236 41524 ns
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-masked-data.local.nsec.example. IN RRSIG

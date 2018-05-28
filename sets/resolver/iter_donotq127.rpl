@@ -14,7 +14,6 @@ SCENARIO_BEGIN Test iterator donotquery of 127/8.
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -45,7 +44,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -55,7 +53,6 @@ a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -81,7 +78,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -92,7 +88,6 @@ a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
@@ -102,7 +97,6 @@ com. SOA bla bla 1 2 3 4 5
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
@@ -132,7 +126,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -146,7 +139,6 @@ ns2.example.com.	IN 	A	127.0.0.2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A

@@ -15,7 +15,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 2001:dc3::35
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 .		IN	DNSKEY
@@ -65,7 +64,6 @@ RANGE_BEGIN 0 100
 	ADDRESS	2001:13c7:7000::1
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 mx.		IN	DNSKEY
@@ -78,7 +76,6 @@ ENTRY_END
 
 ; nix.mx
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 nic.mx.				IN	NS
@@ -101,7 +98,6 @@ x.mx-ns.mx.		172800	IN	A	201.131.252.1
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 nic.mx.				IN	DS
@@ -116,7 +112,6 @@ ENTRY_END
 
 ; this entry is the one which caused kresd to return AD flag despite of missing RRSIGs
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 www.nic.mx.			IN	A
@@ -125,7 +120,6 @@ www.nic.mx.		300	IN	CNAME	www.nicmexico.mx.
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 www.nic.mx.			IN	RRSIG
@@ -135,7 +129,6 @@ ENTRY_END
 
 ; nixmexico.mx
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nicmexico.mx.			IN	NS
@@ -159,7 +152,6 @@ x.mx-ns.mx.		172800	IN	A	201.131.252.1
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO
 SECTION QUESTION
 nicmexico.mx.			IN	DS
@@ -170,7 +162,6 @@ nicmexico.mx.		86400	IN	RRSIG	DS 8 2 86400 20170223000000 20170124000000 48529 m
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO
 SECTION QUESTION
 nicmexico.mx.			IN	DNSKEY
@@ -183,7 +174,6 @@ nicmexico.mx.		172800	IN	RRSIG	DNSKEY 7 2 172800 20170221235959 20161221161902 2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA DO
 SECTION QUESTION
 www.nicmexico.mx.		IN	A

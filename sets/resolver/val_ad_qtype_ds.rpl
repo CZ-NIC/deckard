@@ -9,7 +9,6 @@ SCENARIO_BEGIN Test setting AD bit in secured answer which contains proof of DS 
 RANGE_BEGIN 1 2
 	ADDRESS 193.0.14.129 ;k.root-servers.net
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 .	IN	SOA
@@ -19,7 +18,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 .	IN	NS
@@ -30,7 +28,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 .	IN	DNSKEY
@@ -43,7 +40,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA REFUSED
 SECTION QUESTION
 .	IN	RRSIG
@@ -51,7 +47,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 test.   IN      NS
@@ -60,7 +55,6 @@ test.   IN      NS      ns.net
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 test.   IN      DS
@@ -72,7 +66,6 @@ test.                   86400   IN      RRSIG   NSEC 8 1 86400 20170831093859 20
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA REFUSED
 SECTION QUESTION
 test.	IN	RRSIG
@@ -80,7 +73,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 net.   IN      NS
@@ -93,7 +85,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 root-servers.net.   IN      NS
@@ -105,7 +96,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 ns.net.   IN      A
@@ -116,7 +106,6 @@ ns.net.                 600     IN      RRSIG   A 8 2 600 20170831093859 2017080
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 k.root-servers.net.   IN      A
@@ -130,7 +119,6 @@ RANGE_END
 RANGE_BEGIN 1 2
 	ADDRESS 1.1.1.1 ;ns.net
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 test.	IN	SOA
@@ -139,7 +127,6 @@ test.                       86400   IN      SOA     ns.net. hostmaster.example.c
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 test.   IN      NS
@@ -148,7 +135,6 @@ test.   IN      NS      ns.net
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 ns.net.   IN      A

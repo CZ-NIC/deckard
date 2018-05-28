@@ -12,7 +12,6 @@ SCENARIO_BEGIN Test validator with a CNAMEs between sub-trees with different TAs
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 .			IN	NS
@@ -67,7 +66,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 com.			IN	NS
@@ -78,7 +76,6 @@ a.gtld-servers.net.	IN	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 net.			IN	NS
@@ -89,7 +86,6 @@ a.gtld-servers.net.	IN	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 org.			IN	NS
@@ -140,7 +136,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com.		IN	NS
@@ -154,7 +149,6 @@ ENTRY_END
 
 ; response to DNSKEY priming query
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com.		IN	DNSKEY
@@ -171,7 +165,6 @@ ENTRY_END
 
 ; response to query of interest
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN	A
@@ -196,7 +189,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.5
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.net.		IN	NS
@@ -210,7 +202,6 @@ ENTRY_END
 
 ; response to DNSKEY priming query
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.net.		IN	DNSKEY
@@ -227,7 +218,6 @@ ENTRY_END
 
 ; response to query of interest
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR DO NOERROR
 SECTION QUESTION
 www.example.net.		IN	A
@@ -253,7 +243,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.6
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.org.			IN	NS
@@ -273,7 +262,6 @@ www.example.org.	3600	IN	CNAME	www.example.com.
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR NOERROR
 SECTION QUESTION
 insecure.example.org.		IN	A

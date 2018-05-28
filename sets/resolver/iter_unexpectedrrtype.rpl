@@ -6,7 +6,6 @@ SCENARIO_BEGIN Test ignoring answers with unexpected RRType
 RANGE_BEGIN 0 100
 	ADDRESS 1.1.1.1
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.com.    IN  AAAA
@@ -15,7 +14,6 @@ example.com. 0  IN  A   2.2.2.2 ; returns A record
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR RD NOERROR
 SECTION QUESTION
 .	IN	NS

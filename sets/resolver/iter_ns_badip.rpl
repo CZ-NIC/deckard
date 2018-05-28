@@ -10,7 +10,6 @@ SCENARIO_BEGIN Test iterator with delagation with bad IP address
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -49,7 +48,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -59,7 +57,6 @@ a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
@@ -116,7 +113,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -131,7 +127,6 @@ ns2.example.com. 3600	IN 	A	1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -145,7 +140,6 @@ ns2.example.com. 3600	IN 	A	1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 ns2.example.com. IN A
@@ -159,7 +153,6 @@ ns.example.com.	10 	IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -169,7 +162,6 @@ example.com.	3600 IN SOA bla. bla. 1 2 3 4 5
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 ns2.example.com. IN AAAA
@@ -180,7 +172,6 @@ ENTRY_END
 
 ; foo.com contents.
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.foo.com. IN A

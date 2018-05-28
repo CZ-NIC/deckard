@@ -10,7 +10,6 @@ SCENARIO_BEGIN DENY policy test, uses policy.common_suffix and policy.todnames
 RANGE_BEGIN 0 110
 	ADDRESS 1.2.3.4 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 example.cz. IN A
@@ -19,7 +18,6 @@ example.cz. IN A 5.6.7.8
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 dummy.example.cz. IN A
@@ -28,7 +26,6 @@ dummy.example.cz. IN A 9.10.11.12
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 nic.cz. IN A
@@ -37,7 +34,6 @@ nic.cz. IN A 13.14.15.16
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 dummy.nic.cz. IN A
@@ -46,7 +42,6 @@ dummy.nic.cz. IN A 17.18.19.20
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 example.com. IN A

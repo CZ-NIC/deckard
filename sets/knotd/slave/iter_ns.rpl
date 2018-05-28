@@ -6,7 +6,6 @@ SCENARIO_BEGIN Simple knotd query.
 RANGE_BEGIN 0 100
 ADDRESS 192.0.2.10
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.com. IN AXFR
@@ -25,7 +24,6 @@ example.com.		3600	IN	SOA	dns1.example.com. hostmaster.example.com. 2010111213 2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.com. IN SOA

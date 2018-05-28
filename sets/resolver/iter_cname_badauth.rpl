@@ -10,7 +10,6 @@ SCENARIO_BEGIN Test iterator with NS sending CNAME answer and authority of CNAME
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -61,7 +60,6 @@ nstld.com. SOA bla bla 1 2 3 4 5
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET.	IN	A
@@ -70,7 +68,6 @@ K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET.	IN	AAAA
@@ -111,7 +108,6 @@ l4.nstld.com. IN A 209.112.114.33
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -121,7 +117,6 @@ l4.nstld.com.	IN 	A	209.112.114.33
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -131,7 +126,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -147,7 +141,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 209.112.114.33
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR AA NOERROR
 SECTION QUESTION
 ingdirect.com.au. IN NS
@@ -158,7 +151,6 @@ l4.nstld.com. IN A 209.112.114.33
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
@@ -184,7 +176,6 @@ ncfphywebgtm01-c.ingdirect.com.au. IN A 203.92.27.132
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR NOERROR
 SECTION QUESTION
 ncfphywebgtm01-c.ingdirect.com.au. IN A
@@ -193,7 +184,6 @@ ncfphywebgtm01-c.ingdirect.com.au. IN A 203.92.27.132
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR NOERROR
 SECTION QUESTION
 ncfphywebgtm01-c.ingdirect.com.au. IN AAAA
@@ -208,7 +198,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 203.92.27.132
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 clb.ingdirect.com.au. IN NS
@@ -219,7 +208,6 @@ ncfphywebgtm01-c.ingdirect.com.au. IN A 203.92.27.132
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
@@ -229,7 +217,6 @@ www.clb.ingdirect.com.au. IN A 203.31.183.134
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 ADJUST copy_id copy_query
 REPLY QR REFUSED
 SECTION QUESTION

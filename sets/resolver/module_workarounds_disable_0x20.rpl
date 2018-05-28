@@ -16,7 +16,6 @@ b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qname qtype
 REPLY QR RD NOERROR
 SECTION QUESTION
 .	IN	NS

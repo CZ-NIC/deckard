@@ -20,7 +20,6 @@ SCENARIO_BEGIN Test validator with NSEC3 with no DS referral abuse of apex.
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -47,7 +46,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -74,7 +72,6 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA SERVFAIL
 SECTION QUESTION
 ns.example.com. IN A
@@ -82,7 +79,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA SERVFAIL
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -90,7 +86,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -104,7 +99,6 @@ ENTRY_END
 
 ; response to DNSKEY priming query
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN DNSKEY
@@ -121,7 +115,6 @@ ENTRY_END
 
 ; response to query of interest
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -136,7 +129,6 @@ s1unhcti19bkdr98fegs0v46mbu3t4m3.example.com.   3600    IN      RRSIG   NSEC3 3 
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN DS
@@ -174,14 +166,12 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.10
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA REFUSED
 SECTION QUESTION
 ns.sub.example.com. IN A
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR AA REFUSED
 SECTION QUESTION
 ns.sub.example.com. IN AAAA
@@ -189,7 +179,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR REFUSED
 SECTION QUESTION
 sub.example.com. IN NS
@@ -198,7 +187,6 @@ ENTRY_END
 
 ; response to DNSKEY priming query
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN DNSKEY
@@ -209,7 +197,6 @@ sub.example.com.        3600    IN      RRSIG   DNSKEY 3 3 3600 20070926135752 2
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A

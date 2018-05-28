@@ -11,7 +11,6 @@ SCENARIO_BEGIN Test not setting AD bit for answer which contains proof of nonexi
 RANGE_BEGIN 1 2
 	ADDRESS 193.0.14.129 ;k.root-servers.net
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 .	IN	SOA
@@ -21,7 +20,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 .	IN	NS
@@ -32,7 +30,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 .	IN	DNSKEY
@@ -52,7 +49,6 @@ SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NXDOMAIN
 SECTION QUESTION
 li.   IN      NS
@@ -64,7 +60,6 @@ ca5qlot3gsobijfasusg7dvc5kdtgp4e. 86400 IN RRSIG NSEC3 8 1 86400 20170901125744 
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 net.   IN      NS
@@ -78,7 +73,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 root-servers.net.   IN      NS
@@ -91,7 +85,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 ns.net.   IN      A
@@ -101,7 +94,6 @@ ns.net.                 600     IN      RRSIG   A 8 2 600 20170901125744 2017080
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 k.root-servers.net.   IN      A
@@ -111,7 +103,6 @@ k.root-servers.net.     2592000 IN      RRSIG   A 8 3 3600000 20170901125744 201
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NXDOMAIN
 SECTION QUESTION
 k.root-servers.net.   IN      AAAA
@@ -124,7 +115,6 @@ c27sd6l4gd20p5e9ttq5br5a4q7scnf7. 86400 IN RRSIG NSEC3 8 1 86400 20170901125744 
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA AD NOERROR
 SECTION QUESTION
 .   IN      NSEC3PARAM
@@ -138,7 +128,6 @@ RANGE_END
 RANGE_BEGIN 1 2
 	ADDRESS 1.1.1.1 ;ns.net
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA NOERROR
 SECTION QUESTION
 li.	IN	SOA
@@ -147,7 +136,6 @@ li.                       86400   IN      SOA     ns.net. hostmaster.example.com
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA NOERROR
 SECTION QUESTION
 li.   IN      NS
@@ -156,7 +144,6 @@ li.   IN      NS      ns.net
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
 REPLY QR RD AA NOERROR
 SECTION QUESTION
 ns.net.   IN      A
