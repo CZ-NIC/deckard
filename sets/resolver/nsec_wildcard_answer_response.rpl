@@ -58,7 +58,6 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qname
 ADJUST copy_id copy_query
-REPLY QR NOERROR
 SECTION QUESTION
 example. IN NS
 SECTION AUTHORITY
@@ -71,7 +70,6 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qname
 ADJUST copy_id copy_query
-REPLY QR NOERROR
 SECTION QUESTION
 name.example. IN NS
 SECTION AUTHORITY
@@ -84,7 +82,6 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qname
 ADJUST copy_id copy_query
-REPLY QR NOERROR
 SECTION QUESTION
 nsec.example. IN NS
 SECTION AUTHORITY
@@ -97,7 +94,6 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 local.nsec.example. IN A
 SECTION ANSWER
@@ -112,7 +108,6 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode qname
 ADJUST copy_id copy_query
-REPLY QR NOERROR
 SECTION QUESTION
 local.nsec.example. IN NS
 SECTION AUTHORITY
@@ -125,7 +120,6 @@ explicita2.nsec.example. 0	IN	RRSIG	NSEC 8 3 0 20170418145253 20170319145253 415
 ENTRY_END
 
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 a.local.nsec.example. IN A
 SECTION ANSWER
@@ -138,7 +132,6 @@ ENTRY_END
 
 ; Missing NSEC covering the wildcard.
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 missing-nsec.local.nsec.example.   IN      A
 SECTION ANSWER
@@ -148,7 +141,6 @@ ENTRY_END
 
 ; kresd will detect validation failure and query for RRSIG
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 missing-nsec.local.nsec.example.     IN      RRSIG
 SECTION ANSWER
@@ -157,7 +149,6 @@ ENTRY_END
 
 ; NSEC record was attached to another answer created by copying wildcard data to different owner name
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 incorrect.name.example. IN A
 SECTION ANSWER
@@ -170,7 +161,6 @@ ENTRY_END
 
 ; kresd will detect validation failure and query for RRSIG
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 incorrect.name.example. IN RRSIG
 SECTION ANSWER
@@ -179,7 +169,6 @@ ENTRY_END
 
 ; explicita.nsec.example.
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 explicita.nsec.example. IN A
 SECTION ANSWER
@@ -189,7 +178,6 @@ ENTRY_END
 
 ; explicita2.nsec.example. - fake answer attempting to replace explicit record with wildcard data
 ENTRY_BEGIN
-REPLY QR NOERROR
 SECTION QUESTION
 explicita2.nsec.example. IN A
 SECTION ANSWER
