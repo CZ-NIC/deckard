@@ -16,7 +16,6 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -30,7 +29,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN A
@@ -41,7 +39,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN AAAA
@@ -54,7 +51,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN DNSKEY
@@ -106,7 +102,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 local.nsec.example. IN A
@@ -136,7 +131,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.local.nsec.example. IN A
@@ -151,7 +145,6 @@ ENTRY_END
 ; Missing NSEC covering the wildcard.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 missing-nsec.local.nsec.example.   IN      A
@@ -163,7 +156,6 @@ ENTRY_END
 ; kresd will detect validation failure and query for RRSIG
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 missing-nsec.local.nsec.example.     IN      RRSIG
@@ -174,7 +166,6 @@ ENTRY_END
 ; NSEC record was attached to another answer created by copying wildcard data to different owner name
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 incorrect.name.example. IN A
@@ -189,7 +180,6 @@ ENTRY_END
 ; kresd will detect validation failure and query for RRSIG
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 incorrect.name.example. IN RRSIG
@@ -200,7 +190,6 @@ ENTRY_END
 ; explicita.nsec.example.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 explicita.nsec.example. IN A
@@ -212,7 +201,6 @@ ENTRY_END
 ; explicita2.nsec.example. - fake answer attempting to replace explicit record with wildcard data
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 explicita2.nsec.example. IN A

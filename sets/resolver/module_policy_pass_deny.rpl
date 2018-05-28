@@ -10,7 +10,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 fake.example.cz. IN A
@@ -20,7 +19,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 dummy.example.cz. IN A

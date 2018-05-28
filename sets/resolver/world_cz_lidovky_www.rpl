@@ -37,7 +37,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		.			IN	DS
@@ -50,7 +49,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		.			IN	NS
@@ -100,7 +98,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		.			IN	DNSKEY
@@ -112,7 +109,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		cz.			IN	DS
@@ -149,7 +145,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		net.			IN	DS
@@ -214,7 +209,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		nic.cz.				IN	DS
@@ -225,7 +219,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		a.ns.nic.cz.			IN	A
@@ -236,7 +229,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		b.ns.nic.cz.			IN	A
@@ -247,7 +239,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		c.ns.nic.cz.			IN	A
@@ -258,7 +249,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		d.ns.nic.cz.			IN	A
@@ -269,7 +259,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		a.ns.nic.cz.			IN	AAAA
@@ -280,7 +269,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		b.ns.nic.cz.			IN	AAAA
@@ -291,7 +279,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		c.ns.nic.cz.			IN	AAAA
@@ -302,7 +289,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		d.ns.nic.cz.			IN	AAAA
@@ -313,7 +299,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		cz.				IN	NS
@@ -353,7 +338,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		lidovky.cz.			IN	DS
@@ -383,7 +367,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		mafra.cz.			IN	DS
@@ -413,7 +396,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		idnes.cz.			IN	DS
@@ -475,7 +457,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		net.			IN	DS
@@ -488,7 +469,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		net.			IN	NS
@@ -527,7 +507,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		root-servers.net.		IN	DS
@@ -542,7 +521,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		gtld-servers.net.		IN	DS
@@ -557,7 +535,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode subdomain
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		gtld-servers.net.		IN	NS
@@ -585,7 +562,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		a.gtld-servers.net.	IN	A
@@ -629,7 +605,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		mafracz.net.			IN	DS
@@ -699,7 +674,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		lidovky.cz.			IN	A
@@ -719,7 +693,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		www.lidovky.cz.		IN	A
@@ -739,7 +712,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		c23.idnes.cz.			IN	A
@@ -757,7 +729,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		ns2.mafra.cz. IN A
@@ -774,7 +745,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR AA RD DO NOERROR
 		SECTION QUESTION
 		ns.mafra.cz. IN A
@@ -791,7 +761,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		lidovky.cz.			IN	NS
@@ -808,7 +777,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		mafra.cz.			IN	NS
@@ -824,7 +792,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		mafracz.net.			IN	NS
@@ -840,7 +807,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO AA NOERROR
 		SECTION QUESTION
 		idnes.cz.			IN	NS
@@ -857,7 +823,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		ns.mafra.cz.			IN	AAAA
@@ -867,7 +832,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		ns2.mafra.cz.			IN	AAAA
@@ -877,7 +841,6 @@ RANGE_BEGIN 0 100
 
 	ENTRY_BEGIN
 		MATCH opcode qtype qname
-		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		ns.mafracz.net.			IN	AAAA

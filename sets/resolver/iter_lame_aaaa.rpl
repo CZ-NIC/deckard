@@ -13,7 +13,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -53,7 +52,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -70,7 +68,6 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -79,7 +76,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -88,7 +84,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -102,7 +97,6 @@ ENTRY_END
 ; response to AAAA query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 example.com. IN AAAA
@@ -130,7 +124,6 @@ ENTRY_END
 ; response to A query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 example.com. IN A

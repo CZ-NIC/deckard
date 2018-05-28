@@ -11,7 +11,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -47,7 +46,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -63,7 +61,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -91,7 +88,6 @@ RANGE_BEGIN 0 100
 ; net.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 net. IN NS
@@ -104,7 +100,6 @@ ENTRY_END
 ; root-servers.net.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN NS
@@ -116,7 +111,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN A
@@ -126,7 +120,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	A
@@ -137,7 +130,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	AAAA
@@ -148,7 +140,6 @@ ENTRY_END
 ; gtld-servers.net.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN NS
@@ -160,7 +151,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN A
@@ -170,7 +160,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	A
@@ -181,7 +170,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	AAAA
@@ -191,7 +179,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 e.gtld-servers.net.	IN 	A
@@ -202,7 +189,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 e.gtld-servers.net.	IN 	AAAA
@@ -224,7 +210,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -240,7 +225,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.net. IN NS
@@ -252,7 +236,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -264,7 +247,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -276,7 +258,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -286,7 +267,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -325,7 +305,6 @@ ENTRY_END
 ; due to ordering of answer packets, this is still outstanding, remove it
 STEP 21 CHECK_OUT_QUERY
 ENTRY_BEGIN
-ADJUST copy_id
 MATCH qname qtype
 REPLY QR
 SECTION QUESTION

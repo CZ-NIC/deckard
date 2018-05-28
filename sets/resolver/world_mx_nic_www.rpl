@@ -16,7 +16,6 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 .		IN	DNSKEY
@@ -67,7 +66,6 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 mx.		IN	DNSKEY
@@ -81,7 +79,6 @@ ENTRY_END
 ; nix.mx
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 nic.mx.				IN	NS
@@ -105,7 +102,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 nic.mx.				IN	DS
@@ -121,7 +117,6 @@ ENTRY_END
 ; this entry is the one which caused kresd to return AD flag despite of missing RRSIGs
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 www.nic.mx.			IN	A
@@ -131,7 +126,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 www.nic.mx.			IN	RRSIG
@@ -142,7 +136,6 @@ ENTRY_END
 ; nixmexico.mx
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nicmexico.mx.			IN	NS

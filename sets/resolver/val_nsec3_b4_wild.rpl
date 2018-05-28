@@ -17,7 +17,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -60,7 +59,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example. IN DNSKEY
@@ -72,7 +70,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 a.z.w.example. IN MX
@@ -95,7 +92,6 @@ ENTRY_END
 ; catch glue queries
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 ns2.example. IN      A
@@ -105,7 +101,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 ns2.example. IN      AAAA

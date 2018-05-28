@@ -13,7 +13,6 @@ RANGE_BEGIN 1 1000
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN SOA
@@ -24,7 +23,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN DNSKEY
@@ -35,7 +33,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN NS
@@ -51,7 +48,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN NS
@@ -64,7 +60,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN A
@@ -75,7 +70,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN AAAA
@@ -86,7 +80,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-bd19.test. IN A
@@ -97,7 +90,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-bd19.test. IN AAAA
@@ -108,7 +100,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-bd19.test. IN TXT
@@ -119,7 +110,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-bd19.test. IN A
@@ -130,7 +120,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-bd19.test. IN AAAA
@@ -141,7 +130,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-bd19.test. IN TXT
@@ -152,7 +140,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-0000.test. IN A
@@ -163,7 +150,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-0000.test. IN AAAA
@@ -174,7 +160,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-is-ta-0000.test. IN TXT
@@ -185,7 +170,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-0000.test. IN A
@@ -196,7 +180,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-0000.test. IN AAAA
@@ -207,7 +190,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 kskroll-sentinel-not-ta-0000.test. IN TXT

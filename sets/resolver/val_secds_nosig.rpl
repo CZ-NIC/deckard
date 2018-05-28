@@ -20,7 +20,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -48,7 +47,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -76,7 +74,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -91,7 +88,6 @@ ENTRY_END
 ; barely valid nodata for AAAA
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -104,7 +100,6 @@ ENTRY_END
 ; response to DNSKEY priming query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN DNSKEY
@@ -142,7 +137,6 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.6
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN NS
@@ -157,7 +151,6 @@ ENTRY_END
 ; barely valid nodata for AAAA
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.sub.example.com. IN AAAA
@@ -171,7 +164,6 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.sub.example.com. IN A
@@ -184,7 +176,6 @@ ENTRY_END
 ; sub.example.com.        3600    IN      DS      30899 RSASHA1 1 f7ed618f24d5e5202927e1d27bc2e84a141cb4b3
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN DNSKEY
@@ -202,7 +193,6 @@ ENTRY_END
 ; response to query of interest
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
