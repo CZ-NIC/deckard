@@ -12,6 +12,8 @@ SCENARIO_BEGIN Test iterative resolve with lame hints (RA flag on but no AA flag
 RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 ; flags are intentionally weird: it should have AA instead of RA
 REPLY QR RA NOERROR
 SECTION QUESTION
@@ -23,6 +25,8 @@ K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR RA NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET. IN A
@@ -31,6 +35,8 @@ K.ROOT-SERVERS.NET.	IN	A	193.0.14.129
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR RA NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET. IN AAAA
@@ -39,6 +45,8 @@ SECTION AUTHORITY
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR RA NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN A
@@ -47,6 +55,8 @@ a.gtld-servers.net. IN A 192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR RA NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN AAAA
@@ -71,6 +81,9 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
 SECTION ANSWER
@@ -82,6 +95,7 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
+REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN A
 SECTION AUTHORITY
@@ -95,6 +109,9 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
 SECTION ANSWER
@@ -104,6 +121,9 @@ ns.example.com.		IN 	A	1.2.3.4
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
 SECTION ANSWER
