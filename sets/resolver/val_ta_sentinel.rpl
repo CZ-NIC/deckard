@@ -1,13 +1,11 @@
 stub-addr: 2001:503:ba3e::2:30
-; . keytag in hex = 0xbd19
 trust-anchor: . IN DS 48409 8 2 3D63A0C25BCE86621DE63636F11B35B908EFE8E9381E0E3E9DEFD89EA952C27D
-; example. keytag in hex = 0x1297
 trust-anchor: example. IN DS 4759 8 2 3384CAE149834F17054DD9150E8C33D3979C4092F5C1B8D35E17A3C36A83810F
-val-override-date: 20171220000000
+val-override-date: 20180601000000
 query-minimization: off
 CONFIG_END
 
-SCENARIO_BEGIN draft-ietf-dnsop-kskroll-sentinel-00 section 2
+SCENARIO_BEGIN draft-ietf-dnsop-kskroll-sentinel-12 section 2
 
 
 RANGE_BEGIN 1 1000
@@ -21,8 +19,8 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN SOA
 SECTION ANSWER
-. 86400 IN SOA rootns. you.test. 2017071100 1800 900 604800 86400
-. 86400 IN RRSIG SOA 8 0 86400 20180103000000 20171220000000 48409 . drbbWmWjpxflYKmsIQM1TUIsy1Ol/OVu W6MD+fNwmoxxz6rl4Z1JPXHGlpEgyyqQ tvzgFKsziTzUsPJrZs0UT7IbjdLhLV8t BuuDj6TedK9llpPD220BcSuumPMKVQ2K 5QAv2jmB+yutknX8zd16v+PqeMRBr393 skFOpqOMm5Uw8Mv04ob4821/unUFhd3A 5zmKsxcJEzFXmP7ujkdCe4l31l2mAGsq 3bfiESgsECgtbU4jnfWba2Pu74Zv9KtP b+rI3ob3u//8vQslcL0hKG65/OiLna+1 omzZ0BSLrHWUtr6dtz3YAwTO0iMQPv+i 4JZhh7Ucy5FBC/Kop03pWQ==
+.					      86400 IN SOA	rootns. you.test. 2017071101 1800 900 604800 86400
+.					      86400 IN RRSIG	SOA 8 0 86400 20180629135151 20180530135151 48409 . vb9XrP5h9Ojhqbs1Rbdiwxvje/TVFafSZlLf372zpYdtSBI6f7x++GYI WNiUG8EFtchEmL8KNsrWbujpa8tXeWXtatW92kG1qZAnOA40Zw1DjnI8 ZI7volYyq/TMmufKcoNAXU2knAmpZhHDZ+TBOc5HK6TwKeQaRQ6hPwxB JKOjXw2mVjQFP5lck2m2LU9a7iubYRvncRDHmqfjJ9XsSfWi1AU2fmk/ ei/bhKnFMWVH2PXtQlsbxRS8+8SaEL6f4rQC1JqwQ8E03SAZdK7oJKOf GRRFOfYOx7JucTwiV18LAa/j0owSMvuPwYjGnk6BY7e4LTMK2vPgJ3yY lqLmTw==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -32,8 +30,8 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN DNSKEY
 SECTION ANSWER
-. 1814400 IN DNSKEY 257 3 8 AwEAAcliJP8Jh/RjL3c8eaUj8dzVdEks ENKubqVA5FdrDJ2rC0O/bGG/MVZt+Wac E1o1mRVwTT/TrhhZUAzZ+qOcpB+IWxUR sR4vVqVwakHMny7D2aLXKoVXwTo/VhAQ tHDw5G9bxGgwybPUtd5Vz6EIenUsmNYZ +Spde4l8vpw7UISVL6q0C1mwHMN18P/1 yfHmbkS19b6B1S9Y2aputccF1lso3yiF Ig7UNqqD4PNxSo4jByDnajQSP3qg/LSJ SOnzBIumb8wc6svxgugy/pxrBFKgGGk4 /JdJCKufdfU5jFX4fJ3HM37G/RccrtGh If2Z1utoOyaILoa9wT3O1WaYG/U=
-. 1209600 IN RRSIG DNSKEY 8 0 1814400 20180110000000 20171220000000 48409 . L/hRZQQ2VHTU7kq2AJF84Z8e5z/8nGcO rjXzv3zAJ4CeZ2Dt12suHVHcXuV5Imke Ze40gzat+JJa5dTKUWPIqos8XGKEoDwQ YlvWNW/pl8wbIyBy9fVtBvdyIPo4H3jk jA/Gtdhq7Ye7KjMTvow3Ruwvkrco8azj 3P9jMy0Xig4cT7Ez78IHgPzGnr33pPqr nlGxc+QaMnb76JL3blzpomlXveb+6bLS S0XGWRbUI6VnspwFp3vfNL5Ie2JOqacW EginBTqayP9AQhjKoi1wOF8vMp7QjuY0 jupdVJAccDKhsT36V3PPSWMPzMzwZs5Y eXTSKnJAZnZWOXiJVTsa/g==
+.					      1814400 IN DNSKEY	257 3 8 AwEAAcliJP8Jh/RjL3c8eaUj8dzVdEksENKubqVA5FdrDJ2rC0O/bGG/ MVZt+WacE1o1mRVwTT/TrhhZUAzZ+qOcpB+IWxURsR4vVqVwakHMny7D 2aLXKoVXwTo/VhAQtHDw5G9bxGgwybPUtd5Vz6EIenUsmNYZ+Spde4l8 vpw7UISVL6q0C1mwHMN18P/1yfHmbkS19b6B1S9Y2aputccF1lso3yiF Ig7UNqqD4PNxSo4jByDnajQSP3qg/LSJSOnzBIumb8wc6svxgugy/pxr BFKgGGk4/JdJCKufdfU5jFX4fJ3HM37G/RccrtGhIf2Z1utoOyaILoa9 wT3O1WaYG/U=
+.					      1814400 IN RRSIG	DNSKEY 8 0 1814400 20180629135151 20180530135151 48409 . HRj68PBD0cR2p1njZcMUBecR5DiBbueyhIX1oqc9K9Rig5i+ONuozacm 3F4kg9DhUYb/1W6+PSp9YLyrJtCZOFLqkTjPiOAyiE6zVAE/U5O5LRZ/ FjqRQoWuA1cFZtrLokaWmW9GS5Kb2+PUCJY5NRz27JFSvaRRkoHIFf4o mA6eQsuWt28Itx0VGPL9+mR+2B+IcnmN+DZb7mxoRknOh0WyNop4eiep oSZcCihYHOdesCtmrxoMkwGEHZpu8a6GN7jaeNXXNUulwQYfzUZJZQo1 Zr9cN7kzIZ5tAs9ffnPRcWVO61MQTxUtuGbipFpba6RhGmML8oO4JkOJ Itp6tg==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -43,13 +41,13 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN NS
 SECTION ANSWER
-. 518400 IN NS rootns.
-. 518400 IN RRSIG NS 8 0 518400 20180103000000 20171220000000 48409 . VbBWyvcj657fHCs5M/j1MHgDE000NhIM fXb1iLk1DLcoXU594eW5YhpxElZLHDos uwZF7UA23bQqRiMn+x7cJikybhdsFZM8 AxlsbKOgSeOzkBYY1VJvUFw7uLFTu+JG +yeYnh85DieiGTp23kCKQelRhuj+UGQD 1p00bdSwdAO+yiLPqEGNbqVp+jiK++yy ZB+L8ld4ryJDRH+UYZDFCR+jyoPfzF8n Qi+tMDDeBkkFzCe7filW/vGOzfOwDwBH 8pFY0FN7w2DUA8mfDYhpZduFNOogZ+re my3O2HPSO6ux+j9rxmsM26ttz3sDm8U/ wprjjCI1z4373+hmsql9YQ==
+.					      518400 IN	NS	rootns.
+.					      518400 IN	RRSIG	NS 8 0 518400 20180629135151 20180530135151 48409 . ZBLk+sK9ky+YBmzceXbBqEUyBc6nWfAtF6vCK/6cCfL1AxBYOoxdwE/G m0oRAl5WHRrreDSM2t79jcyyUZyyOcee2j/mLPjLdJPQr0Dw9KY+843L o4VSWV0L9adSzgXgvQF/p4yW2zNbHia7doA9GTDjkQFj2+7HgdJdGk8S I2GCx822fqzMCdS3XerIZ4EMz8Lt1sWaexdCgi0sCn9SvqzNHTaIXirW /apL0ohiBNp23LGa7+/7UvNrv+Y/gHpKk2bUytnS7soOocd9XpTekBY7 jlRlmnHTAdn9b9Zj2PHn72v1RYIywP33Qb9ze7i2v7s12uUR3lJt9sd/ WVeuXQ==
 SECTION ADDITIONAL
-rootns. 518400 IN A 198.41.0.4
-rootns. 518400 IN AAAA 2001:503:ba3e::2:30
-rootns. 518400 IN RRSIG A 8 1 518400 20180103000000 20171220000000 48409 . yR7BJwPSpZg1ma0xXyCSyyEILEYa/1ou OIaCLSp1Wsm/CrtpsmvVIomB85Fl1Xqm O8eAAD00CycJ8PmR4EsqCRSXaijdyeEc HL4/U/Qyx78bkNvj28SXcK+pksimarVc YxNOZ7nIxMOsXaS+U0q5UMkwe5j/EAZ5 s4O5jAVTnMXN3Fqim30JwahFtBos+5Dr G6Xan16Qb+H2fMoBJI8qs6WpTjNRmZPj C3jXtRR3zbG9ki8upR+S6jUEM8NKwEOU vh7VRaz8kg50SnIRfDaxyC8kH/AC+RTw 7Zt5ZX+52TMjcLgqU1ZVnGuLMkYJ23wX PCSmyxhUmoa9nb37xg9DLg==
-rootns. 518400 IN RRSIG AAAA 8 1 518400 20180103000000 20171220000000 48409 . RCrAzA+LMCFvaNZfyWWqjTA0gB3rDr8c LaUWsW9GcKJuwZBAV1H4EWoDQB8dTjPy sMDEnbY21+xrtzmdVmoBrzE0gnuH+EB4 RUtVgLvtjSIcROm14ck/6GVIZ5z60rQt n5qWxEyjpc7pwfzz1iXl6TfpMvAmxGyS JYRFo9Y4msd2iK42UZrRcasSHmDMzwT6 WaIKDwUHMmeapxBYyM5qCT3yrjZhfd7d UTwx17KW+ZaPRc68LF/T1JFs3D7eyDvx W1e3rclk4gYOzcm8AvdRwIGyIAbixTCT tEx4OW1N/W+3Tjyc9vY5lapuDcaqpY7i IJFmdPeby/n1uc5vhY+FKg==
+rootns.					      518400 IN	A	198.41.0.4
+rootns.					      518400 IN	AAAA	2001:503:ba3e::2:30
+rootns.					      518400 IN	RRSIG	A 8 1 518400 20180629135151 20180530135151 48409 . QtR9Z2uVwFVlLy5xQzMVmhqdzZw5cSFbq3xOzhr42gkoD9BYfNyTuhz9 57Sc7kvyJalBHaq3OKoYvE+4anjR8bXk20nGvVjzRdiiqavK41yUpbxC xvo5fWUMj5Bg860AcApn4OOLdFjyKOjJX7ro7QvFdA/adt9WEwhQ3AJ9 PN+SHqtx35F49OUbgiNUEbShJ2VyjOL5bt41LZgffkjim+VB2OtO1hDG CqrKyUlbZ0vxGJhtVflt1Jj3atArHfHz4cuFJHLtSu9PK9piYlSQ54XH vPk0YZ2iKK9sNrVF50Vb7NmLFBCVPn/op0Kmr+u6QVREP6uWayoPtqab /NKvwQ==
+rootns.					      518400 IN	RRSIG	AAAA 8 1 518400 20180629135151 20180530135151 48409 . bs+zTG/nH7uQrgW5qfY5p25uXNoPOsH94K/xNVSLm9h1165/AMekPPd8 KVPnCfyZLPhO+/XyZ5fDUd/2iMCT5m/HyjXR0+j92r6f9ePfAJVQX6U0 DJUa882LgYK7k4usmIIWpi66bpGDC1tlJF3WQ4G12Hc/cUmFTMDBTcM8 6CPPDoT00JZQL8u/66GwNYkWw4mmbiq9UAz03R7A983dUx2GLCAmXoGR Lr3hI3btZa5x+GdJhw5t6Mqi58tXSZfUmT7kpCw+K0H/RscQaVDaOLc6 kzBeVn/Lip60ZSd84kiNWKuSA56TfUbpk7VJclY8UI34COHQqNtD+lev wJ1WgQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -59,10 +57,10 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN NS
 SECTION AUTHORITY
-. 86400 IN SOA rootns. you.test. 2017071100 1800 900 604800 86400
-rootns. 86400 IN NSEC kskroll-sentinel-is-ta-0000.test. A AAAA RRSIG NSEC
-. 86400 IN RRSIG SOA 8 0 86400 20180103000000 20171220000000 48409 . drbbWmWjpxflYKmsIQM1TUIsy1Ol/OVu W6MD+fNwmoxxz6rl4Z1JPXHGlpEgyyqQ tvzgFKsziTzUsPJrZs0UT7IbjdLhLV8t BuuDj6TedK9llpPD220BcSuumPMKVQ2K 5QAv2jmB+yutknX8zd16v+PqeMRBr393 skFOpqOMm5Uw8Mv04ob4821/unUFhd3A 5zmKsxcJEzFXmP7ujkdCe4l31l2mAGsq 3bfiESgsECgtbU4jnfWba2Pu74Zv9KtP b+rI3ob3u//8vQslcL0hKG65/OiLna+1 omzZ0BSLrHWUtr6dtz3YAwTO0iMQPv+i 4JZhh7Ucy5FBC/Kop03pWQ==
-rootns. 86400 IN RRSIG NSEC 8 1 86400 20180103000000 20171220000000 48409 . ikzpnBvdGHDFKyaSaqIDVBj8dWROAvdF WGb4748YNeuwePF+zzgayO/gaDharij6 vWWZi/P+EroU/9pllH/7nyJBC2BVVbtj MNrhGrZsxAKv9NvsRZRT0vMBAAPWmhRg gvahNysPYL54PQoFAA2zFgHMoWVA3LFv TjFk+zdXkaFdNZlBPjPK+kcmAtIrvK1I Vw8DTWvpYqr0un//HkmOkNXZEm82gU0/ zbSxIXIoBBq9bjAvBl6ZwcIMjAd7UIHe aWTX7x7cN+vh1V/pwyZGGmjnf8F2Y2qR a3EBUCBIWLMAcrUy/vFGgK3AzqNQzIUm O8Q3sXUoTM0pocyAn9C31w==
+.					      86400 IN SOA	rootns. you.test. 2017071101 1800 900 604800 86400
+.					      86400 IN RRSIG	SOA 8 0 86400 20180629135151 20180530135151 48409 . vb9XrP5h9Ojhqbs1Rbdiwxvje/TVFafSZlLf372zpYdtSBI6f7x++GYI WNiUG8EFtchEmL8KNsrWbujpa8tXeWXtatW92kG1qZAnOA40Zw1DjnI8 ZI7volYyq/TMmufKcoNAXU2knAmpZhHDZ+TBOc5HK6TwKeQaRQ6hPwxB JKOjXw2mVjQFP5lck2m2LU9a7iubYRvncRDHmqfjJ9XsSfWi1AU2fmk/ ei/bhKnFMWVH2PXtQlsbxRS8+8SaEL6f4rQC1JqwQ8E03SAZdK7oJKOf GRRFOfYOx7JucTwiV18LAa/j0owSMvuPwYjGnk6BY7e4LTMK2vPgJ3yY lqLmTw==
+rootns.					      86400 IN NSEC	root-key-sentinel-is-ta-00000.test. A AAAA RRSIG NSEC
+rootns.					      86400 IN RRSIG	NSEC 8 1 86400 20180629135151 20180530135151 48409 . noqU9JO9z5QXcedzsm7E6RZ5aIIocIH/jSedo6Zy+GImRTeHpc0le399 DUOsqGlcagx7EWRerScB+xmpL7DxKl0FFyeG0ORvPjJ6IyCFTecWjaKW YVurQnzALW+LhfsPSTxBMnnRhxT5Qrw4dtO0gx7fWyssKUnsMcBdmESs tALFNSfJpiV7so9cK2ssHsC+jkM0AQoemSKJrTesxm8FP1BGT27tz/vx yWIlOUGc8/gBgHo4hoXH1oyCrw9KU9kczRqw4CoCGJtZ2/k15BfmbPlC kLrvLibEmp6OYPVWfJRG79uDHhT+Tul07j26WmA+A7IWXSye8W51WbdH 7gJTKQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -72,8 +70,8 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN A
 SECTION ANSWER
-rootns. 518400 IN A 198.41.0.4
-rootns. 518400 IN RRSIG A 8 1 518400 20180103000000 20171220000000 48409 . yR7BJwPSpZg1ma0xXyCSyyEILEYa/1ou OIaCLSp1Wsm/CrtpsmvVIomB85Fl1Xqm O8eAAD00CycJ8PmR4EsqCRSXaijdyeEc HL4/U/Qyx78bkNvj28SXcK+pksimarVc YxNOZ7nIxMOsXaS+U0q5UMkwe5j/EAZ5 s4O5jAVTnMXN3Fqim30JwahFtBos+5Dr G6Xan16Qb+H2fMoBJI8qs6WpTjNRmZPj C3jXtRR3zbG9ki8upR+S6jUEM8NKwEOU vh7VRaz8kg50SnIRfDaxyC8kH/AC+RTw 7Zt5ZX+52TMjcLgqU1ZVnGuLMkYJ23wX PCSmyxhUmoa9nb37xg9DLg==
+rootns.					      518400 IN	A	198.41.0.4
+rootns.					      518400 IN	RRSIG	A 8 1 518400 20180629135151 20180530135151 48409 . QtR9Z2uVwFVlLy5xQzMVmhqdzZw5cSFbq3xOzhr42gkoD9BYfNyTuhz9 57Sc7kvyJalBHaq3OKoYvE+4anjR8bXk20nGvVjzRdiiqavK41yUpbxC xvo5fWUMj5Bg860AcApn4OOLdFjyKOjJX7ro7QvFdA/adt9WEwhQ3AJ9 PN+SHqtx35F49OUbgiNUEbShJ2VyjOL5bt41LZgffkjim+VB2OtO1hDG CqrKyUlbZ0vxGJhtVflt1Jj3atArHfHz4cuFJHLtSu9PK9piYlSQ54XH vPk0YZ2iKK9sNrVF50Vb7NmLFBCVPn/op0Kmr+u6QVREP6uWayoPtqab /NKvwQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -83,8 +81,8 @@ REPLY NOERROR QR AA DO
 SECTION QUESTION
 rootns. IN AAAA
 SECTION ANSWER
-rootns. 518400 IN AAAA 2001:503:ba3e::2:30
-rootns. 518400 IN RRSIG AAAA 8 1 518400 20180103000000 20171220000000 48409 . RCrAzA+LMCFvaNZfyWWqjTA0gB3rDr8c LaUWsW9GcKJuwZBAV1H4EWoDQB8dTjPy sMDEnbY21+xrtzmdVmoBrzE0gnuH+EB4 RUtVgLvtjSIcROm14ck/6GVIZ5z60rQt n5qWxEyjpc7pwfzz1iXl6TfpMvAmxGyS JYRFo9Y4msd2iK42UZrRcasSHmDMzwT6 WaIKDwUHMmeapxBYyM5qCT3yrjZhfd7d UTwx17KW+ZaPRc68LF/T1JFs3D7eyDvx W1e3rclk4gYOzcm8AvdRwIGyIAbixTCT tEx4OW1N/W+3Tjyc9vY5lapuDcaqpY7i IJFmdPeby/n1uc5vhY+FKg==
+rootns.					      518400 IN	AAAA	2001:503:ba3e::2:30
+rootns.					      518400 IN	RRSIG	AAAA 8 1 518400 20180629135151 20180530135151 48409 . bs+zTG/nH7uQrgW5qfY5p25uXNoPOsH94K/xNVSLm9h1165/AMekPPd8 KVPnCfyZLPhO+/XyZ5fDUd/2iMCT5m/HyjXR0+j92r6f9ePfAJVQX6U0 DJUa882LgYK7k4usmIIWpi66bpGDC1tlJF3WQ4G12Hc/cUmFTMDBTcM8 6CPPDoT00JZQL8u/66GwNYkWw4mmbiq9UAz03R7A983dUx2GLCAmXoGR Lr3hI3btZa5x+GdJhw5t6Mqi58tXSZfUmT7kpCw+K0H/RscQaVDaOLc6 kzBeVn/Lip60ZSd84kiNWKuSA56TfUbpk7VJclY8UI34COHQqNtD+lev wJ1WgQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -92,10 +90,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN A
+root-key-sentinel-is-ta-48409.test. IN A
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. 1 IN A 192.0.2.1
-kskroll-sentinel-is-ta-bd19.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . EQcMHRh6QbFe0XpjZxUePX8JXmKQy60R 19lkd3A880VzsgT4RW0aHgWvRZsURf5n I0gDIRyUdwCRWszixTobZxZBdwqzuV0I hMn8l/VDfz0UaYEm5+4x6NtWo3kbWdHV V94o1vZ/lHcDLZS5ykjWWZMEVQTugznw 3WHihTjh3unYBdgd6VGdTxftsjtNfS99 DONDhrWw7hQzeWJi5SR2oOLETkVUCQq2 r9zZj5Sk6PmKwFfbjhbiIWMw+GnvanJp nLVgXWYYirion1GwMaAcZdYJiWJjTPx0 W8FslWxiO4jM2e9SXkCKZmk9J/vBf6bw DRsE1nDDc+RrrLeOzypTFQ==
+root-key-sentinel-is-ta-48409.test.	      1	IN A		192.0.2.1
+root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . qWJh+EE/O2w382vLo53ci9i1O/rAzJUUnZPmLF+GCwmLLhDl6tlI3y5A cALqIHkK1vrXzD+mED78YpILzZ73izRFieY6DxMtAXViqH9U8KSy6KWp tAWUASDe1gj9DGdDeiKdTAIo/2qk1PiGdZNc2E9vQLIUTJNfwV8aZGIt PTgl/efGEIMGGFQW5RPbDZpcJLQ11/RUi9FHQyseZRwkCa8EiEfgvPJ2 /rwiCPUcM6BdYzKoZ53cAHBbeKkvgAOpQ88qDvtE12aF9F8anxdHd0Ru 2DlmrPPthn7/faXSBbBECIbnjNlWTiyF7r274SQKFCrT0rJx5N9c31n4 ZSIocg==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -103,10 +101,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN AAAA
+root-key-sentinel-is-ta-48409.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. 1 IN AAAA 2001:db8::
-kskroll-sentinel-is-ta-bd19.test. 1 IN RRSIG AAAA 8 2 1 20180103000000 20171220000000 48409 . o53ZSC1af3BApeDlDMUWRkuhkMYeRb89 BcCeofjrR9+wdbF42Mi4adf2zq44sSyJ VtZ1M3GUa+L38lzCctT3zKapVcJYesul J0FQjxnwd71FYdCr946oApVpp7Un+Gb6 74U5QYy6Om4v79p/l2IjKxfDjE69DLdb d3bx9op5qXOjXkncK80h853Zx3hI3nyt Bt6Iy9iUwPEpt0F/JQhRf4O2lUqzN3dU lMZ6XQoMJJyVc5dao5vJb3tBcn0tbnTc ODHzz5RnXmB6pMnbPmUle302La0Ep2Mi BgcReNi2xM9C7q160XblMNZGTdRVrC1M oRg56pJPFkWKur9RrL2JIg==
+root-key-sentinel-is-ta-48409.test.	      1	IN AAAA		2001:db8::
+root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . J4gFrZRSHHDfMoA2zO22H6A55/893OnGO7h3H9znJGZtp7DxT2vxiGJw InBx5/zPubH87rqTa4AkK2GZuDEqVEDU/fjWOjGQOx16V0oeoHi5/R2R sPTzFnb+NvQnQZCRolMHD2keakdzB8b7dfEV80CrRh7uDsiO8aqhSdiV BFJLXFt5qFd+evKw2SG7l9FNMDzukUSAcFIJepM99X7qjQnKsLuzDjyF 4zhgMolAzAwIQzEi4B+G6IQknx5HsvmpNgkbBFjns+Q7ZYutNecPfiYU vaMpSXb5pztCVLbZQEymIXPgsnzdihlMbzh22TZapLbrDBUVEc2yr/QC Tz/CQA==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -114,10 +112,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN TXT
+root-key-sentinel-is-ta-48409.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. 1 IN TXT "it works"
-kskroll-sentinel-is-ta-bd19.test. 1 IN RRSIG TXT 8 2 1 20180103000000 20171220000000 48409 . NzRucqRHjvqXmRPQ5efB6bNCwLeXDSNU qQw/T3kj6fdGe0ZP1acUZxM+VU+osrji 1DSqen0hlyaf3w24hmNA8E26ZCF9ItGu FHjpuf2PHIAm5bTAW3tqyoe44t1dTMtl 127Yhn5ZTWAKE0XotzwsuVBOkrtOP9qG GRxszwI4hETtJcvpei2RTNa8t0K3SOEa GUQkn/jUqBv54E7MAj6pL7vxSqGtbqUc A1XRfWS+gAJtnlMkr9jWSHQDqY/jsTZS VCkUNyzJLIKederU1BEAulgH0nS79xYi UFu4mPqGF3ehxNUAZB+qy4034qrJpp1y Yura0/aU9zDR+a5lawe+Ew==
+root-key-sentinel-is-ta-48409.test.	      1	IN TXT		"it works"
+root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . tl+oiYdq+UDlh6snkobPI/jQbrPM2tESEyDNIec7wCRvCEo6CLd+oMOA H4P7idKJ1Mey0eMl++YI29Vz2KVAIL0Hiamt32VDXyR5QYVVzNQquH5B /P4PDeoSadK1M+VThnSPT685+CLCbAZfu0Hi7+NulEeQLleBMtSGy0pF eG50H7fecNjqmQ2O/3jKRfD8l86+jba3B2FmpPvsxXgR7Ig5jC/XSpSY 0UMXyntDJz7QOSuhh4GcdNEeUqGVTurqnFjgRmZwReVZqeQzCS8Q+eQn cq23FtXxcAqJCFKN68yoorWmlZhZl0DPm4Zpup28wwlIapO+SGwScD0q KyHZYQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -125,10 +123,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN A
+root-key-sentinel-not-ta-48409.test. IN A
 SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. 1 IN A 192.0.2.1
-kskroll-sentinel-not-ta-bd19.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . wAY2d6uFemj1wfLY+IgbKRI89S/qf1Po q44w6z7tfQCkVn7g9/vM9Whc0zvNZ0ZA lTymTvjTBqlB81Wwvg/SEDiNwNDTC3Wf 0/tGmtKwiMu7JCu0SEjH8R8GshZb3yyU fh0UAKYN+JSPWa5iwnGVPMyVhoF8Rp/I B9WoK+iuLeYOoJyCIEm1RRr1ObjfaeQk AjgRwDns+x+a+nmgAg/ygsClVkAqk8AO +Fl/JtscXQ5b65DQEKVUkP2OQqaLZgrf 1zUgl1u3xRpANA+qzF7FedTvllGfPn4T ZVIeLbrJht9J3uebh6HSOy9Qx4xs3CBd CPenLJT96V5p43CWXJQXAw==
+root-key-sentinel-not-ta-48409.test.	      1	IN A		192.0.2.1
+root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . N1vrpd062YN/PGLOmdAdgPOc2iPPBadtv+DlqoCJ8OUEtFH605m7AUlX HDV99dpT7j6I/N+Sp6pDMRIRl+rB/tFXNfQFoB7UliAsKQ9UuKxH/uyc /sZWxPmYb+4Xi1AKmkzvp7M3Babq7hTGG/PnngN3386Qd0MXiw11Tdl9 +HIan1Jz2jMrHuR2NZDILZOW10wYogYD3/DAx6bVaJMjDbIky5ikK2H/ 4QajIhtjuux4GfsFc7KjGzT1/Hqa9LqdsLetvQmKF4yGNjizOgnrHlbF GoICQ1KihXF3IGYcBUyIoMcmhAjz6D0/jQz/Blwx3zvEUj2Hf7Xj+haO ShdguQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -136,10 +134,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN AAAA
+root-key-sentinel-not-ta-48409.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. 1 IN AAAA 2001:db8::
-kskroll-sentinel-not-ta-bd19.test. 1 IN RRSIG AAAA 8 2 1 20180103000000 20171220000000 48409 . PQLWxDgpJn11HBcMAvSe2zHPe+FfK4az 2muXAZBe2wk04ZIOA9QG9SyhPAwMo3uD qt40zNqhlcg+bHbLWTMOnw2c4eVhsNy7 3di7aeO1V779E/2ibDZUx6w8GprQYuwM TM6RP3X2rX/9iw4Dn8H1PUHxKm0ilLgK 7Msl6ZU98tk3mf8p76VCAMHAmZ3PS20p ejhA1Ijgx/cKHu1+PGyVfpJAJLrxUMVd FNdK9wGJEXwVPHcHgeO/PQ1O8iCgg+AQ Xf5l3lrkbjHIIex48Vw7IrjZ6x8BLGAc GZRX9cIiU2qV3FhNj258cB+60GCgeBIz 6H6oANYv3xMoDF4PXFJnLQ==
+root-key-sentinel-not-ta-48409.test.	      1	IN AAAA		2001:db8::
+root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . UYk1xmrw2A7ojKSTpwuF90WXsXOfNbRI8pi9tDPLmqr0OMn29AW051vG TyLd7L3ogsaoUEDiY2vYyvyZI3kPL9fSRDYgOIk7Cq3hp7k6wMM3IXS6 iIlYnjtvUFGDaE69EpUjwII22lSWaqOo0dCFnacJYWDfShdZcv7yssWG 9nZpki6aiBAjhYXY8tdMnpDJzq9O3zXPQR8xtuFW4S0aVdrHuSPRq935 DWXThocHxOza6OQp/ZkbemkoqAYjTlu0tyITwZsTknxgK1mtM+ArRmhS eykqVs3mmAGIWMN3qIW8SXKVRHI9PPjka0j6+KK+bfmeck0bI2Wu1f3C cnk+nQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -147,10 +145,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN TXT
+root-key-sentinel-not-ta-48409.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. 1 IN TXT "it works"
-kskroll-sentinel-not-ta-bd19.test. 1 IN RRSIG TXT 8 2 1 20180103000000 20171220000000 48409 . KdEHgNhllUILjgSs8WZmk21auQC7+5yd 63bS3Qj4YtNMB/QslcBlQuqQu+oR09yw uMn9gzkwUFfuXHChgnjmLaL92EvI8L6M DROABb7YTBuuYPRcZ3rOe95TBI77/zsh 8ApSR4DOziQXkSaX3iHdK1Pt8IiSnnLw r3I+fSu89qqUT7Vq9eelDZEPH6Xn6bPK rko99JWPWCyZRU9c8xhkJ5MJYgoHdBSh zi0X0lwLRa1WofLUfONVQJ/ldOE+Fj3l DKpBWCDh0R477dA/UjUmC4UTN1OA2wFY IMHfqn9RLQJWibwxNuyCjJ5QqCQDuyx6 N1uZOKx4eqETCj4pkEdqjw==
+root-key-sentinel-not-ta-48409.test.	      1	IN TXT		"it works"
+root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . NLK3/UMZZ+39KgwbFFoS6qR2QTEULMxDhlWpK1is+AU3CjUn1RNPRJaq m1MnfJdEq3+FFwVDkpmDGh8lQfTBn192oWlo2goHXZXwuoFN49FPHZ+l u42NWMDKtmS6r9JemJR68jH0jy/AsTMdvAbeodg06cbY6F5Q80EtAdkZ iOZPnqPenfxI+U8C2KgBNas7izGbQZF3FxHi7GZz+wrCGBcjcYX9pcD9 /rf1plZYudefFbxG+P97WfMScDD5vt0dUxz3Yt6YUC48jlyo9WYZDLC5 3qOuqah5oXS1lCGJDm+Kta4koVnm6W4pbCzT9XISwRWZ81rp0NbTrhHb Teu7Pw==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -158,10 +156,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN A
+root-key-sentinel-is-ta-00000.test. IN A
 SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. 1 IN A 192.0.2.1
-kskroll-sentinel-is-ta-0000.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . PGl9olumhCuhcjU6SmORUwWWW9a4zSuk 0XKvula/pM0R0cv9nk1ttuyXPaCWqXjh KXwJ/4UWHmXMg/3ctCySjFxdDrIJXRBW jV3Km3OCkrgpNascY2Dn/XLju49CVcq1 h1oJtYPUlpjXgEBq9/7MZGKmLzVzhgsr q1G2htYujim7Bra+uSbNHOpqE2/YyorT HeJYEo5LE4zKm8b5+DO/AdwFj0uq6bCZ iSwCkEVI4KQSftRvbRRSnpi9FbiB0sE1 /UddeE3BsvkmSbb3Cl5kaK44W91diBWr UxU/TznSd/whwY9CTuR5siJp2xSlvaB4 37WvdhYjNIik9q9wu8VOXg==
+root-key-sentinel-is-ta-00000.test.	      1	IN A		192.0.2.1
+root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . iYK8FfKFt+aD2Mh+hvFxyE0lCs/jHMT8EWlhPGuiPekHkYnbTaRbGJhT sCeL3Cg1MHrtGr8BXSq1RMyKnn6Y0/bhF1nEjk1gB+vAFHUwWe0yX32U H7E139q68ZyrcUkpV+KkY+ltMSKAjBtGRkYZ9sJhFvll7YCD2HtAMPud KEWpTZS2D0fLATDzAJzJF/2qGMvRUIn0sk5+3HqVh7R3stbl4aSEw5Zp swJoSCs1DN5eaLh6Ovas51uDAa4t6Ove6owR/gR9isqdZCbilAaJ6497 xg4r/KsCu6eG7GAAw5XGh8rkpC5YbsCBlXB565Zk5oY4yBgBUiG/iXGC wyLyJA==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -169,10 +167,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN AAAA
+root-key-sentinel-is-ta-00000.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. 1 IN AAAA 2001:db8::
-kskroll-sentinel-is-ta-0000.test. 1 IN RRSIG AAAA 8 2 1 20180103000000 20171220000000 48409 . fmYjfi3CHJ4HdY71421EvuNVwg+Of2i6 Ejbuxy8m/Fz3t14H4cPA2G5EkhxLaAR+ qUsegoGa4s/NbHE9qumA98UXNIbl5ooE 7OMz+999ZHqRUq743eTMGR37aUs3AXVk qR1L522sVMuFP84diqFR4aNRHyAG7EW0 WDLIhFGCv81CJnnH+icxg63yulTJ7Ugl BKLUId8Qkc4WCeW7QqT11yjcNL3KsQ5q Ma2rX9yAKtEGBIjoAy72O2kUr3pGujWL RwEjUPX+GXBAeRwVzFJO6e3gpp0kZuNx 9fDE7apABsx1u9Tw4bZLiF7ugaYW9w8I kHTH9ZW7fhza1aoPKg7NmA==
+root-key-sentinel-is-ta-00000.test.	      1	IN AAAA		2001:db8::
+root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . QNF7LtVeew75AhniJ7S0ncsmrHWHCnRcU0H3uyCipyL20kHlpc1NOIUY md7BB02MXm+XOpJF/l/uc9v/C0iuAgOpFVp5kVjtp+gTu2mgceXstFuP 3tNmrL2pSRIWaN8+koS0MlAZCrH9+J9RSFrm5twtD7bIvGT0FVvy/RrR pRWPy9hbqjH6O5DFMdksdVTPLEYFXevAHGKvRa5beRXkrL9ANfVzvPYl q2RaO1aMX6+Cy7AquJpU7DUSReEUBr1f7mYVdd/6sjzoXrd893c+2Fc+ WFLVuWER3eTSrLAQ3b3Etz0lqM3MLrEXwjQFl2mw046nlh21T+u2Ds5s s1/b8g==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -180,10 +178,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN TXT
+root-key-sentinel-is-ta-00000.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. 1 IN TXT "it works"
-kskroll-sentinel-is-ta-0000.test. 1 IN RRSIG TXT 8 2 1 20180103000000 20171220000000 48409 . eDxWVr714NLK9evcoY776RO9SDSKbm8y lUym6IjHVPYf3I6nQ63Wrl9v/yLmEeQ0 u8Lb+18DZW2yQdwOYtHFkpOx7ozzpmFn /K4jMDw9QCI/1cYbfIGxZDcgRg2zEUrz QHJxsR0gclolzBkONQL781gBO9diJdTj mxZdHxCzY2lEcLvfI8KJgJDEN5h9iy11 neo0/nRoszgHwslNPRKZ6+esmjSpLDDI NGES63hIJ27O1uMJJzIteLM6GKmsFMM2 rhrW6zVxXvgQBk3g73IbN8cdHyqd13gi 2zy6yvbFPsnFaBe53YEJc08BgwLWj7zO w3z4ns+bXvmcfty9byReYQ==
+root-key-sentinel-is-ta-00000.test.	      1	IN TXT		"it works"
+root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . cGVwlSItiMGEOKkCWRLUn2od/cBvOlSwj8qxCppe4O1FRyTGgEFNV2nf 2zUkhL/agQhXI3qEjFOkq2b1l+4dM3BwDOF7IGhS3yXV3JGnIcwOC7si EMjRZGIvcEenjfugpIwkwkhTZdgIFoyCUr+g6YxA3iL6L77dftAmIkAV 6gvyarwgeYs0Wi+eEGfrZp2MxJjHDXKF+NfCy/fJnYx2n8SRpXya/Uu+ DJ+S4FQDTDyjDhN/+Tvcsb++sjvNfA4ZDwx5gpgNkRF0xsLHMoxCQagH gJBBziP0cq7l2fy5FVMpGNvdkkiYYG8to/2FF/65GhV+RuNcotD91zyW aeSxWw==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -191,10 +189,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN A
+root-key-sentinel-not-ta-00000.test. IN A
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. 1 IN A 192.0.2.1
-kskroll-sentinel-not-ta-0000.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . FTw4wQ16INDYGT5pbPL2js4vl/yc49Qi SxfvnNevt+zyPgPtN6rKObEqoJ1bTxvM 3ErvvH5kkLVZOPhjiCFzkz+Dzp+WOfjt RaZuK8Dapy31/LQ5jy7NEjPrZpnZwR0d cRrZ3igs+sjMo6hC0dO4PjIn7jnqZTdw RBAcRTQYgu/hwCtzgVSP0ra7svQPlUrg h50ILtHzpZHxcfm3aCwbWIfvqKe3hFBs AFfFYXOQZywuGeWHWdIFgtbHKatnmQK9 s8f5EVGCDxUjtZ8X4/sW3uKB3BqPDmi4 SpoJ7pfAgRhlnySeBKBinW/If+rQEuD+ 8F93vjPBZWOmP1Nv/PQweQ==
+root-key-sentinel-not-ta-00000.test.	      1	IN A		192.0.2.1
+root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . YYqLZKzjD13hpj345YTNMYYEh3US2BY7DqK9YbNIZi4T0/0jAEFPamKW WcX0nPm5N5S+1VqKIdo/brqvOTaxsq7HnPxVfomg3wyaKNvwqxb2MUpa pYl25ORa7yOm3gwVZJ3NBjh65dLXzGn8t8b047ym7Fnz6JAJHUyM4/SH hZhvXYBX+i3Lojq7HDIReqAtH7zzWdKzKLCTNqAhuqfvEI3edVynpth2 SCMNDVaAUlzVfBLEAkHNp26mLSgcarc3vrb2khdDS13Kv0Ev4rj0w0v1 z0DnVs95Yl2XlnShzNTaW5w1F8f81oBbq2Ly2POxERr5cOCNSGIWMi+q XAt7bQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -202,10 +200,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN AAAA
+root-key-sentinel-not-ta-00000.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. 1 IN AAAA 2001:db8::
-kskroll-sentinel-not-ta-0000.test. 1 IN RRSIG AAAA 8 2 1 20180103000000 20171220000000 48409 . jcaefZEX27E0YclRxk123HBU4gLcCwt/ stS99+ULYmGQF0nsfrg7q9xrV4yRd62c LgNTQQCpelTa/v+svqPwk+pkfPWfIaFY eOwI/y0FZcRqGi2Sf/veEGeCPycgC6MO GMEP+f+KixhAXKfQToW2OOpfuYFdpLqd HUwL7v3OPfgY9gh6BkzMG4W+YfMN3/+q MbA3WTIeS2Jnz1+TXrQkVp4f5GOyGmi0 yTtQJyV6P9WmO8u2nFzdLEs5lEn4UoKx HDackP2GRQr6jyoKcJX+JC0UkNQSI2Eq 0WVJ/d9Jez0T6FfaX83J/+Y8I+y9IMfT UJT/l2QODe++5hh1FbvUZg==
+root-key-sentinel-not-ta-00000.test.	      1	IN AAAA		2001:db8::
+root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . mHz8sEjHOt+UrLPdGr3s+dake/eRQ6QmushFbLex2e6epkvmriVQwdWa QqG4h75UmjNnOlAwpHJA3oRyKxLJKmVgJIAQzhFc6sHLwEVl+kVyxGfu Q17Md+52E/d+mLMHohKRXljTaghp2uLHX8oDtBP+B2HhIDJK+uhfK63A MZ4k1L4jBGCvEGVMO7BhrpHV9zbY21MOb6EIp/F35jB+ftW7gilKxxBK t+Qt1pwtJcDGVC2xZST6fZ2yaR+U+YhOJ7t9j6WVVTWyFSa1CG3lzyRW PNduZeKYTYwox2uqqUxh+Nmzd1oZt7geIw8CGTYS0B++nVUdNJXJnP51 +evqJQ==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -213,10 +211,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN TXT
+root-key-sentinel-not-ta-00000.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. 1 IN TXT "it works"
-kskroll-sentinel-not-ta-0000.test. 1 IN RRSIG TXT 8 2 1 20180103000000 20171220000000 48409 . TkYPcvJlH8GI6245ZebNbZ4EQMaraCf4 rfPAiaSFbN9zBKqCehmPbq/jBB8MGbRN gOnbDnjkVoSpYjzaZxeUQ1EYi6V9IbYI 2k5igd7cJtOK4orUm47SrWptfkjUhiV3 qHLsexWR5nT84NVsbtIjV9yeOj4z0X1Z FUS9m+2D1n1tXcKiN3vAKgtuRkwH/sZf yuFAN8+eet2FQE/TK58/RdvSrkWrKnxT mvCLJ38asBC8xFQst27f/d9gLUsjGL5b eGOY9h0D/CbZjbcbjfGqCLUc7UihiUf2 RMZgU+cPsVz0wXeurh2DMNsXLGiMMrXo 3MMtBiy2LnQuobKqQ1CsJw==
+root-key-sentinel-not-ta-00000.test.	      1	IN TXT		"it works"
+root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . SjAFtdUPy+YU4sZnst5GNNYxjzWhBOVqUAfGIUv3uBo5qZW9ePecUJ8G ZkNUkdT7m+cHd0c1ssOBOT7snjwc3Sy3zD22b6/q3N8VowhDQDPkoDlB vt9raR7eXu273cEBDZTQ9P4Ya2Meu32Aftwa6VMQmXMl+qWXhYqffEt6 bJuoohnCVqOZihqgnoT+sRiDl49RgLb+GnZNbFk5EP9LXOrWcdxczKso tY384WCrniRmg4L6NM5DjnBtUVT+Qs6fhWGqQv23fPiLV8lt4i34aIf2 jAQkIE6KD4aNLlehct7eqFo1aeaiZumqEd9/GoqSat/RE7Qsh6hiRkfA /J7MLg==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -224,10 +222,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-is-ta-1297.test. IN A
+root-key-sentinel-is-ta-04759.test. IN A
 SECTION ANSWER
-kskroll-sentinel-is-ta-1297.test. 1 IN A 192.0.2.33
-kskroll-sentinel-is-ta-1297.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . j9jUu3da/fUyZaHY1D5G2EEfNlN/c60p g1gxCQXETHGbQlxWj0S6TToOadILdzSK /vXPr2Hk2eOXV4FND/72sFXYGB57GJQL CyaB7UJmNKNTOMjyTQarPjmB+47WG6+/ y8Hfx7DEi3MSVokpA+xT2TCa4wH5KOKj i3e9JFMItlqoazA23iY/mejpJhlXHGOa SsClg1sROOcBzLtBbLXObZanYqSjtbq3 x3p6TY1PrJj14rLtiawO0/28k0IFIsWf H2OIzXiYnnv/Xf8IrUiYum6HfWbSrjV+ P9z5te2Yk3yX7xT2Fa4TgfSlqPgY5Ve6 y4xuk2ZORWIGuN9Qf+nGNg==
+root-key-sentinel-is-ta-04759.test.	      1	IN A		192.0.2.33
+root-key-sentinel-is-ta-04759.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . B3RxvVwGi4W0SJPOexXga1Bm4nDiL4u/ITn30YXMPg8yOVOFWQ2axvG/ HdMFU6VSzm5GGIh0e+KR9Jzcvyt2yC3081SrclIkque3LJM1Ar5wa3GO 2M1EC3TuKs+L0WjLXfUTGie7n3mYfoiT+QBfZ4v60JQaD4U+UetZ5Ocn 2rXvuC0Rk9LI+j1Us7u2somZy/swl0Luvg4e+bueHRpTAgKf4nLHFZ8A HEAK0Vy3FG0N4q/oPWx1i9hVNxEaJQIwVcW01KDbP2sqFUNUm3bpT8aH fKRK4hy7MKkDsLrkpcbVbhI4vq8D1GKMtiUjU2kRjQ4VEMzXzXHhPcUi jMf7qw==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -235,10 +233,10 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-kskroll-sentinel-not-ta-1297.test. IN A
+root-key-sentinel-not-ta-04759.test. IN A
 SECTION ANSWER
-kskroll-sentinel-not-ta-1297.test. 1 IN A 192.0.2.33
-kskroll-sentinel-not-ta-1297.test. 1 IN RRSIG A 8 2 1 20180103000000 20171220000000 48409 . pa/P5FejGAliap6lvXPXRKtdkcwJeISt AbYs6AT/oCL837Hf09bElBSOVEEgmWVz PVSgZZEGFc/4/ebsT2wH2lc5Sc4F9BPk JricOIHFwReWMrYYQ1vuFD67MY+QCL81 VFPmujw+ZFx2NEKlHHIrF0pKIWaKCb/f y4HhYk0yurD+seVA3z2aHyStO3SnZRlQ UJmJomUV6JcSSuv5VKuZ8fN/2A/Y7pyC VfhCyqCX0PRWvtyWus7KpwoeSkhxnJZC ukSii+v/nLC0C6xmsnwng5m+xZRqhIP3 CbvWcF2ipwtynSOlFYD59POmZqDU50pT 0hLpVnld+99XGYKxDoRh7A==
+root-key-sentinel-not-ta-04759.test.	      1	IN A		192.0.2.33
+root-key-sentinel-not-ta-04759.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . sUfM6dehUU9p1QnVX9QIT3K2kvKoU9qGTMNKdVz84AdJJMGnqMbosBpE LusmcZtwcGNjU8jcFdal/t03b+z0jk5BoEG0lzgFGNSp1S1sDGHYTcrv hAHmWpN4a0BEV/ZIOuu1ZJ8s0vRajnAB75jpSGsRdPmCTG/TKeAUJoF+ gua4lLlHnDlLnIVXThL3THqWqoTwg7Ch12piwrklZXNHbSsgcKwwG4SB 8OGY13ewXpH90EYkAFgmLIsavY7Ddhu8ZcFiE5nh6JQrwi7rsAtsr3cx x2rJrMTSEGP1F103YLzxyI4sTiIOGLaxQ7rGuASLGDQW5Cy0mKGgUAXI B0e7NA==
 ENTRY_END
 RANGE_END
 
@@ -247,7 +245,7 @@ STEP 111 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN TXT
+root-key-sentinel-is-ta-48409.test. IN TXT
 ENTRY_END
 
 STEP 112 CHECK_ANSWER
@@ -255,16 +253,16 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN TXT
+root-key-sentinel-is-ta-48409.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. IN TXT "it works"
+root-key-sentinel-is-ta-48409.test. IN TXT "it works"
 ENTRY_END
 
 STEP 121 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN TXT
+root-key-sentinel-not-ta-48409.test. IN TXT
 ENTRY_END
 
 STEP 122 CHECK_ANSWER
@@ -272,16 +270,16 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN TXT
+root-key-sentinel-not-ta-48409.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-not-ta-bd19.test. IN TXT "it works"
+root-key-sentinel-not-ta-48409.test. IN TXT "it works"
 ENTRY_END
 
 STEP 131 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN TXT
+root-key-sentinel-is-ta-00000.test. IN TXT
 ENTRY_END
 
 STEP 132 CHECK_ANSWER
@@ -289,16 +287,16 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN TXT
+root-key-sentinel-is-ta-00000.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-is-ta-0000.test. IN TXT "it works"
+root-key-sentinel-is-ta-00000.test. IN TXT "it works"
 ENTRY_END
 
 STEP 141 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN TXT
+root-key-sentinel-not-ta-00000.test. IN TXT
 ENTRY_END
 
 STEP 142 CHECK_ANSWER
@@ -306,18 +304,18 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN TXT
+root-key-sentinel-not-ta-00000.test. IN TXT
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. IN TXT "it works"
+root-key-sentinel-not-ta-00000.test. IN TXT "it works"
 ENTRY_END
 
-; keyid 0xbd19 is trusted
-; is-ta hit for keyid 0xbd19 -> NOERROR
+; keyid 48409 is trusted
+; is-ta hit for keyid 48409 -> NOERROR
 STEP 211 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN A
+root-key-sentinel-is-ta-48409.test. IN A
 ENTRY_END
 
 STEP 212 CHECK_ANSWER
@@ -325,16 +323,16 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN A
+root-key-sentinel-is-ta-48409.test. IN A
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. 1 IN A 192.0.2.1
+root-key-sentinel-is-ta-48409.test. 1 IN A 192.0.2.1
 ENTRY_END
 
 STEP 221 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN AAAA
+root-key-sentinel-is-ta-48409.test. IN AAAA
 ENTRY_END
 
 STEP 222 CHECK_ANSWER
@@ -342,17 +340,17 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-bd19.test. IN AAAA
+root-key-sentinel-is-ta-48409.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-is-ta-bd19.test. 1 IN AAAA 2001:db8::
+root-key-sentinel-is-ta-48409.test. 1 IN AAAA 2001:db8::
 ENTRY_END
 
-; not-ta miss for keyid 0xbd19 -> SERVFAIL
+; not-ta miss for keyid 48409 -> SERVFAIL
 STEP 311 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN A
+root-key-sentinel-not-ta-48409.test. IN A
 ENTRY_END
 
 STEP 312 CHECK_ANSWER
@@ -360,14 +358,14 @@ ENTRY_BEGIN
 REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN A
+root-key-sentinel-not-ta-48409.test. IN A
 ENTRY_END
 
 STEP 322 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN AAAA
+root-key-sentinel-not-ta-48409.test. IN AAAA
 ENTRY_END
 
 STEP 322 CHECK_ANSWER
@@ -375,7 +373,7 @@ ENTRY_BEGIN
 REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-bd19.test. IN AAAA
+root-key-sentinel-not-ta-48409.test. IN AAAA
 ENTRY_END
 
 ; keyid 0x0000 is not trusted
@@ -384,7 +382,7 @@ STEP 411 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN A
+root-key-sentinel-is-ta-00000.test. IN A
 ENTRY_END
 
 STEP 412 CHECK_ANSWER
@@ -392,14 +390,14 @@ ENTRY_BEGIN
 REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN A
+root-key-sentinel-is-ta-00000.test. IN A
 ENTRY_END
 
 STEP 422 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN AAAA
+root-key-sentinel-is-ta-00000.test. IN AAAA
 ENTRY_END
 
 STEP 422 CHECK_ANSWER
@@ -407,7 +405,7 @@ ENTRY_BEGIN
 REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-0000.test. IN AAAA
+root-key-sentinel-is-ta-00000.test. IN AAAA
 ENTRY_END
 
 ; not-ta hit for keyid 0x0000 -> NOERROR
@@ -415,7 +413,7 @@ STEP 511 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN A
+root-key-sentinel-not-ta-00000.test. IN A
 ENTRY_END
 
 STEP 512 CHECK_ANSWER
@@ -423,16 +421,16 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN A
+root-key-sentinel-not-ta-00000.test. IN A
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. IN A 192.0.2.1
+root-key-sentinel-not-ta-00000.test. IN A 192.0.2.1
 ENTRY_END
 
 STEP 521 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN AAAA
+root-key-sentinel-not-ta-00000.test. IN AAAA
 ENTRY_END
 
 STEP 522 CHECK_ANSWER
@@ -440,18 +438,18 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-0000.test. IN AAAA
+root-key-sentinel-not-ta-00000.test. IN AAAA
 SECTION ANSWER
-kskroll-sentinel-not-ta-0000.test. IN AAAA 2001:db8::
+root-key-sentinel-not-ta-00000.test. IN AAAA 2001:db8::
 ENTRY_END
 
 ; TA for non-root domains are interpreted correctly
-; not-ta ignores existing non-root TA keyid 0x1297 -> NOERROR
+; not-ta ignores existing non-root TA keyid 04759 -> NOERROR
 STEP 611 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-not-ta-1297.test. IN A
+root-key-sentinel-not-ta-04759.test. IN A
 ENTRY_END
 
 STEP 612 CHECK_ANSWER
@@ -459,17 +457,17 @@ ENTRY_BEGIN
 REPLY QR RD RA AD NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-not-ta-1297.test. IN A
+root-key-sentinel-not-ta-04759.test. IN A
 SECTION ANSWER
-kskroll-sentinel-not-ta-1297.test. 1 IN A 192.0.2.33
+root-key-sentinel-not-ta-04759.test. 1 IN A 192.0.2.33
 ENTRY_END
 
-; is-ta ignores existing non-root TA keyid 0x1297 -> SERVFAIL
+; is-ta ignores existing non-root TA keyid 04759 -> SERVFAIL
 STEP 621 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-kskroll-sentinel-is-ta-1297.test. IN A
+root-key-sentinel-is-ta-04759.test. IN A
 ENTRY_END
 
 STEP 622 CHECK_ANSWER
@@ -477,7 +475,7 @@ ENTRY_BEGIN
 REPLY QR RD RA SERVFAIL
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-kskroll-sentinel-is-ta-1297.test. IN A
+root-key-sentinel-is-ta-04759.test. IN A
 ENTRY_END
 
 SCENARIO_END
