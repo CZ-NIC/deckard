@@ -1,0 +1,78 @@
+{
+  "cznic-deckard:deckard":{
+    "mock-data": "mock-data/iter_badglue.rpl"
+  },
+  "cznic-resolver-common:dns-resolver": {
+    "server": {
+      "user-name": "jetconf",
+      "group-name": "wheel"
+    },
+    "network": {
+      "listen-interfaces": [
+        {
+          "name": "lo4",
+          "ip-address": "127.0.0.1"
+        },
+        {
+          "name": "lo6",
+          "ip-address": "::1"
+        },
+        {
+          "name": "eth0",
+          "ip-address": "198.51.100.1",
+          "port": 8853
+        }
+      ],
+      "client-transport": {
+        "l2-protocols": "ipv6"
+      },
+      "recursion-transport": {
+        "l2-protocols": "ipv4 ipv6"
+      }
+    },
+    "resolver": {
+      "stub-zones": [
+        {
+          "domain": "stub.example.com",
+          "nameserver": "192.0.2.1",
+          "port": 53
+        },
+        {
+          "domain": "stub.example.net",
+          "nameserver": "198.51.100.1"
+        }
+      ],
+      "options": {
+        "glue-checking": "strict",
+        "qname-minimisation": true,
+        "query-loopback": false
+      }
+    },
+    "logging": {
+      "verbosity": 2
+    },
+    "dnssec": {
+      "trust-anchors": {
+        "key-files": [
+          {
+            "domain": ".",
+            "file": "/var/tmp/root.keys",
+            "read-only": false
+          }
+        ]
+      },
+      "negative-trust-anchors": [
+        "bad.example.com",
+        "worse.example.com"
+      ]
+    },
+    "cache": {
+      "max-size": "104857600",
+      "max-ttl": 172800,
+      "min-ttl": 0
+    },
+    "dns64": {
+      "prefix": "64:ff9b::/96"
+    }
+  }
+}

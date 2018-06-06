@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module name="cznic-deckard"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:ddp="https://www.nic.cz/ns/yang/deckard"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+  <namespace uri="https://www.nic.cz/ns/yang/deckard"/>
+  <prefix value="dcd"/>
+  <yang-version value="1.1"/>
+  <import module="cznic-resolver-common">
+    <prefix value="drc"/>
+  </import>
+  <organization>
+    <text>CZ.NIC, z. s. p. o.</text>
+  </organization>
+  <contact>
+    <text>
+      <h:p>
+        Editor:   Ladislav Lhotka<h:br/>
+                  &lt;mailto:lhotka@nic.cz&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      This YANG module defines data for deckard test tool..
+    </text>
+  </description>
+
+  <revision date="2018-06-06">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+  </revision>
+  <!-- Data nodes -->
+
+  <container name="deckard">
+    <description>
+      <text>Parameters for deckard test tool.</text>
+    </description>
+    <leaf name="mock-data">
+      <type name="drc:fs-path"/>
+      <description>
+	<text>
+	  <h:p>Name of the file containing mock data for the test DNS
+	  server and client instructions.</h:p>
+	  <h:p>This data is copied to the resulting RPL file.</h:p>
+	</text>
+      </description>
+    </leaf>
+  </container>
+
+</module>

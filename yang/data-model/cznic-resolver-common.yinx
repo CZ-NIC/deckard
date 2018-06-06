@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module name="cznic-resolver-common"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:ddp="https://www.nic.cz/ns/yang/resolver-common"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+  <namespace uri="https://www.nic.cz/ns/yang/resolver-common"/>
+  <prefix value="drc"/>
+  <yang-version value="1.1"/>
+  <import module="ietf-inet-types">
+    <prefix value="inet"/>
+  </import>
+  <import module="cznic-dns-types">
+    <prefix value="dns"/>
+  </import>
+  <organization>
+    <text>CZ.NIC, z. s. p. o.</text>
+  </organization>
+  <contact>
+    <text>
+      <h:p>
+        Editor:   Ladislav Lhotka<h:br/>
+                  &lt;mailto:lhotka@nic.cz&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      This YANG module defines the common part of a data model for DNS
+      resolvers.
+    </text>
+  </description>
+
+  <revision date="2018-04-16">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+    <reference>
+      <text>TODO: put git tag here</text>
+    </reference>
+  </revision>
+
+  <!-- Features -->
+
+  <feature name="set-group">
+    <description>
+      <text>This feature indicates support for setting the
+      group.</text>
+    </description>
+  </feature>
+
+  <!-- Typedefs -->
+
+  <typedef name="fs-path">
+    <description>
+      <text>
+	<h:p>This type is used for specifying a
+	filesystem path (absolute or relative).</h:p>
+	<h:p>An implementation must check that the string satisfies
+	all rules of the underlying operating system.</h:p>
+      </text>
+    </description>
+    <type name="string"/>
+  </typedef>
+
+  <typedef name="l2-protocol-selection">
+    <type name="bits">
+      <bit name="ipv4">
+	<description>
+	  <text>Enable/disable IPv4.</text>
+	</description>
+      </bit>
+      <bit name="ipv6">
+	<description>
+	  <text>Enable/disable IPv6.</text>
+	</description>
+      </bit>
+    </type>
+    <default value="ipv4 ipv6"/>
+  </typedef>
+
+  <!-- Data nodes -->
+
+  <container name="dns-resolver">
+    <description>
+      <text>DNS resolver parameters.</text>
+    </description>
+    <container name="server">
+      <description>
+	<text>Parameters of the resolver process.</text>
+      </description>
+      <leaf name="user-name">
+	<type name="string"/>
+	<description>
+	  <text>After binding the network socket, drop the privileges
+	  and run with effective user ID of this user.</text>
+	</description>
+      </leaf>
+      <leaf name="group-name">
+	<if-feature name="set-group"/>
+	<type name="string"/>
+	<description>
+	  <text>After binding the network socket, drop the privileges
+	  and run with effective group ID of this group.</text>
+	</description>
+      </leaf>
+    </container>
+    <container name="network">
+      <description>
+	<text>Network connection parameters.</text>
+      </description>
+      <list name="listen-interfaces">
+	<key value="name"/>
+	<unique tag="ip-address port"/>
+	<description>
+	  <text>Inet sockets to use for listening to queries.</text>
+	</description>
+	<leaf name="name">
+	  <type name="string"/>
+	  <description>
+	    <text>Arbitrary name of the listening socket.</text>
+	  </description>
+	</leaf>
+	<leaf name="ip-address">
+	  <mandatory value="true"/>
+	  <type name="inet:ip-address"/>
+	  <description>
+	    <text>IPv4 or IPv6 address.</text>
+	  </description>
+	</leaf>
+	<leaf name="port">
+	  <type name="inet:port-number"/>
+	  <description>
+	    <text>Port number.</text>
+	  </description>
+	  <default value="53"/>
+	</leaf>
+      </list>
+      <container name="client-transport">
+	<description>
+	  <text>Specify L2 and L3 protocols used for receiving and
+	  answering client queries.</text>
+	</description>
+	<leaf name="l2-protocols">
+	  <type name="l2-protocol-selection"/>
+	  <description>
+	    <text>L2 protocols used for receiving and answering client
+	    queries.</text>
+	  </description>
+	</leaf>
+      </container>
+      <container name="recursion-transport">
+	<description>
+	  <text>Specify L2 and L3 protocols used for recursive
+	  queries.</text>
+	</description>
+	<leaf name="l2-protocols">
+	  <type name="l2-protocol-selection"/>
+	  <description>
+	    <text>L2 protocols used for recursive queries.</text>
+	  </description>
+	</leaf>
+      </container>
+    </container>
+    <container name="resolver">
+      <description>
+	<text>Parameters affecting operation of the DNS resolver.</text>
+      </description>
+      <list name="stub-zones">
+	<key value="domain"/>
+	<description>
+	  <text>List of stub zones.</text>
+	</description>
+	<leaf name="domain">
+	  <type name="dns:domain-name"/>
+	  <description>
+	    <text>Name of the stub zone.</text>
+	  </description>
+	</leaf>
+	<leaf name="nameserver">
+	  <type name="inet:host"/>
+	  <description>
+	    <text>Name or IP address of the stub zone nameserver.</text>
+	  </description>
+	</leaf>
+	<leaf name="port">
+	  <type name="inet:port-number"/>
+	  <default value="53"/>
+	  <description>
+	    <text>Port number to use for communicating with the stub
+	    zone nameserver.</text>
+	  </description>
+	</leaf>
+      </list>
+      <container name="options">
+	<description>
+	  <text>Fine-tuning parameters of resolver operation.</text>
+	</description>
+	<leaf name="glue-checking">
+	  <description>
+	    <text>Level of strictness in accepting glue
+	    records.</text>
+	  </description>
+	  <type name="enumeration">
+	    <!-- TODO: add descriptions of the enums -->
+	    <enum name="strict"/>
+	    <enum name="normal"/>
+	    <enum name="permissive"/>
+	  </type>
+	</leaf>
+	<leaf name="qname-minimisation">
+	  <type name="boolean"/>
+	  <description>
+	    <text>Send minimum amount of information in recursive
+	    queries to enhance privacy.</text>
+	  </description>
+	</leaf>
+	<leaf name="query-loopback">
+	  <type name="boolean"/>
+	  <default value="true"/>
+	  <description>
+	    <text>This flag permits queries to loopback addresses
+	    (prefix 127.0.0.0/8 for IPv4 and ::1/128 for IPv6).</text>
+	  </description>
+	</leaf>
+      </container>
+    </container>
+    <container name="logging">
+      <description>
+	<text>Logging parameters.</text>
+      </description>
+      <leaf name="verbosity">
+	<type name="uint8">
+	  <range value="0..5"/>
+	</type>
+	<default value="1"/>
+	<description>
+	  <text>Verbosity level.</text>
+	</description>
+      </leaf>
+    </container>
+    <container name="dnssec">
+      <description>
+	<text>DNSSEC parameters</text>
+      </description>
+      <presence value="Enable DNSSEC"/>
+      <container name="trust-anchors">
+	<description>
+	  <text>Parameters of DNSSEC trust anchors.</text>
+	</description>
+	<list name="key-files">
+	  <key value="domain"/>
+	  <description>
+	    <text>
+	      <h:p>DNSSEC trust anchor files.</h:p>
+	      <h:p>Each file is expected to </h:p>
+	      <h:p>These files should exist and contain trust anchors
+	      (DS or DNSKEY recors) for a single domain. The only
+	      exception is the file for the root domain (key '.'): if
+	      it doesn't exist, it will be populated from the IANA
+	      website.</h:p>
+	    </text>
+	  </description>
+	  <leaf name="domain">
+	    <type name="dns:domain-name"/>
+	    <description>
+	      <text>The domain for which the trust anchor file is
+	      used.</text>
+	    </description>
+	  </leaf>
+	  <leaf name="file">
+	    <type name="fs-path"/>
+	    <description>
+	      <text>Name of the trust anchor file.</text>
+	    </description>
+	  </leaf>
+	  <leaf name="read-only">
+	    <type name="boolean"/>
+	    <default value="false"/>
+	    <description>
+	      <text>Setting this flag to true blocks updates according
+	      to RFC 5011 for this file.</text>
+	    </description>
+	  </leaf>
+	</list>
+      </container>
+      <leaf-list name="negative-trust-anchors">
+	<type name="dns:domain-name"/>
+	<description>
+	  <text>List of domain names representing negative trust
+	  anchors.</text>
+	</description>
+	<reference>
+	  <text>RFC 7646: Definition and Use of DNSSEC Negative Trust
+	  Anchors.</text>
+	</reference>
+      </leaf-list>
+    </container>
+    <container name="cache">
+      <description>
+	<text>Parameters of the resolver cache.</text>
+      </description>
+      <leaf name="max-size">
+	<type name="uint64"/>
+	<units name="bytes"/>
+	<description>
+	  <text>Maximum size of the cache.</text>
+	</description>
+      </leaf>
+      <leaf name="current-size">
+	<config value="false"/>
+	<type name="uint64"/>
+	<units name="bytes"/>
+	<description>
+	  <text>Current size of the cache.</text>
+	</description>
+      </leaf>
+      <leaf name="max-ttl">
+	<type name="uint32"/>
+	<units name="seconds"/>
+	<default value="172800"/>
+	<description>
+	  <text>
+	    <h:p>Maximum time-to-live for cache entries.</h:p>
+	    <h:p>This value overrides the original TTL specified for
+	    the particular resource record if the latter is
+	    greater.</h:p>
+	  </text>
+	</description>
+      </leaf>
+      <leaf name="min-ttl">
+	<type name="uint32"/>
+	<units name="seconds"/>
+	<default value="0"/>
+	<must condition=". &lt;= ../max-ttl">
+	  <error-message>
+	    <value>'min-ttl' must not be higher than 'max-ttl'</value>
+	  </error-message>
+	</must>
+	<description>
+	  <text>
+	    <h:p>Minimum time-to-live for cache entries.</h:p>
+	    <h:p>This value overrides the original TTL specified for
+	    the particular resource record if the latter is
+	    smaller.</h:p>
+	  </text>
+	</description>
+      </leaf>
+    </container>
+    <container name="dns64">
+      <presence value="enable DNS64 functionality"/>
+      <leaf name="prefix">
+	<type name="inet:ipv6-prefix"/>
+	<description>
+	  <text>
+	    <h:p>The DNS64 prefix to be used for synthesizing AAAA
+	    records.</h:p>
+	    <h:p>The prefix must be /96 or shorter.</h:p>
+	  </text>
+	</description>
+	<default value="64:ff9b::/96"/>
+      </leaf>
+    </container>
+  </container>
+
+  <!-- Operations -->
+  
+</module>
