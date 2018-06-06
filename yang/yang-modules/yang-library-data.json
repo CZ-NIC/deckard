@@ -1,0 +1,49 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "e595da11ace92c0d881995fa7e56bbe86f1f48e9",
+    "module": [
+      {
+        "name": "cznic-dns-types",
+        "revision": "2018-05-14",
+        "namespace": "https://www.nic.cz/ns/yang/dns-types",
+        "conformance-type": "implement",
+        "schema": "https://gitlab.labs.nic.cz/jetconf/jetconf-resolver/blob/master/yang-modules/cznic-dns-types.yang"
+      },
+      {
+        "name": "cznic-resolver-common",
+        "revision": "2018-05-14",
+        "feature": [
+          "set-group"
+        ],
+        "namespace": "https://www.nic.cz/ns/yang/resolver-common",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "cznic-deckard",
+        "revision": "2018-06-06",
+        "namespace": "https://www.nic.cz/ns/yang/deckard",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-inet-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
+        "conformance-type": "import",
+        "schema": "https://raw.githubusercontent.com/YangModels/yang/master/standard/ietf/RFC/ietf-inet-types.yang"
+      },
+      {
+        "name": "ietf-yang-library",
+        "revision": "2016-06-21",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-library",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-yang-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
+        "conformance-type": "import",
+        "schema": "https://github.com/YangModels/yang/blob/master/standard/ietf/RFC/ietf-yang-types.yang"
+      }
+    ]
+  }
+}

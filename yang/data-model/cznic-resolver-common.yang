@@ -1,0 +1,303 @@
+module cznic-resolver-common {
+
+  yang-version "1.1";
+
+  namespace "https://www.nic.cz/ns/yang/resolver-common";
+
+  prefix "drc";
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+
+  import cznic-dns-types {
+    prefix "dns";
+  }
+
+  organization
+    "CZ.NIC, z. s. p. o.";
+
+  contact
+    "Editor:   Ladislav Lhotka
+               <mailto:lhotka@nic.cz>";
+
+  description
+    "This YANG module defines the common part of a data model for DNS
+     resolvers.";
+
+  revision 2018-05-14 {
+    description
+      "Initial revision.";
+    reference
+      "TODO: put git tag here";
+  }
+
+  /* Features */
+
+  feature set-group {
+    description
+      "This feature indicates support for setting the group.";
+  }
+
+  /* Typedefs */
+
+  typedef fs-path {
+    type string;
+    description
+      "This type is used for specifying a filesystem path (absolute
+       or relative).
+
+       An implementation must check that the string satisfies all
+       rules of the underlying operating system.";
+  }
+
+  typedef l2-protocol-selection {
+    type bits {
+      bit ipv4 {
+        description
+          "Enable/disable IPv4.";
+      }
+      bit ipv6 {
+        description
+          "Enable/disable IPv6.";
+      }
+    }
+    default "ipv4 ipv6";
+  }
+
+  /* Data nodes */
+
+  container dns-resolver {
+    description
+      "DNS resolver parameters.";
+    container server {
+      description
+        "Parameters of the resolver process.";
+      leaf user-name {
+        type string;
+        description
+          "After binding the network socket, drop the privileges and
+           run with effective user ID of this user.";
+      }
+      leaf group-name {
+        if-feature "set-group";
+        type string;
+        description
+          "After binding the network socket, drop the privileges and
+           run with effective group ID of this group.";
+      }
+    }
+    container network {
+      description
+        "Network connection parameters.";
+      list listen-interfaces {
+        key "name";
+        unique "ip-address port";
+        description
+          "Inet sockets to use for listening to queries.";
+        leaf name {
+          type string;
+          description
+            "Arbitrary name of the listening socket.";
+        }
+        leaf ip-address {
+          type inet:ip-address;
+          mandatory "true";
+          description
+            "IPv4 or IPv6 address.";
+        }
+        leaf port {
+          type inet:port-number;
+          default "53";
+          description
+            "Port number.";
+        }
+      }
+      container client-transport {
+        description
+          "Specify L2 and L3 protocols used for receiving and
+           answering client queries.";
+        leaf l2-protocols {
+          type l2-protocol-selection;
+          description
+            "L2 protocols used for receiving and answering client
+             queries.";
+        }
+      }
+      container recursion-transport {
+        description
+          "Specify L2 and L3 protocols used for recursive queries.";
+        leaf l2-protocols {
+          type l2-protocol-selection;
+          description
+            "L2 protocols used for recursive queries.";
+        }
+      }
+    }
+    container resolver {
+      description
+        "Parameters affecting operation of the DNS resolver.";
+      list stub-zones {
+        key "domain";
+        description
+          "List of stub zones.";
+        leaf domain {
+          type dns:domain-name;
+          description
+            "Name of the stub zone.";
+        }
+        leaf nameserver {
+          type inet:host;
+          description
+            "Name or IP address of the stub zone nameserver.";
+        }
+        leaf port {
+          type inet:port-number;
+          default "53";
+          description
+            "Port number to use for communicating with the stub zone
+             nameserver.";
+        }
+      }
+      container options {
+        description
+          "Fine-tuning parameters of resolver operation.";
+        leaf glue-checking {
+          type enumeration {
+            /* TODO: add descriptions of the enums */
+            enum strict;
+            enum normal;
+            enum permissive;
+          }
+          description
+            "Level of strictness in accepting glue records.";
+        }
+        leaf qname-minimisation {
+          type boolean;
+          description
+            "Send minimum amount of information in recursive queries
+             to enhance privacy.";
+        }
+        leaf query-loopback {
+          type boolean;
+          default "true";
+          description
+            "This flag permits queries to loopback addresses (prefix
+             127.0.0.0/8 for IPv4 and ::1/128 for IPv6).";
+        }
+      }
+    }
+    container logging {
+      description
+        "Logging parameters.";
+      leaf verbosity {
+        type uint8 {
+          range "0..5";
+        }
+        default "1";
+        description
+          "Verbosity level.";
+      }
+    }
+    container dnssec {
+      presence "Enable DNSSEC";
+      description
+        "DNSSEC parameters";
+      container trust-anchors {
+        description
+          "Parameters of DNSSEC trust anchors.";
+        list key-files {
+          key "domain";
+          description
+            "DNSSEC trust anchor files.
+
+             Each file is expected to
+
+             These files should exist and contain trust anchors (DS
+             or DNSKEY recors) for a single domain. The only
+             exception is the file for the root domain (key '.'): if
+             it doesn't exist, it will be populated from the IANA
+             website.";
+          leaf domain {
+            type dns:domain-name;
+            description
+              "The domain for which the trust anchor file is used.";
+          }
+          leaf file {
+            type fs-path;
+            description
+              "Name of the trust anchor file.";
+          }
+          leaf read-only {
+            type boolean;
+            default "false";
+            description
+              "Setting this flag to true blocks updates according to
+               RFC 5011 for this file.";
+          }
+        }
+      }
+      leaf-list negative-trust-anchors {
+        type dns:domain-name;
+        description
+          "List of domain names representing negative trust
+           anchors.";
+        reference
+          "RFC 7646: Definition and Use of DNSSEC Negative Trust
+           Anchors.";
+      }
+    }
+    container cache {
+      description
+        "Parameters of the resolver cache.";
+      leaf max-size {
+        type uint64;
+        units "bytes";
+        description
+          "Maximum size of the cache.";
+      }
+      leaf current-size {
+        type uint64;
+        units "bytes";
+        config "false";
+        description
+          "Current size of the cache.";
+      }
+      leaf max-ttl {
+        type uint32;
+        units "seconds";
+        default "172800";
+        description
+          "Maximum time-to-live for cache entries.
+
+           This value overrides the original TTL specified for the
+           particular resource record if the latter is greater.";
+      }
+      leaf min-ttl {
+        type uint32;
+        units "seconds";
+        must ". <= ../max-ttl" {
+          error-message
+            "'min-ttl' must not be higher than 'max-ttl'";
+        }
+        default "0";
+        description
+          "Minimum time-to-live for cache entries.
+
+           This value overrides the original TTL specified for the
+           particular resource record if the latter is smaller.";
+      }
+    }
+    container dns64 {
+      presence "enable DNS64 functionality";
+      leaf prefix {
+        type inet:ipv6-prefix;
+        default "64:ff9b::/96";
+        description
+          "The DNS64 prefix to be used for synthesizing AAAA records.
+
+           The prefix must be /96 or shorter.";
+      }
+    }
+  }
+}

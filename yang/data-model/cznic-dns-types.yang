@@ -1,0 +1,35 @@
+module cznic-dns-types {
+
+  yang-version "1.1";
+
+  namespace "https://www.nic.cz/ns/yang/dns-types";
+
+  prefix "dns";
+
+  organization
+    "CZ.NIC, z. s. p. o.";
+
+  contact
+    "Editor:   Ladislav Lhotka
+               <mailto:lhotka@nic.cz>";
+
+  description
+    "This YANG module defines common types related to DNS.";
+
+  revision 2018-05-14 {
+    description
+      "Initial revision.";
+    reference
+      "TODO: put git tag here";
+  }
+
+  /* Typedefs */
+
+  typedef domain-name {
+    type string {
+      length "1..253";
+      pattern "((\\*\\.)?(([a-zA-Z0-9_]([a-zA-Z0-9\\-/_]){0,61})?[a-zA-Z0-9]\\.)*([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.?)|"
+            + "\\.";
+    }
+  }
+}

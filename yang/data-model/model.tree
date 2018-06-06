@@ -1,0 +1,39 @@
+module: cznic-resolver-common
+  +--rw dns-resolver
+     +--rw server
+     |  +--rw user-name?    string
+     |  +--rw group-name?   string {set-group}?
+     +--rw network
+     |  +--rw listen-interfaces* [name]
+     |  |  +--rw name          string
+     |  |  +--rw ip-address    inet:ip-address
+     |  |  +--rw port?         inet:port-number
+     |  +--rw client-transport
+     |  |  +--rw l2-protocols?   l2-protocol-selection
+     |  +--rw recursion-transport
+     |     +--rw l2-protocols?   l2-protocol-selection
+     +--rw resolver
+     |  +--rw stub-zones* [domain]
+     |  |  +--rw domain        dns:domain-name
+     |  |  +--rw nameserver?   inet:host
+     |  |  +--rw port?         inet:port-number
+     |  +--rw options
+     |     +--rw glue-checking?        enumeration
+     |     +--rw qname-minimisation?   boolean
+     |     +--rw query-loopback?       boolean
+     +--rw logging
+     |  +--rw verbosity?   uint8
+     +--rw dnssec!
+     |  +--rw trust-anchors
+     |  |  +--rw key-files* [domain]
+     |  |     +--rw domain       dns:domain-name
+     |  |     +--rw file?        fs-path
+     |  |     +--rw read-only?   boolean
+     |  +--rw negative-trust-anchors*   dns:domain-name
+     +--rw cache
+     |  +--rw max-size?       uint64
+     |  +--ro current-size?   uint64
+     |  +--rw max-ttl?        uint32
+     |  +--rw min-ttl?        uint32
+     +--rw dns64!
+        +--rw prefix?   inet:ipv6-prefix

@@ -1,0 +1,42 @@
+module cznic-deckard {
+
+  yang-version "1.1";
+
+  namespace "https://www.nic.cz/ns/yang/deckard";
+
+  prefix "dcd";
+
+  import cznic-resolver-common {
+    prefix "drc";
+  }
+
+  organization
+    "CZ.NIC, z. s. p. o.";
+
+  contact
+    "Editor:   Ladislav Lhotka
+               <mailto:lhotka@nic.cz>";
+
+  description
+    "This YANG module defines data for deckard test tool..";
+
+  revision 2018-06-06 {
+    description
+      "Initial revision.";
+  }
+
+  /* Data nodes */
+
+  container deckard {
+    description
+      "Parameters for deckard test tool.";
+    leaf mock-data {
+      type drc:fs-path;
+      description
+        "Name of the file containing mock data for the test DNS
+         server and client instructions.
+
+         This data is copied to the resulting RPL file.";
+    }
+  }
+}
