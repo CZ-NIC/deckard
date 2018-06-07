@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import argparse
-import fileinput
 import itertools
 import logging
 import os
@@ -233,14 +232,14 @@ def standalone_self_test():
     """
     logging.basicConfig(level=logging.DEBUG)
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--scenario', help='path to test scenario',
+    argparser.add_argument('--scenario', help='absolute path to test scenario',
                            required=False)
     argparser.add_argument('--step', help='step # in the scenario (default: first)',
                            required=False, type=int)
     args = argparser.parse_args()
     if args.scenario:
-        test_scenario, test_config_text = scenario.parse_file(fileinput.input(args.scenario))
-        test_config = scenario.parse_config(test_config_text, True, os.getcwd())
+        test_scenario, test_config_text = scenario.parse_file(args.scenario)
+        test_config, _ = scenario.parse_config(test_config_text, True, os.getcwd())
     else:
         test_scenario, test_config = empty_test_case()
 
