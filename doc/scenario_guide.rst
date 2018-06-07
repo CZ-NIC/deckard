@@ -329,8 +329,10 @@ Deckard does not expect any answer to RAW queries, so ``STEP CHECK_ANSWER`` is n
 Main intent of this behavior is to check if binary under test is
 able to process valid queries after getting series badly formed packets.
 
-Using ``RAW`` section in conjunction of other sections is meaningless.
-All sections other than ``RAW`` will be ignored.
+It is also possible to use ``RAW`` in conjuction with ``SECTION`` for the
+purpose of responding with raw data to a query that matches the ``SECTION``.
+Raw data is sent as is and isn't manipulated in any way (e.g. by ``ADJUST``).
+
 One ``ENTRY`` can contain only one ``RAW`` section.
 
 Example
