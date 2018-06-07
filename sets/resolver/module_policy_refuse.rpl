@@ -1,13 +1,14 @@
 ; config options
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
         feature-list: policy=policy:add(policy.suffix(policy.REFUSE, {todname('example.cz')}))
+	trust-anchor: ". 3600 IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5"
 CONFIG_END
 
 SCENARIO_BEGIN Simple policy test
 
 STEP 10 QUERY
 ENTRY_BEGIN
-REPLY RD
+REPLY RD AD
 SECTION QUESTION
 www.example.cz. IN A
 ENTRY_END
