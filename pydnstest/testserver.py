@@ -4,8 +4,10 @@ import argparse
 import itertools
 import logging
 import os
+import signal
 import select
 import socket
+import sys
 import threading
 import time
 
@@ -256,13 +258,17 @@ def standalone_self_test():
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())
-    try:
-        while True:
-            time.sleep(0.5)
-    except KeyboardInterrupt:
+
+    def exit(signum, frame):
         logging.info("[==========] Shutdown.")
-        pass
-    server.stop()
+        server.stop()
+        sys.exit(128 + signum)
+
+    signal.signal(signal.SIGINT, exit)
+    signal.signal(signal.SIGTERM, exit)
+
+    while True:
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
