@@ -3,10 +3,8 @@ import os
 from yangson import DataModel
 from json import load
 
-import urllib.request
-url = 'https://gitlab.labs.nic.cz/jetconf/jetconf-resolver/raw/master/jetconf_resolver/conf_generator.py'
-urllib.request.urlretrieve(url, 'generator_tmp.py')
-from generator_tmp import ConfGenerator
+# import resolvers conf generator from jetconf-resolver backend
+from jetconf_resolver.conf_generator import ConfGenerator
 
 # set name and paths for .rpl files
 unb_path = str("unb.rpl")
@@ -70,5 +68,3 @@ if __name__ == "__main__":
     # generate and write set for deckard
     generator.write_files()
 
-    # remove downloaded file
-    os.remove('generator_tmp.py')

@@ -1,0 +1,3 @@
+yangson
+-e git+https://gitlab.labs.nic.cz/jetconf/jetconf-resolver.git#egg=jetconf-resolver
+
