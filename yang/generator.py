@@ -2,32 +2,39 @@ from os import chdir
 from json import load
 from re import compile
 from socket import gethostbyname
+from colorlog import warning, error
 from yangson import DataModel
 from pathlib import Path
-from colorlog import warning, info
 
 ip_addr_re = compile('^((\d{1,3}\.){3}\d{1,3})|(([\dA-Fa-f]{1,4})|(:)|(:[\dA-Fa-f]{1,4})){2,7}[\dA-Fa-f]$')
 
 
-class ScenarioGenerator:
+class ConfGenerator:
+
     def __init__(self, model: DataModel):
 
-        # default paths where to create files and names
-        self.unbound_path = str(Path.home()) + "/unbound.rpl"
-        self.kresd_path = str(Path.home()) + "/kresd.rpl"
+        self.unbound_path = str(Path.home()) + "/unbound.conf"
+        self.kresd_path = str(Path.home()) + "/kresd.conf"
 
-        self.data_model = model     # type: DataModel
-        self.conf_data = {}         # type: str
-        self.mock_path = ""         # type: str
+        self.data_model = model
+        self.conf_data = {}
+
+    def load_data(self, data):
+
+        data.validate()
+
+        # creating data with missing default values
+        data_defaults = data.add_defaults()
+
+        data_defaults = data_defaults["cznic-resolver-common:dns-resolver"]
+
+        # creating sorted conf_data
+        self.conf_data = self.sort_data(data_defaults)
 
     def load_file(self, path: str):
 
-        global ri
-        try:
-            with open(path) as infile:
-                ri = load(infile)
-        except IOError:
-            error("Failed to load json file: \"{}\"" .format(path))
+        with open(path) as infile:
+            ri = load(infile)
 
         data = self.data_model.from_raw(ri)
 
@@ -38,12 +45,11 @@ class ScenarioGenerator:
 
         data_defaults = data_defaults["cznic-resolver-common:dns-resolver"]
 
-        self.mock_path = data["cznic-deckard:deckard"]["mock-data"].value
-
+        # creating sorted conf_data
         self.conf_data = self.sort_data(data_defaults)
 
-    @staticmethod
-    def sort_data(data: str):
+    def sort_data(self, data: str):
+
         context = {'network': 1,
                    'server': 2,
                    'resolver': 3,
@@ -57,30 +63,32 @@ class ScenarioGenerator:
 
         return sorted_data
 
-    def write_scenario(self):
+    def write_knot(self):
+        if self.conf_data:
+            knot_file = open(self.kresd_path, "w+")
+            knot = self.generate_knot()
+            knot_file.write(knot)
+            knot_file.close()
+        else:
+            error("No configuration data loaded.")
+            error("To load data use self.load_data(path_to_json)")
 
-        unb_file = open(self.unbound_path, "w+")
-        unb_scenario = self.gen_unb_scenario()
-        unb_file.write(unb_scenario)
-        unb_file.close()
+    def write_unbound(self):
 
-        knot_file = open(self.kresd_path, "w+")
-        knot_conf = self.gen_kresd()
-        knot_file.write(knot_conf)
-        knot_file.close()
-
-    def gen_unb_scenario(self):
-        unb_conf = self.gen_unbound()
-        mock = open(self.mock_path).read()
-
-        scenario = unb_conf + mock
-        return scenario
+        if self.conf_data:
+            unb_file = open(self.unbound_path, "w+")
+            unb = self.generate_unbound()
+            unb_file.write(unb)
+            unb_file.close()
+        else:
+            error("No configuration data loaded.")
+            error("To load data use self.load_data(path_to_json)")
 
     ############################ UNBOUND CONF GENERATOR ############################
     # Function for generate Unbound configuration file
-    def gen_unbound(self):
+    def generate_unbound(self):
         # Create clear configuration file
-        unb_conf_string = "; config options\n"
+        unb_conf_string = ""
         server = "server:\n"
         stub = ""
 
@@ -116,22 +124,13 @@ class ScenarioGenerator:
                 # client-transport
                 if 'client-transport' in item:
                     # l2-protocols
-                    '''
-                    if 'l2-protocols' in item['client-transport']:
-                        if str(item['client-transport']['l2-protocols']) == "ipv6":
-                            server += str("\tdo-ip6 = yes\n\tdo-ip4 = no\n")
-                        elif str(item['client-transport']['l2-protocols']) == "ipv4":
-                            server += str("\tdo-ip6 = no\n\tdo-ip4 = yes\n")
-                        else:
-                            server += str("\tdo-ip6 = yes\n\tdo-ip4 = yes\n")
-                    '''
+                    pass
 
                 # recursion-transport
                 if 'recursion-transport' in item:
                     # l2-protocols
                     if 'l2-protocols' in item['recursion-transport']:
                         protocols = str(item['recursion-transport']['l2-protocols'].value)
-
                         if 'ipv4' in protocols:
                             if 'ipv6' in protocols:
                                 server += str("\tdo-ip6 = yes\n\tdo-ip4 = yes\n")
@@ -249,16 +248,14 @@ class ScenarioGenerator:
                 if 'prefix' in item:
                     server += str("\tdns64-prefix: {}\n".format(item['prefix'].value))
 
-        unb_conf_string += server + stub
+        unb_conf_string = server + stub
 
         return unb_conf_string
 
     ############################ KNOT CONF GENERATOR ############################
     # Function for generate Knot configuration file
-    def gen_kresd(self):
-        # Create clear configuration file
-        conf_string = "; config options\n"
-
+    def generate_knot(self):
+        conf_string = ""
         for item in self.conf_data:
 
             ############ SERVER ############
@@ -297,12 +294,19 @@ class ScenarioGenerator:
                 # client-transport
                 if 'client-transport' in item:
                     # l2-protocols
-                    pass
+                    '''
+                    if 'l2-protocols' in item['client-transport']:
+                        if str(item['client-transport']['l2-protocols']) == "ipv6":
+                            conf_string += "net.ipv6 = true\nnet.ipv4 = false\n"
+                        elif str(item['client-transport']['l2-protocols']) == "ipv4":
+                            conf_string += "net.ipv6 = false\nnet.ipv4 = true\n"
+                        else:
+                            conf_string += "net.ipv6 = true\nnet.ipv4 = true\n"
+                    '''
 
                 # recursion-transport
                 if 'recursion-transport' in item:
-                    # l2-protocols
-                    protocols = str(item['recursion-transport']['l2-protocols'])
+                    protocols = str(item['recursion-transport']['l2-protocols'].value)
                     if 'ipv4' in protocols:
                         if 'ipv6' in protocols:
                             conf_string += "net.ipv6 = true\nnet.ipv4 = true\n"
@@ -433,6 +437,7 @@ class ScenarioGenerator:
                     conf_string += str("modules.load('dns64')\ndns64.config('{}')\n".format(item['prefix'].value))
 
         return conf_string
+
 
 
 
