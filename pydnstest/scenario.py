@@ -366,9 +366,17 @@ class Entry:
         assert len(answer.additional) == len(self.message.additional)
         return answer
 
+    def _adjust_raw_reply(self, query):
+        if 'raw_id' in self.adjust_fields:
+            assert len(self.raw_data) >= 2, "RAW message has to contain at least 2 bytes"
+            raw_answer = bytearray(self.raw_data)
+            struct.pack_into('!H', raw_answer, 0, query.id)
+            return bytes(raw_answer)
+        return self.raw_data
+
     def reply(self, query):
         if self.is_raw_data_entry:
-            return self.raw_data, True
+            return self._adjust_raw_reply(query), True
         return self._adjust_reply(query), False
 
     def set_edns(self, fields):
