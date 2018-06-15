@@ -2,3 +2,8 @@
 *.pyc
 *.swp
 /env.sh
+/bin
+/lib
+/lib64
+/pip-selfcheck.json
+/pyvenv.cfg

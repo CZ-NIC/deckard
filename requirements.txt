@@ -4,3 +4,4 @@ PyYAML
 python-augeas
 pytest
 pytest-xdist
+git+https://gitlab.labs.nic.cz/jetconf/jetconf-resolver.git#egg=jetconf-resolver
