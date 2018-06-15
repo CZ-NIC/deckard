@@ -6,11 +6,11 @@ from json import load
 # import resolvers conf generator from jetconf-resolver backend
 from jetconf_resolver.conf_generator import ConfGenerator
 
-# set name and paths for .rpl files
+# set file names and paths
 unb_path = str("unb.rpl")
-kresd_path = str("kresd.rpl")
-
+kresd_path = str("kresd.conf")
 yangdir = "yang-modules"
+
 data_model = DataModel.from_file(yangdir + "/yang-library-data.json", [yangdir])
 json_path = sys.argv[1]
 
@@ -27,7 +27,7 @@ class DeckardConf(ConfGenerator):
 
     def write_files(self):
         mock_data = open(self.mock_path).read()
-        unbound = self.generate_unbound() + mock_data
+        unbound = self.generate_unbound() + "\nCONFIG_END\n\n" + mock_data
         # write unbound
         self.write(self.unbound_path, unbound)
 

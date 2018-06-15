@@ -1,6 +1,3 @@
-
-CONFIG_END
-
 SCENARIO_BEGIN Test not using cached glue records
 
 ;root server
