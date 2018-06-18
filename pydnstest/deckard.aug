@@ -33,7 +33,7 @@ let hex_re = /[0-9a-fA-F]+/
 
 
 let match_option =  "opcode" | "qtype" | "qcase" | "qname" | "subdomain" | "flags" | "rcode" | "question" | "answer" | "authority" | "additional" | "all" | "TCP" | "ttl"
-let adjust_option = "copy_id" | "copy_query"
+let adjust_option = "copy_id" | "copy_query" | "raw_id"
 let reply_option = "QR" | "TC" | "AA" | "AD" | "RD" | "RA" | "CD" | "DO" | "NOERROR" | "FORMERR" | "SERVFAIL" | "NXDOMAIN" | "NOTIMP" | "REFUSED" | "YXDOMAIN" | "YXRRSET" | "NXRRSET" | "NOTAUTH" | "NOTZONE" | "BADVERS" | "BADSIG" | "BADKEY" | "BADTIME" | "BADMODE" | "BADNAME" | "BADALG" | "BADTRUNC" | "BADCOOKIE"
 let step_option = "REPLY" | "QUERY" | "CHECK_ANSWER" | "CHECK_OUT_QUERY" | /TIME_PASSES[ \t]+ELAPSE/
 
@@ -57,14 +57,13 @@ let section_authority = [ label "authority" . del_str "SECTION AUTHORITY" .
 let section_additional = [ label "additional" . del_str "SECTION ADDITIONAL" .
                            comment_or_eol . record* ]
 let sections = [label "section" . section_question? . section_answer? . section_authority? . section_additional?]
-
 let raw = [del_str "RAW" . comment_or_eol . label "raw" . store hex_re  ] . comment_or_eol
 
-(* This is quite dirty hack to match every combination of options given to entry since 'let normal = ((match | adjust | reply | mandatory | tsig)* . sections)' just is not possible *)
+(* This is quite dirty hack to match every combination of options given to entry since 'let dnsmsg = ((match | adjust | reply | mandatory | tsig)* . sections)' just is not possible *)
 
-let normal = (match . (adjust . reply? | reply . adjust?)? | adjust . (match . reply? | reply . match?)? | reply . (match . adjust? | adjust . match?)?)? . (mandatory | tsig)* . sections
+let dnsmsg = (match . (adjust . reply? | reply . adjust?)? | adjust . (match . reply? | reply . match?)? | reply . (match . adjust? | adjust . match?)?)? . (mandatory | tsig)* . sections
 
-let entry = [label "entry" . del_str "ENTRY_BEGIN" . comment_or_eol . ( normal | raw ) . del_str "ENTRY_END" . eol]
+let entry = [label "entry" . del_str "ENTRY_BEGIN" . comment_or_eol . dnsmsg . raw? . del_str "ENTRY_END" . eol]
 
 let single_address = [ label "address" . space . store ip_re ]
 

@@ -256,6 +256,7 @@ element    modification to the DNS message
 ========== ===========================================================================================
 copy_id    query id + query domain name will be copied from incoming message [copy_id_bug]_
 copy_query whole question section will be copied from incoming message
+raw_id     query id will be copied into the first two bytes of RAW answer
 ========== ===========================================================================================
 
 .. [copy_id_bug] https://gitlab.labs.nic.cz/knot/deckard/issues/9
@@ -329,8 +330,10 @@ Deckard does not expect any answer to RAW queries, so ``STEP CHECK_ANSWER`` is n
 Main intent of this behavior is to check if binary under test is
 able to process valid queries after getting series badly formed packets.
 
-Using ``RAW`` section in conjunction of other sections is meaningless.
-All sections other than ``RAW`` will be ignored.
+It is also possible to use ``RAW`` in conjuction with ``SECTION`` for the
+purpose of responding with raw data to a query that matches the ``SECTION``.
+It's possible to modify raw data to use query's ID by using ``ADJUST raw_id``.
+
 One ``ENTRY`` can contain only one ``RAW`` section.
 
 Example

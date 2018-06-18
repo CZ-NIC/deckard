@@ -158,7 +158,6 @@ class Entry:
         try:
             self.raw_data = binascii.unhexlify(node["/raw"].value)
             self.is_raw_data_entry = True
-            return
         except KeyError:
             self.raw_data = None
             self.is_raw_data_entry = False
@@ -345,7 +344,7 @@ class Entry:
         if expected != got:
             raise ValueError("raw message comparsion failed: expected %s got %s" % (expected, got))
 
-    def adjust_reply(self, query):
+    def _adjust_reply(self, query):
         """ Copy scripted reply and adjust to received query. """
         answer = dns.message.from_wire(self.message.to_wire(),
                                        xfr=self.message.xfr,
@@ -366,6 +365,19 @@ class Entry:
         assert len(answer.authority) == len(self.message.authority)
         assert len(answer.additional) == len(self.message.additional)
         return answer
+
+    def _adjust_raw_reply(self, query):
+        if 'raw_id' in self.adjust_fields:
+            assert len(self.raw_data) >= 2, "RAW message has to contain at least 2 bytes"
+            raw_answer = bytearray(self.raw_data)
+            struct.pack_into('!H', raw_answer, 0, query.id)
+            return bytes(raw_answer)
+        return self.raw_data
+
+    def reply(self, query):
+        if self.is_raw_data_entry:
+            return self._adjust_raw_reply(query), True
+        return self._adjust_reply(query), False
 
     def set_edns(self, fields):
         """ Set EDNS version and bufsize. """
@@ -447,24 +459,26 @@ class Range:
         """
         Get answer for given query (adjusted if needed).
 
-        Returns:
-            (DNS message object) or None if there is no candidate in this range
+        Returns: (answer, is_raw_data)
+            answer: DNS message object or wire-format (bytes) or None if there is no
+                candidate in this range
+            is_raw_data: True if response is wire-format bytes, instead of DNS message object
         """
         self.received += 1
         for candidate in self.stored:
             try:
                 candidate.match(query)
-                resp = candidate.adjust_reply(query)
+                resp = candidate.reply(query)
                 # Probabilistic loss
                 if 'LOSS' in self.args:
                     if random.random() < float(self.args['LOSS']):
-                        return None
+                        return None, None
                 self.sent += 1
                 candidate.fired += 1
                 return resp
             except ValueError:
                 pass
-        return None
+        return None, None
 
 
 class StepLogger(logging.LoggerAdapter):  # pylint: disable=too-few-public-methods
@@ -741,21 +755,16 @@ class Scenario:
         for rng in self.ranges:
             if rng.eligible(current_step_id, address):
                 self.current_range = rng
-                return rng.reply(query), False
+                return rng.reply(query)
         # Find any prescripted one-shot replies
         for step in self.steps:
             if step.id < current_step_id or step.type != 'REPLY':
                 continue
             try:
                 candidate = step.data[0]
-                if candidate.is_raw_data_entry is False:
-                    candidate.match(query)
-                    step.data.remove(candidate)
-                    answer = candidate.adjust_reply(query)
-                    return answer, False
-                else:
-                    answer = candidate.raw_data
-                    return answer, True
+                candidate.match(query)
+                step.data.remove(candidate)
+                return candidate.reply(query)
             except (IndexError, ValueError):
                 pass
         return None, True
