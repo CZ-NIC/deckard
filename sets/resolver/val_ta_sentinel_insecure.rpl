@@ -1,8 +1,8 @@
 stub-addr: 2001:503:ba3e::2:30
 trust-anchor: . IN DS 48409 8 2 3D63A0C25BCE86621DE63636F11B35B908EFE8E9381E0E3E9DEFD89EA952C27D
 val-override-date: 20180601000000
-query-minimization: off
-domain-insecure: test
+; avoid the mess with one server for both "." and "unsigned."
+query-minimization: on
 CONFIG_END
 
 SCENARIO_BEGIN draft-ietf-dnsop-kskroll-sentinel-12 section 2 where root key matches but test domain is insecure
@@ -85,15 +85,18 @@ rootns.					      518400 IN	AAAA	2001:503:ba3e::2:30
 rootns.					      518400 IN	RRSIG	AAAA 8 1 518400 20180629135151 20180530135151 48409 . bs+zTG/nH7uQrgW5qfY5p25uXNoPOsH94K/xNVSLm9h1165/AMekPPd8 KVPnCfyZLPhO+/XyZ5fDUd/2iMCT5m/HyjXR0+j92r6f9ePfAJVQX6U0 DJUa882LgYK7k4usmIIWpi66bpGDC1tlJF3WQ4G12Hc/cUmFTMDBTcM8 6CPPDoT00JZQL8u/66GwNYkWw4mmbiq9UAz03R7A983dUx2GLCAmXoGR Lr3hI3btZa5x+GdJhw5t6Mqi58tXSZfUmT7kpCw+K0H/RscQaVDaOLc6 kzBeVn/Lip60ZSd84kiNWKuSA56TfUbpk7VJclY8UI34COHQqNtD+lev wJ1WgQ==
 ENTRY_END
 
+; The delegation here is slightly hacky
 ENTRY_BEGIN
 MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN A
+unsigned. IN NS
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test.	      1	IN A		192.0.2.1
-root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . qWJh+EE/O2w382vLo53ci9i1O/rAzJUUnZPmLF+GCwmLLhDl6tlI3y5A cALqIHkK1vrXzD+mED78YpILzZ73izRFieY6DxMtAXViqH9U8KSy6KWp tAWUASDe1gj9DGdDeiKdTAIo/2qk1PiGdZNc2E9vQLIUTJNfwV8aZGIt PTgl/efGEIMGGFQW5RPbDZpcJLQ11/RUi9FHQyseZRwkCa8EiEfgvPJ2 /rwiCPUcM6BdYzKoZ53cAHBbeKkvgAOpQ88qDvtE12aF9F8anxdHd0Ru 2DlmrPPthn7/faXSBbBECIbnjNlWTiyF7r274SQKFCrT0rJx5N9c31n4 ZSIocg==
+unsigned.				      86400 IN NS	rootns.
+SECTION AUTHORITY
+unsigned.				      86400 IN NSEC	. NS RRSIG NSEC
+unsigned.				      86400 IN RRSIG	NSEC 8 1 86400 20180629135151 20180530135151 48409 . Di6tfHcpredaWGazWKUX26zYKQ+Yw34BCO2vtqufvcAZJN6PhyXct+Px cvfPN5WxTWlcXVbj6xJKYTOe/ItgV4TM1G2SzGrzTB4qs8ybSvECT59h FUUXTM5ZeXqQVIKKuhVJlmWYSneOiuQG0w6wWr/xE+sD+LE5xQ+hnWrp Z3YAbCmFdtCTwDVt8DkN3i30zExEWc/CnQj9gFYWIBPQ22OB1sfjbZSe 85ucMhUjTas7pZki7b716ZhokApLSf5mVjktjHVT+lPpivs/L2KaQKAe 2yKi05bInFJ+FHU29YoZ3zkBTd2+MeKOh9/1O+9O+hCA+yzLiSLG06Xa 1F7Pcg==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -101,10 +104,11 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN AAAA
+unsigned. IN DS
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test.	      1	IN AAAA		2001:db8::
-root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . J4gFrZRSHHDfMoA2zO22H6A55/893OnGO7h3H9znJGZtp7DxT2vxiGJw InBx5/zPubH87rqTa4AkK2GZuDEqVEDU/fjWOjGQOx16V0oeoHi5/R2R sPTzFnb+NvQnQZCRolMHD2keakdzB8b7dfEV80CrRh7uDsiO8aqhSdiV BFJLXFt5qFd+evKw2SG7l9FNMDzukUSAcFIJepM99X7qjQnKsLuzDjyF 4zhgMolAzAwIQzEi4B+G6IQknx5HsvmpNgkbBFjns+Q7ZYutNecPfiYU vaMpSXb5pztCVLbZQEymIXPgsnzdihlMbzh22TZapLbrDBUVEc2yr/QC Tz/CQA==
+SECTION AUTHORITY
+unsigned.				      86400 IN NSEC	. NS RRSIG NSEC
+unsigned.				      86400 IN RRSIG	NSEC 8 1 86400 20180629135151 20180530135151 48409 . Di6tfHcpredaWGazWKUX26zYKQ+Yw34BCO2vtqufvcAZJN6PhyXct+Px cvfPN5WxTWlcXVbj6xJKYTOe/ItgV4TM1G2SzGrzTB4qs8ybSvECT59h FUUXTM5ZeXqQVIKKuhVJlmWYSneOiuQG0w6wWr/xE+sD+LE5xQ+hnWrp Z3YAbCmFdtCTwDVt8DkN3i30zExEWc/CnQj9gFYWIBPQ22OB1sfjbZSe 85ucMhUjTas7pZki7b716ZhokApLSf5mVjktjHVT+lPpivs/L2KaQKAe 2yKi05bInFJ+FHU29YoZ3zkBTd2+MeKOh9/1O+9O+hCA+yzLiSLG06Xa 1F7Pcg==
 ENTRY_END
 
 ENTRY_BEGIN
@@ -112,10 +116,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN TXT
+root-key-sentinel-is-ta-48409.unsigned. IN A
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test.	      1	IN TXT		"it works"
-root-key-sentinel-is-ta-48409.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . tl+oiYdq+UDlh6snkobPI/jQbrPM2tESEyDNIec7wCRvCEo6CLd+oMOA H4P7idKJ1Mey0eMl++YI29Vz2KVAIL0Hiamt32VDXyR5QYVVzNQquH5B /P4PDeoSadK1M+VThnSPT685+CLCbAZfu0Hi7+NulEeQLleBMtSGy0pF eG50H7fecNjqmQ2O/3jKRfD8l86+jba3B2FmpPvsxXgR7Ig5jC/XSpSY 0UMXyntDJz7QOSuhh4GcdNEeUqGVTurqnFjgRmZwReVZqeQzCS8Q+eQn cq23FtXxcAqJCFKN68yoorWmlZhZl0DPm4Zpup28wwlIapO+SGwScD0q KyHZYQ==
+root-key-sentinel-is-ta-48409.unsigned.	      1	IN A		192.0.2.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -123,10 +126,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN A
+root-key-sentinel-is-ta-48409.unsigned. IN AAAA
 SECTION ANSWER
-root-key-sentinel-not-ta-48409.test.	      1	IN A		192.0.2.1
-root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . N1vrpd062YN/PGLOmdAdgPOc2iPPBadtv+DlqoCJ8OUEtFH605m7AUlX HDV99dpT7j6I/N+Sp6pDMRIRl+rB/tFXNfQFoB7UliAsKQ9UuKxH/uyc /sZWxPmYb+4Xi1AKmkzvp7M3Babq7hTGG/PnngN3386Qd0MXiw11Tdl9 +HIan1Jz2jMrHuR2NZDILZOW10wYogYD3/DAx6bVaJMjDbIky5ikK2H/ 4QajIhtjuux4GfsFc7KjGzT1/Hqa9LqdsLetvQmKF4yGNjizOgnrHlbF GoICQ1KihXF3IGYcBUyIoMcmhAjz6D0/jQz/Blwx3zvEUj2Hf7Xj+haO ShdguQ==
+root-key-sentinel-is-ta-48409.unsigned.	      1	IN AAAA		2001:db8::
 ENTRY_END
 
 ENTRY_BEGIN
@@ -134,10 +136,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN AAAA
+root-key-sentinel-is-ta-48409.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-not-ta-48409.test.	      1	IN AAAA		2001:db8::
-root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . UYk1xmrw2A7ojKSTpwuF90WXsXOfNbRI8pi9tDPLmqr0OMn29AW051vG TyLd7L3ogsaoUEDiY2vYyvyZI3kPL9fSRDYgOIk7Cq3hp7k6wMM3IXS6 iIlYnjtvUFGDaE69EpUjwII22lSWaqOo0dCFnacJYWDfShdZcv7yssWG 9nZpki6aiBAjhYXY8tdMnpDJzq9O3zXPQR8xtuFW4S0aVdrHuSPRq935 DWXThocHxOza6OQp/ZkbemkoqAYjTlu0tyITwZsTknxgK1mtM+ArRmhS eykqVs3mmAGIWMN3qIW8SXKVRHI9PPjka0j6+KK+bfmeck0bI2Wu1f3C cnk+nQ==
+root-key-sentinel-is-ta-48409.unsigned.	      1	IN TXT		"it works"
 ENTRY_END
 
 ENTRY_BEGIN
@@ -145,10 +146,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN TXT
+root-key-sentinel-not-ta-48409.unsigned. IN A
 SECTION ANSWER
-root-key-sentinel-not-ta-48409.test.	      1	IN TXT		"it works"
-root-key-sentinel-not-ta-48409.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . NLK3/UMZZ+39KgwbFFoS6qR2QTEULMxDhlWpK1is+AU3CjUn1RNPRJaq m1MnfJdEq3+FFwVDkpmDGh8lQfTBn192oWlo2goHXZXwuoFN49FPHZ+l u42NWMDKtmS6r9JemJR68jH0jy/AsTMdvAbeodg06cbY6F5Q80EtAdkZ iOZPnqPenfxI+U8C2KgBNas7izGbQZF3FxHi7GZz+wrCGBcjcYX9pcD9 /rf1plZYudefFbxG+P97WfMScDD5vt0dUxz3Yt6YUC48jlyo9WYZDLC5 3qOuqah5oXS1lCGJDm+Kta4koVnm6W4pbCzT9XISwRWZ81rp0NbTrhHb Teu7Pw==
+root-key-sentinel-not-ta-48409.unsigned.	      1	IN A		192.0.2.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -156,10 +156,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-00000.test. IN A
+root-key-sentinel-not-ta-48409.unsigned. IN AAAA
 SECTION ANSWER
-root-key-sentinel-is-ta-00000.test.	      1	IN A		192.0.2.1
-root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . iYK8FfKFt+aD2Mh+hvFxyE0lCs/jHMT8EWlhPGuiPekHkYnbTaRbGJhT sCeL3Cg1MHrtGr8BXSq1RMyKnn6Y0/bhF1nEjk1gB+vAFHUwWe0yX32U H7E139q68ZyrcUkpV+KkY+ltMSKAjBtGRkYZ9sJhFvll7YCD2HtAMPud KEWpTZS2D0fLATDzAJzJF/2qGMvRUIn0sk5+3HqVh7R3stbl4aSEw5Zp swJoSCs1DN5eaLh6Ovas51uDAa4t6Ove6owR/gR9isqdZCbilAaJ6497 xg4r/KsCu6eG7GAAw5XGh8rkpC5YbsCBlXB565Zk5oY4yBgBUiG/iXGC wyLyJA==
+root-key-sentinel-not-ta-48409.unsigned.	      1	IN AAAA		2001:db8::
 ENTRY_END
 
 ENTRY_BEGIN
@@ -167,10 +166,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-00000.test. IN AAAA
+root-key-sentinel-not-ta-48409.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-is-ta-00000.test.	      1	IN AAAA		2001:db8::
-root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . QNF7LtVeew75AhniJ7S0ncsmrHWHCnRcU0H3uyCipyL20kHlpc1NOIUY md7BB02MXm+XOpJF/l/uc9v/C0iuAgOpFVp5kVjtp+gTu2mgceXstFuP 3tNmrL2pSRIWaN8+koS0MlAZCrH9+J9RSFrm5twtD7bIvGT0FVvy/RrR pRWPy9hbqjH6O5DFMdksdVTPLEYFXevAHGKvRa5beRXkrL9ANfVzvPYl q2RaO1aMX6+Cy7AquJpU7DUSReEUBr1f7mYVdd/6sjzoXrd893c+2Fc+ WFLVuWER3eTSrLAQ3b3Etz0lqM3MLrEXwjQFl2mw046nlh21T+u2Ds5s s1/b8g==
+root-key-sentinel-not-ta-48409.unsigned.	      1	IN TXT		"it works"
 ENTRY_END
 
 ENTRY_BEGIN
@@ -178,10 +176,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-is-ta-00000.test. IN TXT
+root-key-sentinel-is-ta-00000.unsigned. IN A
 SECTION ANSWER
-root-key-sentinel-is-ta-00000.test.	      1	IN TXT		"it works"
-root-key-sentinel-is-ta-00000.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . cGVwlSItiMGEOKkCWRLUn2od/cBvOlSwj8qxCppe4O1FRyTGgEFNV2nf 2zUkhL/agQhXI3qEjFOkq2b1l+4dM3BwDOF7IGhS3yXV3JGnIcwOC7si EMjRZGIvcEenjfugpIwkwkhTZdgIFoyCUr+g6YxA3iL6L77dftAmIkAV 6gvyarwgeYs0Wi+eEGfrZp2MxJjHDXKF+NfCy/fJnYx2n8SRpXya/Uu+ DJ+S4FQDTDyjDhN/+Tvcsb++sjvNfA4ZDwx5gpgNkRF0xsLHMoxCQagH gJBBziP0cq7l2fy5FVMpGNvdkkiYYG8to/2FF/65GhV+RuNcotD91zyW aeSxWw==
+root-key-sentinel-is-ta-00000.unsigned.	      1	IN A		192.0.2.1
 ENTRY_END
 
 ENTRY_BEGIN
@@ -189,10 +186,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-00000.test. IN A
+root-key-sentinel-is-ta-00000.unsigned. IN AAAA
 SECTION ANSWER
-root-key-sentinel-not-ta-00000.test.	      1	IN A		192.0.2.1
-root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	A 8 2 1 20180629135151 20180530135151 48409 . YYqLZKzjD13hpj345YTNMYYEh3US2BY7DqK9YbNIZi4T0/0jAEFPamKW WcX0nPm5N5S+1VqKIdo/brqvOTaxsq7HnPxVfomg3wyaKNvwqxb2MUpa pYl25ORa7yOm3gwVZJ3NBjh65dLXzGn8t8b047ym7Fnz6JAJHUyM4/SH hZhvXYBX+i3Lojq7HDIReqAtH7zzWdKzKLCTNqAhuqfvEI3edVynpth2 SCMNDVaAUlzVfBLEAkHNp26mLSgcarc3vrb2khdDS13Kv0Ev4rj0w0v1 z0DnVs95Yl2XlnShzNTaW5w1F8f81oBbq2Ly2POxERr5cOCNSGIWMi+q XAt7bQ==
+root-key-sentinel-is-ta-00000.unsigned.	      1	IN AAAA		2001:db8::
 ENTRY_END
 
 ENTRY_BEGIN
@@ -200,10 +196,9 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-00000.test. IN AAAA
+root-key-sentinel-is-ta-00000.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-not-ta-00000.test.	      1	IN AAAA		2001:db8::
-root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	AAAA 8 2 1 20180629135151 20180530135151 48409 . mHz8sEjHOt+UrLPdGr3s+dake/eRQ6QmushFbLex2e6epkvmriVQwdWa QqG4h75UmjNnOlAwpHJA3oRyKxLJKmVgJIAQzhFc6sHLwEVl+kVyxGfu Q17Md+52E/d+mLMHohKRXljTaghp2uLHX8oDtBP+B2HhIDJK+uhfK63A MZ4k1L4jBGCvEGVMO7BhrpHV9zbY21MOb6EIp/F35jB+ftW7gilKxxBK t+Qt1pwtJcDGVC2xZST6fZ2yaR+U+YhOJ7t9j6WVVTWyFSa1CG3lzyRW PNduZeKYTYwox2uqqUxh+Nmzd1oZt7geIw8CGTYS0B++nVUdNJXJnP51 +evqJQ==
+root-key-sentinel-is-ta-00000.unsigned.	      1	IN TXT		"it works"
 ENTRY_END
 
 ENTRY_BEGIN
@@ -211,10 +206,29 @@ MATCH opcode question
 ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
-root-key-sentinel-not-ta-00000.test. IN TXT
+root-key-sentinel-not-ta-00000.unsigned. IN A
 SECTION ANSWER
-root-key-sentinel-not-ta-00000.test.	      1	IN TXT		"it works"
-root-key-sentinel-not-ta-00000.test.	      1	IN RRSIG	TXT 8 2 1 20180629135151 20180530135151 48409 . SjAFtdUPy+YU4sZnst5GNNYxjzWhBOVqUAfGIUv3uBo5qZW9ePecUJ8G ZkNUkdT7m+cHd0c1ssOBOT7snjwc3Sy3zD22b6/q3N8VowhDQDPkoDlB vt9raR7eXu273cEBDZTQ9P4Ya2Meu32Aftwa6VMQmXMl+qWXhYqffEt6 bJuoohnCVqOZihqgnoT+sRiDl49RgLb+GnZNbFk5EP9LXOrWcdxczKso tY384WCrniRmg4L6NM5DjnBtUVT+Qs6fhWGqQv23fPiLV8lt4i34aIf2 jAQkIE6KD4aNLlehct7eqFo1aeaiZumqEd9/GoqSat/RE7Qsh6hiRkfA /J7MLg==
+root-key-sentinel-not-ta-00000.unsigned.	      1	IN A		192.0.2.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode question
+ADJUST copy_id
+REPLY NOERROR QR AA DO
+SECTION QUESTION
+root-key-sentinel-not-ta-00000.unsigned. IN AAAA
+SECTION ANSWER
+root-key-sentinel-not-ta-00000.unsigned.	      1	IN AAAA		2001:db8::
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode question
+ADJUST copy_id
+REPLY NOERROR QR AA DO
+SECTION QUESTION
+root-key-sentinel-not-ta-00000.unsigned. IN TXT
+SECTION ANSWER
+root-key-sentinel-not-ta-00000.unsigned.	      1	IN TXT		"it works"
 ENTRY_END
 
 RANGE_END
@@ -225,7 +239,7 @@ STEP 111 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN TXT
+root-key-sentinel-is-ta-48409.unsigned. IN TXT
 ENTRY_END
 
 STEP 112 CHECK_ANSWER
@@ -233,16 +247,16 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN TXT
+root-key-sentinel-is-ta-48409.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test. IN TXT "it works"
+root-key-sentinel-is-ta-48409.unsigned. IN TXT "it works"
 ENTRY_END
 
 STEP 121 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN TXT
+root-key-sentinel-not-ta-48409.unsigned. IN TXT
 ENTRY_END
 
 STEP 122 CHECK_ANSWER
@@ -250,16 +264,16 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN TXT
+root-key-sentinel-not-ta-48409.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-not-ta-48409.test. IN TXT "it works"
+root-key-sentinel-not-ta-48409.unsigned. IN TXT "it works"
 ENTRY_END
 
 STEP 131 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-is-ta-00000.test. IN TXT
+root-key-sentinel-is-ta-00000.unsigned. IN TXT
 ENTRY_END
 
 STEP 132 CHECK_ANSWER
@@ -267,16 +281,16 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-is-ta-00000.test. IN TXT
+root-key-sentinel-is-ta-00000.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-is-ta-00000.test. IN TXT "it works"
+root-key-sentinel-is-ta-00000.unsigned. IN TXT "it works"
 ENTRY_END
 
 STEP 141 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-not-ta-00000.test. IN TXT
+root-key-sentinel-not-ta-00000.unsigned. IN TXT
 ENTRY_END
 
 STEP 142 CHECK_ANSWER
@@ -284,9 +298,9 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-not-ta-00000.test. IN TXT
+root-key-sentinel-not-ta-00000.unsigned. IN TXT
 SECTION ANSWER
-root-key-sentinel-not-ta-00000.test. IN TXT "it works"
+root-key-sentinel-not-ta-00000.unsigned. IN TXT "it works"
 ENTRY_END
 
 ; _is-ta does not affect queries when we do not have TA for root
@@ -294,7 +308,7 @@ STEP 211 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN A
+root-key-sentinel-is-ta-48409.unsigned. IN A
 ENTRY_END
 
 STEP 212 CHECK_ANSWER
@@ -302,16 +316,16 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN A
+root-key-sentinel-is-ta-48409.unsigned. IN A
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test. 1 IN A 192.0.2.1
+root-key-sentinel-is-ta-48409.unsigned. 1 IN A 192.0.2.1
 ENTRY_END
 
 STEP 221 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN AAAA
+root-key-sentinel-is-ta-48409.unsigned. IN AAAA
 ENTRY_END
 
 STEP 222 CHECK_ANSWER
@@ -319,9 +333,9 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-is-ta-48409.test. IN AAAA
+root-key-sentinel-is-ta-48409.unsigned. IN AAAA
 SECTION ANSWER
-root-key-sentinel-is-ta-48409.test. 1 IN AAAA 2001:db8::
+root-key-sentinel-is-ta-48409.unsigned. 1 IN AAAA 2001:db8::
 ENTRY_END
 
 ; _not-ta does not affect queries when we do not have TA for root
@@ -329,7 +343,7 @@ STEP 311 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN A
+root-key-sentinel-not-ta-48409.unsigned. IN A
 ENTRY_END
 
 STEP 312 CHECK_ANSWER
@@ -337,14 +351,16 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN A
+root-key-sentinel-not-ta-48409.unsigned. IN A
+SECTION ANSWER
+root-key-sentinel-not-ta-48409.unsigned.	      1	IN A		192.0.2.1
 ENTRY_END
 
 STEP 322 QUERY
 ENTRY_BEGIN
 REPLY RD AD
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN AAAA
+root-key-sentinel-not-ta-48409.unsigned. IN AAAA
 ENTRY_END
 
 STEP 322 CHECK_ANSWER
@@ -352,9 +368,9 @@ ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
 SECTION QUESTION
-root-key-sentinel-not-ta-48409.test. IN AAAA
+root-key-sentinel-not-ta-48409.unsigned. IN AAAA
 SECTION ANSWER
-root-key-sentinel-not-ta-48409.test. IN AAAA 2001:db8::
+root-key-sentinel-not-ta-48409.unsigned. IN AAAA 2001:db8::
 ENTRY_END
 
 SCENARIO_END
