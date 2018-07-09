@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Resign .rpl tests.
 Creates zones with records used in the test, signs it and in the given .rpl file replaces all RRSIGs, DSs and DNSKEYs with new ones. The backup of the original file is file.rpl.bak. 
@@ -232,7 +234,7 @@ def parse_test(test):
     """ Parse the test """
     _, config = pydnstest.scenario.parse_file(os.path.realpath(test))
     aug = pydnstest.augwrap.AugeasWrapper(confpath=os.path.realpath(test),
-                                          lens='Deckard', loadpath="pydnstest")
+                                          lens='deckard', loadpath=os.path.dirname(__file__) + "/pydnstest")
     node = aug.tree
     return config, node
 
