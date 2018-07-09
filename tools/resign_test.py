@@ -458,7 +458,7 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
             try:
                 # Change test timestamp to actual time
                 if line.split()[0] == "val-override-date:":
-                    line = "\tval-override-date: \"" +\
+                    line = "val-override-date: \"" +\
                         time.strftime("%Y%m%d%H%M%S") + "\"\n"
 
                 # Replace RRSIGs
