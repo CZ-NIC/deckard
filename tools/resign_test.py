@@ -1,5 +1,6 @@
 """
-Resign .rpl tests
+Resign .rpl tests.
+Creates zones with records used in the test, signs it and in the given .rpl file replaces all RRSIGs, DSs and DNSKEYs with new ones. The backup of the original file is file.rpl.bak. 
 
 Dependencies: dnssec-keygen, dnssec-signzone
 
@@ -12,7 +13,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -s, --store           store files (keys, zonefiles, dssets)
   -k KEYS [KEYS ...], --keys KEYS [KEYS ...]
-                        files with original keys used in the test you want to
+                        .key files with original keys used in the test you want to
                         use again
 """
 
@@ -597,7 +598,7 @@ def parseargs():
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
     argparser.add_argument("-k", "--keys",
-                           help="files with original keys used in the test you want to use again",
+                           help=".key files with original keys used in the test you want to use again",
                            nargs="+")
     args = argparser.parse_args()
     if os.path.isfile(args.tests):
