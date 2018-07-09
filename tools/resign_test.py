@@ -387,6 +387,8 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
     Read new records from signed zonefile and match them
     to the old records from the test
     """
+    
+    # Get records from the zonefile
     zonefile = open(signed_zonefile, "r")
     for line in zonefile:
         line = line.split()
@@ -432,6 +434,8 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
             except ValueError:
                 pass
     zonefile.close()
+    
+    # Get DS record from dsset file
     dsset = open(dssetfile, "r")
     lines = dsset.readlines()
     for record in replaced_dss:
@@ -472,9 +476,10 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                     for record in replaced_dss:
                         if record.original in line:
                             if record.new == "":
-                                errmsg += "Warning: new DS of "
-                                errmsg += record.domain + " is empty\n"
-                            line = line.replace(record.original, record.new)
+                                errmsg += "Warning: cannot find new DS of "
+                                errmsg += record.domain + ", not changing\n" # This happens when there is a trust anchor which does not sign anythinthing
+                            else:
+                                line = line.replace(record.original, record.new)
 
                 # Replace DNSKEYSs
                 elif "DNSKEY" in line.split():
