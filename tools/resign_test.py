@@ -480,7 +480,8 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                         if record.original in line:
                             if record.new == "":
                                 errmsg += "Warning: cannot find new DS of "
-                                errmsg += record.domain + ", not changing\n" # This happens when there is a trust anchor which does not sign anythinthing
+                                errmsg += record.domain + ", not changing\n"
+                                # This happens when there is a trust anchor which does not sign anythinthing
                             else:
                                 line = line.replace(record.original, record.new)
 
@@ -512,7 +513,7 @@ def resign_test(test, exist_keys):
     """
     # Copy original keys to working directory
     copykeys(exist_keys)
-    
+
     # Parse test
     config, node = parse_test(test)
 
@@ -600,8 +601,8 @@ def parseargs():
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
     argparser.add_argument("-k", "--keys",
-                           help=".key files with original keys used in the test you want to use again",
-                           nargs="+")
+                           help=".key files with original keys used in the test you want 
+                           to use again", nargs="+")
     args = argparser.parse_args()
     if os.path.isfile(args.tests):
         tests = [args.tests]
