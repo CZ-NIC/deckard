@@ -2,7 +2,7 @@
 
 """
 Resign .rpl tests.
-Creates zones with records used in the test, signs it and in the given .rpl file replaces all RRSIGs, DSs and DNSKEYs with new ones. The backup of the original file is file.rpl.bak. 
+Creates zones with records used in the test, signs it and in the given .rpl file replaces all RRSIGs, DSs and DNSKEYs with new ones. The backup of the original file is file.rpl.bak.
 
 Dependencies: dnssec-keygen, dnssec-signzone
 
@@ -234,7 +234,8 @@ def parse_test(test):
     """ Parse the test """
     _, config = pydnstest.scenario.parse_file(os.path.realpath(test))
     aug = pydnstest.augwrap.AugeasWrapper(confpath=os.path.realpath(test),
-                                          lens='deckard', loadpath=os.path.dirname(__file__) + "/pydnstest")
+                                          lens='deckard',
+                                          loadpath=os.path.dirname(__file__) + "/pydnstest")
     node = aug.tree
     return config, node
 
@@ -270,12 +271,20 @@ def read_rrsig(record, records, keys):
     for record2 in records:
         if (record2["/domain"].value == domain and
                 record2["/type"].value == rrtype):
-            dns_class = record2["/class"].value
+            try:
+                dns_class = record2["/class"].value
+            except KeyError:
+                dns_class = "IN"
             try:
                 ttl = record2["/ttl"].value
             except KeyError:
                 ttl = "3600"
-            rrsig = ReplacedSignature(domain, keys[keytag + zone_name],
+            try:
+                key = keys[keytag + zone_name]
+            except KeyError:
+                print("Error: Unknown key", keytag)
+                sys.exit(1)
+            rrsig = ReplacedSignature(domain, key,
                                       rrtype, record["/data"].value)
             signed_record = ZoneRecord(domain, ttl, dns_class, rrtype, record2["/data"].value)
             break
@@ -390,9 +399,13 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
     Read new records from signed zonefile and match them
     to the old records from the test
     """
-    
+
     # Get records from the zonefile
-    zonefile = open(signed_zonefile, "r")
+    if os.path.isfile(signed_zonefile):
+        zonefile = open(signed_zonefile, "r")
+    else:
+        print("Error: zonefile for zone " + zone_name + " could not be created")
+        sys.exit(1)
     for line in zonefile:
         line = line.split()
         if line[0][0] != ";":
@@ -437,7 +450,7 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
             except ValueError:
                 pass
     zonefile.close()
-    
+
     # Get DS record from dsset file
     dsset = open(dssetfile, "r")
     lines = dsset.readlines()
@@ -601,8 +614,8 @@ def parseargs():
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
     argparser.add_argument("-k", "--keys",
-                           help=".key files with original keys used in the test you want 
-                           to use again", nargs="+")
+                           help=""".key files with original keys used in the
+                           test you want to use again""", nargs="+")
     args = argparser.parse_args()
     if os.path.isfile(args.tests):
         tests = [args.tests]
