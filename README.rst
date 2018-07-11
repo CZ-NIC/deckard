@@ -23,10 +23,12 @@ Requirements
 
 Deckard requires following software to be installed:
 
-- Python >= 3.3
+- Python >= 3.5
+- augeas_ - library for editing configuration files
 - dnspython_ - DNS library for Python
 - Jinja2_ - template engine for generating config files
 - PyYAML_ - YAML parser for Python
+- python-augeas_ - Python bindings for augeas API
 - pytest_ - testing framework for Python, used for running the test cases
 - pytest-xdist_ - module for pytest for distributed testing
 - custom C libraries (installed automatically, see below)
@@ -78,6 +80,7 @@ If you have any comments feel free to send e-mail to knot-dns@labs.nic.cz! Do no
 Happy testing.
 
 
+.. _`augeas`: http://augeas.net/
 .. _`CSR`: http://apple.stackexchange.com/questions/193368/what-is-the-rootless-feature-in-el-capitan-really
 .. _`Jinja2`: http://jinja.pocoo.org/
 .. _`Knot DNS Resolver`: https://gitlab.labs.nic.cz/knot/resolver/blob/master/README.md
@@ -90,5 +93,6 @@ Happy testing.
 .. _`libfaketime`: https://github.com/wolfcw/libfaketime
 .. _`modified socket_wrapper`: https://gitlab.labs.nic.cz/labs/socket_wrapper
 .. _`original socket_wrapper`: https://cwrap.org/socket_wrapper.html
+.. _`python-augeas`: https://pypi.org/project/python-augeas/
 .. _`pytest`: https://pytest.org/
 .. _`pytest-xdist`: https://pypi.python.org/pypi/pytest-xdist
