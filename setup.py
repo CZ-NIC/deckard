@@ -16,7 +16,7 @@ kwargs = {
     'license': 'BSD',
     'url': 'https://gitlab.labs.nic.cz/knot/deckard',
     'packages': ['pydnstest'],
-    'python_requires': '>=3.3',
+    'python_requires': '>=3.5',
     'install_requires': [
         'dnspython>=1.15',
         'jinja2',
