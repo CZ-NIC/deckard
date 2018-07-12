@@ -236,6 +236,7 @@ def parse_test(test):
     aug = pydnstest.augwrap.AugeasWrapper(confpath=os.path.realpath(test),
                                           lens='deckard',
                                           loadpath=os.path.dirname(__file__) + "/pydnstest")
+
     node = aug.tree
     return config, node
 
@@ -262,6 +263,7 @@ def find_keys(node):
 def read_rrsig(record, records, keys):
     """ Get data from the RRSIG record and the record signed by it."""
     rrsig_data = record["/data"].value.split()
+    rrsig_data[:] = (value for value in rrsig_data if value not in ["(", ")"])
     keytag = rrsig_data[6]
     zone_name = rrsig_data[7]
     domain = record["/domain"].value
