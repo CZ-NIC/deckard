@@ -233,9 +233,13 @@ def check_soa(records):
 def parse_test(test):
     """ Parse the test """
     _, config = pydnstest.scenario.parse_file(os.path.realpath(test))
+    load_path = os.path.dirname(__file__)
+    if load_path:
+        load_path += "/"
+    load_path += "pydnstest"
     aug = pydnstest.augwrap.AugeasWrapper(confpath=os.path.realpath(test),
                                           lens='deckard',
-                                          loadpath=os.path.dirname(__file__) + "/pydnstest")
+                                          loadpath=load_path)
 
     node = aug.tree
     return config, node
