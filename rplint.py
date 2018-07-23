@@ -73,6 +73,7 @@ class Test:
 
         self.ranges = [pydnstest.scenario.Range(n) for n in self.node.match("/scenario/range")]
 
+        self.results = None
         self.checks = [entry_more_than_one_rcode, entry_no_qname_qtype_copy_query,
                        entry_ns_in_authority, range_overlapping_ips, range_shadowing_match_rules,
                        step_check_answer_no_match, step_query_match, step_section_unchecked,
@@ -80,16 +81,23 @@ class Test:
                        test_timestamp, test_trust_anchor_trailing_period_missing,
                        step_duplicate_id]
 
-    def print_results(self):
+    def run_checks(self):
+        """returns True iff all tests passed"""
+        self.results = ""
         failed = False
         for check in self.checks:
             fails = check(self)
-            if fails and not failed:
-                print(self.path)
-                failed = True
             for fail in fails:
                 pos = get_line_number(self.path, fail)
-                print("\t line " + str(pos), check.__doc__)
+                self.results += " ".join(["line", str(pos), check.__name__, check.__doc__, "\n"])
+
+        if self.results == "":
+            return True
+        return False
+
+
+    def print_results(self):
+        print(self.results)
 
 
 def test_trust_anchor_trailing_period_missing(test):
@@ -247,9 +255,12 @@ def range_shadowing_match_rules(test):
 def step_duplicate_id(test):
     """STEP has the same ID as one of previous ones"""
     fails = []
-    for step1, step2 in itertools.combinations(test.steps, 2):
-        if step1.node.value == step2.node.value:
-            fails.append(step2.node.char)
+    step_numbers = set()
+    for step in test.steps:
+        if step.node.value in step_numbers:
+            fails.append(step.node.char)
+        else:
+            step_numbers.add(step.node.value)
     return fails
 
 
@@ -259,11 +270,16 @@ def step_duplicate_id(test):
 #    entry_error(test, entry, "copy_id should be in ADJUST")
 
 if __name__ == '__main__':
-    tests_path = sys.argv[1]
-    if tests_path.endswith(".rpl"):
-        t = Test(tests_path)
-        t.print_results()
-    else:
-        for file_path in sorted(glob.glob(os.path.join(tests_path, "*.rpl"))):
-            t = Test(file_path)
-            t.print_results()
+    try:
+        test_path = sys.argv[1]
+    except IndexError:
+        print("usage: %s <path to rpl file>" % sys.argv[0])
+        sys.exit(2)
+    print("Linting %s" % test_path)
+    t = Test(test_path)
+    passed = t.run_checks()
+    t.print_results()
+
+    if passed:
+        sys.exit(0)
+    sys.exit(1)
