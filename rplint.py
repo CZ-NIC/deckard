@@ -238,7 +238,7 @@ def range_shadowing_match_rules(test):
             match2 = set(e2.match_fields)
             msg1 = e1.message
             msg2 = e2.message
-            if match1 >= match2:
+            if match1 <= match2:
                 with suppress(pydnstest.matchpart.DataMismatch):
                     if pydnstest.matchpart.compare_rrs(msg1.question, msg2.question):
                         fails.append(e2.node.char)
