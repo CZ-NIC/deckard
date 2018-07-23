@@ -78,12 +78,22 @@ class RplintTest:
         self.ranges = [pydnstest.scenario.Range(n) for n in self.node.match("/scenario/range")]
 
         self.results = None
-        self.checks = [entry_more_than_one_rcode, entry_no_qname_qtype_copy_query,
-                       entry_ns_in_authority, range_overlapping_ips, range_shadowing_match_rules,
-                       step_check_answer_no_match, step_query_match, step_section_unchecked,
-                       step_unchecked_match, step_unchecked_rcode, scenario_ad_or_rrsig_no_ta,
-                       scenario_timestamp, config_trust_anchor_trailing_period_missing,
-                       step_duplicate_id]
+        self.checks = [
+                    #    entry_more_than_one_rcode,
+                    #    entry_no_qname_qtype_copy_query,
+                    #    entry_ns_in_authority,
+                    #    range_overlapping_ips,
+                    #    range_shadowing_match_rules,
+                    #    step_check_answer_no_match,
+                    #    step_query_match,
+                    #    step_section_unchecked,
+                    #    step_unchecked_match,
+                    #    step_unchecked_rcode,
+                    #    scenario_ad_or_rrsig_no_ta,
+                    #    scenario_timestamp,
+                    #    config_trust_anchor_trailing_period_missing,
+                    #    step_duplicate_id
+                       ]
 
     def run_checks(self):
         """returns True iff all tests passed"""
@@ -230,7 +240,7 @@ def range_overlapping_ips(test):
 
 
 def range_shadowing_match_rules(test):
-    """ENTRY has no effect since one of previous entries has broader match rules"""
+    """ENTRY has no effect since one of previous entries has the same or broader match rules"""
     fails = []
     for r in test.ranges:
         for e1, e2 in itertools.combinations(r.stored, 2):
