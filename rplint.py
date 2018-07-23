@@ -18,6 +18,8 @@ RCODES = {"NOERROR", "FORMERR", "SERVFAIL", "NXDOMAIN", "NOTIMP", "REFUSED", "YX
 FLAGS = {"QR", "AA", "TC", "RD", "RA", "AD", "CD"}
 SECTIONS = {"question", "answer", "authority", "additional"}
 
+class RplintError(ValueError):
+    pass
 
 def get_line_number(file, char_number):
     pos = 0
@@ -55,7 +57,7 @@ class Step:
             self.entry = None
 
 
-class Test:
+class RplintTest:
     def __init__(self, path):
         aug = pydnstest.augwrap.AugeasWrapper(confpath=os.path.realpath(path),
                                               lens='Deckard',
@@ -77,8 +79,8 @@ class Test:
         self.checks = [entry_more_than_one_rcode, entry_no_qname_qtype_copy_query,
                        entry_ns_in_authority, range_overlapping_ips, range_shadowing_match_rules,
                        step_check_answer_no_match, step_query_match, step_section_unchecked,
-                       step_unchecked_match, step_unchecked_rcode, test_ad_or_rrsig_no_ta,
-                       test_timestamp, test_trust_anchor_trailing_period_missing,
+                       step_unchecked_match, step_unchecked_rcode, scenario_ad_or_rrsig_no_ta,
+                       scenario_timestamp, config_trust_anchor_trailing_period_missing,
                        step_duplicate_id]
 
     def run_checks(self):
@@ -95,12 +97,11 @@ class Test:
             return True
         return False
 
-
     def print_results(self):
         print(self.results)
 
 
-def test_trust_anchor_trailing_period_missing(test):
+def config_trust_anchor_trailing_period_missing(test):
     """Trust-anchor option in configuration contains domain without trailing period"""
     for conf in test.config:
         if conf[0] == "trust-anchor":
@@ -109,7 +110,7 @@ def test_trust_anchor_trailing_period_missing(test):
     return []
 
 
-def test_timestamp(test):
+def scenario_timestamp(test):
     """RRSSIG record present in test but no val-override-date or val-override-timestamp in config"""
     rrsigs = []
     for entry in test.entries:
@@ -153,7 +154,7 @@ def entry_more_than_one_rcode(test):
     return fails
 
 
-def test_ad_or_rrsig_no_ta(test):
+def scenario_ad_or_rrsig_no_ta(test):
     """AD or RRSIG present in test but no trust-anchor present in config"""
     dnssec = []
     for entry in test.entries:
@@ -269,6 +270,12 @@ def step_duplicate_id(test):
 # if "copy_id" not in adjust:
 #    entry_error(test, entry, "copy_id should be in ADJUST")
 
+def test_run_rplint(rpl):
+    t = RplintTest(rpl)
+    passed = t.run_checks()
+    if not passed:
+        raise RplintError(t.results)
+
 if __name__ == '__main__':
     try:
         test_path = sys.argv[1]
@@ -276,7 +283,7 @@ if __name__ == '__main__':
         print("usage: %s <path to rpl file>" % sys.argv[0])
         sys.exit(2)
     print("Linting %s" % test_path)
-    t = Test(test_path)
+    t = RplintTest(test_path)
     passed = t.run_checks()
     t.print_results()
 
