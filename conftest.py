@@ -89,6 +89,16 @@ def scenarios(paths, configs):
     return scenario_list
 
 
+def rpls(paths):
+    for path in paths:
+        if os.path.isfile(path):
+            filelist = [path]  # path to single file, accept it
+        else:
+            filelist = sorted(glob.glob(os.path.join(path, "*.rpl")))
+
+        return filelist
+
+
 def pytest_addoption(parser):
     parser.addoption("--config", action="append", help="path to Deckard configuration .yaml file")
     parser.addoption("--scenarios", action="append", help="directory with .rpl files")
@@ -108,3 +118,6 @@ def pytest_generate_tests(metafunc):
             paths = metafunc.config.option.scenarios
 
         metafunc.parametrize("scenario", scenarios(paths, configs), ids=str)
+    if 'rpl' in metafunc.fixturenames:
+        paths = metafunc.config.option.scenarios
+        metafunc.parametrize("rpl", rpls(paths), ids=str)
