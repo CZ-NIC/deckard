@@ -49,7 +49,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 2.2.2.2
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 com.	IN	NS
