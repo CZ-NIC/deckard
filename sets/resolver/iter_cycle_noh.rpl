@@ -105,7 +105,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN A
@@ -171,7 +171,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN A
@@ -246,7 +246,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN A
@@ -313,7 +313,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN A
