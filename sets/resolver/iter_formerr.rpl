@@ -54,7 +54,7 @@ SECTION ANSWER
 ENTRY_END
 
 ; this is the correct answer
-STEP 60 REPLY
+STEP 70 REPLY
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
