@@ -8,7 +8,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.1.1.1
 ENTRY_BEGIN
 MATCH opcode qtype qcase ; case sensitive comparison
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 b-0.19-23003008.1481.1518.19cf.3ea1.410.0.ekzijnekvvvg7gb38qcwur561b.avqs.mcafee.com.    IN  A ; all lowercase
