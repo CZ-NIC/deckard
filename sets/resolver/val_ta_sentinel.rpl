@@ -407,7 +407,7 @@ root-key-sentinel-not-ta-48409.test. IN A
 ENTRY_END
 
 ; query without AD must SERVFAIL as well
-STEP 322 QUERY
+STEP 321 QUERY
 ENTRY_BEGIN
 REPLY RD
 SECTION QUESTION
