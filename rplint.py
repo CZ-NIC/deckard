@@ -79,26 +79,26 @@ class RplintTest:
 
         self.results = None
         self.checks = [
-                    #    entry_more_than_one_rcode,
-                    #    entry_no_qname_qtype_copy_query,
-                    #    entry_ns_in_authority,
-                    #    range_overlapping_ips,
-                    #    range_shadowing_match_rules,
-                    #    step_check_answer_no_match,
-                    #    step_query_match,
-                    #    step_section_unchecked,
-                    #    step_unchecked_match,
-                    #    step_unchecked_rcode,
-                    #    scenario_ad_or_rrsig_no_ta,
-                    #    scenario_timestamp,
-                    #    config_trust_anchor_trailing_period_missing,
-                    #    step_duplicate_id
-                       ]
+                        entry_more_than_one_rcode,
+                        entry_no_qname_qtype_copy_query,
+                        # Commented out for now until we implement selective turning off of checks
+                        # entry_ns_in_authority,
+                        range_overlapping_ips,
+                        range_shadowing_match_rules,
+                        step_check_answer_no_match,
+                        step_query_match,
+                        step_section_unchecked,
+                        step_unchecked_match,
+                        step_unchecked_rcode,
+                        scenario_ad_or_rrsig_no_ta,
+                        scenario_timestamp,
+                        config_trust_anchor_trailing_period_missing,
+                        step_duplicate_id,
+                    ]
 
     def run_checks(self):
         """returns True iff all tests passed"""
         self.results = ""
-        failed = False
         for check in self.checks:
             fails = check(self)
             for fail in fails:
@@ -140,8 +140,8 @@ def entry_no_qname_qtype_copy_query(test):
     """ENTRY without qname and qtype in MATCH and without copy_query in ADJUST"""
     fails = []
     for entry in test.range_entries:
-        if ("qname" not in entry.match or "qtype" not in entry.match) \
-	   and "question" not in entry.match:
+        if "question" not in entry.match and ("qname" not in entry.match or
+                                              "qtype" not in entry.match):
             if "copy_query" not in entry.adjust:
                 fails.append(entry.node.char)
     return fails
@@ -192,8 +192,8 @@ def step_query_match(test):
 
 def step_check_answer_no_match(test):
     """ENTRY in STEP CHECK_ANSWER has no MATCH rule"""
-    return [step.entry.node.char for step in test.steps if step.type == "CHECK_ANSWER"
-            and not step.entry.match]
+    return [step.entry.node.char for step in test.steps if step.type == "CHECK_ANSWER" and
+            not step.entry.match]
 
 
 def step_unchecked_rcode(test):
