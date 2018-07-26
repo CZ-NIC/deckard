@@ -142,7 +142,6 @@ RANGE_END
 ; Now try the A type, which works, and is not LAME.
 STEP 1 QUERY
 ENTRY_BEGIN
-MATCH TCP
 REPLY RD
 SECTION QUESTION
 example.com. IN A
@@ -162,7 +161,6 @@ ENTRY_END
 ; this fails; it is LAME
 STEP 20 QUERY
 ENTRY_BEGIN
-MATCH TCP
 REPLY RD
 SECTION QUESTION
 example.com. IN AAAA
