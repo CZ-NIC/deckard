@@ -20,7 +20,11 @@ SECTIONS = {"question", "answer", "authority", "additional"}
 
 
 class RplintError(ValueError):
-    pass
+    def __init__(self, fails):
+        msg = ""
+        for fail in fails:
+            msg += str(fail) + "\n"
+        super().__init__(msg)
 
 
 def get_line_number(file, char_number):
@@ -58,6 +62,21 @@ class Step:
         except KeyError:
             self.entry = None
 
+class RplintFail:
+    def __init__(self, test, element=None, etc=""):
+        self.path = test.path
+        self.element = element
+        self.line = get_line_number(self.path, element.node.char if element is not None else 0)
+        self.etc = etc
+        self.check = None
+
+    def __str__(self):
+        if self.etc:
+            return "{}:{} {}: {} ({})".format(os.path.basename(self.path), self.line,
+                                              self.check.__name__, self.check.__doc__, self.etc)
+        return "{}:{} {}: {}".format(os.path.basename(self.path), self.line, self.check.__name__,
+                                     self.check.__doc__)
+
 
 class RplintTest:
     def __init__(self, path):
@@ -77,7 +96,7 @@ class RplintTest:
 
         self.ranges = [pydnstest.scenario.Range(n) for n in self.node.match("/scenario/range")]
 
-        self.results = None
+        self.fails = None
         self.checks = [
                         entry_more_than_one_rcode,
                         entry_no_qname_qtype_copy_query,
@@ -98,19 +117,20 @@ class RplintTest:
 
     def run_checks(self):
         """returns True iff all tests passed"""
-        self.results = ""
+        self.fails = []
         for check in self.checks:
             fails = check(self)
             for fail in fails:
-                pos = get_line_number(self.path, fail)
-                self.results += " ".join(["line", str(pos), check.__name__, check.__doc__, "\n"])
+                fail.check = check
+            self.fails += fails
 
-        if self.results == "":
+        if self.fails == []:
             return True
         return False
 
-    def print_results(self):
-        print(self.results)
+    def print_fails(self):
+        for fail in self.fails:
+            print(fail)
 
 
 def config_trust_anchor_trailing_period_missing(test):
@@ -118,7 +138,7 @@ def config_trust_anchor_trailing_period_missing(test):
     for conf in test.config:
         if conf[0] == "trust-anchor":
             if conf[1].split()[0][-1] != ".":
-                return [0]
+                return [RplintFail(test, etc=conf[1])]
     return []
 
 
@@ -128,7 +148,7 @@ def scenario_timestamp(test):
     for entry in test.entries:
         for record in entry.records:
             if record["/type"].value == "RRSIG":
-                rrsigs.append(record.char)
+                rrsigs.append(RplintFail(test, entry))
     if rrsigs:
         for k in test.config:
             if k[0] == "val-override-date" or k[0] == "val-override-timestamp":
@@ -143,7 +163,7 @@ def entry_no_qname_qtype_copy_query(test):
         if "question" not in entry.match and ("qname" not in entry.match or
                                               "qtype" not in entry.match):
             if "copy_query" not in entry.adjust:
-                fails.append(entry.node.char)
+                fails.append(RplintFail(test, entry))
     return fails
 
 
@@ -154,7 +174,7 @@ def entry_ns_in_authority(test):
         if entry.authority and "subdomain" not in entry.match:
             for record in entry.authority:
                 if record["/type"].value == "NS":
-                    fails.append(entry.node.char)
+                    fails.append(RplintFail(test, entry))
     return fails
 
 
@@ -163,7 +183,7 @@ def entry_more_than_one_rcode(test):
     fails = []
     for entry in test.entries:
         if len(RCODES & entry.reply) > 1:
-            fails.append(entry.node.char)
+            fails.append(RplintFail(test, entry))
     return fails
 
 
@@ -172,11 +192,11 @@ def scenario_ad_or_rrsig_no_ta(test):
     dnssec = []
     for entry in test.entries:
         if "AD" in entry.reply or "AD" in entry.match:
-            dnssec.append(entry.node.char)
+            dnssec.append(RplintFail(test, entry))
         else:
             for record in entry.records:
                 if record["/type"].value == "RRSIG":
-                    dnssec.append(entry.node.char)
+                    dnssec.append(RplintFail(test, entry))
 
     if dnssec:
         for k in test.config:
@@ -187,12 +207,12 @@ def scenario_ad_or_rrsig_no_ta(test):
 
 def step_query_match(test):
     """STEP QUERY has a MATCH rule"""
-    return [step.node.char for step in test.steps if step.type == "QUERY" and step.entry.match]
+    return [RplintFail(test, step) for step in test.steps if step.type == "QUERY" and step.entry.match]
 
 
 def step_check_answer_no_match(test):
     """ENTRY in STEP CHECK_ANSWER has no MATCH rule"""
-    return [step.entry.node.char for step in test.steps if step.type == "CHECK_ANSWER" and
+    return [RplintFail(test, step) for step in test.steps if step.type == "CHECK_ANSWER" and
             not step.entry.match]
 
 
@@ -202,7 +222,7 @@ def step_unchecked_rcode(test):
     for step in test.steps:
         if step.type == "CHECK_ANSWER" and "all" not in step.entry.match:
             if step.entry.reply & RCODES and "rcode" not in step.entry.match:
-                fails.append(step.entry.node.char)
+                fails.append(RplintFail(test, step.entry))
     return fails
 
 
@@ -213,7 +233,7 @@ def step_unchecked_match(test):
         if step.type == "CHECK_ANSWER":
             entry = step.entry
             if "all" not in entry.match and entry.reply - RCODES and "flags" not in entry.match:
-                fails.append(entry.node.char)
+                fails.append(RplintFail(test, entry, str(entry.reply - RCODES)))
     return fails
 
 
@@ -225,7 +245,7 @@ def step_section_unchecked(test):
             for section in SECTIONS:
                 if not is_empty(step.node.match("/entry/section/" + section + "/*")):
                     if section not in step.entry.match:
-                        fails.append(step.entry.node.char)
+                        fails.append(RplintFail(test, step.entry, section))
     return fails
 
 
@@ -236,7 +256,8 @@ def range_overlapping_ips(test):
         # If the ranges overlap
         if min(r1.b, r2.b) >= max(r1.a, r2.a):
             if r1.addresses & r2.addresses:
-                fails.append(r2.node.char)
+                info = "previous range on line %d" % get_line_number(test.path, r1.node.char)
+                fails.append(RplintFail(test, r2, info))
     return fails
 
 
@@ -245,24 +266,12 @@ def range_shadowing_match_rules(test):
     fails = []
     for r in test.ranges:
         for e1, e2 in itertools.combinations(r.stored, 2):
-            match1 = set(e1.match_fields)
-            match2 = set(e2.match_fields)
-            msg1 = e1.message
-            msg2 = e2.message
-            if match1 <= match2:
-                with suppress(pydnstest.matchpart.DataMismatch):
-                    if pydnstest.matchpart.compare_rrs(msg1.question, msg2.question):
-                        fails.append(e2.node.char)
-            if "subdomain" in match1:
-                if msg1.question[0].name.is_superdomain(msg2.question[0].name):
-                    match1.discard("subdomain")
-                    match2.discard("subdomain")
-                    if match1 >= match2:
-                        msg1.question[0].name = dns.name.Name("")
-                        msg2.question[0].name = dns.name.Name("")
-                        with suppress(pydnstest.matchpart.DataMismatch):
-                            if pydnstest.matchpart.compare_rrs(msg1.question, msg2.question):
-                                fails.append(e2.node.char)
+            try:
+                e1.match(e2.message)
+                info = "previous entry on line %d" % get_line_number(test.path, e1.node.char)
+                fails.append(RplintFail(test, e2, info))
+            except ValueError:
+                pass
     return fails
 
 
@@ -272,7 +281,7 @@ def step_duplicate_id(test):
     step_numbers = set()
     for step in test.steps:
         if step.node.value in step_numbers:
-            fails.append(step.node.char)
+            fails.append(RplintFail(test, step))
         else:
             step_numbers.add(step.node.value)
     return fails
@@ -287,7 +296,7 @@ def test_run_rplint(rpl_path):
     t = RplintTest(rpl_path)
     passed = t.run_checks()
     if not passed:
-        raise RplintError(t.results)
+        raise RplintError(t.fails)
 
 if __name__ == '__main__':
     try:
@@ -302,7 +311,7 @@ if __name__ == '__main__':
     print("Linting %s" % test_path)
     t = RplintTest(test_path)
     passed = t.run_checks()
-    t.print_results()
+    t.print_fails()
 
     if passed:
         sys.exit(0)
