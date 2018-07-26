@@ -283,8 +283,8 @@ def step_duplicate_id(test):
 # if "copy_id" not in adjust:
 #    entry_error(test, entry, "copy_id should be in ADJUST")
 
-def test_run_rplint(rpl):
-    t = RplintTest(rpl)
+def test_run_rplint(rpl_path):
+    t = RplintTest(rpl_path)
     passed = t.run_checks()
     if not passed:
         raise RplintError(t.results)

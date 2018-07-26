@@ -105,7 +105,8 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):
-    """This is pytest weirdness to parametrize the test over all the *.rpl files."""
+    """This is pytest weirdness to parametrize the test over all the *.rpl files.
+    See https://docs.pytest.org/en/latest/parametrize.html#basic-pytest-generate-tests-example for more info."""
     if 'scenario' in metafunc.fixturenames:
         if metafunc.config.option.config is None:
             configs = []
@@ -118,6 +119,6 @@ def pytest_generate_tests(metafunc):
             paths = metafunc.config.option.scenarios
 
         metafunc.parametrize("scenario", scenarios(paths, configs), ids=str)
-    if 'rpl' in metafunc.fixturenames:
+    if 'rpl_path' in metafunc.fixturenames:
         paths = metafunc.config.option.scenarios
-        metafunc.parametrize("rpl", rpls(paths), ids=str)
+        metafunc.parametrize("rpl_path", rpls(paths), ids=str)
