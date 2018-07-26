@@ -295,6 +295,10 @@ if __name__ == '__main__':
     except IndexError:
         print("usage: %s <path to rpl file>" % sys.argv[0])
         sys.exit(2)
+    if not os.path.isfile(test_path):
+        print("rplint.py works on single file only.")
+        print("Use rplint.sh with --scenarios=<directory with rpls> to run on rpls.")
+        sys.exit(2)
     print("Linting %s" % test_path)
     t = RplintTest(test_path)
     passed = t.run_checks()
