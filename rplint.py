@@ -140,7 +140,8 @@ def entry_no_qname_qtype_copy_query(test):
     """ENTRY without qname and qtype in MATCH and without copy_query in ADJUST"""
     fails = []
     for entry in test.range_entries:
-        if "qname" not in entry.match or "qtype" not in entry.match:
+        if ("qname" not in entry.match or "qtype" not in entry.match) \
+	   and "question" not in entry.match:
             if "copy_query" not in entry.adjust:
                 fails.append(entry.node.char)
     return fails
