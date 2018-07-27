@@ -168,8 +168,32 @@ class Zone:
         self.records = list(set(self.records))
         if not check_soa(self.records):
             # Add SOA record
-            self.records.append(ZoneRecord(self.domain, "3600", "IN",
-                                           "SOA", "a. b. 1 2 3 4 3600"))
+            self.records.append(create_default_record(self.domain, "SOA"))
+        
+        
+        # Add records mentioned in NSECs and not in the test itself
+        for record in self.records:
+            if record.rrtype == "NSEC":
+                data = record.data.split()
+                next_domain = False
+                for record2 in self.records:
+                    if record2.domain == data[0]:
+                        next_domain = True
+                        break
+                if not next_domain:
+                    self.records.append(create_default_record(data[0], "TXT"))
+                for rrtype in data[1:]:
+                    if rrtype in ("NSEC", "NSEC3", "RRSIG"):
+                        continue
+                    exists = False
+                    for record2 in self.records:
+                        if record2.rrtype == rrtype and record2.domain == record.domain:
+                            exists = True
+                            break
+                    if not exists:
+                        new_record = create_default_record(record.domain, rrtype)
+                        if new_record is not None:
+                            self.records.append(new_record)
 
         # Create zonefile
         file = open("resign/" + self.domain + ".zone", "w")
@@ -196,6 +220,73 @@ class Zone:
         self.signed = True
         return True
 
+
+def create_new_record(domain, rrtype):
+    """
+    Return record with example rdata for given domain and RR type.
+    For unknown RR type return None.
+    """
+    data = {
+        "A": "1.1.1.1",
+        "AAAA": "1:1:1:1",
+        "AFSDB": "1 record.added.for.resign.",
+        "APL": "1:192.168.32.0/21 !1:192.168.38.0/28",
+        "CAA": "0 issue record.added.for.resign.",
+        "CDNSKEY": "256 3 5 ( AQPSKmynfzW4kyBv015MUG2DeIQ3" +
+                             "Cbl+BBZH4b/0PY1kxkmvHjcZc8no" +
+                             "kfzj31GajIQKY+5CptLr3buXA10h" +
+                             "WqTkF7H6RfoRqXQeogmMHfpftf6z" +
+                             "Mv1LyBUgia7za6ZEzOJBOztyvhjL" +
+                             "742iU/TpPSEDhm2SNKLijfUppn1U" +
+                             "aNvv4w==  )",
+        "CDS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
+        #"CERT": "DPKIX 1 SHA256 KR1L0GbocaIOOim1+qdHtOSrDcOsGiI2NCcxuX2/Tqc",
+        #"CNAME": "record.added.for.resign.",
+        "DHCID": "( AAIBY2/AuCccgoJbsaxcQc9TUapptP69l" +
+                 "OjxfNuVAA2kjEA= )",
+        "DLV": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
+        "DNAME": "record.added.for.resign.",
+        "DNSKEY": "256 3 5 ( AQPSKmynfzW4kyBv015MUG2DeIQ3" +
+                             "Cbl+BBZH4b/0PY1kxkmvHjcZc8no" +
+                             "kfzj31GajIQKY+5CptLr3buXA10h" +
+                             "WqTkF7H6RfoRqXQeogmMHfpftf6z" +
+                             "Mv1LyBUgia7za6ZEzOJBOztyvhjL" +
+                             "742iU/TpPSEDhm2SNKLijfUppn1U" +
+                             "aNvv4w==  )",
+        "DS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
+        "EUI48": "00-00-5e-00-53-2a",
+        "EUI64": "00-00-5e-00-53-2a-53-2a",
+        "HINFO": "ALTO ELF",
+        "HIP": "( 2 200100107B1A74DF365639CC39F1D578 " +
+                "AwEAAbdxyhNuSutc5EMzxTs9LBPCIkOFH8cIvM4p9+LrV4e19" +
+                "WzK00+CI6zBCQTdtWsuxKbWIy87UOoJTwkUs7lBu+Upr1gsNr" +
+                "ut79ryra+bSRGQb1slImA8YVJyuIDsj7kwzG7jnERNqnWxZ48" +
+                "AWkskmdHaVDP4BcelrTI3rMXdXF5D )",
+        "IPSECKEY": "( 10 1 2 192.0.2.38 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ== )", 
+        "KX": "1 record.added.for.resign.",
+        "LOC": "42 21 54 N 71 06 18 W -24m 30m",
+        "MX": "1 record.added.for.resign.",
+        "NAPTR": '100  50  "a"    "z3950+N2L+N2C"     ""   cidserver.example.com.',
+        "NS": "record.added.for.resign.",
+        #"NSEC": "
+        #"NSEC3": 
+        #"NSEC3PARAM": 
+        "PTR": "record.added.for.resign.",
+        "RP": "record.added.for.resign. record.added.for.resign.",
+        "RRSIG": "A 10 3 3600 20251231235959 20160308093040 2843 example.com. VSq+DkxJYr9Z+uh3KgpyPNwtuim4WVXnTdhRW7HX90CP5tyOVjDDTehA UmCxB8iFjUFE3hlwDx0Y71g+8Oso1t0JGkvDtWf5RDx1w+4K/1pQ2JMGlZTh7juaGJzXtltxqBoY67z1FBp9MI59O0hkABtz1CElj9LrhDr9wQa4 OUo=",
+        "SOA": "record.added.for.resign. b. 1 2 3 4 3600",
+        "SRV": "1 1 1 record.added.for.resign.",
+        "SSHFP": "2 1 123456789abcdef67890123456789abcdef67890",
+        "TLSA": "( 0 0 1 d2abde240d7cd3ee6b4b28c54df034b9 7983a1d16e8a410e4561cb106618e971 )",
+        "TXT": "\"Record added for resign\"",
+        "URI": "10 1 \"http://www.record.added.for.resign.com/path\""
+            }
+    try:
+        return ZoneRecord(domain, "3600", "IN", rrtype, data[rrtype])
+    except KeyError:
+        print("Warning: Unkonwn RR type", rrtype)
+        return None
+    
 
 def key_tag(dnskey):
     """
@@ -348,10 +439,9 @@ def find_signed_records(node, keys):
             if record["/type"].value == "RRSIG":
                 rrsig, signed_record, keytag, zone_name = read_rrsig(record, records, keys)
                 if signed_record is None:
-
                     print("Error: RRSIG of unknown record.")
                     sys.exit(1)
-                if signed_record.rrtype not in ("DNSKEY", "NSEC"):
+                if signed_record.rrtype != "DNSKEY":
                     try:
                         keyindex = keytag + zone_name
                         keys[keyindex].zone_records.append(signed_record)
@@ -389,6 +479,7 @@ def sign_zone_tree(top, zones):
         record.new = ""
         if record.rrtype == "DS":
             sign_zone_tree(record.domain, zones)
+            #zone.records.append(create_default_record(record.domain, "NS"))
             zone.records.append(ZoneRecord(record.domain, "300", "IN", "NS", "ns.fict.cz"))
             dsset = open("resign/dsset-" + record.domain)
             for line in dsset:
