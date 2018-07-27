@@ -105,22 +105,22 @@ class RplintTest:
 
         self.fails = None  # type: Optional[List[RplintFail]]
         self.checks = [
-                        entry_more_than_one_rcode,
-                        entry_no_qname_qtype_copy_query,
-                        # Commented out for now until we implement selective turning off of checks
-                        # entry_ns_in_authority,
-                        range_overlapping_ips,
-                        range_shadowing_match_rules,
-                        step_check_answer_no_match,
-                        step_query_match,
-                        step_section_unchecked,
-                        step_unchecked_match,
-                        step_unchecked_rcode,
-                        scenario_ad_or_rrsig_no_ta,
-                        scenario_timestamp,
-                        config_trust_anchor_trailing_period_missing,
-                        step_duplicate_id,
-                    ]
+            entry_more_than_one_rcode,
+            entry_no_qname_qtype_copy_query,
+            # Commented out for now until we implement selective turning off of checks
+            # entry_ns_in_authority,
+            range_overlapping_ips,
+            range_shadowing_match_rules,
+            step_check_answer_no_match,
+            step_query_match,
+            step_section_unchecked,
+            step_unchecked_match,
+            step_unchecked_rcode,
+            scenario_ad_or_rrsig_no_ta,
+            scenario_timestamp,
+            config_trust_anchor_trailing_period_missing,
+            step_duplicate_id,
+        ]
 
     def run_checks(self) -> bool:
         """returns True iff all tests passed"""
