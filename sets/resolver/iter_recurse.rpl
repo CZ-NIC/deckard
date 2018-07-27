@@ -44,18 +44,6 @@ net.	IN NS	e.gtld-servers.net.
 SECTION ADDITIONAL
 e.gtld-servers.net.	IN 	A	192.12.94.30
 ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR NOERROR
-SECTION QUESTION
-ns.example.net. IN AAAA
-SECTION AUTHORITY
-net.	IN NS	e.gtld-servers.net.
-SECTION ADDITIONAL
-e.gtld-servers.net.	IN 	A	192.12.94.30
-ENTRY_END
 RANGE_END
 
 ; a.gtld-servers.net.
@@ -222,17 +210,6 @@ SECTION ADDITIONAL
 ns.example.net.		IN 	A	1.2.3.44
 ENTRY_END
 
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR NOERROR
-SECTION QUESTION
-ns.example.net. IN AAAA
-SECTION AUTHORITY
-example.net.	IN NS	ns.example.net.
-SECTION ADDITIONAL
-ns.example.net.		IN 	A	1.2.3.44
-ENTRY_END
 RANGE_END
 
 ; ns.example.net.
