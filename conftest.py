@@ -106,7 +106,9 @@ def pytest_addoption(parser):
 
 def pytest_generate_tests(metafunc):
     """This is pytest weirdness to parametrize the test over all the *.rpl files.
-    See https://docs.pytest.org/en/latest/parametrize.html#basic-pytest-generate-tests-example for more info."""
+    See https://docs.pytest.org/en/latest/parametrize.html#basic-pytest-generate-tests-example
+    for more info."""
+
     if 'scenario' in metafunc.fixturenames:
         if metafunc.config.option.config is None:
             configs = []
