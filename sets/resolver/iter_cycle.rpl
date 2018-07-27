@@ -73,6 +73,19 @@ a.gtld-servers.net.	IN 	A	192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+ns.example.com. IN AAAA
+SECTION AUTHORITY
+example.com.	IN NS	ns.example.net.
+SECTION ADDITIONAL
+; note this will be scrubbed off
+ns.example.net.	IN A 1.2.3.1
+ENTRY_END
+
+ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
@@ -85,18 +98,6 @@ SECTION ADDITIONAL
 ns.example.net.	IN A 1.2.3.1
 ENTRY_END
 
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR NOERROR
-SECTION QUESTION
-ns.example.com. IN AAAA
-SECTION AUTHORITY
-example.com.	IN NS	ns.example.net.
-SECTION ADDITIONAL
-; note this will be scrubbed off
-ns.example.net.	IN A 1.2.3.1
-ENTRY_END
 RANGE_END
 
 ; e.gtld-servers.net.
@@ -223,27 +224,12 @@ SECTION AUTHORITY
 gtld-servers.net.	IN	SOA	. . 0 0 0 0 0
 ENTRY_END
 
-
-
 ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 example.net. IN A
-SECTION AUTHORITY
-example.net.	IN NS	ns.example.com.
-SECTION ADDITIONAL
-; note this will be scrubbed off
-ns.example.com.	IN A 1.2.3.2
-ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR NOERROR
-SECTION QUESTION
-ns.example.net. IN AAAA
 SECTION AUTHORITY
 example.net.	IN NS	ns.example.com.
 SECTION ADDITIONAL
