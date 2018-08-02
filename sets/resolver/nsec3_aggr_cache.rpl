@@ -5084,7 +5084,7 @@ ENTRY_END
 
 STEP 11 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags question rcode
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 knot-resolver.cz. IN NULL
@@ -5101,7 +5101,7 @@ ENTRY_END
 
 STEP 21 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags rcode question
 REPLY QR RD RA NXDOMAIN
 SECTION QUESTION
 nonexistent1123.knot-resolver.cz. IN A
@@ -5118,7 +5118,7 @@ ENTRY_END
 
 STEP 32 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags rcode question answer
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 nonexistent7.labs.nic.cz. IN A
@@ -5142,7 +5142,7 @@ ENTRY_END
 
 STEP 1011 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 knot-resolver.cz. IN TYPE65534
@@ -5160,7 +5160,7 @@ ENTRY_END
 
 STEP 1021 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question
 REPLY QR RD RA AD NXDOMAIN
 SECTION QUESTION
 nonexistent2.knot-resolver.cz. IN A
@@ -5177,7 +5177,7 @@ ENTRY_END
 
 STEP 1023 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question authority
 REPLY QR RD RA DO AD NXDOMAIN
 SECTION QUESTION
 deep.nonexistent5.knot-resolver.cz. IN A
@@ -5199,7 +5199,7 @@ ENTRY_END
 
 STEP 1025 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question authority
 REPLY QR RD RA DO AD NXDOMAIN
 SECTION QUESTION
 deeper.deep.nonexistent5.knot-resolver.cz. IN A
@@ -5224,7 +5224,7 @@ ENTRY_END
 
 STEP 1032 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH  rcode flags question answer
 REPLY QR RD RA AD DO NOERROR
 SECTION QUESTION
 nonexistent899.labs.nic.cz. IN A
@@ -5246,7 +5246,7 @@ ENTRY_END
 
 STEP 1034 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question answer
 REPLY QR RD RA AD DO NOERROR
 SECTION QUESTION
 deep.nonexistent47.labs.nic.cz. IN A
@@ -5266,7 +5266,7 @@ ENTRY_END
 
 STEP 1036 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH rcode flags question answer
 REPLY QR RD RA AD DO NOERROR
 SECTION QUESTION
 deeper.deep.nonexistent73.labs.nic.cz. IN A
