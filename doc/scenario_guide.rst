@@ -223,14 +223,14 @@ rcode        extended response code (``RCODE`` value
 
              - *expected* message ``RCODE`` is defined by ``REPLY`` keyword
 
-question     whole QUESTION section [sectmatch]_
+question     equivalent to ``qtype qname``
 answer       whole ANSWER section [sectmatch]_
 authority    whole AUTHORITY section [sectmatch]_
 additional   whole ADDITIONAL section [sectmatch]_
 edns         EDNS `version <https://tools.ietf.org/html/rfc6891#section-6.1.3>`_ and
              EDNS `payload <https://tools.ietf.org/html/rfc6891#section-6.1.2>`_ size
 nsid         `NSID <https://tools.ietf.org/html/rfc5001>`_ presence and value
-all          equivalent to ``flags`` + ``rcode`` + all sections explicitly defined in the ``ENTRY``
+all          equivalent to ``opcode qtype qname flags rcode answer authority additional``
 
              - sections present in the *received* message but not explicitly defined in the *expected* entry are ignored
 ============ =========================================================================================
@@ -313,9 +313,7 @@ Default values for DNS messages
 ========== ===========================================================================================
 feature    default value
 ========== ===========================================================================================
-ADJUST     copy_id
 EDNS       version 0 with buffer size 4096 B
-MATCH      opcode, qtype, qname
 REPLY      QUERY, NOERROR
 ========== ===========================================================================================
 
