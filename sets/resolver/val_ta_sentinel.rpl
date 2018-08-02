@@ -407,7 +407,7 @@ root-key-sentinel-not-ta-48409.test. IN A
 ENTRY_END
 
 ; query without AD must SERVFAIL as well
-STEP 322 QUERY
+STEP 321 QUERY
 ENTRY_BEGIN
 REPLY RD
 SECTION QUESTION
@@ -494,14 +494,14 @@ root-key-sentinel-is-ta-00000.test. IN AAAA
 ENTRY_END
 
 ; +CD must disable sentinel logic
-STEP 423 QUERY
+STEP 424 QUERY
 ENTRY_BEGIN
 REPLY RD CD
 SECTION QUESTION
 root-key-sentinel-is-ta-00000.test. IN AAAA
 ENTRY_END
 
-STEP 424 CHECK_ANSWER
+STEP 425 CHECK_ANSWER
 ENTRY_BEGIN
 REPLY QR RD RA CD NOERROR
 MATCH opcode rcode flags question answer

@@ -556,8 +556,8 @@ RANGE_BEGIN 0 100
 	ENTRY_END
 
 	ENTRY_BEGIN
-		MATCH opcode subdomain
-		ADJUST copy_id
+		MATCH opcode qtype subdomain
+		ADJUST copy_id copy_query
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION
 		gtld-servers.net.		IN	NS
@@ -584,7 +584,7 @@ RANGE_BEGIN 0 100
 	ENTRY_END
 
 	ENTRY_BEGIN
-		MATCH opcode qname
+		MATCH opcode qname qtype
 		ADJUST copy_id
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION

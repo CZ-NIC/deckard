@@ -37,6 +37,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
+ADJUST copy_id
 REPLY QR RD RA AD
 SECTION QUESTION
 . IN DNSKEY
@@ -199,7 +200,7 @@ ENTRY_END
 
 STEP 20 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags rcode question answer additional authority
 REPLY QR RD RA
 SECTION QUESTION
 a.b.sample.net.		IN	A
@@ -219,7 +220,7 @@ ENTRY_END
 
 STEP 40 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags rcode question answer additional authority
 REPLY QR RD RA
 SECTION QUESTION
 a.b.sample.net.		IN	A
@@ -240,7 +241,7 @@ ENTRY_END
 
 STEP 60 CHECK_ANSWER
 ENTRY_BEGIN
-MATCH all
+MATCH flags rcode question answer additional authority
 REPLY QR RD RA
 SECTION QUESTION
 a.b.sample.net.		IN	A

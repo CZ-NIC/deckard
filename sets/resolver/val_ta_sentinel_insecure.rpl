@@ -363,7 +363,7 @@ SECTION QUESTION
 root-key-sentinel-not-ta-48409.unsigned. IN AAAA
 ENTRY_END
 
-STEP 322 CHECK_ANSWER
+STEP 323 CHECK_ANSWER
 ENTRY_BEGIN
 REPLY QR RD RA NOERROR
 MATCH opcode rcode flags question answer
