@@ -155,26 +155,17 @@ class Entry:
         self.fired = 0
 
         # RAW
-        try:
-            self.raw_data = binascii.unhexlify(node["/raw"].value)
-            self.is_raw_data_entry = True
-        except KeyError:
-            self.raw_data = None
-            self.is_raw_data_entry = False
+        self.raw_data = None
+        self.is_raw_data_entry = self.process_raw()
 
         # MATCH
-        self.match_fields = [m.value for m in node.match("/match")]
-
-        if not self.match_fields:
-            self.match_fields = ['opcode', 'qtype', 'qname']
+        self.match_fields = self.process_match()
 
         # FLAGS
-        self.process_reply_line(node)
+        self.process_reply_line()
 
         # ADJUST
-        self.adjust_fields = [m.value for m in node.match("/adjust")]
-        if not self.adjust_fields:
-            self.adjust_fields = ['copy_id']
+        self.adjust_fields = {m.value for m in node.match("/adjust")}
 
         # MANDATORY
         try:
@@ -183,8 +174,53 @@ class Entry:
             self.mandatory = None
 
         # TSIG
+        self.process_tsig()
+
+        # SECTIONS & RECORDS
+        self.sections = self.process_sections()
+
+    def process_raw(self):
         try:
-            tsig = list(node.match("/tsig"))[0]
+            self.raw_data = binascii.unhexlify(self.node["/raw"].value)
+            return True
+        except KeyError:
+            return False
+
+    def process_match(self):
+        try:
+            self.node["/match_present"]
+        except KeyError:
+            return None
+
+        fields = set(m.value for m in self.node.match("/match"))
+
+        if 'all' in fields:
+            fields.remove("all")
+            fields |= set(["opcode", "qtype", "qname", "flags",
+                           "rcode", "answer", "authority", "additional"])
+
+        if 'question' in fields:
+            fields.remove("question")
+            fields |= set(["qtype", "qname"])
+
+        return fields
+
+    def process_reply_line(self):
+        """Extracts flags, rcode and opcode from given node and adjust dns message accordingly"""
+        self.fields = [f.value for f in self.node.match("/reply")]
+        if 'DO' in self.fields:
+            self.message.want_dnssec(True)
+        opcode = self.get_opcode(fields=self.fields)
+        rcode = self.get_rcode(fields=self.fields)
+        self.message.flags = self.get_flags(fields=self.fields)
+        if rcode is not None:
+            self.message.set_rcode(rcode)
+        if opcode is not None:
+            self.message.set_opcode(opcode)
+
+    def process_tsig(self):
+        try:
+            tsig = list(self.node.match("/tsig"))[0]
             tsig_keyname = tsig["/keyname"].value
             tsig_secret = tsig["/secret"].value
             keyring = dns.tsigkeyring.from_text({tsig_keyname: tsig_secret})
@@ -192,11 +228,11 @@ class Entry:
         except (KeyError, IndexError):
             pass
 
-        # SECTIONS & RECORDS
-        self.sections = []
-        for section in node.match("/section/*"):
+    def process_sections(self):
+        sections = set()
+        for section in self.node.match("/section/*"):
             section_name = posixpath.basename(section.path)
-            self.sections.append(section_name)
+            sections.add(section_name)
             for record in section.match("/record"):
                 owner = record['/domain'].value
                 if not owner.endswith("."):
@@ -229,6 +265,7 @@ class Entry:
                     self.message.authority.append(rr)
                 elif section_name == 'additional':
                     self.message.additional.append(rr)
+        return sections
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
@@ -257,19 +294,6 @@ class Entry:
             txt += '\n'
         txt += 'ENTRY_END\n'
         return txt
-
-    def process_reply_line(self, node):
-        """Extracts flags, rcode and opcode from given node and adjust dns message accordingly"""
-        self.fields = [f.value for f in node.match("/reply")]
-        if 'DO' in self.fields:
-            self.message.want_dnssec(True)
-        opcode = self.get_opcode(fields=self.fields)
-        rcode = self.get_rcode(fields=self.fields)
-        self.message.flags = self.get_flags(fields=self.fields)
-        if rcode is not None:
-            self.message.set_rcode(rcode)
-        if opcode is not None:
-            self.message.set_opcode(opcode)
 
     @classmethod
     def get_flags(cls, fields):
@@ -321,11 +345,7 @@ class Entry:
 
     def match(self, msg):
         """ Compare scripted reply to given message based on match criteria. """
-        match_fields = self.match_fields
-        if 'all' in match_fields:
-            match_fields.remove('all')
-            match_fields += ['flags'] + ['rcode'] + self.sections
-        for code in match_fields:
+        for code in self.match_fields:
             try:
                 pydnstest.matchpart.match_part(self.message, msg, code)
             except pydnstest.matchpart.DataMismatch as ex:

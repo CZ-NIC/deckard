@@ -141,17 +141,7 @@ def match_rcode(exp, got):
                        dns.rcode.to_text(got.rcode()))
 
 
-def match_question(exp, got):
-    return compare_rrs(exp.question,
-                       got.question)
-
-
 def match_answer(exp, got):
-    return compare_rrs(exp.answer,
-                       got.answer)
-
-
-def match_ttl(exp, got):
     return compare_rrs(exp.answer,
                        got.answer)
 
@@ -207,9 +197,9 @@ def match_nsid(exp, got):
 
 MATCH = {"opcode": match_opcode, "qtype": match_qtype, "qname": match_qname, "qcase": match_qcase,
          "subdomain": match_subdomain, "flags": match_flags, "rcode": match_rcode,
-         "question": match_question, "answer": match_answer, "ttl": match_ttl,
-         "answertypes": match_answertypes, "answerrrsigs": match_answerrrsigs,
-         "authority": match_authority, "additional": match_additional, "edns": match_edns,
+         "answer": match_answer, "answertypes": match_answertypes,
+         "answerrrsigs": match_answerrrsigs, "authority": match_authority,
+         "additional": match_additional, "edns": match_edns,
          "nsid": match_nsid}
 
 
