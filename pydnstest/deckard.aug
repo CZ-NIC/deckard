@@ -11,7 +11,7 @@ let word = /[^\t\n\/; ]+/
 let comment = del /[;]/ ";" . [label "comment" . store /[^\n]+/]
 
 let eol = del /([ \t]*([;][^\n]*)?\n)+/ "\n" . Util.indent
-let comment_or_eol =  ws . comment? . del_str "\n" . del /([ \t]*([;][^\n]*)?\n)*/ "\n" . Util.indent
+let comment_or_eol =  ws . comment? . del_str "\n" . del /([ \t]*([;][^\n]*)?\n)*/ "" . Util.indent
 
 
 (*let comment_or_eol = [ label "#comment" . counter "comment" . (ws . [del /[;#]/ ";" . label "" . store /[^\n]*/ ]? . del_str "\n")]+ . Util.indent
