@@ -279,13 +279,13 @@ def range_shadowing_match_rules(test: RplintTest) -> List[RplintFail]:
         for e1, e2 in itertools.combinations(r.stored, 2):
             try:
                 e1.match(e2.message)
+            except ValueError:
+                pass
+            else:
                 info = "previous entry on line %d" % get_line_number(test.path, e1.node.char)
                 if e1.match_fields > e2.match_fields:
                     continue
                 fails.append(RplintFail(test, e2, info))
-            # IndexError is here especially because of empty question section in rpls
-            except (ValueError, IndexError):
-                pass
     return fails
 
 
