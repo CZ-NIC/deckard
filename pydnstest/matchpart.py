@@ -104,20 +104,34 @@ def match_opcode(exp, got):
 
 
 def match_qtype(exp, got):
-    if not exp.question:
+    if not exp.question and not got.question:
         return True
+    if not exp.question:
+        raise DataMismatch("", got.question[0].rdtype)
+    if not got.question:
+        raise DataMismatch(exp.question[0].rdtype, "")
     return compare_val(exp.question[0].rdtype,
                        got.question[0].rdtype)
 
 
 def match_qname(exp, got):
-    if not exp.question:
+    if not exp.question and not got.question:
         return True
+    if not exp.question:
+        raise DataMismatch("", got.question[0].rdtype)
+    if not got.question:
+        raise DataMismatch(exp.question[0].rdtype, "")
     return compare_val(exp.question[0].name,
                        got.question[0].name)
 
 
 def match_qcase(exp, got):
+    if not exp.question and not got.question:
+        return True
+    if not exp.question:
+        raise DataMismatch("", got.question[0].name.labels)
+    if not got.question:
+        raise DataMismatch(exp.question[0].name.labels, "")
     return compare_val(exp.question[0].name.labels,
                        got.question[0].name.labels)
 
@@ -125,7 +139,10 @@ def match_qcase(exp, got):
 def match_subdomain(exp, got):
     if not exp.question:
         return True
-    qname = dns.name.from_text(got.question[0].name.to_text().lower())
+    if got.question:
+        qname = dns.name.from_text(got.question[0].name.to_text().lower())
+    else:
+        qname = dns.name.from_text("")
     if exp.question[0].name.is_superdomain(qname):
         return True
     raise DataMismatch(exp, got)

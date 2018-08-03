@@ -281,7 +281,7 @@ def range_shadowing_match_rules(test: RplintTest) -> List[RplintFail]:
                 e1.match(e2.message)
             # IndexError is here especially because of how we handle empty question section
             # in matchpart
-            except (ValueError, IndexError):
+            except ValueError:
                 pass
             else:
                 info = "previous entry on line %d" % get_line_number(test.path, e1.node.char)
