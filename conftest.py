@@ -89,13 +89,26 @@ def scenarios(paths, configs):
     return scenario_list
 
 
+def rpls(paths):
+    for path in paths:
+        if os.path.isfile(path):
+            filelist = [path]  # path to single file, accept it
+        else:
+            filelist = sorted(glob.glob(os.path.join(path, "*.rpl")))
+
+        return filelist
+
+
 def pytest_addoption(parser):
     parser.addoption("--config", action="append", help="path to Deckard configuration .yaml file")
     parser.addoption("--scenarios", action="append", help="directory with .rpl files")
 
 
 def pytest_generate_tests(metafunc):
-    """This is pytest weirdness to parametrize the test over all the *.rpl files."""
+    """This is pytest weirdness to parametrize the test over all the *.rpl files.
+    See https://docs.pytest.org/en/latest/parametrize.html#basic-pytest-generate-tests-example
+    for more info."""
+
     if 'scenario' in metafunc.fixturenames:
         if metafunc.config.option.config is None:
             configs = []
@@ -108,3 +121,6 @@ def pytest_generate_tests(metafunc):
             paths = metafunc.config.option.scenarios
 
         metafunc.parametrize("scenario", scenarios(paths, configs), ids=str)
+    if 'rpl_path' in metafunc.fixturenames:
+        paths = metafunc.config.option.scenarios
+        metafunc.parametrize("rpl_path", rpls(paths), ids=str)
