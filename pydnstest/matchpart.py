@@ -98,26 +98,51 @@ def compare_rrs_types(exp_val, got_val, skip_rrsigs):
         raise DataMismatch(exp_types, got_types)
 
 
+def check_question(question):
+    if len(question) > 2:
+        raise NotImplementedError("More than one record in QUESTION SECTION.")
+
+
 def match_opcode(exp, got):
     return compare_val(exp.opcode(),
                        got.opcode())
 
 
 def match_qtype(exp, got):
-    if not exp.question:
+    check_question(exp.question)
+    check_question(got.question)
+    if not exp.question and not got.question:
         return True
+    if not exp.question:
+        raise DataMismatch("<empty question>", got.question[0].rdtype)
+    if not got.question:
+        raise DataMismatch(exp.question[0].rdtype, "<empty question>")
     return compare_val(exp.question[0].rdtype,
                        got.question[0].rdtype)
 
 
 def match_qname(exp, got):
-    if not exp.question:
+    check_question(exp.question)
+    check_question(got.question)
+    if not exp.question and not got.question:
         return True
+    if not exp.question:
+        raise DataMismatch("<empty question>", got.question[0].name)
+    if not got.question:
+        raise DataMismatch(exp.question[0].name, "<empty question>")
     return compare_val(exp.question[0].name,
                        got.question[0].name)
 
 
 def match_qcase(exp, got):
+    check_question(exp.question)
+    check_question(got.question)
+    if not exp.question and not got.question:
+        return True
+    if not exp.question:
+        raise DataMismatch("<empty question>", got.question[0].name.labels)
+    if not got.question:
+        raise DataMismatch(exp.question[0].name.labels, "<empty question>")
     return compare_val(exp.question[0].name.labels,
                        got.question[0].name.labels)
 
@@ -125,7 +150,10 @@ def match_qcase(exp, got):
 def match_subdomain(exp, got):
     if not exp.question:
         return True
-    qname = dns.name.from_text(got.question[0].name.to_text().lower())
+    if got.question:
+        qname = got.question[0].name
+    else:
+        qname = dns.name.root
     if exp.question[0].name.is_superdomain(qname):
         return True
     raise DataMismatch(exp, got)
