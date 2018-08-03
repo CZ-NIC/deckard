@@ -16,6 +16,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -s, --store           store files (keys, zonefiles, dssets)
+  -i, --interactive     interactive mode - option to edit created zonefile before signing
   -k KEYS [KEYS ...], --keys KEYS [KEYS ...]
                         .key files with original keys used in the test you want to
                         use again
@@ -467,7 +468,20 @@ def make_zones(keys):
     return zones
 
 
-def sign_zone_tree(top, zones):
+def user_edit(zone):
+    """ Stop and let user edit the zone file of zone. """
+    edit = input("Zone file for zone '" + zone + " has been generated.\n"
+                 "E for edit or S for skip...")
+    while True:
+        if edit in ("e", "E"):
+            os.system("%s resign/%s.zone" % (os.getenv('EDITOR'), zone))
+            return
+        if edit in ("s", "S"):
+            return
+        edit = input("Unsupported option. E for edit or S for skip...")
+
+
+def sign_zone_tree(top, zones, interactive):
     """Recursively sign a tree of zones"""
     try:
         zone = zones[top]
@@ -478,13 +492,18 @@ def sign_zone_tree(top, zones):
     for record in zone.records:
         record.new = ""
         if record.rrtype == "DS":
-            sign_zone_tree(record.domain, zones)
+            sign_zone_tree(record.domain, zones, interactive)
             zone.records.append(create_new_record(record.domain, "NS"))
             dsset = open("resign/dsset-" + record.domain)
             for line in dsset:
                 if record.data.split()[2] == line.split()[5]:
                     record.data = line.split(maxsplit=3)[3]
     zone.create_file()
+
+    # In interactive mode stop for edit
+    if interactive:
+        user_edit(zone.domain)
+
     return zone.sign()
 
 
@@ -609,7 +628,7 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
         print(errmsg)
 
 
-def resign_test(test, exist_keys):
+def resign_test(test, exist_keys, interactive):
     """
     Resign one test. If possible, use keys existing keys
 
@@ -647,7 +666,7 @@ def resign_test(test, exist_keys):
 
     # Sign zones
     for anchor_zone in trust_anchor_zones:
-        if not sign_zone_tree(anchor_zone, zones):
+        if not sign_zone_tree(anchor_zone, zones, interactive):
             print("Error: Cannot sign zone", zones[anchor_zone].domain)
             return False
 
@@ -709,6 +728,9 @@ def parseargs():
     argparser.add_argument("-s", "--store",
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
+    argparser.add_argument("-i", "--interactive",
+                           help="interactive mode - option to edit created zonefile before signing",
+                           action="store_true")
     argparser.add_argument("-k", "--keys",
                            help=""".key files with original keys used in the
                            test you want to use again""", nargs="+")
@@ -726,7 +748,7 @@ def parseargs():
     origkeys = []
     if args.keys:
         origkeys = getkeys(args.keys)
-    return tests, origkeys, args.store
+    return tests, args.interactive, origkeys, args.store
 
 
 def clean(test, store):
@@ -757,13 +779,13 @@ def clean(test, store):
 def main():
     """ Resign .rpl tests. """
     check_depedencies()
-    tests, origkeys, store = parseargs()
+    tests, interactive, origkeys, store = parseargs()
     for test in tests:
         if test[-4:] != ".rpl":
             print(test, "is not a .rpl file, skipping.")
         else:
             print("Resigning", test)
-            success = resign_test(test, origkeys)
+            success = resign_test(test, origkeys, interactive)
         clean(test, store)
         if not success:
             print("Error")
