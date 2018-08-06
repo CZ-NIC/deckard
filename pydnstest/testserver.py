@@ -5,7 +5,7 @@ import itertools
 import logging
 import os
 import signal
-import select
+import selectors
 import socket
 import sys
 import threading
@@ -126,23 +126,30 @@ class TestServer:
                 if not self.active:
                     break
             objects = self.srv_socks + self.connections
-            to_read, _, to_error = select.select(objects, [], objects, 0.1)
-            for sock in to_read:
-                if sock in self.srv_socks:
-                    if sock.proto == socket.IPPROTO_TCP:
-                        conn, _ = sock.accept()
-                        self.connections.append(conn)
+            sel = selectors.DefaultSelector()
+            for obj in objects:
+                sel.register(obj, selectors.EVENT_READ)
+            items = sel.select(0.1)
+            for key, event in items:
+                sock = key.fileobj
+                if event & selectors.EVENT_READ:
+                    if sock in self.srv_socks:
+                        if sock.proto == socket.IPPROTO_TCP:
+                            conn, _ = sock.accept()
+                            self.connections.append(conn)
+                        else:
+                            self.handle_query(sock)
+                    elif sock in self.connections:
+                        if not self.handle_query(sock):
+                            sock.close()
+                            self.connections.remove(sock)
                     else:
-                        self.handle_query(sock)
-                elif sock in self.connections:
-                    if not self.handle_query(sock):
-                        sock.close()
-                        self.connections.remove(sock)
+                        raise Exception(
+                            "[query_io] Socket IO internal error {}, exit"
+                            .format(sock.getsockname()))
                 else:
-                    raise Exception(
-                        "[query_io] Socket IO internal error {}, exit".format(sock.getsockname()))
-            for sock in to_error:
-                raise Exception("[query_io] Socket IO error {}, exit".format(sock.getsockname()))
+                    raise Exception("[query_io] Socket IO error {}, exit"
+                                    .format(sock.getsockname()))
 
     def start_srv(self, address, family, proto=socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
