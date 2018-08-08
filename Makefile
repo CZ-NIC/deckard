@@ -32,7 +32,8 @@ all:
 	@echo "To build the dependencies (libfaketime and libcwrap) run 'make depend'."
 	exit 1
 depend: $(libfaketime) $(libcwrap)
-	@echo "export $(preload_syms)" > env.sh
+	@echo "export DONT_FAKE_MONOTONIC=1" > env.sh
+	@echo "export $(preload_syms)" >> env.sh
 
 # Synchronize submodules
 submodules: .gitmodules
