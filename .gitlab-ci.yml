@@ -62,6 +62,12 @@ test:unittests:
     - linux
     - amd64
 
+test:pytest:version:
+	stage: test
+	script:
+		- python3 -m pytest --version
+
+
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
   stage: test
