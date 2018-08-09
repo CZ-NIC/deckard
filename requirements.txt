@@ -2,5 +2,5 @@ dnspython>=1.15
 Jinja2>=2.8
 PyYAML
 python-augeas
-pytest
+pytest>=3.4
 pytest-xdist
