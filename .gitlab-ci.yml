@@ -154,3 +154,4 @@ test:sanity:pdnsrecursor:
     - docker
     - linux
     - amd64
+
