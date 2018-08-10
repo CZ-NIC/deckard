@@ -9,4 +9,4 @@ source "${MAKEDIR}/env.sh"
 
 # compatibility with old TESTS= env variable
 # add --scenarios= only if the variable TESTS is non-empty
-python3 -m pytest -c "${MAKEDIR}/deckard_pytest.ini" ${VERBOSE:-"--log-level=40"} ${VERBOSE:+"--log-level=10"} "${MAKEDIR}" ${DECKARDFLAGS:-} ${TESTS:+"--scenarios=${TESTS}"} "$@"
+python3 -m pytest -c "${MAKEDIR}/deckard_pytest.ini" --tb=short -q ${VERBOSE:-"--log-level=40"} ${VERBOSE:+"--log-level=10"} "${MAKEDIR}" ${DECKARDFLAGS:-} ${TESTS:+"--scenarios=${TESTS}"} "$@"
