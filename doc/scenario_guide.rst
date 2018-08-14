@@ -231,8 +231,6 @@ edns         EDNS `version <https://tools.ietf.org/html/rfc6891#section-6.1.3>`_
              EDNS `payload <https://tools.ietf.org/html/rfc6891#section-6.1.2>`_ size
 nsid         `NSID <https://tools.ietf.org/html/rfc5001>`_ presence and value
 all          equivalent to ``opcode qtype qname flags rcode answer authority additional``
-
-             - sections present in the *received* message but not explicitly defined in the *expected* entry are ignored
 ============ =========================================================================================
 
 .. [qmatch] *Expected* values are defined by QUESTION section in the entry. If the *expected* QUESTION section is empty, the conditions is ignored. Only values from the first (qname, qclass, qtype) tuple are checked. Question matching is case insensitive (except for ``qcase``).
