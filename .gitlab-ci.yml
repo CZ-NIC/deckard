@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/knot/knot-resolver/ci:debian-stable
+image: $CI_REGISTRY/knot/knot-resolver/ci/debian-stable:knot-2.7
 variables:
   LC_ALL: C.UTF-8
 
