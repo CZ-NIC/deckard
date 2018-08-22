@@ -128,9 +128,11 @@ class TestServer:
         with open(path, "rb") as f:
             pcap = dpkt.pcap.Reader(f)
             for _, packet in pcap:
-                ip = dpkt.ethernet.Ethernet(packet).data
+                eth = dpkt.ethernet.Ethernet(packet)
+                ip = eth.data
                 if isinstance(ip.data, dpkt.icmp.ICMP):
-                    if ip.data.type == 3:  # type 3 = Destination Unreachable
+                    icmp = ip.data
+                    if icmp.type == 3:  # type 3 = Destination Unreachable
                         return True
             return False
 
