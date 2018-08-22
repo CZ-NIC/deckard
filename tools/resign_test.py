@@ -131,7 +131,6 @@ class Key:
                 command += "-3 "
                 break
         command += "-n ZONE " + self.domain + " 2>/dev/null"
-        print(command)
         try:
             self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
         except subprocess.CalledProcessError:
@@ -232,7 +231,6 @@ class Zone:
                     command += " -A "
                 break
         command += " resign/" + self.domain + ".zone"
-        print(command)
         if os.system(command) != 0:
             print("Error: Cannot sign zone " + self.domain)
             return False
@@ -259,7 +257,7 @@ def create_new_record(domain, rrtype):
                    "2iU/TpPSEDhm2SNKLijfUppn1UaNvv4w==  )",
         "CDS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
         # "CERT": "DPKIX 1 SHA256 KR1L0GbocaIOOim1+qdHtOSrDcOsGiI2NCcxuX2/Tqc",
-        # "CNAME": "record.added.for.resign.",
+        "CNAME": "record.added.for.resign.",
         "DHCID": "( AAIBY2/AuCccgoJbsaxcQc9TUapptP69l" +
                  "OjxfNuVAA2kjEA= )",
         "DLV": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
@@ -380,9 +378,13 @@ def read_rrsig(record, records, keys):
     rrsig_data[:] = (value for value in rrsig_data if value not in ["(", ")"])
     keytag = rrsig_data[6]
     zone_name = rrsig_data[7]
+    try:
+        key = keys[keytag + zone_name]
+    except KeyError:
+        print("Error: Unknown key", keytag)
+        sys.exit(1)
     domain = record["/domain"].value
     rrtype = rrsig_data[0]
-    rrsig = None
     signed_record = None
     for record2 in records:
         if (record2["/domain"].value == domain and
@@ -395,15 +397,9 @@ def read_rrsig(record, records, keys):
                 ttl = record2["/ttl"].value
             except KeyError:
                 ttl = "3600"
-            try:
-                key = keys[keytag + zone_name]
-            except KeyError:
-                print("Error: Unknown key", keytag)
-                sys.exit(1)
-            rrsig = ReplacedSignature(domain, key,
-                                      rrtype, record["/data"].value)
             signed_record = ZoneRecord(domain, ttl, dns_class, rrtype, record2["/data"].value)
             break
+    rrsig = ReplacedSignature(domain, key, rrtype, record["/data"].value)
     return rrsig, signed_record, keytag, zone_name
 
 
@@ -458,8 +454,10 @@ def find_signed_records(node, keys):
             if record["/type"].value == "RRSIG":
                 rrsig, signed_record, keytag, zone_name = read_rrsig(record, records, keys)
                 if signed_record is None:
-                    print("Error: RRSIG of unknown record.")
-                    sys.exit(1)
+                    domain = record["/domain"].value
+                    rrtype = record["/data"].value.split()[0]
+                    print("Found RRSIG of record", domain, rrtype, "which is not in the test. Creating some.")
+                    signed_record = create_new_record(domain, rrtype)
                 if signed_record.rrtype != "DNSKEY":
                     try:
                         keyindex = keytag + zone_name
@@ -848,7 +846,5 @@ main()
 
 
 # TODO: Případy, kde nefunguje
-#   - NSEC3 (např. val_deleg_nons.rpl)
-#   - RRSIG záznamu, který samotný v testu není (např. val_cname_oob.rpl)
 #   - upravené podpisy (např. val_cname_new_signer.rpl, val_minimal*.rpl)
 #   - ...
