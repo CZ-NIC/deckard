@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import argparse
+import dpkt
 import itertools
 import logging
 import os
@@ -16,6 +17,8 @@ import dns.rdatatype
 
 from pydnstest import scenario
 
+class DeckardUnderLoadError(Exception):
+    pass
 
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
@@ -105,6 +108,12 @@ class TestServer:
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
             self.undefined_answers += 1
+            # Deckard's responses to resolvers might be delayed due to load which
+            # leads the resolver to close the port and to the test failing in the
+            # end. We partially detect these by checking the PCAP for Destination
+            # Unreachable ICMP packets.
+            if self.check_for_connection_refused():
+                raise DeckardUnderLoadError
             self.scenario.current_step.log.error(
                 'server %s has no response for question %s, answering with SERVFAIL',
                 server_addr,
@@ -112,6 +121,18 @@ class TestServer:
 
         scenario.sendto_msg(client, data_to_wire, client_addr)
         return True
+
+    def check_for_connection_refused(self):
+        """ Checks Deckards's PCAP for ICMP Destination Unreachable packets """
+        path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
+        with open(path, "rb") as f:
+            pcap = dpkt.pcap.Reader(f)
+            for _, packet in pcap:
+                ip = dpkt.ethernet.Ethernet(packet).data
+                if isinstance(ip.data, dpkt.icmp.ICMP):
+                    if ip.data.type == 3:  # type 3 = Destination Unreachable
+                        return True
+            return False
 
     def query_io(self):
         """ Main server process """
