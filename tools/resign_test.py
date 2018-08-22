@@ -134,8 +134,8 @@ class Key:
         try:
             self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
         except subprocess.CalledProcessError:
-            os.system(command)
-            print("Error: Cannot generate key")
+            print("Error: Cannot generate key:")
+            os.system(command[:-12])
             sys.exit(1)
         self.filename = self.filename[:-1]
         self.newkeytag = self.filename.split("+")[-1]
@@ -232,7 +232,6 @@ class Zone:
                 break
         command += " resign/" + self.domain + ".zone"
         if os.system(command) != 0:
-            print("Error: Cannot sign zone " + self.domain)
             return False
 
         self.signed = True
@@ -256,7 +255,7 @@ def create_new_record(domain, rrtype):
                    "Hfpftf6zMv1LyBUgia7za6ZEzOJBOztyvhjL74" +
                    "2iU/TpPSEDhm2SNKLijfUppn1UaNvv4w==  )",
         "CDS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
-        # "CERT": "DPKIX 1 SHA256 KR1L0GbocaIOOim1+qdHtOSrDcOsGiI2NCcxuX2/Tqc",
+        "CERT": "DPKIX 1 SHA256 KR1L0GbocaIOOim1+qdHtOSrDcOsGiI2NCcxuX2/Tqc",
         "CNAME": "record.added.for.resign.",
         "DHCID": "( AAIBY2/AuCccgoJbsaxcQc9TUapptP69l" +
                  "OjxfNuVAA2kjEA= )",
@@ -699,7 +698,7 @@ def resign_test(test, exist_keys, interactive):
         find_signed_records(node, keys)
     replaced_dss = replaced_dss + scen_replaced_dss
 
-    # Find zones from trust anchor - roots of the signing trees
+    # Find trust anchor zones - roots of the signing trees
     trust_anchor_zones = []
     for anchor in trust_anchors:
         trust_anchor_zones.append(anchor.split()[0])
@@ -716,6 +715,12 @@ def resign_test(test, exist_keys, interactive):
         if not sign_zone_tree(anchor_zone, zones, interactive):
             print("Error: Cannot sign zone", zones[anchor_zone].domain)
             return False
+    
+    for zone in zones.values():
+        if not zone.signed:
+            print("Error: Cannot sign zone", zone.domain, "- not a part of tree from the trust anchor")
+            return False
+            
 
     # Check new generated NSEC3s
     check_nsec3(zones, node)
@@ -838,7 +843,6 @@ def main():
             success = resign_test(test, origkeys, interactive)
         clean(test, store)
         if not success:
-            print("Error")
             sys.exit(1)
 
 
