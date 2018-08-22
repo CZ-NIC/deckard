@@ -13,8 +13,13 @@ import time
 
 import dns.message
 import dns.rdatatype
+import dpkt
 
 from pydnstest import scenario
+
+
+class DeckardUnderLoadError(Exception):
+    pass
 
 
 class TestServer:
@@ -105,6 +110,13 @@ class TestServer:
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
             self.undefined_answers += 1
+            # Deckard's responses to resolvers might be delayed due to load which
+            # leads the resolver to close the port and to the test failing in the
+            # end. We partially detect these by checking the PCAP for ICMP packets.
+            if self.check_for_icmp():
+                raise DeckardUnderLoadError("Deckard is under load.\
+                Other errors might be false negatives.\
+                Consider retrying the job later.")
             self.scenario.current_step.log.error(
                 'server %s has no response for question %s, answering with SERVFAIL',
                 server_addr,
@@ -112,6 +124,20 @@ class TestServer:
 
         scenario.sendto_msg(client, data_to_wire, client_addr)
         return True
+
+    def check_for_icmp(self):
+        """ Checks Deckards's PCAP for ICMP packets """
+        path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
+        with open(path, "rb") as f:
+            pcap = dpkt.pcap.Reader(f)
+            for _, packet in pcap:
+                try:
+                    ip = dpkt.ip.IP(packet)
+                except dpkt.dpkt.UnpackError:
+                    ip = dpkt.ip6.IP6(packet)
+                if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
+                    return True
+            return False
 
     def query_io(self):
         """ Main server process """
