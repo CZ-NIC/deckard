@@ -125,9 +125,19 @@ class Key:
             command += "-f ksk "
         if not os.path.isdir("resign"):
             os.mkdir("resign")
-        command += "-K resign -a " + str(self.algorithm) + " -b 1024 -n ZONE " +\
-            self.domain + " 2>/dev/null"
-        self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
+        command += "-K resign -a " + str(self.algorithm) + " -b 1024 "
+        for record in self.zone_records:
+            if record.rrtype == "NSEC3":
+                command += "-3 "
+                break
+        command += "-n ZONE " + self.domain + " 2>/dev/null"
+        print(command)
+        try:
+            self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
+        except subprocess.CalledProcessError:
+            os.system(command)
+            print("Error: Cannot generate key")
+            sys.exit(1)
         self.filename = self.filename[:-1]
         self.newkeytag = self.filename.split("+")[-1]
         self.filename = "resign/" + self.filename + ".key"
@@ -214,8 +224,16 @@ class Zone:
         Return:
             True for success, False otherwise.
         """
-        if os.system("dnssec-signzone -z -N INCREMENT -O full -P -K resign -d resign -o " +
-                     self.domain + " resign/" + self.domain + ".zone") != 0:
+        command = "dnssec-signzone -z -N INCREMENT -O full -P -K resign -d resign -o " + self.domain
+        for record in self.records:
+            if record.rrtype == "NSEC3":
+                command += " -3 " + record.data.split()[3] + " -H " + record.data.split()[2]
+                if record.data.split()[1] == "1":
+                    command += " -A "
+                break
+        command += " resign/" + self.domain + ".zone"
+        print(command)
+        if os.system(command) != 0:
             print("Error: Cannot sign zone " + self.domain)
             return False
 
@@ -507,6 +525,37 @@ def sign_zone_tree(top, zones, interactive):
     return zone.sign()
 
 
+def check_nsec3(zones, node):
+    new_nsec3s = []
+    for zone in zones.values():
+        zonefile = open("resign/" + zone.domain + ".zone.signed")
+        print(zone.domain)
+        for line in zonefile:
+            split_line = line.split(maxsplit=4)
+            if len(split_line) == 5 and split_line[3] == "NSEC3":
+                print(split_line[0])
+                new_nsec3s.append((split_line[0], split_line[4]))
+
+    for entry in node.match("/scenario/range/entry"):
+        records = list(entry.match("/section/answer/record"))
+        records.extend(list(entry.match("/section/authority/record")))
+        records.extend(list(entry.match("/section/additional/record")))
+
+        for record in records:
+            if record["/type"].value == "NSEC3":
+                exist = False
+                print("\n" + record["/domain"].value.lower())
+                for nsec3 in new_nsec3s:
+                    print(nsec3[0].lower())
+                    if record["/domain"].value.lower() == nsec3[0].lower() and\
+                       record["/data"].value.lower() == nsec3[1].lower():
+                        exist = True
+                        break
+                if not exist:
+                    print("Warning: NSEC3 of hash " + record["/domain"].value +
+                          " is not the same in the new generated zone")
+
+
 def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
                     replaced_dss, zone_name, keys):
     """
@@ -669,6 +718,9 @@ def resign_test(test, exist_keys, interactive):
         if not sign_zone_tree(anchor_zone, zones, interactive):
             print("Error: Cannot sign zone", zones[anchor_zone].domain)
             return False
+
+    # Check new generated NSEC3s
+    check_nsec3(zones, node)
 
     # Replace keys and signatures in tests
     for zone in zones.values():
