@@ -2,7 +2,9 @@ import logging
 import os
 import pytest
 import subprocess
+import random
 import sys
+import time
 
 import deckard
 
@@ -31,13 +33,22 @@ logging.getLogger("augeas").setLevel(logging.ERROR)
 check_platform()
 
 
-def run_test(path, qmin, config):
+def run_test(path, qmin, config, retries=0):
     set_coverage_env(path, qmin)
     try:
         del os.environ["SOCKET_WRAPPER_DIR"]
     except KeyError:
         pass
-    deckard.process_file(path, qmin, config)
+    try:
+        deckard.process_file(path, qmin, config)
+    except deckard.DeckardUnderLoadError as e:
+        if retries < 3:
+            logging.error("Deckard under load. Retrying…")
+            # Exponential backoff
+            time.sleep((2 ** (retries + 1)) + (random.randint(0, 1000) / 1000))
+            run_test(path, qmin, config, retries + 1)
+        else:
+            raise e
 
 
 def test_passes_qmin_on(scenario):
