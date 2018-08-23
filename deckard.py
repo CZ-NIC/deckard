@@ -300,7 +300,7 @@ def process_file(path, qmin, prog_cfgs):
                      template_ctx['_SOCKET_FAMILY'],
                      prog_under_test_ip)
         if prog_cfgs.get('noclean'):
-            logging.getLogger('deckard.hint').info(
+            logging.getLogger('deckard.hint').error(
                 'test working directory %s', tmpdir)
         else:
             shutil.rmtree(tmpdir)
