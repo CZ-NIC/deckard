@@ -106,6 +106,8 @@ def rpls(paths):
 def pytest_addoption(parser):
     parser.addoption("--config", action="append", help="path to Deckard configuration .yaml file")
     parser.addoption("--scenarios", action="append", help="directory with .rpl files")
+    parser.addoption("--retries", action="store", help=("number of retries per"
+                                                        "test when Deckard is under load"))
 
 
 def pytest_generate_tests(metafunc):
@@ -128,7 +130,11 @@ def pytest_generate_tests(metafunc):
     if 'rpl_path' in metafunc.fixturenames:
         paths = metafunc.config.option.scenarios
         metafunc.parametrize("rpl_path", rpls(paths), ids=str)
-
+    if 'max_retries' in metafunc.fixturenames:
+        max_retries = metafunc.config.option.retries
+        if max_retries is None:
+            max_retries = 3
+        metafunc.parametrize("max_retries", [max_retries], ids=str)
 
 def check_log_level_xdist(level):
     if level < logging.ERROR:
