@@ -45,8 +45,9 @@ def run_test(path, qmin, config, retries=0):
         if retries < 3:
             logging.error("Deckard under load. Retrying…")
             # Exponential backoff
-            time.sleep((2 ** (retries+1)) + (random.randint(0, 1000) / 1000))
-            run_test(path, qmin, config, retries+1)
+            time.sleep((2 ** (retries + 1)) + (random.randint(0, 1000) / 1000))
+            pytest.fail()
+            run_test(path, qmin, config, retries + 1)
 
 
 def test_passes_qmin_on(scenario):
