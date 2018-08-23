@@ -372,7 +372,7 @@ def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
         # leads the resolver to close the port and to the test failing in the
         # end. We partially detect these by checking the PCAP for ICMP packets.
         if check_for_icmp():
-            logging.error("Deckard is under load.\
+            raise DeckardUnderLoadError("Deckard is under load.\
 Other errors might be false negatives.\
 Consider retrying the job later.")
         raise ValueError('the scenario does not define all necessary answers (see error log)')
