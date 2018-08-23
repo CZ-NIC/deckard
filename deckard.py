@@ -305,7 +305,7 @@ def process_file(path, qmin, prog_cfgs):
         else:
             shutil.rmtree(tmpdir)
     except:
-        logging.getLogger('deckard.hint').info(
+        logging.getLogger('deckard.hint').error(
             'test failed, inspect working directory %s', tmpdir)
         raise
 
