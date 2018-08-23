@@ -337,6 +337,8 @@ def check_for_icmp():
                     ip = dpkt.ip.IP(packet)
                 except dpkt.dpkt.UnpackError:
                     ip = dpkt.ip6.IP6(packet)
+                if not isinstance(ip.data, dpkt.udp.UDP):
+                    continue
                 if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
                     return True
             return False
@@ -349,6 +351,15 @@ def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
 
     try:
         server.play(prog_under_test_ip)
+    except ValueError as e:
+        # Deckard's responses to resolvers might be delayed due to load which
+        # leads the resolver to close the port and to the test failing in the
+        # end. We partially detect these by checking the PCAP for ICMP packets.
+        if check_for_icmp():
+            raise DeckardUnderLoadError("Deckard is under load."
+                                        "Other errors might be false negatives."
+                                        "Consider retrying the job later.")
+        raise e
     finally:
         server.stop()
         for daemon in daemons:
@@ -364,11 +375,4 @@ def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
                                  % (daemon['cfg']['name'], daemon['proc'].returncode))
     # Do not clear files if the server crashed (for analysis)
     if server.undefined_answers > 0:
-        # Deckard's responses to resolvers might be delayed due to load which
-        # leads the resolver to close the port and to the test failing in the
-        # end. We partially detect these by checking the PCAP for ICMP packets.
-        if check_for_icmp():
-            raise DeckardUnderLoadError("Deckard is under load.\
-Other errors might be false negatives.\
-Consider retrying the job later.")
         raise ValueError('the scenario does not define all necessary answers (see error log)')
