@@ -27,13 +27,16 @@ class DeckardConf(ConfGenerator):
 
     def write_files(self):
         mock_data = open(self.mock_path).read()
-        unbound = self.generate_unbound() + "\nCONFIG_END\n\n" + mock_data
+        #unbound = self.generate_unbound() + "\nCONFIG_END\n\n" + mock_data
+
         # write unbound
-        self.write(self.unbound_path, unbound)
+        self.write_unbound("\nCONFIG_END\n\n" + mock_data)
+        #self.write(self.unbound_path, unbound)
 
         # write kresd
-        kresd = self.generate_knot()
-        self.write(self.kresd_path, kresd)
+        self.write_knot()
+        #kresd = self.generate_knot()
+        #self.write(self.kresd_path, kresd)
 
     def load_file(self, path: str):
 
