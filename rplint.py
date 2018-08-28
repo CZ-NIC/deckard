@@ -285,6 +285,8 @@ def range_shadowing_match_rules(test: RplintTest) -> List[RplintFail]:
                 info = "previous entry on line %d" % get_line_number(test.path, e1.node.char)
                 if e1.match_fields > e2.match_fields:
                     continue
+                if "subdomain" not in e1.match_fields and "subdomain" in e2.match_fields:
+                    continue
                 fails.append(RplintFail(test, e2, info))
     return fails
 
