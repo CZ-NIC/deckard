@@ -135,7 +135,7 @@ class Key:
             self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
         except subprocess.CalledProcessError:
             print("Error: Cannot generate key:")
-            os.system(command[:-12])
+            os.system(command[:-12])  # TODO: pomocí subprocesu výše
             sys.exit(1)
         self.filename = self.filename[:-1]
         self.newkeytag = self.filename.split("+")[-1]
@@ -232,7 +232,7 @@ class Zone:
                     command += " -A "
                 break
         command += " resign/" + self.domain + ".zone"
-        if os.system(command) != 0:
+        if subprocess.call(command) != 0:
             return False
 
         self.signed = True
@@ -490,7 +490,7 @@ def user_edit(zone):
                  "E for edit or S for skip...")
     while True:
         if edit in ("e", "E"):
-            os.system("%s resign/%s.zone" % (os.getenv('EDITOR'), zone))
+            subprocess.call("%s resign/%s.zone" % (os.getenv('EDITOR'), zone))
             return
         if edit in ("s", "S"):
             return
