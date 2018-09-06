@@ -1,6 +1,6 @@
 ## Run Test 
 
-`resolvers-yang` package is needed
+[resolvers-yang](https://gitlab.labs.nic.cz/labs/resolvers-yang) package is needed
 
 ```
 $ pip install -r requirements.txt
