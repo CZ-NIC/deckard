@@ -31,8 +31,13 @@ import argparse
 import struct
 import shutil
 import dns
+import logging
 import pydnstest.scenario
 import pydnstest.augwrap
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class ZoneRecord:
@@ -134,7 +139,7 @@ class Key:
         try:
             self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
         except subprocess.CalledProcessError:
-            print("Error: Cannot generate key:")
+            logger.error("Cannot generate key:")
             os.system(command[:-12])  # TODO: pomocí subprocesu výše
             sys.exit(1)
         self.filename = self.filename[:-1]
@@ -203,7 +208,7 @@ class Zone:
                             break
                     if not exists:
                         new_record = create_new_record(record.domain, rrtype)
-                        print("Creating record", record.domain, rrtype, "mentioned in NSEC")
+                        logger.info("Creating record %s %s mentioned in NSEC", record.domain, rrtype)
                         if new_record is not None:
                             self.records.append(new_record)
 
@@ -232,7 +237,7 @@ class Zone:
                     command += " -A "
                 break
         command += " resign/" + self.domain + ".zone"
-        if subprocess.call(command) != 0:
+        if subprocess.call(command.split()) != 0:
             return False
 
         self.signed = True
@@ -301,7 +306,7 @@ def create_new_record(domain, rrtype):
     try:
         return ZoneRecord(domain, "3600", "IN", rrtype, data[rrtype])
     except KeyError:
-        print("Warning: Unkonwn RR type", rrtype)
+        logger.warning("Unkonwn RR type %s", rrtype)
         return None
 
 
@@ -381,7 +386,7 @@ def read_rrsig(record, records, keys):
     try:
         key = keys[keytag + zone_name]
     except KeyError:
-        print("Error: Unknown key", keytag)
+        logger.error("Unknown key %s.", keytag)
         sys.exit(1)
     domain = record["/domain"].value
     rrtype = rrsig_data[0]
@@ -456,15 +461,14 @@ def find_signed_records(node, keys):
                 if signed_record is None:
                     domain = record["/domain"].value
                     rrtype = record["/data"].value.split()[0]
-                    print("Found RRSIG of record", domain, rrtype, "which is not in the test. Creating some.")
+                    logger.info("Found RRSIG of record %s %s which is not in the test. Creating some.", domain, rrtype)
                     signed_record = create_new_record(domain, rrtype)
                 if signed_record.rrtype != "DNSKEY":
                     try:
                         keyindex = keytag + zone_name
                         keys[keyindex].zone_records.append(signed_record)
                     except KeyError:
-                        print("Error:", signed_record,
-                              "signed by unknown key", keytag)
+                        logger.error("%s signed by unknown key %s.", signed_record, keytag)
                         sys.exit(1)
                 replaced_rrsigs.append(rrsig)
             if record["/type"].value == "DS":
@@ -532,11 +536,9 @@ def check_nsec3(zones, node):
     new_nsec3s = []
     for zone in zones.values():
         zonefile = open("resign/" + zone.domain + ".zone.signed")
-        print(zone.domain)
         for line in zonefile:
             split_line = line.split(maxsplit=4)
             if len(split_line) == 5 and split_line[3] == "NSEC3":
-                print(split_line[0])
                 new_nsec3s.append((split_line[0], split_line[4]))
 
     for entry in node.match("/scenario/range/entry"):
@@ -547,16 +549,13 @@ def check_nsec3(zones, node):
         for record in records:
             if record["/type"].value == "NSEC3":
                 exist = False
-                print("\n" + record["/domain"].value.lower())
                 for nsec3 in new_nsec3s:
-                    print(nsec3[0].lower())
                     if record["/domain"].value.lower() == nsec3[0].lower() and\
                        record["/data"].value.lower() == nsec3[1].lower():
                         exist = True
                         break
                 if not exist:
-                    print("Warning: NSEC3 of hash " + record["/domain"].value +
-                          " is not the same in the new generated zone")
+                    logger.warning("NSEC3 of hash %s is not the same in the new generated zone", record["/domain"].value)
 
 
 def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
@@ -570,7 +569,7 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
     if os.path.isfile(signed_zonefile):
         zonefile = open(signed_zonefile, "r")
     else:
-        print("Error: zonefile for zone " + zone_name + " could not be created")
+        logger.error("Zonefile for zone %s could not be created", zone_name)
         sys.exit(1)
     for line in zonefile:
         line = line.split()
@@ -648,9 +647,7 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                     for rrsig in replaced_rrsigs:
                         if rrsig.original in line:
                             if rrsig.new == "":
-                                errmsg += "Warning: new RRSIG of "
-                                errmsg += rrsig.domain + " " + rrsig.rrtype
-                                errmsg += " is empty\n"
+                                logging.warning("New RRSIG of %s %s is empty.", rrsig.domain, rrsig.rrtype)
                             line = line.replace(rrsig.original, rrsig.new)
 
                 # Replace DSs
@@ -660,8 +657,7 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                             if record.new == "":
                                 # This happens when there is a trust anchor which does not
                                 # sign anythinthing
-                                errmsg += "Warning: cannot find new DS of "
-                                errmsg += record.domain + ", not changing\n"
+                                logging.warning("cannot find new DS of %s, not changing", record.domain)
                             else:
                                 line = line.replace(record.original, record.new)
 
@@ -670,14 +666,11 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                     for key in keys.values():
                         if key.origkey in line:
                             if key.newkey == "":
-                                errmsg += "Warning: new DNSKEY of "
-                                errmsg += key.domain + " is empty\n"
+                                logging.warning("new DNSKEY of %s is empty", key.domain)
                             line = line.replace(key.origkey, key.newkey)
             except IndexError:
                 pass
             print(line, end="")
-    if errmsg:
-        print(errmsg)
 
 
 def resign_test(test, exist_keys, interactive):
@@ -719,12 +712,12 @@ def resign_test(test, exist_keys, interactive):
     # Sign zones
     for anchor_zone in trust_anchor_zones:
         if not sign_zone_tree(anchor_zone, zones, interactive):
-            print("Error: Cannot sign zone", zones[anchor_zone].domain)
+            logger.error("Cannot sign zone %s", zones[anchor_zone].domain)
             return False
     
     for zone in zones.values():
         if not zone.signed:
-            print("Error: Cannot sign zone", zone.domain, "- not a part of tree from the trust anchor")
+            logger.error("Cannot sign zone %s - not a part of tree from the trust anchor", zone.domain)
             return False
             
 
@@ -745,10 +738,10 @@ def getkeys(keyfiles):
     keys = []
     for keyfile in keyfiles:
         if len(keyfile) < 5 or keyfile[-4:] != ".key":
-            print(keyfile, "is not .key file, skipping key.")
+            logger.warning("%s is not .key file, skipping key.", keyfile)
             continue
         if not os.path.isfile(keyfile[:-4] + ".private"):
-            print("Cannot find", keyfile[:-4] + ".private,", "skipping key.")
+            logger.warning("Cannot find %s.private, skipping key.", keyfile[:-4])
             continue
         keys.append(keyfile)
     return keys
@@ -767,10 +760,10 @@ def copykeys(keyfiles):
 def check_depedencies():
     """ End script if needed programmes ase not installed """
     if shutil.which("dnssec-keygen") is None:
-        print("Error: Missing program dnssec-keygen.")
+        logger.error("Missing program dnssec-keygen.")
         sys.exit(1)
     if shutil.which("dnssec-signzone") is None:
-        print("Error: Missing program dnssec-signzone.")
+        logger.error("Missing program dnssec-signzone.")
         sys.exit(1)
 
 
@@ -802,9 +795,8 @@ def parseargs():
         tests = os.listdir(args.tests)
         for i, test in enumerate(tests):
             tests[i] = args.tests + "/" + test
-        print(tests)
     else:
-        print("Error:", args.tests, "is not a file or directory.")
+        logger.error("%s is not a file or directory.")
         sys.exit(1)
     origkeys = []
     if args.keys:
@@ -843,9 +835,9 @@ def main():
     tests, interactive, origkeys, store = parseargs()
     for test in tests:
         if test[-4:] != ".rpl":
-            print(test, "is not a .rpl file, skipping.")
+            logger.info("%s is not a .rpl file, skipping.", test)
         else:
-            print("Resigning", test)
+            logger.info("Resigning %s.", test)
             success = resign_test(test, origkeys, interactive)
         clean(test, store)
         if not success:
