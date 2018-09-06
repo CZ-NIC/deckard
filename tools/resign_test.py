@@ -194,7 +194,7 @@ class Zone:
                 if not next_domain:
                     self.records.append(create_new_record(data[0], "TXT"))
                 for rrtype in data[1:]:
-                    if rrtype in ("NSEC", "NSEC3", "RRSIG"):
+                    if rrtype in ("NSEC", "NSEC3", "RRSIG", "DNSKEY"):
                         continue
                     exists = False
                     for record2 in self.records:
@@ -203,6 +203,7 @@ class Zone:
                             break
                     if not exists:
                         new_record = create_new_record(record.domain, rrtype)
+                        print("Creating record", record.domain, rrtype, "mentioned in NSEC")
                         if new_record is not None:
                             self.records.append(new_record)
 
@@ -223,7 +224,7 @@ class Zone:
         Return:
             True for success, False otherwise.
         """
-        command = "dnssec-signzone -z -N INCREMENT -O full -P -K resign -d resign -o " + self.domain
+        command = "dnssec-signzone -z -N KEEP -O full -P -K resign -d resign -o " + self.domain
         for record in self.records:
             if record.rrtype == "NSEC3":
                 command += " -3 " + record.data.split()[3] + " -H " + record.data.split()[2]
@@ -508,7 +509,12 @@ def sign_zone_tree(top, zones, interactive):
         record.new = ""
         if record.rrtype == "DS":
             sign_zone_tree(record.domain, zones, interactive)
-            zone.records.append(create_new_record(record.domain, "NS"))
+            ns = False
+            for record2 in zone.records:
+                if record2.domain == record.domain and record2.rrtype == "NS":
+                    ns = True
+            if not ns:
+                zone.records.append(create_new_record(record.domain, "NS"))
             dsset = open("resign/dsset-" + record.domain)
             for line in dsset:
                 if record.data.split()[2] == line.split()[5]:
