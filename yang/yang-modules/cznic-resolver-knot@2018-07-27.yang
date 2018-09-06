@@ -1,0 +1,119 @@
+module cznic-resolver-knot {
+
+  yang-version "1.1";
+
+  namespace "https://www.nic.cz/ns/yang/resolver-knot";
+
+  prefix "kres";
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+
+  import cznic-resolver-common {
+    prefix "drc";
+  }
+
+  organization
+    "CZ.NIC, z. s. p. o.";
+
+  contact
+    "Editor:   Ladislav Lhotka
+               <mailto:lhotka@nic.cz>";
+
+  description
+    "This YANG module augment common resolver data with parts
+     specific to Knot Resolver.";
+
+  revision 2018-07-27 {
+    description
+      "Initial revision.";
+  }
+
+  /* Data definitions */
+
+  augment "/drc:dns-resolver/drc:resolver/drc:hints" {
+    description
+      "Knot Resolver module: hints";
+    list hint {
+      key "name";
+      description
+        "Each entry defines a static hint.
+
+         Forward queries for A/AAAA records corresponding to 'name'
+         (the list key) shall be answered with all IPv4/IPv6
+         addresses from the 'values' leaf-list.
+
+         The PTR record linking all addresses from 'values' to 'name'
+         in the reverse zone.
+
+         If multiple entries with the same address in 'values' exist,
+         the one having the 'canonical' flag set to true is used for
+         the PTR record in the reverse zone. If no such entry exists,
+         the name for the PTR record is chosen randomly.";
+      uses drc:static-hint;
+      leaf canonical {
+        type boolean;
+        must ". = 'false' or "
+           + "not(../preceding-sibling::hint[canonical = 'true' and "
+           + "values = current()/../values])" {
+          error-message
+            "Duplicate canonical name for the same IP address.";
+        }
+        default "false";
+        description
+          "Only one key can be designated as the canonical name for
+           any given IP address.";
+      }
+    }
+    leaf hosts-file {
+      type drc:fs-path;
+      description
+        "Static hints will be added from the file with this path. The
+         file has to be in the format of Unix /etc/hosts file.";
+    }
+  }
+
+  augment "/drc:dns-resolver/drc:cache" {
+    description
+      "Knot Resolver module: prefill";
+    list prefill {
+      key "origin";
+      description
+        "Prefill the cache periodically by importing zone data
+         obtained over HTTP.";
+      leaf origin {
+        type inet:domain-name;
+        must ". = '.'" {
+          error-message "Cache prefilling is not yet supported for "
+                      + "non-root zones.";
+          description
+            "Cache prefilling is only supported for the root zone.";
+        }
+        description
+          "Origin for the imported data.";
+      }
+      leaf url {
+        type inet:uri;
+        mandatory "true";
+        description
+          "URL of the zone file to be imported.";
+      }
+      leaf ca-file {
+        type drc:fs-path;
+        mandatory "true";
+        description
+          "Path to the file containing a CA certificate bundle that
+           is used to authenticate the HTTPS connection.";
+      }
+      leaf refresh-interval {
+        type uint32;
+        units "seconds";
+        default "86400";
+        description
+          "Time interval between consecutive refreshes of the
+           imported zone data.";
+      }
+    }
+  }
+}

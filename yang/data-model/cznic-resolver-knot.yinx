@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module name="cznic-resolver-knot"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:kres="https://www.nic.cz/ns/yang/resolver-knot"
+        xmlns:drc="https://www.nic.cz/ns/yang/resolver-common"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+  <namespace uri="https://www.nic.cz/ns/yang/resolver-knot"/>
+  <prefix value="kres"/>
+  <yang-version value="1.1"/>
+  <import module="ietf-inet-types">
+    <prefix value="inet"/>
+  </import>
+  <import module="cznic-resolver-common">
+    <prefix value="drc"/>
+  </import>
+  <organization>
+    <text>CZ.NIC, z. s. p. o.</text>
+  </organization>
+  <contact>
+    <text>
+      <h:p>
+        Editor:   Ladislav Lhotka<h:br/>
+                  &lt;mailto:lhotka@nic.cz&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      This YANG module augment common resolver data with parts
+      specific to Knot Resolver.
+    </text>
+  </description>
+
+  <revision date="2018-07-27">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+  </revision>
+  
+  <!-- Data definitions -->
+
+  <augment target-node="/drc:dns-resolver/drc:resolver/drc:hints">
+    <description>
+      <text>Knot Resolver module: hints</text>
+    </description>
+    <list name="hint">
+      <key value="name"/>
+      <uses name="drc:static-hint"/>
+      <leaf name="canonical">
+	<type name="boolean"/>
+	<default value="false"/>
+	<must condition=". = 'false' or not(../preceding-sibling::hint[canonical = 'true' and values = current()/../values])">
+	  <error-message>
+	    <value>Duplicate canonical name for the same IP address.</value>
+	  </error-message>
+	</must>
+	<description>
+	  <text>Only one key can be designated as the canonical name
+	  for any given IP address.</text>
+	</description>
+      </leaf>
+      <description>
+	<text>
+	  <h:p>Each entry defines a static hint.</h:p>
+	  <h:p>Forward queries for A/AAAA records corresponding to
+	  'name' (the list key) shall be answered with all IPv4/IPv6
+	  addresses from the 'values' leaf-list.</h:p>
+	  <h:p>The PTR record linking all
+	  addresses from 'values' to 'name' in the reverse zone.</h:p>
+	  <h:p>If multiple entries with the same address in 'values'
+	  exist, the one having the 'canonical' flag set to true is
+	  used for the PTR record in the reverse zone. If no such
+	  entry exists, the name for the PTR record is chosen
+	  randomly.</h:p>
+	</text>
+      </description>
+    </list>
+    <leaf name="hosts-file">
+      <type name="drc:fs-path"/>
+      <description>
+	<text>Static hints will be added from the file with this
+	path. The file has to be in the format of Unix /etc/hosts
+	file.</text>
+      </description>
+    </leaf>
+  </augment>
+
+  <augment target-node="/drc:dns-resolver/drc:cache">
+    <description>
+      <text>Knot Resolver module: prefill</text>
+    </description>
+    <list name="prefill">
+      <key value="origin"/>
+      <description>
+	<text>Prefill the cache periodically by importing zone data
+	  obtained over HTTP.</text>
+      </description>
+      <leaf name="origin">
+	<type name="inet:domain-name"/>
+	<must condition=". = '.'">
+	  <error-message>
+	    <value>Cache prefilling is not yet supported for non-root
+	    zones.</value>
+	  </error-message>
+	  <description>
+	    <text>Cache prefilling is only supported for the root
+	    zone.</text>
+	  </description>
+	</must>
+	<description>
+	  <text>Origin for the imported data.</text>
+	</description>
+      </leaf>
+      <leaf name="url">
+	<type name="inet:uri"/>
+	<mandatory value="true"/>
+	<description>
+	  <text>URL of the zone file to be imported.</text>
+	</description>
+      </leaf>
+      <leaf name="ca-file">
+	<type name="drc:fs-path"/>
+	<mandatory value="true"/>
+	<description>
+	  <text>Path to the file containing a CA certificate bundle
+	  that is used to authenticate the HTTPS connection.</text>
+	</description>
+      </leaf>
+      <leaf name="refresh-interval">
+	<type name="uint32"/>
+	<units name="seconds"/>
+	<default value="86400"/>
+	<description>
+	  <text>Time interval between consecutive refreshes of the
+	  imported zone data.</text>
+	</description>
+      </leaf>
+    </list>
+  </augment>
+
+</module>

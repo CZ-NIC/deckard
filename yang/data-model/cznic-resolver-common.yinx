@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module name="cznic-resolver-common"
         xmlns="urn:ietf:params:xml:ns:yang:yin:1"
-        xmlns:ddp="https://www.nic.cz/ns/yang/resolver-common"
+        xmlns:drc="https://www.nic.cz/ns/yang/resolver-common"
 	xmlns:h="http://www.w3.org/1999/xhtml">
   <namespace uri="https://www.nic.cz/ns/yang/resolver-common"/>
   <prefix value="drc"/>
   <yang-version value="1.1"/>
   <import module="ietf-inet-types">
     <prefix value="inet"/>
-  </import>
-  <import module="cznic-dns-types">
-    <prefix value="dns"/>
   </import>
   <organization>
     <text>CZ.NIC, z. s. p. o.</text>
@@ -78,7 +75,29 @@
     <default value="ipv4 ipv6"/>
   </typedef>
 
-  <!-- Data nodes -->
+  <!-- Groupings -->
+
+  <grouping name="static-hint">
+    <description>
+      <text>This grouping defines the content of a static hint.</text>
+    </description>
+    <leaf name="name">
+      <type name="inet:domain-name"/>
+      <description>
+	<text>Domain name of a root server.</text>
+      </description>
+    </leaf>
+    <leaf-list name="values">
+      <type name="inet:ip-address-no-zone"/>
+      <min-elements value="1"/>
+      <description>
+	<text>One or more IPv4/IPv6 addresses of the root
+	server.</text>
+      </description>
+    </leaf-list>
+  </grouping>
+
+  <!-- Data definitions -->
 
   <container name="dns-resolver">
     <description>
@@ -135,6 +154,30 @@
 	  <default value="53"/>
 	</leaf>
       </list>
+      <container name="source-address">
+	<leaf name="ipv4">
+	  <type name="inet:ipv4-address-no-zone"/>
+	  <description>
+	    <text>
+	      <h:p>IPv4 address to use as the source address in
+	      outgoing queries.</h:p>
+	      <h:p>If not configured, the resolver uses any address
+	      provided by the operationg system.</h:p>
+	    </text>
+	  </description>
+	</leaf>
+	<leaf name="ipv6">
+	  <type name="inet:ipv6-address-no-zone"/>
+	  <description>
+	    <text>
+	      <h:p>IPv6 address to use as the source address in
+	      outgoing queries.</h:p>
+	      <h:p>If not configured, the resolver uses any address
+	      provided by the operationg system.</h:p>
+	    </text>
+	  </description>
+	</leaf>
+      </container>
       <container name="client-transport">
 	<description>
 	  <text>Specify L2 and L3 protocols used for receiving and
@@ -160,6 +203,22 @@
 	  </description>
 	</leaf>
       </container>
+      <leaf name="udp-payload-size">
+	<type name="uint16">
+	  <range value="512..max"/>
+	</type>
+	<default value="4096"/>
+	<units name="octets"/>
+	<description>
+	  <text>
+	    <h:p>Largest UDP payload that the resolver can accept.</h:p>
+	    <h:p>This value is advertized in EDNS0.</h:p>
+	  </text>
+	</description>
+	<reference>
+	  <text>RFC 2671: Extension Mechanisms for DNS (EDNS0)</text>
+	</reference>
+      </leaf>
     </container>
     <container name="resolver">
       <description>
@@ -171,7 +230,7 @@
 	  <text>List of stub zones.</text>
 	</description>
 	<leaf name="domain">
-	  <type name="dns:domain-name"/>
+	  <type name="inet:domain-name"/>
 	  <description>
 	    <text>Name of the stub zone.</text>
 	  </description>
@@ -191,6 +250,35 @@
 	  </description>
 	</leaf>
       </list>
+      <container name="hints">
+	<description>
+	  <text>Configuration of static hints.</text>
+	</description>
+	<list name="root-hint">
+	  <description>
+	    <text>
+	      <h:p>Each entry contains hints for one root server.</h:p>
+	      <h:p>Records configured this way override the resolver
+	      defaults and records set via 'root-zone-file'.</h:p>
+	      <h:p>Root hints are used if and only if the root servers
+	      cannot be resolved from the cache.</h:p>
+	    </text>
+	  </description>
+	  <key value="name"/>
+	  <uses name="static-hint"/>
+	</list>
+	<leaf name="root-zone-file">
+	  <type name="fs-path"/>
+	  <description>
+	    <text>
+	      <h:p>Path to a root zone file.</h:p>
+	      <h:p>It is used only if root servers cannot be resolved
+	      the cache and no root hints are set via
+	      'root-hint'.</h:p>
+	    </text>
+	  </description>
+	</leaf>
+      </container>
       <container name="options">
 	<description>
 	  <text>Fine-tuning parameters of resolver operation.</text>
@@ -220,6 +308,14 @@
 	  <description>
 	    <text>This flag permits queries to loopback addresses
 	    (prefix 127.0.0.0/8 for IPv4 and ::1/128 for IPv6).</text>
+	  </description>
+	</leaf>
+	<leaf name="reorder-rrset">
+	  <type name="boolean"/>
+	  <default value="false"/>
+	  <description>
+	    <text>Controls whether resource records within a RRSet are
+	    reordered each time it is served from the cache.</text>
 	  </description>
 	</leaf>
       </container>
@@ -261,7 +357,7 @@
 	    </text>
 	  </description>
 	  <leaf name="domain">
-	    <type name="dns:domain-name"/>
+	    <type name="inet:domain-name"/>
 	    <description>
 	      <text>The domain for which the trust anchor file is
 	      used.</text>
@@ -284,7 +380,7 @@
 	</list>
       </container>
       <leaf-list name="negative-trust-anchors">
-	<type name="dns:domain-name"/>
+	<type name="inet:domain-name"/>
 	<description>
 	  <text>List of domain names representing negative trust
 	  anchors.</text>

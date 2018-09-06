@@ -11,7 +11,7 @@
       },
       {
         "name": "cznic-resolver-common",
-        "revision": "2018-05-14",
+        "revision": "2018-07-27",
         "feature": [
           "set-group"
         ],

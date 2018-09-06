@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module name="cznic-deckard"
         xmlns="urn:ietf:params:xml:ns:yang:yin:1"
-        xmlns:ddp="https://www.nic.cz/ns/yang/deckard"
+        xmlns:dcd="https://www.nic.cz/ns/yang/deckard"
 	xmlns:h="http://www.w3.org/1999/xhtml">
   <namespace uri="https://www.nic.cz/ns/yang/deckard"/>
   <prefix value="dcd"/>
@@ -22,7 +22,7 @@
   </contact>
   <description>
     <text>
-      This YANG module defines data for deckard test tool..
+      This YANG module defines data for deckard test tool.
     </text>
   </description>
 
@@ -31,6 +31,7 @@
       <text>Initial revision.</text>
     </description>
   </revision>
+
   <!-- Data nodes -->
 
   <container name="deckard">

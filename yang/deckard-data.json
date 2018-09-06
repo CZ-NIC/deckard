@@ -1,6 +1,6 @@
 {
   "cznic-deckard:deckard":{
-    "mock-data": "mock-data/iter_badglue.rpl"
+    "mock-data": "mock-data/iter_cycle_noh.rpl"
   },
   "cznic-resolver-common:dns-resolver": {
     "server": {

@@ -10,10 +10,6 @@ module cznic-resolver-common {
     prefix "inet";
   }
 
-  import cznic-dns-types {
-    prefix "dns";
-  }
-
   organization
     "CZ.NIC, z. s. p. o.";
 
@@ -25,7 +21,7 @@ module cznic-resolver-common {
     "This YANG module defines the common part of a data model for DNS
      resolvers.";
 
-  revision 2018-05-14 {
+  revision 2018-07-27 {
     description
       "Initial revision.";
     reference
@@ -65,7 +61,25 @@ module cznic-resolver-common {
     default "ipv4 ipv6";
   }
 
-  /* Data nodes */
+  /* Groupings */
+
+  grouping static-hint {
+    description
+      "This grouping defines the content of a static hint.";
+    leaf name {
+      type inet:domain-name;
+      description
+        "Domain name of a root server.";
+    }
+    leaf-list values {
+      type inet:ip-address-no-zone;
+      min-elements "1";
+      description
+        "One or more IPv4/IPv6 addresses of the root server.";
+    }
+  }
+
+  /* Data definitions */
 
   container dns-resolver {
     description
@@ -113,6 +127,26 @@ module cznic-resolver-common {
             "Port number.";
         }
       }
+      container source-address {
+        leaf ipv4 {
+          type inet:ipv4-address-no-zone;
+          description
+            "IPv4 address to use as the source address in outgoing
+             queries.
+
+             If not configured, the resolver uses any address
+             provided by the operationg system.";
+        }
+        leaf ipv6 {
+          type inet:ipv6-address-no-zone;
+          description
+            "IPv6 address to use as the source address in outgoing
+             queries.
+
+             If not configured, the resolver uses any address
+             provided by the operationg system.";
+        }
+      }
       container client-transport {
         description
           "Specify L2 and L3 protocols used for receiving and
@@ -133,6 +167,19 @@ module cznic-resolver-common {
             "L2 protocols used for recursive queries.";
         }
       }
+      leaf udp-payload-size {
+        type uint16 {
+          range "512..max";
+        }
+        units "octets";
+        default "4096";
+        description
+          "Largest UDP payload that the resolver can accept.
+
+           This value is advertized in EDNS0.";
+        reference
+          "RFC 2671: Extension Mechanisms for DNS (EDNS0)";
+      }
     }
     container resolver {
       description
@@ -142,7 +189,7 @@ module cznic-resolver-common {
         description
           "List of stub zones.";
         leaf domain {
-          type dns:domain-name;
+          type inet:domain-name;
           description
             "Name of the stub zone.";
         }
@@ -157,6 +204,30 @@ module cznic-resolver-common {
           description
             "Port number to use for communicating with the stub zone
              nameserver.";
+        }
+      }
+      container hints {
+        description
+          "Configuration of static hints.";
+        list root-hint {
+          key "name";
+          description
+            "Each entry contains hints for one root server.
+
+             Records configured this way override the resolver
+             defaults and records set via 'root-zone-file'.
+
+             Root hints are used if and only if the root servers
+             cannot be resolved from the cache.";
+          uses static-hint;
+        }
+        leaf root-zone-file {
+          type fs-path;
+          description
+            "Path to a root zone file.
+
+             It is used only if root servers cannot be resolved the
+             cache and no root hints are set via 'root-hint'.";
         }
       }
       container options {
@@ -184,6 +255,13 @@ module cznic-resolver-common {
           description
             "This flag permits queries to loopback addresses (prefix
              127.0.0.0/8 for IPv4 and ::1/128 for IPv6).";
+        }
+        leaf reorder-rrset {
+          type boolean;
+          default "false";
+          description
+            "Controls whether resource records within a RRSet are
+             reordered each time it is served from the cache.";
         }
       }
     }
@@ -219,7 +297,7 @@ module cznic-resolver-common {
              it doesn't exist, it will be populated from the IANA
              website.";
           leaf domain {
-            type dns:domain-name;
+            type inet:domain-name;
             description
               "The domain for which the trust anchor file is used.";
           }
@@ -238,7 +316,7 @@ module cznic-resolver-common {
         }
       }
       leaf-list negative-trust-anchors {
-        type dns:domain-name;
+        type inet:domain-name;
         description
           "List of domain names representing negative trust
            anchors.";
