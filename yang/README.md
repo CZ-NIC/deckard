@@ -1,10 +1,11 @@
 ## Run Test 
 
-`jetconf-resolver` package is needed
+`resolvers-yang` package is needed
 
 ```
 $ pip install -r requirements.txt
 ```
+Edit `deckard-data.json`.
 
 Generate deckard configuration files
 ```
