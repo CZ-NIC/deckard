@@ -1,7 +1,7 @@
 import sys
 from yangson.datamodel import DataModel
 from json import load
-from resolvers_yang.generator import Generator
+from resolvers_yang.generator import gen_unbound, gen_kresd
 
 json_path = sys.argv[1]
 
@@ -33,8 +33,8 @@ mock_begin = mock_data.find("SCENARIO_BEGIN")
 mock_data = mock_data[mock_begin:]
 
 # generate configuration strings
-unb_conf = Generator.unbound(data)
-kresd_conf = Generator.kresd(data)
+unb_conf = gen_unbound(data)
+kresd_conf = gen_kresd(data)
 
 # write kresd.conf
 knot_file = open(kresd_path, "w+")
