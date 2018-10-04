@@ -125,23 +125,23 @@ class Key:
                     return
 
         # Create new key
-        command = "dnssec-keygen "
+        command = ["dnssec-keygen"]
         if self.flags == 257:
-            command += "-f ksk "
+            command += ["-f", "ksk"]
         if not os.path.isdir("resign"):
             os.mkdir("resign")
-        command += "-K resign -a " + str(self.algorithm) + " -b 1024 "
+        command += ["-K", "resign", "-a", str(self.algorithm), "-b", "1024"]
         for record in self.zone_records:
             if record.rrtype == "NSEC3":
-                command += "-3 "
+                command.append("-3")
                 break
-        command += "-n ZONE " + self.domain + " 2>/dev/null"
-        try:
-            self.filename = subprocess.check_output(command, shell=True).decode("utf-8")
-        except subprocess.CalledProcessError:
-            logger.error("Cannot generate key:")
-            os.system(command[:-12])  # TODO: pomocí subprocesu výše
+        command += ["-n", "ZONE", self.domain]
+        keygen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        keygen_output = keygen.communicate()
+        if keygen.returncode != 0:
+            logger.error("Cannot generate key:\n" + keygen_output[1].decode("utf-8"))
             sys.exit(1)
+        self.filename = keygen_output[0].decode("utf-8")
         self.filename = self.filename[:-1]
         self.newkeytag = self.filename.split("+")[-1]
         self.filename = "resign/" + self.filename + ".key"
