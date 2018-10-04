@@ -260,21 +260,21 @@ def create_new_record(domain, rrtype):
                    "QKY+5CptLr3buXA10hWqTkF7H6RfoRqXQeogmM" +
                    "Hfpftf6zMv1LyBUgia7za6ZEzOJBOztyvhjL74" +
                    "2iU/TpPSEDhm2SNKLijfUppn1UaNvv4w==  )",
-        "CDS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
+        "CDS": "60485 5 1 ( added0added0added0added0added0added00000 )",
         "CERT": "DPKIX 1 SHA256 KR1L0GbocaIOOim1+qdHtOSrDcOsGiI2NCcxuX2/Tqc",
         "CNAME": "record.added.for.resign.",
         "DHCID": "( AAIBY2/AuCccgoJbsaxcQc9TUapptP69l" +
                  "OjxfNuVAA2kjEA= )",
-        "DLV": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
+        "DLV": "60485 5 1 ( added0added0added0added0added0added00000 )",
         "DNAME": "record.added.for.resign.",
         "DNSKEY": "256 3 5 ( AQPSKmynfzW4kyBv015MUG2DeIQ3" +
                   "Cbl+BBZH4b/0PY1kxkmvHjcZc8nokfzj31GajI" +
                   "QKY+5CptLr3buXA10hWqTkF7H6RfoRqXQeogmM" +
                   "Hfpftf6zMv1LyBUgia7za6ZEzOJBOztyvhjL74" +
                   "2iU/TpPSEDhm2SNKLijfUppn1UaNvv4w==  )",
-        "DS": "60485 5 1 ( 2BB183AF5F22588179A53B0A98631FAD1A292118 )",
-        "EUI48": "00-00-5e-00-53-2a",
-        "EUI64": "00-00-5e-00-53-2a-53-2a",
+        "DS": "60485 5 1 ( added0added0added0added0added0added00000 )",
+        "EUI48": "AD-DE-D1-AD-DE-D1",
+        "EUI64": "AD-DE-D1-AD-DE-D1-AD-D1",
         "HINFO": "ALTO ELF",
         "HIP": "( 2 200100107B1A74DF365639CC39F1D578 " +
                "AwEAAbdxyhNuSutc5EMzxTs9LBPCIkOFH8cIvM4p9+LrV4e19" +
@@ -285,7 +285,7 @@ def create_new_record(domain, rrtype):
         "KX": "1 record.added.for.resign.",
         "LOC": "42 21 54 N 71 06 18 W -24m 30m",
         "MX": "1 record.added.for.resign.",
-        "NAPTR": '100  50  "a"    "z3950+N2L+N2C"     ""   cidserver.example.com.',
+        "NAPTR": '100  50  "a"    "z3950+N2L+N2C"     ""   record.added.for.resign.',
         "NS": "record.added.for.resign.",
         # "NSEC":
         # "NSEC3":
@@ -298,10 +298,10 @@ def create_new_record(domain, rrtype):
                  "lj9LrhDr9wQa4 OUo=",
         "SOA": "record.added.for.resign. b. 1 2 3 4 3600",
         "SRV": "1 1 1 record.added.for.resign.",
-        "SSHFP": "2 1 123456789abcdef67890123456789abcdef67890",
-        "TLSA": "( 0 0 1 d2abde240d7cd3ee6b4b28c54df034b9 7983a1d16e8a410e4561cb106618e971 )",
+        "SSHFP": "2 1 added0added0added0added0added0added0000",
+        "TLSA": "( 0 0 1 added0added0added0added0added000 added0added0added0added0added000 )",
         "TXT": "\"Record added for resign\"",
-        "URI": "10 1 \"http://www.record.added.for.resign.com/path\""
+        "URI": "10 1 \"record.added.for.resign.\""
     }
     try:
         return ZoneRecord(domain, "3600", "IN", rrtype, data[rrtype])
