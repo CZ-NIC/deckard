@@ -30,8 +30,8 @@ import time
 import argparse
 import struct
 import shutil
-import dns
 import logging
+import dns
 import pydnstest.scenario
 import pydnstest.augwrap
 
@@ -208,7 +208,8 @@ class Zone:
                             break
                     if not exists:
                         new_record = create_new_record(record.domain, rrtype)
-                        logger.info("Creating record %s %s mentioned in NSEC", record.domain, rrtype)
+                        logger.info("Creating record %s %s mentioned in NSEC", record.domain,
+                                    rrtype)
                         if new_record is not None:
                             self.records.append(new_record)
 
@@ -461,7 +462,8 @@ def find_signed_records(node, keys):
                 if signed_record is None:
                     domain = record["/domain"].value
                     rrtype = record["/data"].value.split()[0]
-                    logger.info("Found RRSIG of record %s %s which is not in the test. Creating some.", domain, rrtype)
+                    logger.info(("Found RRSIG of record %s %s which is not in the test. ",
+                                 domain, rrtype) + "Creating some.")
                     signed_record = create_new_record(domain, rrtype)
                 if signed_record.rrtype != "DNSKEY":
                     try:
@@ -555,7 +557,8 @@ def check_nsec3(zones, node):
                         exist = True
                         break
                 if not exist:
-                    logger.warning("NSEC3 of hash %s is not the same in the new generated zone", record["/domain"].value)
+                    logger.warning("NSEC3 of hash %s is not the same in the new generated zone",
+                                   record["/domain"].value)
 
 
 def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
@@ -633,7 +636,6 @@ def get_new_records(signed_zonefile, dssetfile, replaced_rrsigs,
 
 def replace(test, replaced_rrsigs, replaced_dss, keys):
     """ Replace all changed data in the test file. """
-    errmsg = ""
     with fileinput.FileInput(test, inplace=True, backup='.bak') as file:
         for line in file:
             try:
@@ -647,7 +649,8 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                     for rrsig in replaced_rrsigs:
                         if rrsig.original in line:
                             if rrsig.new == "":
-                                logging.warning("New RRSIG of %s %s is empty.", rrsig.domain, rrsig.rrtype)
+                                logging.warning("New RRSIG of %s %s is empty.",
+                                                rrsig.domain, rrsig.rrtype)
                             line = line.replace(rrsig.original, rrsig.new)
 
                 # Replace DSs
@@ -657,7 +660,8 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
                             if record.new == "":
                                 # This happens when there is a trust anchor which does not
                                 # sign anythinthing
-                                logging.warning("cannot find new DS of %s, not changing", record.domain)
+                                logging.warning("cannot find new DS of %s, not changing",
+                                                record.domain)
                             else:
                                 line = line.replace(record.original, record.new)
 
@@ -714,12 +718,12 @@ def resign_test(test, exist_keys, interactive):
         if not sign_zone_tree(anchor_zone, zones, interactive):
             logger.error("Cannot sign zone %s", zones[anchor_zone].domain)
             return False
-    
+
     for zone in zones.values():
         if not zone.signed:
-            logger.error("Cannot sign zone %s - not a part of tree from the trust anchor", zone.domain)
+            logger.error("Cannot sign zone %s - not a part of tree from the trust anchor",
+                         zone.domain)
             return False
-            
 
     # Check new generated NSEC3s
     check_nsec3(zones, node)
@@ -783,8 +787,8 @@ def parseargs():
                            help="store files (keys, zonefiles, dssets)",
                            action="store_true")
     argparser.add_argument("-i", "--interactive",
-                           help="interactive mode - option to edit created zonefile before signing",
-                           action="store_true")
+                           help="interactive mode - option to edit created zonefile before" +
+                           "signing", action="store_true")
     argparser.add_argument("-k", "--keys",
                            help=""".key files with original keys used in the
                            test you want to use again""", nargs="+")
