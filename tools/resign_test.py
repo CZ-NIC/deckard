@@ -462,8 +462,8 @@ def find_signed_records(node, keys):
                 if signed_record is None:
                     domain = record["/domain"].value
                     rrtype = record["/data"].value.split()[0]
-                    logger.info(("Found RRSIG of record %s %s which is not in the test. ",
-                                 domain, rrtype) + "Creating some.")
+                    logger.info("Found RRSIG of record %s %s which is not in the test. %s",
+                                 domain, rrtype, "Creating some.")
                     signed_record = create_new_record(domain, rrtype)
                 if signed_record.rrtype != "DNSKEY":
                     try:
