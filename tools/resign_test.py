@@ -451,31 +451,31 @@ def find_signed_records(node, keys):
     replaced_rrsigs = []
     replaced_dss = []
 
+    records = []
     for entry in node.match("/scenario/range/entry"):
-        records = list(entry.match("/section/answer/record"))
+        records.extend(list(entry.match("/section/answer/record")))
         records.extend(list(entry.match("/section/authority/record")))
         records.extend(list(entry.match("/section/additional/record")))
 
-        for record in records:
-            if record["/type"].value == "RRSIG":
-                rrsig, signed_record, keytag, zone_name = read_rrsig(record, records, keys)
-                if signed_record is None:
-                    domain = record["/domain"].value
-                    rrtype = record["/data"].value.split()[0]
-                    logger.info("Found RRSIG of record %s %s which is not in the test. %s",
-                                 domain, rrtype, "Creating some.")
-                    signed_record = create_new_record(domain, rrtype)
-                if signed_record.rrtype != "DNSKEY":
-                    try:
-                        keyindex = keytag + zone_name
-                        keys[keyindex].zone_records.append(signed_record)
-                    except KeyError:
-                        logger.error("%s signed by unknown key %s.", signed_record, keytag)
-                        sys.exit(1)
-                replaced_rrsigs.append(rrsig)
-            if record["/type"].value == "DS":
-                replaced_dss.append(ReplacedDS(record["/domain"].value,
-                                               record["/data"].value))
+    for record in records:
+        if record["/type"].value == "RRSIG":
+            rrsig, signed_record, keytag, zone_name = read_rrsig(record, records, keys)
+            if signed_record is None:
+                domain = record["/domain"].value
+                rrtype = record["/data"].value.split()[0]
+                logger.info("Found RRSIG of record %s %s which is not in the test. %s",
+                            domain, rrtype, "Creating some.")
+                signed_record = create_new_record(domain, rrtype)
+            if signed_record.rrtype != "DNSKEY":
+                try:
+                    keyindex = keytag + zone_name
+                    keys[keyindex].zone_records.append(signed_record)
+                except KeyError:
+                    logger.error("%s signed by unknown key %s.", signed_record, keytag)
+                    sys.exit(1)
+            replaced_rrsigs.append(rrsig)
+        if record["/type"].value == "DS":
+            replaced_dss.append(ReplacedDS(record["/domain"].value, record["/data"].value))
     return keys, replaced_rrsigs, replaced_dss
 
 
