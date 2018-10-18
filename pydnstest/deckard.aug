@@ -37,12 +37,13 @@ let adjust_option = "copy_id" | "copy_query" | "raw_id"
 let reply_option = "QR" | "TC" | "AA" | "AD" | "RD" | "RA" | "CD" | "DO" | "NOERROR" | "FORMERR" | "SERVFAIL" | "NXDOMAIN" | "NOTIMP" | "REFUSED" | "YXDOMAIN" | "YXRRSET" | "NXRRSET" | "NOTAUTH" | "NOTZONE" | "BADVERS" | "BADSIG" | "BADKEY" | "BADTIME" | "BADMODE" | "BADNAME" | "BADALG" | "BADTRUNC" | "BADCOOKIE"
 let step_option = "REPLY" | "QUERY" | "CHECK_ANSWER" | "CHECK_OUT_QUERY" | /TIME_PASSES[ \t]+ELAPSE/
 
+let ignore = [del_str "IGNORE" . label "ignore" . value "true" . comment_or_eol]
 let mandatory = [del_str "MANDATORY" . label "mandatory" . value "true" . comment_or_eol]
 let tsig = [del_str "TSIG" . label "tsig" . space . [label "keyname" . store word] . space . [label "secret" . store word] . comment_or_eol]
 
-let match = (mandatory | tsig)* . [ label "match_present" . value "true" . del_str "MATCH" ] . [space . label "match" . store match_option ]+ . comment_or_eol
-let adjust =  (mandatory | tsig)* . del_str "ADJUST" . [space . label "adjust" . store adjust_option ]+ . comment_or_eol
-let reply =  (mandatory | tsig)* . del ("REPLY" | "FLAGS") "REPLY" .  [space . label "reply" . store reply_option ]+ . comment_or_eol
+let match = (ignore | mandatory | tsig)* . [ label "match_present" . value "true" . del_str "MATCH" ] . [space . label "match" . store match_option ]+ . comment_or_eol
+let adjust =  (ignore | mandatory | tsig)* . del_str "ADJUST" . [space . label "adjust" . store adjust_option ]+ . comment_or_eol
+let reply =  (ignore | mandatory | tsig)* . del ("REPLY" | "FLAGS") "REPLY" .  [space . label "reply" . store reply_option ]+ . comment_or_eol
 
 
 let question = [label "record" . domain . tab . (class . tab)? . type . comment_or_eol ]
