@@ -173,6 +173,12 @@ class Entry:
         except (KeyError, IndexError):
             self.mandatory = None
 
+        # IGNORE
+        try:
+            self.ignore = list(node.match("/ignore"))[0]
+        except (KeyError, IndexError):
+            self.ignore = None
+
         # TSIG
         self.process_tsig()
 
@@ -395,6 +401,8 @@ class Entry:
         return self.raw_data
 
     def reply(self, query):
+        if self.ignore:
+            return None, True
         if self.is_raw_data_entry:
             return self._adjust_raw_reply(query), True
         return self._adjust_reply(query), False
@@ -787,7 +795,7 @@ class Scenario:
                 return candidate.reply(query)
             except (IndexError, ValueError):
                 pass
-        return None, True
+        return None, False
 
     def play(self, paddr):
         """ Play given scenario. """

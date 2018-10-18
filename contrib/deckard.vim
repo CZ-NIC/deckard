@@ -4,7 +4,7 @@
 " au BufRead,BufNewFile *.rpl set filetype=deckard
 " au BufRead,BufNewFile *.stc set foldmethod=syntax
 
-syntax keyword Keyword MATCH STEP ADJUST MANDATORY RAW
+syntax keyword Keyword MATCH STEP ADJUST MANDATORY RAW IGNORE
 syntax keyword Structure CONFIG_END
 syntax keyword Function CHECK_ANSWER QUERY TIME_PASSES
 

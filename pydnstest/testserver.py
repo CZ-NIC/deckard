@@ -93,15 +93,16 @@ class TestServer:
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
-        response, is_raw_data = self.scenario.reply(query, server_addr)
+        response, second = self.scenario.reply(query, server_addr)
         if response:
+            is_raw_data = second
             if not is_raw_data:
                 data_to_wire = response.to_wire(max_size=65535)
                 log.debug('response: %s', response)
             else:
                 data_to_wire = response
                 log.debug('raw response not printed')
-        else:
+        elif not second:
             response = dns.message.make_response(query)
             response.set_rcode(dns.rcode.SERVFAIL)
             data_to_wire = response.to_wire()
@@ -110,6 +111,10 @@ class TestServer:
                 'server %s has no response for question %s, answering with SERVFAIL',
                 server_addr,
                 '; '.join([str(rr) for rr in query.question]))
+        else:
+            # Just ignore
+            log.debug('ignoring')
+            return True
 
         scenario.sendto_msg(client, data_to_wire, client_addr)
         return True
