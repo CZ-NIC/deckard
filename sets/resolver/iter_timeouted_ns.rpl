@@ -1,0 +1,317 @@
+; config options
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+CONFIG_END
+
+SCENARIO_BEGIN fail.net has two NSs in different zones. One of them suddently stop responding, address of other one is unknown.
+
+RANGE_BEGIN 1 100 193.0.14.129; root
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+.	NS
+SECTION ANSWER
+.	NS	k.root-servers.net
+SECTION ADDITIONAL
+k.root-servers.net	A	193.0.14.129
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+net	NS
+SECTION AUTHORITY
+net	NS	m.gtld-servers.net.
+SECTION ADDITIONAL
+m.gtld-servers.net.	A	192.55.83.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+com	NS
+SECTION AUTHORITY
+com	NS	a.gtld-servers.net.
+SECTION ADDITIONAL
+a.gtld-servers.net.	A	192.5.6.30
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 1 100 192.55.83.30; net
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+net	NS
+SECTION ANSWER
+net	NS	m.gtld-servers.net.
+SECTION ADDITIONAL
+m.gtld-servers.net.	A	192.55.83.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+m.gtld-servers.net.	A
+SECTION ANSWER
+m.gtld-servers.net.	A	192.55.83.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+fail.net	NS
+SECTION AUTHORITY
+fail.net	NS	ns.fail.net
+fail.net	NS	ns.fail.com
+SECTION ADDITIONAL
+ns.fail.net	20	A	1.1.1.1
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 1 100 192.5.6.30; com
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+com	NS
+SECTION ANSWER
+com	NS	a.gtld-servers.net.
+SECTION ADDITIONAL
+a.gtld-servers.net.	A	192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	A
+SECTION ANSWER
+a.gtld-servers.net.	A	192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+fail.com	NS
+SECTION AUTHORITY
+fail.com	NS	ns.fail.com
+SECTION ADDITIONAL
+ns.fail.com	10	A	1.1.2.1
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 1 10 1.1.1.1; fail.net
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.net	NS
+SECTION ANSWER
+fail.net	NS	ns.fail.net
+fail.net	NS	ns.fail.com
+SECTION ADDITIONAL
+ns.fail.net	20	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.net	A
+SECTION ANSWER
+ns.fail.net	20	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.net	AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.net	A
+SECTION ANSWER
+fail.net	10	A	1.1.1.2
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 1 100 1.1.2.1;  fail.com & fail.net
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.net	NS
+SECTION ANSWER
+fail.net	NS	ns.fail.net
+fail.net	NS	ns.fail.com
+SECTION ADDITIONAL
+ns.fail.com	10	A	1.1.2.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.net	A
+SECTION ANSWER
+ns.fail.net	20	A	1.1.1.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.net	AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+fail.com	NS
+SECTION AUTHORITY
+fail.com	NS	ns.fail.com
+SECTION ADDITIONAL
+ns.fail.com	10	A	1.1.2.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.com	A
+SECTION ANSWER
+ns.fail.com	10	A	1.1.2.1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.fail.com	AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.net	A
+SECTION ANSWER
+fail.net	10	A	1.1.1.2
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.com	A
+SECTION ANSWER
+fail.com	10	A	1.1.2.2
+ENTRY_END
+RANGE_END
+
+RANGE_BEGIN 11 20 1.1.1.1; fail.net
+ENTRY_BEGIN
+IGNORE
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+fail.net	A
+SECTION ANSWER
+fail.net	10	A	1.1.1.2
+ENTRY_END
+RANGE_END
+
+; Cache zonecuts for fail.net and fail.com
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+fail.net	A
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH rcode flags question answer
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+fail.net	A
+SECTION ANSWER
+fail.net	10	A	1.1.1.2
+ENTRY_END
+
+STEP 3 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+fail.com	A
+ENTRY_END
+
+STEP 4 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH rcode flags question answer
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+fail.com	A
+SECTION ANSWER
+fail.com	10	A	1.1.2.2
+ENTRY_END
+
+; Allow to expire ns.fail.com, fail.net, fail.com
+; Note that ns.fail.net isn't expired yet
+STEP 5 TIME_PASSES ELAPSE 15
+
+; Allow ns.fail.net to be timeouted
+; kresd must get right answer using ns.fail.com
+STEP 11 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+fail.net	A
+ENTRY_END
+
+STEP 12 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH rcode flags question answer
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+fail.net	A
+SECTION ANSWER
+fail.net	10	A	1.1.1.2
+ENTRY_END
+SCENARIO_END
