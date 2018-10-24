@@ -173,12 +173,6 @@ class Entry:
         except (KeyError, IndexError):
             self.mandatory = None
 
-        # IGNORE
-        try:
-            self.ignore = list(node.match("/ignore"))[0]
-        except (KeyError, IndexError):
-            self.ignore = None
-
         # TSIG
         self.process_tsig()
 
