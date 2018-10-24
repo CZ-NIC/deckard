@@ -246,9 +246,8 @@ RANGE_END
 
 RANGE_BEGIN 11 20 1.1.1.1; fail.net
 ENTRY_BEGIN
-IGNORE
 MATCH opcode subdomain
-ADJUST copy_id copy_query
+ADJUST ignore
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.net	A
