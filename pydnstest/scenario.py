@@ -840,15 +840,15 @@ def get_next(file_in, skip_empty=True):
         if not line:
             return False
         quoted, escaped = False, False
-        for i in range(len(line)):
-            if line[i] == '\\':
+        for i, char in enumerate(line):
+            if char == '\\':
                 escaped = not escaped
-            if not escaped and line[i] == '"':
+            if not escaped and char == '"':
                 quoted = not quoted
-            if line[i] in ';' and not quoted:
+            if char == ';' and not quoted:
                 line = line[0:i]
                 break
-            if line[i] != '\\':
+            if char != '\\':
                 escaped = False
         tokens = ' '.join(line.strip().split()).split()
         if not tokens:
