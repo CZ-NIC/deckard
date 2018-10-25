@@ -36,6 +36,7 @@ class TestServer:
         self.cur_iface = self.start_iface
         self.kroot_local = root_addr
         self.addr_family = addr_family
+        self.undefined_answers = 0
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -51,8 +52,8 @@ class TestServer:
                 raise Exception('TestServer already started')
         with self.active_lock:
             self.active = True
-        self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
-        self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
+        addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
+        self.start_srv(addr, self.addr_family, socket.IPPROTO_TCP)
         self._bind_sockets()
 
     def stop(self):
