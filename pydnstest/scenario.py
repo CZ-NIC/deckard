@@ -448,7 +448,7 @@ class Range:
 
         address = node["/address"].value
         self.addresses = {address} if address is not None else set()
-        self.addresses |= set([a.value for a in node.match("/address/*")])
+        self.addresses |= {a.value for a in node.match("/address/*")}
         self.stored = [Entry(n) for n in node.match("/entry")]
         self.args = {}
         self.received = 0
