@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-from contextlib import suppress
-import glob
 import itertools
 import os
 import sys
-from typing import Any, Callable, Iterable, Iterator, Optional, List, Union, Set
-
-import dns.name
+from typing import Any, Callable, Iterable, Iterator, Optional, List, Union, Set  # noqa
 
 import pydnstest.augwrap
 import pydnstest.matchpart

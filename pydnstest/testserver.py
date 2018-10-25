@@ -13,7 +13,6 @@ import time
 
 import dns.message
 import dns.rdatatype
-import dpkt
 
 from pydnstest import scenario
 

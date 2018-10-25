@@ -6,7 +6,6 @@ import posixpath
 import logging
 import os
 import collections
-import sys
 
 from augeas import Augeas
 
