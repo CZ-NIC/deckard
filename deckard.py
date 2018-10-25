@@ -304,7 +304,7 @@ def process_file(path, qmin, prog_cfgs):
                 'test working directory %s', tmpdir)
         else:
             shutil.rmtree(tmpdir)
-    except:
+    except Exception:
         logging.getLogger('deckard.hint').info(
             'test failed, inspect working directory %s', tmpdir)
         raise
@@ -321,7 +321,7 @@ def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         try:
             conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
-        except:
+        except:  # noqa  -- bare except might be valid here?
             daemon_proc.terminate()
             raise
     return daemons
