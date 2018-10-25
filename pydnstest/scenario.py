@@ -85,8 +85,10 @@ def sendto_msg(stream, message, addr=None):
             raise
 
 
-def replay_rrs(rrs, nqueries, destination, args=[]):
+def replay_rrs(rrs, nqueries, destination, args=None):
     """ Replay list of queries and report statistics. """
+    if args is None:
+        args = []
     navail, queries = len(rrs), []
     chunksize = 16
     for i in range(nqueries if 'RAND' in args else navail):
