@@ -5,15 +5,12 @@ disable=
     too-few-public-methods,
     too-many-arguments,
     too-many-locals,
-    too-many-return-statements,
     too-many-branches,
     too-many-instance-attributes,
     fixme,
     unused-import,  # checked by flake8
     line-too-long,  # checked by flake8
     invalid-name,
-    broad-except,
-    bad-continuation,
     global-statement,
     no-else-return,
 
