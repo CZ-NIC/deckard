@@ -7,6 +7,7 @@ disable=
     too-many-locals,
     too-many-return-statements,
     too-many-branches,
+    too-many-instance-attributes,
     fixme,
     unused-import,  # checked by flake8
     line-too-long,  # checked by flake8
