@@ -25,7 +25,7 @@ test:flake8:
 test:mypy:
   <<: *test
   script:
-    - ci/mypy-run.sh
+    - ci/mypy-run.sh  && echo "OK, no mypy error detected"
 
 test:pylint:
   <<: *test

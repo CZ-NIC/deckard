@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -o nounset -o xtrace -o errexit
+set -o nounset -o errexit
 source "$(dirname "$0")/common.sh"
 
 PYFILES=$(find . \
