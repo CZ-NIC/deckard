@@ -428,9 +428,13 @@ class Entry:
             return None
         if self.is_raw_data_entry:
             wire = self._adjust_raw_reply(query)
-            return DNSMessage(wire=wire)
+            assert wire is not None
+            msg = DNSMessage(wire=wire)
+            _ = msg.wire
         msg = self._adjust_reply(query)
-        return DNSMessage(msg)
+        dmsg = DNSMessage(msg)
+        _ = dmsg.wire
+        return dmsg
 
     def set_edns(self, fields):
         """ Set EDNS version and bufsize. """
