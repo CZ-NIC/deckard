@@ -17,7 +17,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     We need to ensure that it is ordered in the same way.
     See https://github.com/pytest-dev/pytest/issues/1075.
     """
-    class OrderedLoader(Loader):
+    class OrderedLoader(Loader):  # pylint: disable=too-many-ancestors
         pass
 
     def construct_mapping(loader, node):
