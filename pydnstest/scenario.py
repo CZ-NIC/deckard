@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import binascii
 import calendar
 import errno
@@ -85,8 +83,10 @@ def sendto_msg(stream, message, addr=None):
             raise
 
 
-def replay_rrs(rrs, nqueries, destination, args=[]):
+def replay_rrs(rrs, nqueries, destination, args=None):
     """ Replay list of queries and report statistics. """
+    if args is None:
+        args = []
     navail, queries = len(rrs), []
     chunksize = 16
     for i in range(nqueries if 'RAND' in args else navail):
@@ -321,7 +321,7 @@ class Entry:
                 pass
         if len(rcodes) > 1:
             raise ValueError("Parse failed, too many rcode values.", rcodes)
-        if len(rcodes) == 0:
+        if not rcodes:
             return None
         return rcodes[0]
 
@@ -339,7 +339,7 @@ class Entry:
                 pass
         if len(opcodes) > 1:
             raise ValueError("Parse failed, too many opcode values.")
-        if len(opcodes) == 0:
+        if not opcodes:
             return None
         return opcodes[0]
 
@@ -446,7 +446,7 @@ class Range:
 
         address = node["/address"].value
         self.addresses = {address} if address is not None else set()
-        self.addresses |= set([a.value for a in node.match("/address/*")])
+        self.addresses |= {a.value for a in node.match("/address/*")}
         self.stored = [Entry(n) for n in node.match("/entry")]
         self.args = {}
         self.received = 0
@@ -467,9 +467,9 @@ class Range:
         txt += 'RANGE_END\n\n'
         return txt
 
-    def eligible(self, id, address):
+    def eligible(self, ident, address):
         """ Return true if this range is eligible for fetching reply. """
-        if self.a <= id <= self.b:
+        if self.a <= ident <= self.b:
             return (None is address
                     or set() == self.addresses
                     or address in self.addresses)
@@ -577,9 +577,9 @@ class Step:
             # Parse QUERY-specific parameters
             choice, tcp, source = None, False, None
             return self.__query(ctx, tcp=tcp, choice=choice, source=source)
-        elif self.type == 'CHECK_OUT_QUERY':
+        elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
-            pass  # Ignore
+            return None
         elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
             self.log.info('')
             return self.__check_answer(ctx)
@@ -588,6 +588,7 @@ class Step:
             return self.__time_passes()
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
+            return None
         # Parser currently doesn't support step types LOG, REPLAY and ASSERT.
         # No test uses them.
         # elif self.type == 'LOG':
@@ -748,8 +749,8 @@ class Scenario:
         if self.info:
             txt += ' {0}'.format(self.info)
         txt += '\n'
-        for range in self.ranges:
-            txt += str(range)
+        for range_ in self.ranges:
+            txt += str(range_)
         for step in self.steps:
             txt += str(step)
         txt += "\nSCENARIO_END"
@@ -839,15 +840,15 @@ def get_next(file_in, skip_empty=True):
         if not line:
             return False
         quoted, escaped = False, False
-        for i in range(len(line)):
-            if line[i] == '\\':
+        for i, char in enumerate(line):
+            if char == '\\':
                 escaped = not escaped
-            if not escaped and line[i] == '"':
+            if not escaped and char == '"':
                 quoted = not quoted
-            if line[i] in ';' and not quoted:
+            if char == ';' and not quoted:
                 line = line[0:i]
                 break
-            if line[i] != '\\':
+            if char != '\\':
                 escaped = False
         tokens = ' '.join(line.strip().split()).split()
         if not tokens:
@@ -859,7 +860,7 @@ def get_next(file_in, skip_empty=True):
         return op, tokens
 
 
-def parse_config(scn_cfg, qmin, installdir):
+def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-statements
     """
     Transform scene config (key, value) pairs into dict filled with defaults.
     Returns tuple:

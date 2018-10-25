@@ -17,7 +17,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     We need to ensure that it is ordered in the same way.
     See https://github.com/pytest-dev/pytest/issues/1075.
     """
-    class OrderedLoader(Loader):
+    class OrderedLoader(Loader):  # pylint: disable=too-many-ancestors
         pass
 
     def construct_mapping(loader, node):
@@ -46,7 +46,7 @@ def config_sanity_check(config_dict, config_name):
              % (cfg['name'], config_name))
 
         for additional in cfg["additional"]:
-            assert type(additional) is str,\
+            assert isinstance(additional, str),\
                 "All additional arguments in yaml should be strings. (%s, %s)"\
                 % (cfg['name'], config_name)
 
@@ -61,6 +61,7 @@ def get_qmin_config(path):
                 return True
             if re.search(r"^\s*query-minimization:\s*(off|no)", line):
                 return False
+    return None
 
 
 def scenarios(paths, configs):

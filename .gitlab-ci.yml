@@ -5,66 +5,48 @@ variables:
 stages:
   - test
 
-test:augeas:
+.test: &test
   stage: test
+  tags:
+    - docker
+    - linux
+    - amd64
+
+test:augeas:
+  <<: *test
   script:
     - augparse pydnstest/deckard.aug
-  tags:
-    - docker
-    - linux
-    - amd64
 
-test:pep8:
-  stage: test
+test:flake8:
+  <<: *test
   script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pep8.sh /tmp
-    - /tmp/compare-pep8.sh
-  tags:
-    - docker
-    - linux
-    - amd64
+    - python3 -m flake8 --max-line-length=100 . && echo "OK, no flake8 errors detected"
+
+test:mypy:
+  <<: *test
+  script:
+    - ci/mypy-run.sh  && echo "OK, no mypy error detected"
 
 test:pylint:
-  stage: test
+  <<: *test
   script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pylint.sh /tmp
-    - /tmp/compare-pylint.sh
-  artifacts:
-    when: on_failure
-    expire_in: '1 hour'
-    paths:
-      - base.log
-      - head.log
-  tags:
-    - docker
-    - linux
-    - amd64
+    - ci/pylint-run.sh
 
 test:rplint:
-  stage: test
+  <<: *test
   script:
     - cp ci/common.sh /tmp
     - cp ci/compare-rplint.sh /tmp
     - /tmp/compare-rplint.sh
-  tags:
-    - docker
-    - linux
-    - amd64
 
 test:unittests:
-  stage: test
+  <<: *test
   script:
     - make check
-  tags:
-    - docker
-    - linux
-    - amd64
 
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
-  stage: test
+  <<: *test
   script:
     # test kresd binary
     - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
@@ -84,15 +66,11 @@ test:comparative:kresd:
       - modified_tests
       - base.xml
       - head.xml
-  tags:
-    - docker
-    - linux
-    - amd64
 
 # Run all tests on the latest kresd version to ensure that we not push tests
 # which do not work on latest kresd. It would lead to breakage in kresd CI.
 test:latest:kresd:
-  stage: test
+  <<: *test
   script:
     - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - GIT_DIR=$(pwd)/kresd-local-build/.git git log -1
@@ -105,16 +83,12 @@ test:latest:kresd:
     expire_in: 1 week
     paths:
       - tmpdeckard*
-  tags:
-    - docker
-    - linux
-    - amd64
 
 # sanity check that Unbound under Deckard still works
 # I've selected the only tests which are working
 # on kresd and Unbound 1.5.8 as well as 1.6.0
 test:sanity:unbound:
-  stage: test
+  <<: *test
   script:
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_hint_lame.rpl
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_lame_root.rpl
@@ -126,16 +100,12 @@ test:sanity:unbound:
     expire_in: 1 week
     paths:
       - tmpdeckard*
-  tags:
-    - docker
-    - linux
-    - amd64
 
 # sanity check that PowerDNS recursor under Deckard still works
 # I've selected couple tests which are working
 # on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
 test:sanity:pdnsrecursor:
-  stage: test
+  <<: *test
   script:
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_recurse.rpl
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_tcbit.rpl
@@ -144,7 +114,3 @@ test:sanity:pdnsrecursor:
     expire_in: 1 week
     paths:
       - tmpdeckard*
-  tags:
-    - docker
-    - linux
-    - amd64

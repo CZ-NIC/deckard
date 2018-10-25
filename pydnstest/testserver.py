@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import argparse
 import itertools
 import logging
@@ -13,7 +11,6 @@ import time
 
 import dns.message
 import dns.rdatatype
-import dpkt
 
 from pydnstest import scenario
 
@@ -36,6 +33,7 @@ class TestServer:
         self.cur_iface = self.start_iface
         self.kroot_local = root_addr
         self.addr_family = addr_family
+        self.undefined_answers = 0
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -51,8 +49,8 @@ class TestServer:
                 raise Exception('TestServer already started')
         with self.active_lock:
             self.active = True
-        self.addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
-        self.start_srv(self.addr, self.addr_family, socket.IPPROTO_TCP)
+        addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
+        self.start_srv(addr, self.addr_family, socket.IPPROTO_TCP)
         self._bind_sockets()
 
     def stop(self):
@@ -267,13 +265,13 @@ def standalone_self_test():
 
     logging.info("[==========] Mirror server running at %s", server.address())
 
-    def exit(signum, frame):
+    def kill(signum, frame):  # pylint: disable=unused-argument
         logging.info("[==========] Shutdown.")
         server.stop()
         sys.exit(128 + signum)
 
-    signal.signal(signal.SIGINT, exit)
-    signal.signal(signal.SIGTERM, exit)
+    signal.signal(signal.SIGINT, kill)
+    signal.signal(signal.SIGTERM, kill)
 
     while True:
         time.sleep(0.5)

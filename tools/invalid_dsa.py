@@ -31,7 +31,7 @@ def get_dsakeys(config, node):
             for i, word in enumerate(trust_anchor):
                 if word == "DS":
                     algorithm = trust_anchor[i + 2]
-                    if algorithm == "3" or algorithm == "DSA":
+                    if algorithm in ("3", "DSA"):
                         dsakeys.append(trust_anchor[i + 1])
 
     for entry in node.match("/scenario/range/entry"):
@@ -48,7 +48,7 @@ def get_dsakeys(config, node):
 
 def check_rrsig(node, dsakeys):
     """ Find records with wrong lenght of rrsig"""
-    for key in dsakeys:
+    for key in dsakeys:  # pylint: disable=too-many-nested-blocks
         for entry in node.match("/scenario/range/entry"):
             records = list(entry.match("/section/answer/record"))
             records.extend(list(entry.match("/section/authority/record")))
@@ -78,5 +78,6 @@ def main():
         sys.exit(1)
     else:
         sys.exit(0)
+
 
 main()

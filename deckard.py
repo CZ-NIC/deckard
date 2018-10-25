@@ -26,7 +26,7 @@ class DeckardUnderLoadError(Exception):
     pass
 
 
-class IfaceManager(object):
+class IfaceManager:
     """
     Network interface allocation manager
 
@@ -250,7 +250,7 @@ def run_daemon(cfg, environ):
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', args)
     try:
         proc = subprocess.Popen(args, stdout=daemon_log_file, stderr=subprocess.STDOUT,
-                                cwd=cfg['dir'], preexec_fn=os.setsid, env=environ)
+                                cwd=cfg['dir'], env=environ, start_new_session=True)
     except subprocess.CalledProcessError:
         logger = logging.getLogger('deckard.daemon_log.%s' % name)
         logger.exception("Can't start '%s'", args)
@@ -304,7 +304,7 @@ def process_file(path, qmin, prog_cfgs):
                 'test working directory %s', tmpdir)
         else:
             shutil.rmtree(tmpdir)
-    except:
+    except Exception:
         logging.getLogger('deckard.hint').info(
             'test failed, inspect working directory %s', tmpdir)
         raise
@@ -321,25 +321,25 @@ def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         try:
             conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
-        except:
+        except:  # noqa  -- bare except might be valid here?
             daemon_proc.terminate()
             raise
     return daemons
 
 
 def check_for_icmp():
-        """ Checks Deckards's PCAP for ICMP packets """
-        path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
-        with open(path, "rb") as f:
-            pcap = dpkt.pcap.Reader(f)
-            for _, packet in pcap:
-                try:
-                    ip = dpkt.ip.IP(packet)
-                except dpkt.dpkt.UnpackError:
-                    ip = dpkt.ip6.IP6(packet)
-                if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
-                    return True
-            return False
+    """ Checks Deckards's PCAP for ICMP packets """
+    path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
+    with open(path, "rb") as f:
+        pcap = dpkt.pcap.Reader(f)
+        for _, packet in pcap:
+            try:
+                ip = dpkt.ip.IP(packet)
+            except dpkt.dpkt.UnpackError:
+                ip = dpkt.ip6.IP6(packet)
+            if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
+                return True
+        return False
 
 
 def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):

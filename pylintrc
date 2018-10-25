@@ -1,0 +1,25 @@
+[MESSAGES CONTROL]
+
+disable=
+    missing-docstring,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+    too-many-branches,
+    too-many-instance-attributes,
+    fixme,
+    unused-import,  # checked by flake8
+    line-too-long,  # checked by flake8
+    invalid-name,
+    global-statement,
+    no-else-return,
+
+
+[SIMILARITIES]
+min-similarity-lines=6
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=no
+
+[DESIGN]
+max-parents=10

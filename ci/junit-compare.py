@@ -22,6 +22,7 @@ def parse_junit_xml(filename):
 
     return results
 
+
 new = sys.argv[1]
 old = sys.argv[2]
 modified_tests = [line.strip() for line in open(sys.argv[3]).readlines()]

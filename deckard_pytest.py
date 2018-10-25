@@ -1,8 +1,9 @@
 import logging
 import os
-import pytest
 import subprocess
 import sys
+
+import pytest
 
 import deckard
 
@@ -23,6 +24,7 @@ def set_coverage_env(path, qmin):
 def check_platform():
     if sys.platform == 'windows':
         pytest.exit('Not supported at all on Windows')
+
 
 # Suppress extensive Augeas logging
 logging.getLogger("augeas").setLevel(logging.ERROR)

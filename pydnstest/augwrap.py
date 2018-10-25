@@ -6,7 +6,6 @@ import posixpath
 import logging
 import os
 import collections
-import sys
 
 from augeas import Augeas
 
@@ -37,7 +36,7 @@ def join(*paths):
     return posixpath.normpath(new_path)
 
 
-class AugeasWrapper(object):
+class AugeasWrapper:
     """python-augeas higher-level wrapper.
 
     Load single augeas lens and configuration file.
@@ -155,6 +154,14 @@ class AugeasNode(collections.MutableMapping):
         log.debug('tree get: %s = %s', self._path, value)
         return value
 
+    @value.setter
+    def value(self, value):
+        """
+        set value of this node in Augeas tree
+        """
+        log.debug('tree set: %s = %s', self._path, value)
+        self._aug.set(self._path, value)
+
     @property
     def span(self):
         if self._span is None:
@@ -164,14 +171,6 @@ class AugeasNode(collections.MutableMapping):
     @property
     def char(self):
         return self._aug.span(self._path)[5]
-
-    @value.setter
-    def value(self, value):
-        """
-        set value of this node in Augeas tree
-        """
-        log.debug('tree set: %s = %s', self._path, value)
-        self._aug.set(self._path, value)
 
     def __len__(self):
         """
