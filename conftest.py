@@ -61,6 +61,7 @@ def get_qmin_config(path):
                 return True
             if re.search(r"^\s*query-minimization:\s*(off|no)", line):
                 return False
+    return None
 
 
 def scenarios(paths, configs):

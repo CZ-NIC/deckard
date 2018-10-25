@@ -581,6 +581,7 @@ class Step:
             return self.__query(ctx, tcp=tcp, choice=choice, source=source)
         elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
+            return None
         elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
             self.log.info('')
             return self.__check_answer(ctx)
@@ -589,6 +590,7 @@ class Step:
             return self.__time_passes()
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
+            return None
         # Parser currently doesn't support step types LOG, REPLAY and ASSERT.
         # No test uses them.
         # elif self.type == 'LOG':
