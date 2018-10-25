@@ -3,8 +3,9 @@ import os
 import subprocess
 import sys
 
-import deckard
 import pytest
+
+import deckard
 
 
 def set_coverage_env(path, qmin):
