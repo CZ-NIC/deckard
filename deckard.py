@@ -328,18 +328,18 @@ def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
 
 
 def check_for_icmp():
-        """ Checks Deckards's PCAP for ICMP packets """
-        path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
-        with open(path, "rb") as f:
-            pcap = dpkt.pcap.Reader(f)
-            for _, packet in pcap:
-                try:
-                    ip = dpkt.ip.IP(packet)
-                except dpkt.dpkt.UnpackError:
-                    ip = dpkt.ip6.IP6(packet)
-                if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
-                    return True
-            return False
+    """ Checks Deckards's PCAP for ICMP packets """
+    path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
+    with open(path, "rb") as f:
+        pcap = dpkt.pcap.Reader(f)
+        for _, packet in pcap:
+            try:
+                ip = dpkt.ip.IP(packet)
+            except dpkt.dpkt.UnpackError:
+                ip = dpkt.ip6.IP6(packet)
+            if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
+                return True
+        return False
 
 
 def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
