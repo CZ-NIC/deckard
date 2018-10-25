@@ -467,9 +467,9 @@ class Range:
         txt += 'RANGE_END\n\n'
         return txt
 
-    def eligible(self, id, address):
+    def eligible(self, ident, address):
         """ Return true if this range is eligible for fetching reply. """
-        if self.a <= id <= self.b:
+        if self.a <= ident <= self.b:
             return (None is address
                     or set() == self.addresses
                     or address in self.addresses)
@@ -748,8 +748,8 @@ class Scenario:
         if self.info:
             txt += ' {0}'.format(self.info)
         txt += '\n'
-        for range in self.ranges:
-            txt += str(range)
+        for range_ in self.ranges:
+            txt += str(range_)
         for step in self.steps:
             txt += str(step)
         txt += "\nSCENARIO_END"

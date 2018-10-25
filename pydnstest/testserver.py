@@ -267,13 +267,13 @@ def standalone_self_test():
 
     logging.info("[==========] Mirror server running at %s", server.address())
 
-    def exit(signum, frame):
+    def kill(signum, frame):
         logging.info("[==========] Shutdown.")
         server.stop()
         sys.exit(128 + signum)
 
-    signal.signal(signal.SIGINT, exit)
-    signal.signal(signal.SIGTERM, exit)
+    signal.signal(signal.SIGINT, kill)
+    signal.signal(signal.SIGTERM, kill)
 
     while True:
         time.sleep(0.5)
