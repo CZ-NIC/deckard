@@ -37,7 +37,7 @@ def join(*paths):
     return posixpath.normpath(new_path)
 
 
-class AugeasWrapper(object):
+class AugeasWrapper:
     """python-augeas higher-level wrapper.
 
     Load single augeas lens and configuration file.

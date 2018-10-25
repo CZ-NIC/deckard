@@ -26,7 +26,7 @@ class DeckardUnderLoadError(Exception):
     pass
 
 
-class IfaceManager(object):
+class IfaceManager:
     """
     Network interface allocation manager
 
