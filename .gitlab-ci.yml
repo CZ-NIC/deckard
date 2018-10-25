@@ -22,6 +22,11 @@ test:flake8:
   script:
     - python3 -m flake8 --max-line-length=100 . && echo "OK, no flake8 errors detected"
 
+test:mypy:
+  <<: *test
+  script:
+    - ci/mypy-run.sh
+
 test:pylint:
   <<: *test
   script:
