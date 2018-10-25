@@ -250,7 +250,7 @@ def run_daemon(cfg, environ):
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', args)
     try:
         proc = subprocess.Popen(args, stdout=daemon_log_file, stderr=subprocess.STDOUT,
-                                cwd=cfg['dir'], preexec_fn=os.setsid, env=environ)
+                                cwd=cfg['dir'], env=environ, start_new_session=True)
     except subprocess.CalledProcessError:
         logger = logging.getLogger('deckard.daemon_log.%s' % name)
         logger.exception("Can't start '%s'", args)
