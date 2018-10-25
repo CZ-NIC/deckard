@@ -110,7 +110,7 @@ class TestServer:
             if message.is_raw_data:
                 log.debug('raw response not printed')
             else:
-                log.debug('response: %s', message)
+                log.debug('response: %s', message.message)
 
             data_to_wire = message.wire
 

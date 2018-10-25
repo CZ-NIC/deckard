@@ -138,20 +138,25 @@ def replay_rrs(rrs, nqueries, destination, args=None):
 
 
 class DNSMessage:
-    def __init__(self, message: dns.message.Message = None, wire: bytes = None) -> None:
-        self._message = message
+    def __init__(
+                self,
+                message: Optional[dns.message.Message] = None,
+                wire: Optional[bytes] = None
+            ) -> None:
+        self.message = message
         self._wire = wire
 
     def is_raw_data(self) -> bool:
-        return self._message is None and self._wire is not None
+        return self.message is None and self._wire is not None
 
     @property
-    def wire(self) -> Optional[bytes]:
+    def wire(self) -> bytes:
         if self.is_raw_data:
+            assert self._wire is not None
             return self._wire
-        elif self._message is not None:
-            return self._message.to_wire(max_size=65535)
-        return None
+        elif self.message is not None:
+            return self.message.to_wire(max_size=65535)
+        raise ValueError('No DNS message or raw wire data available!')
 
 
 class ReplyNotFound(Exception):
