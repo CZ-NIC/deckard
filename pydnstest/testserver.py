@@ -85,34 +85,40 @@ class TestServer:
             True if client socket should be closed by caller
             False if client socket should be kept open
         """
+        def servfail_reply() -> bytes:
+            response = dns.message.make_response(query)
+            response.set_rcode(dns.rcode.SERVFAIL)
+            self.undefined_answers += 1
+            self.scenario.current_step.log.error(
+                'server %s has no response for question %s, answering with SERVFAIL',
+                server_addr,
+                '; '.join([str(rr) for rr in query.question]))
+            return response.to_wire()
+
         log = logging.getLogger('pydnstest.testserver.handle_query')
         server_addr = client.getsockname()[0]
         query, client_addr = scenario.recvfrom_msg(client)
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
-        response, second = self.scenario.reply(query, server_addr)
-        if response:
-            is_raw_data = second
-            if not is_raw_data:
-                data_to_wire = response.to_wire(max_size=65535)
-                log.debug('response: %s', response)
-            else:
-                data_to_wire = response
-                log.debug('raw response not printed')
-        elif not second:
-            response = dns.message.make_response(query)
-            response.set_rcode(dns.rcode.SERVFAIL)
-            data_to_wire = response.to_wire()
-            self.undefined_answers += 1
-            self.scenario.current_step.log.error(
-                'server %s has no response for question %s, answering with SERVFAIL',
-                server_addr,
-                '; '.join([str(rr) for rr in query.question]))
+        try:
+            message = self.scenario.reply(query, server_addr)
+        except scenario.ReplyNotFound:
+            data_to_wire = servfail_reply()
         else:
-            # Just ignore
-            log.debug('ignoring')
-            return True
+            if not message:
+                log.debug('ignoring')
+                return True
+
+            if message.is_raw_data:
+                log.debug('raw response not printed')
+            else:
+                log.debug('response: %s', message.message)
+
+            try:
+                data_to_wire = message.wire
+            except ValueError:
+                data_to_wire = servfail_reply()
 
         scenario.sendto_msg(client, data_to_wire, client_addr)
         return True
