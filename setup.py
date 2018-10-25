@@ -8,9 +8,9 @@ setup(
     version=version,
     description='DNS toolkit',
     long_description=(
-       "Deckard is a DNS software testing based on library pydnstest."
-       "It supports parsing and running Unbound-like test scenarios,"
-       "and setting up a mock DNS server. It's based on dnspython."),
+        "Deckard is a DNS software testing based on library pydnstest."
+        "It supports parsing and running Unbound-like test scenarios,"
+        "and setting up a mock DNS server. It's based on dnspython."),
     author='CZ.NIC',
     author_email='knot-dns-users@lists.nic.cz',
     license='BSD',
