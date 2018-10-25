@@ -13,6 +13,7 @@ disable=
     invalid-name,
     global-statement,
     no-else-return,
+    bad-continuation,
 
 
 [SIMILARITIES]
