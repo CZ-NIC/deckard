@@ -48,7 +48,7 @@ def get_dsakeys(config, node):
 
 def check_rrsig(node, dsakeys):
     """ Find records with wrong lenght of rrsig"""
-    for key in dsakeys:
+    for key in dsakeys:  # pylint: disable=too-many-nested-blocks
         for entry in node.match("/scenario/range/entry"):
             records = list(entry.match("/section/answer/record"))
             records.extend(list(entry.match("/section/authority/record")))
