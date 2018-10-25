@@ -130,12 +130,16 @@ class Key:
             command += ["-f", "ksk"]
         if not os.path.isdir("resign"):
             os.mkdir("resign")
-        command += ["-K", "resign", "-a", str(self.algorithm), "-b", "1024"]
+        NOT_NSEC3_ALGORITHMS = [1, 2, 3, 5]
+        command += ["-K", "resign", "-b", "1024"]
         for record in self.zone_records:
             if record.rrtype == "NSEC3":
                 command.append("-3")
+                if self.algorithm in NOT_NSEC3_ALGORITHMS: #TODO: čerstvé, zkusit spustit
+                    logger.warning("algorithm %d of key %s is not compatible with NSEC3. Using algorithm 7 instead", self.algorithm, self.tag)
+                    self.algorithm = 7
                 break
-        command += ["-n", "ZONE", self.domain]
+        command += ["-a", str(self.algorithm), "-n", "ZONE", self.domain]
         keygen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         keygen_output = keygen.communicate()
         if keygen.returncode != 0:
