@@ -46,7 +46,7 @@ def config_sanity_check(config_dict, config_name):
              % (cfg['name'], config_name))
 
         for additional in cfg["additional"]:
-            assert type(additional) is str,\
+            assert isinstance(additional, str),\
                 "All additional arguments in yaml should be strings. (%s, %s)"\
                 % (cfg['name'], config_name)
 
