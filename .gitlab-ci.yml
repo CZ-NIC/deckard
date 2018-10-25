@@ -17,25 +17,15 @@ test:augeas:
   script:
     - augparse pydnstest/deckard.aug
 
-test:pep8:
-  <<: *test
+test:flake8:
+  <<: *debian_stable
   script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pep8.sh /tmp
-    - /tmp/compare-pep8.sh
+    - python3 -m flake8 --max-line-length=100 . && echo "OK, no flake8 errors detected"
 
 test:pylint:
   <<: *test
   script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pylint.sh /tmp
-    - /tmp/compare-pylint.sh
-  artifacts:
-    when: on_failure
-    expire_in: '1 hour'
-    paths:
-      - base.log
-      - head.log
+    - ci/pylint-run.sh
 
 test:rplint:
   <<: *test
