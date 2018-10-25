@@ -579,9 +579,8 @@ class Step:
             # Parse QUERY-specific parameters
             choice, tcp, source = None, False, None
             return self.__query(ctx, tcp=tcp, choice=choice, source=source)
-        elif self.type == 'CHECK_OUT_QUERY':
+        elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
-            pass  # Ignore
         elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
             self.log.info('')
             return self.__check_answer(ctx)
