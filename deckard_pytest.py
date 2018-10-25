@@ -1,10 +1,10 @@
 import logging
 import os
-import pytest
 import subprocess
 import sys
 
 import deckard
+import pytest
 
 
 def set_coverage_env(path, qmin):

@@ -1,11 +1,11 @@
 """matchpart is used to compare two DNS messages using a single criterion"""
 
+from typing import (  # noqa
+    Any, Hashable, Sequence, Tuple, Union)
+
 import dns.edns
 import dns.rcode
 import dns.set
-
-from typing import (  # noqa
-    Any, Hashable, Sequence, Tuple, Union)
 
 MismatchValue = Union[str, Sequence[Any]]
 
