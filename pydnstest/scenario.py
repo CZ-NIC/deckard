@@ -860,7 +860,7 @@ def get_next(file_in, skip_empty=True):
         return op, tokens
 
 
-def parse_config(scn_cfg, qmin, installdir):
+def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-statements
     """
     Transform scene config (key, value) pairs into dict filled with defaults.
     Returns tuple:
