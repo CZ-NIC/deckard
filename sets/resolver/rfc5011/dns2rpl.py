@@ -41,7 +41,7 @@ def get_templates():
     """
     Return empty objects for RANGE and ENTRY suitable as object templates.
     """
-    empty_case, empty_config = pydnstest.scenario.parse_file(os.path.realpath('empty.rpl'))
+    empty_case, _ = pydnstest.scenario.parse_file(os.path.realpath('empty.rpl'))
 
     rng = copy.copy(empty_case.ranges[0])
 
