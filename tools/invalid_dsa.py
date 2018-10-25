@@ -31,7 +31,7 @@ def get_dsakeys(config, node):
             for i, word in enumerate(trust_anchor):
                 if word == "DS":
                     algorithm = trust_anchor[i + 2]
-                    if algorithm == "3" or algorithm == "DSA":
+                    if algorithm in ("3", "DSA"):
                         dsakeys.append(trust_anchor[i + 1])
 
     for entry in node.match("/scenario/range/entry"):
