@@ -315,7 +315,7 @@ def test_run_rplint(rpl_path: str) -> None:
         raise RplintError(t.fails)
 
 
-if __name__ == '__main__':
+def main():
     try:
         test_path = sys.argv[1]
     except IndexError:
@@ -333,3 +333,7 @@ if __name__ == '__main__':
     if passed:
         sys.exit(0)
     sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

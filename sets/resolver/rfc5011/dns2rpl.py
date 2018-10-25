@@ -122,57 +122,61 @@ def generate_step_elapse(tstep, id_prefix):
     return out
 
 
-resolver_init()
-rng_templ, entry_templ = get_templates()
-ranges = []
+def main():
+    resolver_init()
+    rng_templ, entry_templ = get_templates()
+    ranges = []
 
-# transform data in zones files into RANGEs
-files = os.listdir()
-files.sort()
-for fn in files:
-    if not fn.endswith('.db') or not fn.startswith('20'):
-        continue
-    ranges.append(generate_range(fn, rng_templ, entry_templ))
+    # transform data in zones files into RANGEs
+    files = os.listdir()
+    files.sort()
+    for fn in files:
+        if not fn.endswith('.db') or not fn.startswith('20'):
+            continue
+        ranges.append(generate_range(fn, rng_templ, entry_templ))
 
-# connect ranges
-for i in range(1, len(ranges)):
-    ranges[i - 1].b = ranges[i].a - 1
-ranges[-1].b = 99999999999999
+    # connect ranges
+    for i in range(1, len(ranges)):
+        ranges[i - 1].b = ranges[i].a - 1
+    ranges[-1].b = 99999999999999
+
+    # steps
+    steps = []
+    tstart = datetime.datetime(year=2017, month=7, day=1)
+    tend = datetime.datetime(year=2017, month=12, day=31, hour=23, minute=59, second=59)
+    tstep = datetime.timedelta(days=1)
+    tcurr = tstart
+    while tcurr < tend:
+        id_prefix = tcurr.strftime('%Y%m%d')
+        steps.append(generate_step_query(tcurr, id_prefix))
+        steps.append(generate_step_check(id_prefix))
+        steps.append(generate_step_elapse(tstep, id_prefix))
+        tcurr += tstep
+
+    # generate output
+    with open('keys/ds') as dsfile:
+        ta = dsfile.read().strip()
+
+    # constant RPL file header
+    print("""stub-addr: 2001:503:ba3e::2:30
+    trust-anchor: {ta}
+    val-override-date: 20170701000000
+    query-minimization: off
+    CONFIG_END
+
+    SCENARIO_BEGIN Simulation of successfull RFC 5011 KSK roll-over during 2017
+    """.format(ta=ta))
+    for rng in ranges:
+        print(rng)
+
+    for step in steps:
+        print(step)
+
+    # constant RPL file footer
+    print('''
+    SCENARIO_END
+    ''')
 
 
-# steps
-steps = []
-tstart = datetime.datetime(year=2017, month=7, day=1)
-tend = datetime.datetime(year=2017, month=12, day=31, hour=23, minute=59, second=59)
-tstep = datetime.timedelta(days=1)
-tcurr = tstart
-while tcurr < tend:
-    id_prefix = tcurr.strftime('%Y%m%d')
-    steps.append(generate_step_query(tcurr, id_prefix))
-    steps.append(generate_step_check(id_prefix))
-    steps.append(generate_step_elapse(tstep, id_prefix))
-    tcurr += tstep
-
-# generate output
-with open('keys/ds') as dsfile:
-    ta = dsfile.read().strip()
-
-# constant RPL file header
-print("""stub-addr: 2001:503:ba3e::2:30
-trust-anchor: {ta}
-val-override-date: 20170701000000
-query-minimization: off
-CONFIG_END
-
-SCENARIO_BEGIN Simulation of successfull RFC 5011 KSK roll-over during 2017
-""".format(ta=ta))
-for rng in ranges:
-    print(rng)
-
-for step in steps:
-    print(step)
-
-# constant RPL file footer
-print('''
-SCENARIO_END
-''')
+if __name__ == '__main__':
+    main()
