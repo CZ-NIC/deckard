@@ -268,7 +268,7 @@ def standalone_self_test():
 
     logging.info("[==========] Mirror server running at %s", server.address())
 
-    def kill(signum, frame):
+    def kill(signum, frame):  # pylint: disable=unused-argument
         logging.info("[==========] Shutdown.")
         server.stop()
         sys.exit(128 + signum)
