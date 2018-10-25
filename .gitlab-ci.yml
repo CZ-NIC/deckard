@@ -17,12 +17,10 @@ test:augeas:
   script:
     - augparse pydnstest/deckard.aug
 
-test:pep8:
+test:flake8:
   <<: *test
   script:
-    - cp ci/common.sh /tmp
-    - cp ci/compare-pep8.sh /tmp
-    - /tmp/compare-pep8.sh
+    - python3 -m flake8 --max-line-length=100 . && echo "OK, no flake8 errors detected"
 
 test:pylint:
   <<: *test
