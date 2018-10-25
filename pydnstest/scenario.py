@@ -145,9 +145,7 @@ class DNSMessage:
             ) -> None:
         self.message = message
         self._wire = wire
-
-    def is_raw_data(self) -> bool:
-        return self.message is None and self._wire is not None
+        self.is_raw_data = wire is not None
 
     @property
     def wire(self) -> bytes:
