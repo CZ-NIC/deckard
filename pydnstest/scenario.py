@@ -1,5 +1,7 @@
+# FIXME pylint: disable=too-many-lines
 import binascii
 import calendar
+from datetime import datetime
 import errno
 import logging
 import os
@@ -9,7 +11,7 @@ import socket
 import string
 import struct
 import time
-from datetime import datetime
+from typing import Optional
 
 import dns.dnssec
 import dns.message
@@ -135,6 +137,32 @@ def replay_rrs(rrs, nqueries, destination, args=None):
     return nsent, nrcvd
 
 
+class DNSMessage:
+    def __init__(
+                self,
+                message: Optional[dns.message.Message] = None,
+                wire: Optional[bytes] = None
+            ) -> None:
+        self.message = message
+        self._wire = wire
+
+    def is_raw_data(self) -> bool:
+        return self.message is None and self._wire is not None
+
+    @property
+    def wire(self) -> bytes:
+        if self.is_raw_data:
+            assert self._wire is not None
+            return self._wire
+        elif self.message is not None:
+            return self.message.to_wire(max_size=65535)
+        raise ValueError('No DNS message or raw wire data available!')
+
+
+class ReplyNotFound(Exception):
+    pass
+
+
 class Entry:
     """
     Data entry represents scripted message and extra metadata,
@@ -155,7 +183,7 @@ class Entry:
         self.fired = 0
 
         # RAW
-        self.raw_data = None
+        self.raw_data = None  # type: Optional[bytes]
         self.is_raw_data_entry = self.process_raw()
 
         # MATCH
@@ -364,7 +392,7 @@ class Entry:
         if expected != got:
             raise ValueError("raw message comparsion failed: expected %s got %s" % (expected, got))
 
-    def _adjust_reply(self, query):
+    def _adjust_reply(self, query: dns.message.Message) -> dns.message.Message:
         """ Copy scripted reply and adjust to received query. """
         answer = dns.message.from_wire(self.message.to_wire(),
                                        xfr=self.message.xfr,
@@ -386,7 +414,8 @@ class Entry:
         assert len(answer.additional) == len(self.message.additional)
         return answer
 
-    def _adjust_raw_reply(self, query):
+    def _adjust_raw_reply(self, query: dns.message.Message) -> bytes:
+        assert self.raw_data is not None
         if 'raw_id' in self.adjust_fields:
             assert len(self.raw_data) >= 2, "RAW message has to contain at least 2 bytes"
             raw_answer = bytearray(self.raw_data)
@@ -394,12 +423,14 @@ class Entry:
             return bytes(raw_answer)
         return self.raw_data
 
-    def reply(self, query):
-        if self.ignore:
-            return None, True
+    def reply(self, query) -> Optional[DNSMessage]:
+        if 'ignore' in self.adjust_fields:
+            return None
         if self.is_raw_data_entry:
-            return self._adjust_raw_reply(query), True
-        return self._adjust_reply(query), False
+            wire = self._adjust_raw_reply(query)
+            return DNSMessage(wire=wire)
+        msg = self._adjust_reply(query)
+        return DNSMessage(msg)
 
     def set_edns(self, fields):
         """ Set EDNS version and bufsize. """
@@ -477,15 +508,8 @@ class Range:
                     or address in self.addresses)
         return False
 
-    def reply(self, query):
-        """
-        Get answer for given query (adjusted if needed).
-
-        Returns: (answer, is_raw_data)
-            answer: DNS message object or wire-format (bytes) or None if there is no
-                candidate in this range
-            is_raw_data: True if response is wire-format bytes, instead of DNS message object
-        """
+    def reply(self, query: dns.message.Message) -> Optional[DNSMessage]:
+        """Get answer for given query (adjusted if needed)."""
         self.received += 1
         for candidate in self.stored:
             try:
@@ -494,13 +518,13 @@ class Range:
                 # Probabilistic loss
                 if 'LOSS' in self.args:
                     if random.random() < float(self.args['LOSS']):
-                        return None, None
+                        raise ReplyNotFound
                 self.sent += 1
                 candidate.fired += 1
                 return resp
             except ValueError:
                 pass
-        return None, None
+        raise ReplyNotFound
 
 
 class StepLogger(logging.LoggerAdapter):  # pylint: disable=too-few-public-methods
@@ -758,18 +782,12 @@ class Scenario:
         txt += "\nSCENARIO_END"
         return txt
 
-    def reply(self, query, address=None):
-        """
-        Generate answer packet for given query.
-
-        The answer can be DNS message object or a binary blob.
-        Returns:
-            (answer, boolean "is the answer binary blob?")
-        """
+    def reply(self, query: dns.message.Message, address=None) -> Optional[DNSMessage]:
+        """Generate answer packet for given query."""
         current_step_id = self.current_step.id
         # Unknown address, select any match
         # TODO: workaround until the server supports stub zones
-        all_addresses = set()
+        all_addresses = set()  # type: ignore
         for rng in self.ranges:
             all_addresses.update(rng.addresses)
         if address not in all_addresses:
@@ -790,7 +808,7 @@ class Scenario:
                 return candidate.reply(query)
             except (IndexError, ValueError):
                 pass
-        return None, False
+        raise ReplyNotFound
 
     def play(self, paddr):
         """ Play given scenario. """
