@@ -337,7 +337,7 @@ def check_for_icmp():
                 ip = dpkt.ip.IP(packet)
             except dpkt.dpkt.UnpackError:
                 ip = dpkt.ip6.IP6(packet)
-            if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
+            if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
                 return True
         return False
 
