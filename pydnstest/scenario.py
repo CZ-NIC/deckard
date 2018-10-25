@@ -323,7 +323,7 @@ class Entry:
                 pass
         if len(rcodes) > 1:
             raise ValueError("Parse failed, too many rcode values.", rcodes)
-        if len(rcodes) == 0:
+        if not rcodes:
             return None
         return rcodes[0]
 
@@ -341,7 +341,7 @@ class Entry:
                 pass
         if len(opcodes) > 1:
             raise ValueError("Parse failed, too many opcode values.")
-        if len(opcodes) == 0:
+        if not opcodes:
             return None
         return opcodes[0]
 
