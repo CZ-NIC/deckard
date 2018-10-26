@@ -85,42 +85,27 @@ class TestServer:
             True if client socket should be closed by caller
             False if client socket should be kept open
         """
-        def servfail_reply() -> bytes:
-            response = dns.message.make_response(query)
-            response.set_rcode(dns.rcode.SERVFAIL)
-            self.undefined_answers += 1
-            self.scenario.current_step.log.error(
-                'server %s has no response for question %s, answering with SERVFAIL',
-                server_addr,
-                '; '.join([str(rr) for rr in query.question]))
-            return response.to_wire()
-
         log = logging.getLogger('pydnstest.testserver.handle_query')
         server_addr = client.getsockname()[0]
         query, client_addr = scenario.recvfrom_msg(client)
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
-        try:
-            message = self.scenario.reply(query, server_addr)
-        except scenario.ReplyNotFound:
-            data_to_wire = servfail_reply()
+
+        message = self.scenario.reply(query, server_addr)
+        if not message:
+            log.debug('ignoring')
+            return True
+        elif isinstance(message, scenario.DNSReplyServfail):
+            self.undefined_answers += 1
+            self.scenario.current_step.log.error(
+                'server %s has no response for question %s, answering with SERVFAIL',
+                server_addr,
+                '; '.join([str(rr) for rr in query.question]))
         else:
-            if not message:
-                log.debug('ignoring')
-                return True
+            log.debug('response: %s', message)
 
-            if message.is_raw_data:
-                log.debug('raw response not printed')
-            else:
-                log.debug('response: %s', message.message)
-
-            try:
-                data_to_wire = message.wire
-            except ValueError:
-                data_to_wire = servfail_reply()
-
-        scenario.sendto_msg(client, data_to_wire, client_addr)
+        scenario.sendto_msg(client, message.to_wire(), client_addr)
         return True
 
     def query_io(self):
