@@ -313,7 +313,7 @@ def create_new_record(domain, rrtype):
     try:
         return ZoneRecord(domain, "3600", "IN", rrtype, data[rrtype])
     except KeyError:
-        logger.warning("Unkonwn RR type %s", rrtype)
+        logger.warning("adding record: Unsupported RR type %s", rrtype)
         return None
 
 
