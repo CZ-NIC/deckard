@@ -472,7 +472,7 @@ def find_signed_records(node, keys):
                 logger.info("Found RRSIG of record %s %s which is not in the test. %s",
                             domain, rrtype, "Creating some.")
                 signed_record = create_new_record(domain, rrtype)
-            if signed_record.rrtype != "DNSKEY":
+            if signed_record is not None and signed_record.rrtype != "DNSKEY":
                 try:
                     keyindex = keytag + zone_name
                     keys[keyindex].zone_records.append(signed_record)
