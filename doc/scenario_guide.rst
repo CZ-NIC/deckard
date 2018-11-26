@@ -173,7 +173,7 @@ Deckard will compare messages according to *<match element list>*. Any mismatch 
 
 Format of answer templates (for ``RANGE``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Entries in ``RANGE`` blocks are used to answer queries *from binaries under test*. E.g. if a DNS resolver under test sends query ``. IN NS`` to a simulated server, Deckard will use matching entry associated with the simulated server for reply. Entry used for answer is selected using the same `entry matching`_ logic as with ``STEP CHECK_ANSWER``. The difference is that entry is automatically modified before sending out the answer. These modifications are specified by ``ADJUST`` and ``REPLY`` keywords. See chapters `entry adjusting`_ and `entry flags`_.
+Entries in ``RANGE`` blocks are used to answer queries *from binaries under test*. E.g. if a DNS resolver under test sends query ``. IN NS`` to a simulated server, Deckard will use matching entry associated with the simulated server for reply. Entry used for answer is selected using the same `entry matching`_ logic as with ``STEP CHECK_ANSWER``. The difference is that entry is automatically modified before sending out the answer. These modifications are specified by ``ADJUST`` and ``REPLY`` keywords. It's also possible to not send any reply using the ``ADJUST do_not_answer`` option. See chapters `entry adjusting`_ and `entry flags`_.
 
 .. code-block::
 
@@ -249,13 +249,14 @@ Entry adjusting
 An entry used as a template to prepare an answer to an incoming query might be preprocessed.
 Adjust element list defines what fields will be modified:
 
-========== ===========================================================================================
-element    modification to the DNS message
-========== ===========================================================================================
-copy_id    query id + query domain name will be copied from incoming message [copy_id_bug]_
-copy_query whole question section will be copied from incoming message
-raw_id     query id will be copied into the first two bytes of RAW answer
-========== ===========================================================================================
+============= ===========================================================================================
+element       modification to the DNS message
+============= ===========================================================================================
+copy_id       query id + query domain name will be copied from incoming message [copy_id_bug]_
+copy_query    whole question section will be copied from incoming message
+raw_id        query id will be copied into the first two bytes of RAW answer
+do_not_answer no response will be sent at all
+============= ===========================================================================================
 
 .. [copy_id_bug] https://gitlab.labs.nic.cz/knot/deckard/issues/9
 
