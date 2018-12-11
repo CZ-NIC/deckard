@@ -754,6 +754,8 @@ class Step:
         answer = None
         if not self.data[0].is_raw_data_entry:
             while True:
+                if (datetime.now() - tstart).total_seconds() > 5:
+                    raise RuntimeError("Server took too long to respond")
                 try:
                     answer, _ = recvfrom_msg(sock, True)
                     break
