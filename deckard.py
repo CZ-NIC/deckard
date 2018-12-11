@@ -261,9 +261,13 @@ def run_daemon(cfg, environ):
 def conncheck_daemon(process, cfg, sockfamily):
     """Wait until the server accepts TCP clients"""
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
+    tstart = datetime.now()
     while True:
         time.sleep(0.1)
-        if process.poll():
+        if (datetime.now() - tstart).total_seconds() > 5:
+            raise RuntimeError("Server took too long to respond")
+        # Check if the process is running
+        if process.poll() is not None:
             msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['dir'])
             logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
             logger.critical(msg)
