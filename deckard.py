@@ -263,7 +263,8 @@ def conncheck_daemon(process, cfg, sockfamily):
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
     while True:
         time.sleep(0.1)
-        if process.poll():
+        # Check if the process is running
+        if process.poll() is not None:
             msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['dir'])
             logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
             logger.critical(msg)
