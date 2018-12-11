@@ -13,10 +13,22 @@ NEW_TESTS_FILE="/tmp/new_tests"
 find_new_tests
 
 truncate -s0 /tmp/rplint_fails
+
+: run rplint of all new tests
+STATUS=0
 for test in $(cat ${NEW_TESTS_FILE})
 do
   ${PYTHON} -m rplint $test >> /tmp/rplint_fails
+  if [ "$?" -eq 1 ]
+  then
+    $STATUS=1
+  fi
 done
 
-cat /tmp/rplint_fails
-test "!" -s /tmp/rplint_fails
+: if even one of the test does not pass rplint, fail
+if [ "$STATUS" -eq 1 ]
+then
+  cat /tmp/rplint_fails
+  exit 1
+fi
+exit 0
