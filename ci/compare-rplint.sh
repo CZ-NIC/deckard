@@ -16,6 +16,7 @@ truncate -s0 /tmp/rplint_fails
 
 : run rplint of all new tests
 STATUS=0
+cat /tmp/new_tests
 for test in $(cat ${NEW_TESTS_FILE})
 do
   ${PYTHON} -m rplint $test >> /tmp/rplint_fails
