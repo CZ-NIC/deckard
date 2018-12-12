@@ -12,7 +12,7 @@ import time
 import dns.message
 import dns.rdatatype
 
-from pydnstest import scenario
+from pydnstest import scenario, mock_client
 
 
 class TestServer:
@@ -87,7 +87,7 @@ class TestServer:
         """
         log = logging.getLogger('pydnstest.testserver.handle_query')
         server_addr = client.getsockname()[0]
-        query, client_addr = scenario.recvfrom_msg(client)
+        query, client_addr = mock_client.recvfrom_msg(client)
         if query is None:
             return False
         log.debug('server %s received query from %s: %s', server_addr, client_addr, query)
@@ -105,7 +105,7 @@ class TestServer:
         else:
             log.debug('response: %s', message)
 
-        scenario.sendto_msg(client, message.to_wire(), client_addr)
+        mock_client.sendto_msg(client, message.to_wire(), client_addr)
         return True
 
     def query_io(self):
