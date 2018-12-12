@@ -1,9 +1,7 @@
-# FIXME pylint: disable=too-many-lines
 from abc import ABC
 import binascii
 import calendar
 from datetime import datetime
-import errno
 import logging
 import os
 import posixpath
@@ -22,6 +20,7 @@ import dns.tsigkeyring
 
 import pydnstest.augwrap
 import pydnstest.matchpart
+import pydnstest.mock_client
 
 
 def str2bool(v):
@@ -32,57 +31,6 @@ def str2bool(v):
 # Global statistics
 g_rtt = 0.0
 g_nqueries = 0
-
-
-def recvfrom_msg(stream, raw=False):
-    """
-    Receive DNS message from TCP/UDP socket.
-
-    Returns:
-        if raw == False: (DNS message object, peer address)
-        if raw == True: (blob, peer address)
-    """
-    if stream.type & socket.SOCK_DGRAM:
-        data, addr = stream.recvfrom(4096)
-    elif stream.type & socket.SOCK_STREAM:
-        data = stream.recv(2)
-        if not data:
-            return None, None
-        msg_len = struct.unpack_from("!H", data)[0]
-        data = b""
-        received = 0
-        while received < msg_len:
-            next_chunk = stream.recv(4096)
-            if not next_chunk:
-                return None, None
-            data += next_chunk
-            received += len(next_chunk)
-        addr = stream.getpeername()[0]
-    else:
-        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    if raw:
-        return data, addr
-    else:
-        msg = dns.message.from_wire(data, one_rr_per_rrset=True)
-        return msg, addr
-
-
-def sendto_msg(stream, message, addr=None):
-    """ Send DNS/UDP/TCP message. """
-    try:
-        if stream.type & socket.SOCK_DGRAM:
-            if addr is None:
-                stream.send(message)
-            else:
-                stream.sendto(message, addr)
-        elif stream.type & socket.SOCK_STREAM:
-            data = struct.pack("!H", len(message)) + message
-            stream.send(data)
-        else:
-            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % stream.type)
-    except socket.error as ex:
-        if ex.errno != errno.ECONNREFUSED:  # TODO Investigate how this can happen
-            raise
 
 
 class DNSBlob(ABC):
@@ -626,45 +574,21 @@ class Step:
             choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
             raise ValueError('step %03d invalid QUERY target: %s' % (self.id, choice))
-        # Create socket to test subject
-        sock = None
-        destination = ctx.client[choice]
-        family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
-        sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        if tcp:
-            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
-        sock.settimeout(3)
-        if source:
-            sock.bind((source, 0))
-        sock.connect(destination)
-        # Send query to client and wait for response
+
         tstart = datetime.now()
-        while True:
-            try:
-                sendto_msg(sock, data_to_wire)
-                break
-            except OSError as ex:
-                # ENOBUFS, throttle sending
-                if ex.errno == errno.ENOBUFS:
-                    time.sleep(0.1)
-        # Wait for a response for a reasonable time
-        answer = None
-        if self.data[0].raw_data is None:
-            while True:
-                if (datetime.now() - tstart).total_seconds() > 5:
-                    raise RuntimeError("Server took too long to respond")
-                try:
-                    answer, _ = recvfrom_msg(sock, True)
-                    break
-                except OSError as ex:
-                    if ex.errno == errno.ENOBUFS:
-                        time.sleep(0.1)
+
+        # Send query and wait for answer
+        sock = pydnstest.mock_client.setup_socket(ctx.client[choice], source, tcp)
+        pydnstest.mock_client.send_query(sock, data_to_wire)
+        if self.data[0].raw_data is not None:
+            answer = pydnstest.mock_client.get_answer(sock)
+
         # Track RTT
         rtt = (datetime.now() - tstart).total_seconds() * 1000
         global g_rtt, g_nqueries
         g_nqueries += 1
         g_rtt += rtt
+
         # Remember last answer for checking later
         self.raw_answer = answer
         ctx.last_raw_answer = answer
