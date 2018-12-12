@@ -258,8 +258,7 @@ class Entry:
         self.fired = 0
 
         # RAW
-        self.raw_data = None  # type: Optional[bytes]
-        self.is_raw_data_entry = self.process_raw()
+        self.raw_data = self.process_raw()
 
         # MATCH
         self.match_fields = self.process_match()
@@ -284,10 +283,9 @@ class Entry:
 
     def process_raw(self):
         try:
-            self.raw_data = binascii.unhexlify(self.node["/raw"].value)
-            return True
+            return binascii.unhexlify(self.node["/raw"].value)
         except KeyError:
-            return False
+            return None
 
     def process_match(self):
         try:
@@ -372,7 +370,7 @@ class Entry:
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
-        if not self.is_raw_data_entry:
+        if self.raw_data is None:
             txt += 'MATCH {0}\n'.format(' '.join(self.match_fields))
         txt += 'ADJUST {0}\n'.format(' '.join(self.adjust_fields))
         txt += 'REPLY {rcode} {flags}\n'.format(
@@ -388,7 +386,7 @@ class Entry:
             for rr in sect:
                 txt += str(rr)
                 txt += '\n'
-        if self.is_raw_data_entry:
+        if self.raw_data is not None:
             txt += 'RAW\n'
             if self.raw_data:
                 txt += binascii.hexlify(self.raw_data)
@@ -457,7 +455,7 @@ class Entry:
                 raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr))
 
     def cmp_raw(self, raw_value):
-        assert self.is_raw_data_entry
+        assert self.raw_data is not None
         expected = None
         if self.raw_data is not None:
             expected = binascii.hexlify(self.raw_data)
@@ -470,7 +468,7 @@ class Entry:
     def reply(self, query) -> Optional[DNSBlob]:
         if 'do_not_answer' in self.adjust_fields:
             return None
-        if self.is_raw_data_entry:
+        if self.raw_data is not None:
             copy_id = 'raw_data' in self.adjust_fields
             assert self.raw_data is not None
             return DNSReplyRaw(self.raw_data, query, copy_id)
@@ -679,7 +677,7 @@ class Step:
         if not self.data:
             raise ValueError("response definition required")
         expected = self.data[0]
-        if expected.is_raw_data_entry is True:
+        if expected.raw_data is not None:
             self.log.debug("raw answer: %s", ctx.last_raw_answer.to_text())
             expected.cmp_raw(ctx.last_raw_answer)
         else:
@@ -719,7 +717,7 @@ class Step:
         """
         if not self.data:
             raise ValueError("query definition required")
-        if self.data[0].is_raw_data_entry is True:
+        if self.data[0].raw_data is not None:
             data_to_wire = self.data[0].raw_data
         else:
             # Don't use a message copy as the EDNS data portion is not copied.
@@ -752,7 +750,7 @@ class Step:
                     time.sleep(0.1)
         # Wait for a response for a reasonable time
         answer = None
-        if not self.data[0].is_raw_data_entry:
+        if self.data[0].raw_data is None:
             while True:
                 if (datetime.now() - tstart).total_seconds() > 5:
                     raise RuntimeError("Server took too long to respond")
