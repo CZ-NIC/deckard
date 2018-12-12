@@ -86,58 +86,6 @@ def sendto_msg(stream, message, addr=None):
             raise
 
 
-def replay_rrs(rrs, nqueries, destination, args=None):
-    """ Replay list of queries and report statistics. """
-    if args is None:
-        args = []
-    navail, queries = len(rrs), []
-    chunksize = 16
-    for i in range(nqueries if 'RAND' in args else navail):
-        rr = rrs[i % navail]
-        name = rr.name
-        if 'RAND' in args:
-            prefix = ''.join([random.choice(string.ascii_letters + string.digits)
-                              for _ in range(8)])
-            name = prefix + '.' + rr.name.to_text()
-        msg = dns.message.make_query(name, rr.rdtype, rr.rdclass)
-        if 'DO' in args:
-            msg.want_dnssec(True)
-        queries.append(msg.to_wire())
-    # Make a UDP connected socket to the destination
-    family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
-    sock = socket.socket(family, socket.SOCK_DGRAM)
-    sock.connect(destination)
-    sock.setblocking(False)
-    # Play the query set
-    # @NOTE: this is only good for relative low-speed replay
-    rcvbuf = bytearray('\x00' * 512)
-    nsent, nrcvd, nwait, navail = 0, 0, 0, len(queries)
-    fdset = [sock]
-    import select
-    while nsent - nwait < nqueries:
-        to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.5)
-        if to_write:
-            try:
-                while nsent < nqueries and nwait < chunksize:
-                    sock.send(queries[nsent % navail])
-                    nwait += 1
-                    nsent += 1
-            except socket.error:
-                pass  # EINVAL
-        if to_read:
-            try:
-                while nwait > 0:
-                    sock.recv_into(rcvbuf)
-                    nwait -= 1
-                    nrcvd += 1
-            except socket.error:
-                pass
-        if not to_write and not to_read:
-            nwait = 0  # Timeout, started dropping packets
-            break
-    return nsent, nrcvd
-
-
 class DNSBlob(ABC):
     def to_wire(self) -> bytes:
         raise NotImplementedError
@@ -606,20 +554,6 @@ class Step:
         self.pause_if_fail = 0
         self.next_if_fail = -1
 
-        # TODO Parser currently can't parse CHECK_ANSWER args, player doesn't understand them anyway
-        # if type == 'CHECK_ANSWER':
-        #     for arg in extra_args:
-        #         param = arg.split('=')
-        #         try:
-        #             if param[0] == 'REPEAT':
-        #                 self.repeat_if_fail = int(param[1])
-        #             elif param[0] == 'PAUSE':
-        #                 self.pause_if_fail = float(param[1])
-        #             elif param[0] == 'NEXT':
-        #                 self.next_if_fail = int(param[1])
-        #         except Exception as e:
-        #             raise Exception('step %d - wrong %s arg: %s' % (self.id, param[0], str(e)))
-
     def __str__(self):
         txt = '\nSTEP {i} {t}'.format(i=self.id, t=self.type)
         if self.repeat_if_fail:
@@ -659,16 +593,6 @@ class Step:
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
             return None
-        # Parser currently doesn't support step types LOG, REPLAY and ASSERT.
-        # No test uses them.
-        # elif self.type == 'LOG':
-        #     if not ctx.log:
-        #         raise Exception('scenario has no log interface')
-        #     return ctx.log.match(self.args)
-        # elif self.type == 'REPLAY':
-        #     self.__replay(ctx)
-        # elif self.type == 'ASSERT':
-        #     self.__assert(ctx)
         else:
             raise NotImplementedError('step %03d type %s unsupported' % (self.id, self.type))
 
@@ -685,29 +609,6 @@ class Step:
                 raise ValueError("no answer from preceding query")
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
-
-    # def __replay(self, ctx, chunksize=8):
-    #     nqueries = len(self.queries)
-    #     if len(self.args) > 0 and self.args[0].isdigit():
-    #         nqueries = int(self.args.pop(0))
-    #     destination = ctx.client[ctx.client.keys()[0]]
-    #     self.log.info('replaying %d queries to %s@%d (%s)',
-    #                   nqueries, destination[0], destination[1], ' '.join(self.args))
-    #     if 'INTENSIFY' in os.environ:
-    #         nqueries *= int(os.environ['INTENSIFY'])
-    #     tstart = datetime.now()
-    #     nsent, nrcvd = replay_rrs(self.queries, nqueries, destination, self.args)
-    #     # Keep/print the statistics
-    #     rtt = (datetime.now() - tstart).total_seconds() * 1000
-    #     pps = 1000 * nrcvd / rtt
-    #     self.log.debug('sent: %d, received: %d (%d ms, %d p/s)', nsent, nrcvd, rtt, pps)
-    #     tag = None
-    #     for arg in self.args:
-    #         if arg.upper().startswith('PRINT'):
-    #             _, tag = tuple(arg.split('=')) if '=' in arg else (None, 'replay')
-    #     if tag:
-    #         self.log.info('[ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d',
-    #                       tag.ljust(11), pps, rtt, nsent, nrcvd)
 
     def __query(self, ctx, tcp=False, choice=None, source=None):
         """
@@ -786,20 +687,6 @@ class Step:
             time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
             time_file.flush()
         os.replace(file_next, file_old)
-
-    # def __assert(self, ctx):
-    #     """ Assert that a passed expression evaluates to True. """
-    #     result = eval(' '.join(self.args), {'SCENARIO': ctx, 'RANGE': ctx.ranges})
-    #     # Evaluate subexpressions for clarity
-    #     subexpr = []
-    #     for expr in self.args:
-    #         try:
-    #             ee = eval(expr, {'SCENARIO': ctx, 'RANGE': ctx.ranges})
-    #             subexpr.append(str(ee))
-    #         except:
-    #             subexpr.append(expr)
-    #     assert result is True, '"%s" assertion fails (%s)' % (
-    #                            ' '.join(self.args), ' '.join(subexpr))
 
 
 class Scenario:
