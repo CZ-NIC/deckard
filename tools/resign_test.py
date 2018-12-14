@@ -71,19 +71,18 @@ class ZoneRecord:
 
 class Key:
     """
-    Represenatin of a DNS record
+    Represenatin of a DNS key
 
     Attributes:
         algorithm (int) The algorithm used for the key
-        tag (str)       The key tag
-        domain (str)    Domain the key belongs to
-        flags (int)     The key flags
-        zone_records(list of ZoneRecords)
-                        Records signed by this key
-        newkeytag (str) Tag of the key replacing this one
-        filename (str)  File with the key replacing this one
-        origkey (str)   The original key
-        newkey (str)    The replacing key
+        tag (str)                   The key tag
+        domain (str)                Domain the key belongs to
+        flags (int)                 The key flags
+        zone_records([ZoneRecord])  Records signed by this key
+        newkeytag (str)             Tag of the key replacing this one
+        filename (str)              File with the key replacing this one
+        origkey (str)               The original key
+        newkey (str)                The replacing key
     """
 
     def __init__(self, key, tag, domain, origstring):
@@ -111,11 +110,15 @@ class Key:
         If the key is not in exist_keys, generate a new key with the same
         algortithm, flags and domain as self using dnssec-keygen.
 
+
+        Parameters:
+            exist_keys([str])      files with keys that should not be generated again
+
         Sets self.filename - name of the keyfile
              self.newkeytag - tag of the key.
         """
 
-        # Save existing key
+        # Load existing key
         if exist_keys:
             for key in exist_keys:
                 tag = key.split('+')[-1][:-4]
@@ -154,6 +157,16 @@ class Key:
 
 
 class ReplacedSignature:
+    """
+    Represenatin of a replaced signature
+
+    Attributes:
+        domain(str)     signed domain
+        rrtype(str)     signed RR type
+        key(Key)        key signing this
+        original(str)   original signature
+        new(str)        new signature
+    """
     def __init__(self, domain, key, rrtype, original):
         self.domain = domain
         self.rrtype = rrtype
@@ -163,6 +176,14 @@ class ReplacedSignature:
 
 
 class ReplacedDS:
+    """
+    Represenatin of a replaced DS record
+
+    Attributes:
+        domain(str)     domain the DS belongs to
+        original(str)   original DS record data
+        new(str)        new DS record data
+    """
     def __init__(self, domain, original):
         self.domain = domain
         self.original = original
@@ -170,15 +191,28 @@ class ReplacedDS:
 
 
 class Zone:
+    """
+    Representation of a DNS zone
+
+    Attributes:
+        domain(str)             zone domain
+        records([ZoneRecord])   records in the zone
+        keyfiles([str])         files with keys signing the zone
+        signed(bool)            the zone is already resigned
+    """
+
     def __init__(self, key):
         self.domain = key.domain
         self.records = key.zone_records
         self.keyfiles = [key.filename]
         self.signed = False
 
-    def addkey(self, key):
+    def add_key(self, key):
         """
         Add another key to existing zone
+
+        Parameters:
+            key(Key)    key to add
         """
         self.records = self.records + key.zone_records
         self.keyfiles.append(key.filename)
@@ -253,8 +287,15 @@ class Zone:
 
 def create_new_record(domain, rrtype):
     """
-    Return record with example rdata for given domain and RR type.
+    Create record with example rdata for given domain and RR type.
     For unknown RR type return None.
+
+    Parameters:
+        domain(str)     domain of the record
+        rrtype(str)     RR type of the record
+
+    Return:
+        ZoneRecord object with example data
     """
     data = {
         "A": "1.1.1.1",
@@ -490,7 +531,7 @@ def make_zones(keys):
     zones = {}
     for key in keys:
         if key.domain in zones:
-            zones[key.domain].addkey(key)
+            zones[key.domain].add_key(key)
         else:
             zones[key.domain] = Zone(key)
     return zones
@@ -855,8 +896,3 @@ def main():
 
 
 main()
-
-
-# TODO: Případy, kde nefunguje
-#   - upravené podpisy (např. val_cname_new_signer.rpl, val_minimal*.rpl)
-#   - ...
