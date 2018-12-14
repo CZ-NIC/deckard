@@ -698,6 +698,10 @@ def replace(test, replaced_rrsigs, replaced_dss, keys):
     with fileinput.FileInput(test, inplace=True, backup='.bak') as file:
         for line in file:
             try:
+                # Disable query-minimization
+                if line.split()[0] == "CONFIG_END":
+                    print("query-minimization: off")
+
                 # Change test timestamp to actual time
                 if line.split()[0] == "val-override-date:":
                     line = "val-override-date: \"" +\
