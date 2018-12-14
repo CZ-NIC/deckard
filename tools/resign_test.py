@@ -408,9 +408,8 @@ def parse_test(test):
     return config, node
 
 
-def find_keys(node):
+def find_keys(node, keys):
     """ Find all the keys used in the test."""
-    keys = {}
     for entry in node.match("/scenario/range/entry"):
         records = list(entry.match("/section/answer/record"))
         records.extend(list(entry.match("/section/authority/record")))
@@ -468,6 +467,7 @@ def find_trust_anchors(config):
                         used in trust anchors.
     """
     replaced_dss = []
+    keys = {}
     trust_anchors = []
     for line in config:
         if line[0] == "trust-anchor":
@@ -480,9 +480,19 @@ def find_trust_anchors(config):
                 replaced_dss.append(ReplacedDS(ta_split[0],
                                                ta_split[ds_index + 1]))
             except ValueError:
-                pass
+                try:
+                    dnskey_index = trust_anchor.split().index("DNSKEY")
+                    ta_split = trust_anchor.split(maxsplit=dnskey_index + 1)
+                    domain = ta_split[0]
+                    data = ta_split[ds_index + 1]
+                    dnskey = dns.rrset.from_text(domain, 300, 1, dns.rdatatype.DNSKEY, data)
+                    keytag = key_tag(dnskey.items[0])
+                    keyindex = keytag + domain
+                    keys[keyindex] = Key(dnskey.items[0], keytag, domain, data)
+                except ValueError:
+                    pass
             trust_anchors.append(trust_anchor)
-    return trust_anchors, replaced_dss
+    return trust_anchors, replaced_dss, keys
 
 
 def find_signed_records(node, keys):
@@ -744,8 +754,8 @@ def resign_test(test, exist_keys, interactive):
     config, node = parse_test(test)
 
     # Find keys and records to be changed
-    keys = find_keys(node)
-    trust_anchors, replaced_dss = find_trust_anchors(config)
+    trust_anchors, replaced_dss, keys = find_trust_anchors(config)
+    keys = find_keys(node, keys)
     keys, replaced_rrsigs, scen_replaced_dss =\
         find_signed_records(node, keys)
     replaced_dss = replaced_dss + scen_replaced_dss
