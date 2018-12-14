@@ -96,6 +96,8 @@ class Key:
             origstring (str)    The original key
         """
         self.algorithm = key.algorithm
+        if self.algorithm == 3:
+            self.algorithm = 7
         self.tag = tag
         self.domain = domain
         self.flags = key.flags
