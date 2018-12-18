@@ -23,6 +23,8 @@ def recvfrom_blob(stream: socket.socket) -> Tuple[bytes, str]:
     if stream.type & socket.SOCK_DGRAM:
         data, addr = stream.recvfrom(RECIEVE_MESSAGE_SIZE)
     elif stream.type & socket.SOCK_STREAM:
+        # First 2 bytes of TCP packet are the size of the message
+        # See https://tools.ietf.org/html/rfc1035#section-4.2.2
         data = stream.recv(2)
         if not data:
             raise OSError()
