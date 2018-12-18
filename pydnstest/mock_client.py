@@ -11,40 +11,38 @@ import dns.message
 
 
 SOCKET_OPERATION_TIMEOUT = 3
+RECIEVE_MESSAGE_SIZE = 2**16-1
+THROTTLE_BY = 0.1
 
 
-def recvfrom_msg(stream: socket.socket,
-                 raw: bool = False) ->Tuple[Union[bytes, dns.message.Message], str]:
+def recvfrom_blob(stream: socket.socket) -> Tuple[bytes, str]:
     """
     Receive DNS message from TCP/UDP socket.
-
-    Returns:
-        if raw == False: (DNS message object, peer address)
-        if raw == True: (blob, peer address)
     """
     if stream.type & socket.SOCK_DGRAM:
-        data, addr = stream.recvfrom(4096)
+        data, addr = stream.recvfrom(RECIEVE_MESSAGE_SIZE)
     elif stream.type & socket.SOCK_STREAM:
         data = stream.recv(2)
         if not data:
-            return None, None
+            raise OSError()
         msg_len = struct.unpack_from("!H", data)[0]
         data = b""
         received = 0
         while received < msg_len:
-            next_chunk = stream.recv(4096)
+            next_chunk = stream.recv(RECIEVE_MESSAGE_SIZE)
             if not next_chunk:
-                return None, None
+                raise OSError()
             data += next_chunk
             received += len(next_chunk)
         addr = stream.getpeername()[0]
     else:
         raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    if raw:
-        return data, addr
-    else:
-        msg = dns.message.from_wire(data, one_rr_per_rrset=True)
-        return msg, addr
+    return data, addr
+
+def recvfrom_msg(stream: socket.socket) -> Tuple[dns.message.Message, str]:
+    data, addr = recvfrom_blob(stream)
+    msg = dns.message.from_wire(data, one_rr_per_rrset=True)
+    return msg, addr
 
 
 def sendto_msg(stream: socket.socket, message: bytes, addr: Optional[str] = None) -> None:
@@ -97,10 +95,10 @@ def send_query(sock: socket.socket, query: Union[dns.message.Message, bytes]) ->
 def get_answer(sock: socket.socket) -> bytes:
     tstart = datetime.now()
     while True:
-        if (datetime.now() - tstart).total_seconds() > 5:
+        if (datetime.now() - tstart).total_seconds() > SOCKET_OPERATION_TIMEOUT:
             raise RuntimeError("Server took too long to respond")
         try:
-            answer, _ = recvfrom_msg(sock, True)
+            answer, _ = recvfrom_blob(sock)
             break
         except OSError as ex:
             if ex.errno == errno.ENOBUFS:
