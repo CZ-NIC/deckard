@@ -105,6 +105,8 @@ def get_answer(sock: socket.socket) -> bytes:
         except OSError as ex:
             if ex.errno == errno.ENOBUFS:
                 time.sleep(0.1)
+            else:
+                raise
     return answer
 
 
