@@ -29,10 +29,14 @@ modified_tests = [line.strip() for line in open(sys.argv[3]).readlines()]
 
 test_diffs = parse_junit_xml(old) ^ parse_junit_xml(new)
 
-print(test_diffs)
-
 errorneous_rpls = [diff[1] for diff in test_diffs
                    if diff[1] not in modified_tests]
+
+errorneous_diff = [diff for diff in test_diffs
+                   if diff[1] not in modified_tests]
+
+print(errorneous_diff)
+
 if errorneous_rpls:
     print('FAIL! Following tests changed their result without test modification:')
     for rpl in sorted(set(errorneous_rpls)):
