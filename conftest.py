@@ -134,7 +134,7 @@ def pytest_generate_tests(metafunc):
         max_retries = metafunc.config.option.retries
         if max_retries is None:
             max_retries = 3
-        metafunc.parametrize("max_retries", [max_retries], ids=str)
+        metafunc.parametrize("max_retries", [max_retries], ids=lambda id : "max-retries-"+str(id))
 
 
 def check_log_level_xdist(level):
