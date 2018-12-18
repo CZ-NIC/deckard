@@ -37,13 +37,14 @@ def recv_n_bytes_from_tcp(stream: socket.socket, n: int, deadline: float) -> byt
     return data
 
 
-def recvfrom_blob(sock: socket.socket) -> Tuple[bytes, str]:
+def recvfrom_blob(sock: socket.socket,
+                  timeout: int = SOCKET_OPERATION_TIMEOUT) -> Tuple[bytes, str]:
     """
     Receive DNS message from TCP/UDP socket.
     """
 
     # deadline is always time.monotonic
-    deadline = time.monotonic() + SOCKET_OPERATION_TIMEOUT
+    deadline = time.monotonic() + timeout
 
     while True:
         try:
@@ -67,8 +68,9 @@ def recvfrom_blob(sock: socket.socket) -> Tuple[bytes, str]:
                 raise
 
 
-def recvfrom_msg(sock: socket.socket) -> Tuple[dns.message.Message, str]:
-    data, addr = recvfrom_blob(sock)
+def recvfrom_msg(sock: socket.socket,
+                 timeout: int = SOCKET_OPERATION_TIMEOUT) -> Tuple[dns.message.Message, str]:
+    data, addr = recvfrom_blob(sock, timeout=timeout)
     msg = dns.message.from_wire(data, one_rr_per_rrset=True)
     return msg, addr
 
@@ -118,11 +120,12 @@ def send_query(sock: socket.socket, query: Union[dns.message.Message, bytes]) ->
                 raise
 
 
-def get_answer(sock: socket.socket) -> bytes:
+def get_answer(sock: socket.socket, timeout: int = SOCKET_OPERATION_TIMEOUT) -> bytes:
     """ Compatibility function """
-    answer, _ = recvfrom_blob(sock)
+    answer, _ = recvfrom_blob(sock, timeout=timeout)
     return answer
 
 
-def get_dns_message(sock: socket.socket) -> dns.message.Message:
-    return dns.message.from_wire(get_answer(sock))
+def get_dns_message(sock: socket.socket,
+                    timeout: int = SOCKET_OPERATION_TIMEOUT) -> dns.message.Message:
+    return dns.message.from_wire(get_answer(sock, timeout=timeout))
