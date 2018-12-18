@@ -28,6 +28,9 @@ old = sys.argv[2]
 modified_tests = [line.strip() for line in open(sys.argv[3]).readlines()]
 
 test_diffs = parse_junit_xml(old) ^ parse_junit_xml(new)
+
+print(test_diffs)
+
 errorneous_rpls = [diff[1] for diff in test_diffs
                    if diff[1] not in modified_tests]
 if errorneous_rpls:
