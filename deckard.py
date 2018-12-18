@@ -26,7 +26,7 @@ class DeckardUnderLoadError(Exception):
     pass
 
 
-class IfaceManager:
+class IfaceManager(object):
     """
     Network interface allocation manager
 
@@ -250,7 +250,7 @@ def run_daemon(cfg, environ):
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', args)
     try:
         proc = subprocess.Popen(args, stdout=daemon_log_file, stderr=subprocess.STDOUT,
-                                cwd=cfg['dir'], env=environ, start_new_session=True)
+                                cwd=cfg['dir'], preexec_fn=os.setsid, env=environ)
     except subprocess.CalledProcessError:
         logger = logging.getLogger('deckard.daemon_log.%s' % name)
         logger.exception("Can't start '%s'", args)
@@ -261,13 +261,9 @@ def run_daemon(cfg, environ):
 def conncheck_daemon(process, cfg, sockfamily):
     """Wait until the server accepts TCP clients"""
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
-    tstart = datetime.now()
     while True:
         time.sleep(0.1)
-        if (datetime.now() - tstart).total_seconds() > 5:
-            raise RuntimeError("Server took too long to respond")
-        # Check if the process is running
-        if process.poll() is not None:
+        if process.poll():
             msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['dir'])
             logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
             logger.critical(msg)
@@ -308,7 +304,7 @@ def process_file(path, qmin, prog_cfgs):
                 'test working directory %s', tmpdir)
         else:
             shutil.rmtree(tmpdir)
-    except Exception:
+    except:
         logging.getLogger('deckard.hint').error(
             'test failed, inspect working directory %s', tmpdir)
         raise
@@ -325,35 +321,35 @@ def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
         daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
         try:
             conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
-        except:  # noqa  -- bare except might be valid here?
+        except:
             daemon_proc.terminate()
             raise
     return daemons
 
 
 def check_for_icmp():
-        """ Checks Deckards's PCAP for ICMP packets """
-        # Deckard's responses to resolvers might be delayed due to load which
-        # leads the resolver to close the port and to the test failing in the
-        # end. We partially detect these by checking the PCAP for ICMP packets.
-        path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
-        udp_seen = False
-        with open(path, "rb") as f:
-            pcap = dpkt.pcap.Reader(f)
-            for _, packet in pcap:
-                try:
-                    ip = dpkt.ip.IP(packet)
-                except dpkt.dpkt.UnpackError:
-                    ip = dpkt.ip6.IP6(packet)
-                if isinstance(ip.data, dpkt.udp.UDP):
-                    udp_seen = True
+    """ Checks Deckards's PCAP for ICMP packets """
+    # Deckard's responses to resolvers might be delayed due to load which
+    # leads the resolver to close the port and to the test failing in the
+    # end. We partially detect these by checking the PCAP for ICMP packets.
+    path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
+    udp_seen = False
+    with open(path, "rb") as f:
+        pcap = dpkt.pcap.Reader(f)
+        for _, packet in pcap:
+            try:
+                ip = dpkt.ip.IP(packet)
+            except dpkt.dpkt.UnpackError:
+                ip = dpkt.ip6.IP6(packet)
+            if isinstance(ip.data, dpkt.udp.UDP):
+                udp_seen = True
 
-                if udp_seen:
-                    if isinstance(ip.data, dpkt.icmp.ICMP) or isinstance(ip.data, dpkt.icmp6.ICMP6):
-                        raise DeckardUnderLoadError("Deckard is under load. "
-                                                    "Other errors might be false negatives. "
-                                                    "Consider retrying the job later.")
-            return False
+            if udp_seen:
+                if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
+                    raise DeckardUnderLoadError("Deckard is under load. "
+                                                "Other errors might be false negatives. "
+                                                "Consider retrying the job later.")
+        return False
 
 
 def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
