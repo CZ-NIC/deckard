@@ -10,6 +10,9 @@ from typing import Optional, Tuple, Union
 import dns.message
 
 
+SOCKET_OPERATION_TIMEOUT = 3
+
+
 def recvfrom_msg(stream, raw=False):
     """
     Receive DNS message from TCP/UDP socket.
@@ -56,7 +59,7 @@ def sendto_msg(stream: socket.socket, message: bytes, addr: Optional[str] = None
             stream.send(data)
         else:
             raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % stream.type)
-    except socket.error as ex:
+    except OSError as ex:
         if ex.errno != errno.ECONNREFUSED:  # TODO Investigate how this can happen
             raise
 
@@ -67,7 +70,7 @@ def setup_socket(destination: Tuple[str, int], source=None, tcp=False) -> socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     if tcp:
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
-    sock.settimeout(3)
+    sock.settimeout(SOCKET_OPERATION_TIMEOUT)
     if source:
         sock.bind((source, 0))
     sock.connect(destination)
@@ -84,6 +87,8 @@ def send_query(sock: socket.socket, query: Union[dns.message.Message, bytes]) ->
             # ENOBUFS, throttle sending
             if ex.errno == errno.ENOBUFS:
                 time.sleep(0.1)
+            else:
+                raise
 
 
 def get_answer(sock: socket.socket) -> bytes:
