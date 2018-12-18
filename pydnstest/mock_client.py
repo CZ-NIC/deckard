@@ -13,7 +13,8 @@ import dns.message
 SOCKET_OPERATION_TIMEOUT = 3
 
 
-def recvfrom_msg(stream, raw=False):
+def recvfrom_msg(stream: socket.socket,
+                 raw: bool = False) ->Tuple[Union[bytes, dns.message.Message], str]:
     """
     Receive DNS message from TCP/UDP socket.
 
@@ -64,7 +65,9 @@ def sendto_msg(stream: socket.socket, message: bytes, addr: Optional[str] = None
             raise
 
 
-def setup_socket(destination: Tuple[str, int], source=None, tcp=False) -> socket.socket:
+def setup_socket(destination: Tuple[str, int],
+                 source: str = None,
+                 tcp: bool = False) -> socket.socket:
     family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
