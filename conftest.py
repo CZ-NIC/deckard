@@ -136,6 +136,7 @@ def pytest_generate_tests(metafunc):
             max_retries = 3
         metafunc.parametrize("max_retries", [max_retries], ids=str)
 
+
 def check_log_level_xdist(level):
     if level < logging.ERROR:
         pytest.exit("Advanced logging not available while running with xdist "
