@@ -8,6 +8,7 @@ import time
 from typing import Optional, Tuple, Union
 
 import dns.message
+import dns.inet
 
 
 SOCKET_OPERATION_TIMEOUT = 3

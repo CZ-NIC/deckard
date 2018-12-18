@@ -579,7 +579,9 @@ class Step:
 
         # Send query and wait for answer
         answer = None
-        sock = pydnstest.mock_client.setup_socket(ctx.client[choice], source, tcp)
+        sock = pydnstest.mock_client.setup_socket(ctx.client[choice][0],
+                                                  ctx.client[choice][1],
+                                                  source, tcp)
         pydnstest.mock_client.send_query(sock, data_to_wire)
         if self.data[0].raw_data is None:
             answer = pydnstest.mock_client.get_answer(sock)
