@@ -7,6 +7,7 @@ import time
 from typing import Optional, Tuple, Union
 
 import dns.message
+import dns.inet
 
 
 SOCKET_OPERATION_TIMEOUT = 5
@@ -68,10 +69,11 @@ def sendto_msg(stream: socket.socket, message: bytes, addr: Optional[str] = None
             raise
 
 
-def setup_socket(destination: Tuple[str, int],
+def setup_socket(address: str,
+                 port: int,
                  source: str = None,
                  tcp: bool = False) -> socket.socket:
-    family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
+    family = dns.inet.af_for_address(address)
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     if tcp:
@@ -79,7 +81,7 @@ def setup_socket(destination: Tuple[str, int],
     sock.settimeout(SOCKET_OPERATION_TIMEOUT)
     if source:
         sock.bind((source, 0))
-    sock.connect(destination)
+    sock.connect((address, port))
     return sock
 
 
