@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime
 import errno
+import ipaddress
 import logging
 import logging.config
 import os
@@ -9,6 +10,7 @@ import socket
 import subprocess
 import tempfile
 import time
+from typing import Set  # noqa
 
 import dpkt
 import jinja2
@@ -356,6 +358,39 @@ def check_for_icmp():
         return False
 
 
+def check_for_reply_steps(case: scenario.Scenario) -> bool:
+    return any(s.type == "REPLY" for s in case.steps)
+
+
+def check_for_unknown_servers(case: scenario.Scenario, daemon: dict) -> None:
+    """ Checks Deckards's PCAP for packets going to servers not present in scenario """
+    path = os.path.join(daemon["cfg"]["dir"], "pcap")
+    asked_servers = set()
+    with open(path, "rb") as f:
+        pcap = dpkt.pcap.Reader(f)
+        for _, packet in pcap:
+            try:
+                ip = dpkt.ip.IP(packet)
+            except dpkt.dpkt.UnpackError:
+                ip = dpkt.ip6.IP6(packet)
+            # pylint: disable=no-member
+            dest = ipaddress.ip_address(int.from_bytes(ip.dst, byteorder="big"))
+            # pylint: enable=no-member
+            if dest.is_global:
+                asked_servers.add(dest)
+
+    scenario_ips = set()  # type: Set[str]
+    for r in case.ranges:
+        scenario_ips |= r.addresses
+
+    scenario_servers = {ipaddress.ip_address(ip) for ip in scenario_ips}
+
+    if not scenario_servers >= asked_servers:
+        if not check_for_reply_steps(case):
+            raise RuntimeError("Binary in test asked an IP address not present in scenario %s"
+                               % (asked_servers - scenario_servers))
+
+
 def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
     server = testserver.TestServer(case, root_addr, addr_family)
@@ -379,6 +414,12 @@ def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
             if daemon['proc'].returncode != 0 and not ignore_exit:
                 raise ValueError('process %s terminated with return code %s'
                                  % (daemon['cfg']['name'], daemon['proc'].returncode))
+            check_for_unknown_servers(case, daemon)
+
+    if check_for_reply_steps(case):
+        logging.warning("RPL has REPLY steps in it. These are known to fail randomly. \
+Errors might be false positives.")
+
     # Do not clear files if the server crashed (for analysis)
     if server.undefined_answers > 0:
         if not check_for_icmp():
