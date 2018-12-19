@@ -19,7 +19,7 @@ def send_and_check(question: Union[dns.message.Message, bytes],
     Returns True on success, raises an exceptions on failure.
     """
 
-    sock = pydnstest.mock_client.setup_socket((str(server), port), source=source, tcp=tcp)
+    sock = pydnstest.mock_client.setup_socket(str(server), port, source=source, tcp=tcp)
     pydnstest.mock_client.send_query(sock, question)
     answer = pydnstest.mock_client.get_dns_message(sock)
 
