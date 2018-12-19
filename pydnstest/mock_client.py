@@ -16,6 +16,18 @@ RECIEVE_MESSAGE_SIZE = 2**16-1
 THROTTLE_BY = 0.1
 
 
+def recv_n_bytes_from_tcp(stream: socket.socket, n: int) -> bytes:
+    data = b""
+    while n != 0:
+        chunk = stream.recv(n)
+        # Empty bytes from socket.recv mean that socket is closed
+        if not chunk:
+            raise OSError()
+        n -= len(chunk)
+        data += chunk
+    return data
+
+
 def recvfrom_blob(stream: socket.socket) -> Tuple[bytes, str]:
     """
     Receive DNS message from TCP/UDP socket.
@@ -25,21 +37,12 @@ def recvfrom_blob(stream: socket.socket) -> Tuple[bytes, str]:
     elif stream.type & socket.SOCK_STREAM:
         # First 2 bytes of TCP packet are the size of the message
         # See https://tools.ietf.org/html/rfc1035#section-4.2.2
-        data = stream.recv(2)
-        if not data:
-            raise OSError()
+        data = recv_n_bytes_from_tcp(stream, 2)
         msg_len = struct.unpack_from("!H", data)[0]
-        data = b""
-        received = 0
-        while received < msg_len:
-            next_chunk = stream.recv(RECIEVE_MESSAGE_SIZE)
-            if not next_chunk:
-                raise OSError()
-            data += next_chunk
-            received += len(next_chunk)
+        data = recv_n_bytes_from_tcp(stream, msg_len)
         addr = stream.getpeername()[0]
     else:
-        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
+        raise NotImplementedError("[recvfrom_blob]: unknown socket type '%i'" % stream.type)
     return data, addr
 
 
