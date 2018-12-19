@@ -16,52 +16,76 @@ RECEIVE_MESSAGE_SIZE = 2**16-1
 THROTTLE_BY = 0.1
 
 
-def recvfrom_blob(stream: socket.socket) -> Tuple[bytes, str]:
+def handle_socket_timeout(sock: socket.socket, deadline: float):
+    # deadline is always time.monotonic
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise RuntimeError("Server took too long to respond")
+    sock.settimeout(remaining)
+
+
+def recv_n_bytes_from_tcp(stream: socket.socket, n: int, deadline: float) -> bytes:
+    # deadline is always time.monotonic
+    data = b""
+    while n != 0:
+        handle_socket_timeout(stream, deadline)
+        chunk = stream.recv(n)
+        # Empty bytes from socket.recv mean that socket is closed
+        if not chunk:
+            raise OSError()
+        n -= len(chunk)
+        data += chunk
+    return data
+
+
+def recvfrom_blob(sock: socket.socket) -> Tuple[bytes, str]:
     """
     Receive DNS message from TCP/UDP socket.
     """
-    if stream.type & socket.SOCK_DGRAM:
-        data, addr = stream.recvfrom(RECEIVE_MESSAGE_SIZE)
-    elif stream.type & socket.SOCK_STREAM:
-        # First 2 bytes of TCP packet are the size of the message
-        # See https://tools.ietf.org/html/rfc1035#section-4.2.2
-        data = stream.recv(2)
-        if not data:
-            raise OSError()
-        msg_len = struct.unpack_from("!H", data)[0]
-        data = b""
-        received = 0
-        while received < msg_len:
-            next_chunk = stream.recv(RECIEVE_MESSAGE_SIZE)
-            if not next_chunk:
-                raise OSError()
-            data += next_chunk
-            received += len(next_chunk)
-        addr = stream.getpeername()[0]
-    else:
-        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    return data, addr
 
+    # deadline is always time.monotonic
+    deadline = time.monotonic() + SOCKET_OPERATION_TIMEOUT
 
-def recvfrom_msg(stream: socket.socket) -> Tuple[dns.message.Message, str]:
-    data, addr = recvfrom_blob(stream)
+    while True:
+        try:
+            if sock.type & socket.SOCK_DGRAM:
+                handle_socket_timeout(sock, deadline)
+                data, addr = sock.recvfrom(RECEIVE_MESSAGE_SIZE)
+            elif sock.type & socket.SOCK_STREAM:
+                # First 2 bytes of TCP packet are the size of the message
+                # See https://tools.ietf.org/html/rfc1035#section-4.2.2
+                data = recv_n_bytes_from_tcp(sock, 2, deadline)
+                msg_len = struct.unpack_from("!H", data)[0]
+                data = recv_n_bytes_from_tcp(sock, msg_len, deadline)
+                addr = sock.getpeername()[0]
+            else:
+                raise NotImplementedError("[recvfrom_blob]: unknown socket type '%i'" % sock.type)
+            return data, addr
+        except OSError as ex:
+            if ex.errno == errno.ENOBUFS:
+                time.sleep(0.1)
+            else:
+                raise
+
+def recvfrom_msg(sock: socket.socket) -> Tuple[dns.message.Message, str]:
+    data, addr = recvfrom_blob(sock)
     msg = dns.message.from_wire(data, one_rr_per_rrset=True)
     return msg, addr
 
 
-def sendto_msg(stream: socket.socket, message: bytes, addr: Optional[str] = None) -> None:
+def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) -> None:
     """ Send DNS/UDP/TCP message. """
     try:
-        if stream.type & socket.SOCK_DGRAM:
+        if sock.type & socket.SOCK_DGRAM:
             if addr is None:
-                stream.send(message)
+                sock.send(message)
             else:
-                stream.sendto(message, addr)
-        elif stream.type & socket.SOCK_STREAM:
+                sock.sendto(message, addr)
+        elif sock.type & socket.SOCK_STREAM:
             data = struct.pack("!H", len(message)) + message
-            stream.send(data)
+            sock.send(data)
         else:
-            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % stream.type)
+            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % sock.type)
     except OSError as ex:
         if ex.errno != errno.ECONNREFUSED:  # TODO Investigate how this can happen
             raise
@@ -98,18 +122,8 @@ def send_query(sock: socket.socket, query: Union[dns.message.Message, bytes]) ->
 
 
 def get_answer(sock: socket.socket) -> bytes:
-    tstart = datetime.now()
-    while True:
-        if (datetime.now() - tstart).total_seconds() > SOCKET_OPERATION_TIMEOUT:
-            raise RuntimeError("Server took too long to respond")
-        try:
-            answer, _ = recvfrom_blob(sock)
-            break
-        except OSError as ex:
-            if ex.errno == errno.ENOBUFS:
-                time.sleep(0.1)
-            else:
-                raise
+    """ Compatibility function """
+    answer, _ = recvfrom_blob(sock)
     return answer
 
 
