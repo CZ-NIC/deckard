@@ -4,6 +4,13 @@ CONFIG_END
 
 SCENARIO_BEGIN raw queries from inbound.
 
+; dummy range with addresses mentioned in REPLY steps
+RANGE_BEGIN 1 1
+	ADDRESS 168.192.2.2
+	ADDRESS 193.0.14.129
+RANGE_END
+
+
 STEP 10 QUERY
 ENTRY_BEGIN
 RAW
