@@ -7,6 +7,13 @@ CONFIG_END
 
 SCENARIO_BEGIN Test TCP failover when reply contains TC=1.
 
+; dummy range with addresses mentioned in REPLY steps
+RANGE_BEGIN 1 1
+	ADDRESS 168.192.2.2
+	ADDRESS 168.192.3.3
+	ADDRESS 193.0.14.129
+RANGE_END
+
 STEP 10 QUERY
 ENTRY_BEGIN
 REPLY RD
