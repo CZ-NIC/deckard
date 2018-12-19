@@ -138,7 +138,6 @@ SECTION QUESTION
 root-servers.net. IN DS
 SECTION ANSWER
 SECTION AUTHORITY
-net. IN SOA a.gtld-servers.net. hostmaster. 2 3 4 5 6
 SECTION ADDITIONAL
 ENTRY_END
 
