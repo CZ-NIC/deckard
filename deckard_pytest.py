@@ -1,7 +1,9 @@
 import logging
 import os
 import subprocess
+import random
 import sys
+import time
 
 import pytest
 
@@ -33,24 +35,33 @@ logging.getLogger("augeas").setLevel(logging.ERROR)
 check_platform()
 
 
-def run_test(path, qmin, config):
+def run_test(path, qmin, config, max_retries, retries=0):
     set_coverage_env(path, qmin)
     try:
         del os.environ["SOCKET_WRAPPER_DIR"]
     except KeyError:
         pass
-    deckard.process_file(path, qmin, config)
+    try:
+        deckard.process_file(path, qmin, config)
+    except deckard.DeckardUnderLoadError as e:
+        if retries < max_retries:
+            logging.error("Deckard under load. Retrying…")
+            # Exponential backoff
+            time.sleep((2 ** retries) + random.random())
+            run_test(path, qmin, config, max_retries, retries + 1)
+        else:
+            raise e
 
 
-def test_passes_qmin_on(scenario):
+def test_passes_qmin_on(scenario, max_retries):
     if scenario.qmin is True or scenario.qmin is None:
-        run_test(scenario.path, True, scenario.config)
+        run_test(scenario.path, True, scenario.config, max_retries)
     else:
         pytest.skip("Query minimization is off in test config")
 
 
-def test_passes_qmin_off(scenario):
+def test_passes_qmin_off(scenario, max_retries):
     if scenario.qmin is False or scenario.qmin is None:
-        run_test(scenario.path, False, scenario.config)
+        run_test(scenario.path, False, scenario.config, max_retries)
     else:
         pytest.skip("Query minimization is on in test config")

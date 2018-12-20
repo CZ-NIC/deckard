@@ -898,7 +898,7 @@ class Scenario:
             for e in r.stored:
                 if e.mandatory and e.fired == 0:
                     # TODO: cisla radku
-                    raise RuntimeError('Mandatory section at %s not fired' % e.mandatory.span)
+                    raise ValueError('Mandatory section at %s not fired' % e.mandatory.span)
 
 
 def get_next(file_in, skip_empty=True):
