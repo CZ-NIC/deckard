@@ -93,16 +93,12 @@ def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) 
 
 def setup_socket(address: str,
                  port: int,
-                 source: str = None,
                  tcp: bool = False) -> socket.socket:
     family = dns.inet.af_for_address(address)
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     if tcp:
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
     sock.settimeout(SOCKET_OPERATION_TIMEOUT)
-    if source:
-        sock.bind((source, 0))
     sock.connect((address, port))
     return sock
 

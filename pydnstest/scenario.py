@@ -526,8 +526,8 @@ class Step:
             self.log.info('')
             self.log.debug(self.data[0].message.to_text())
             # Parse QUERY-specific parameters
-            choice, tcp, source = None, False, None
-            return self.__query(ctx, tcp=tcp, choice=choice, source=source)
+            choice, tcp = None, False
+            return self.__query(ctx, tcp=tcp, choice=choice)
         elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
             return None
@@ -557,7 +557,7 @@ class Step:
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __query(self, ctx, tcp=False, choice=None, source=None):
+    def __query(self, ctx, tcp=False, choice=None):
         """
         Send query and wait for an answer (if the query is not RAW).
 
@@ -581,7 +581,7 @@ class Step:
         answer = None
         sock = pydnstest.mock_client.setup_socket(ctx.client[choice][0],
                                                   ctx.client[choice][1],
-                                                  source, tcp)
+                                                  tcp)
         pydnstest.mock_client.send_query(sock, data_to_wire)
         if self.data[0].raw_data is None:
             answer = pydnstest.mock_client.get_answer(sock)
