@@ -351,7 +351,7 @@ def check_for_icmp():
                 udp_seen = True
 
             if udp_seen:
-                if isinstance(ip.data, dpkt.icmp.ICMP, dpkt.icmp6.ICMP6):
+                if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
                     raise DeckardUnderLoadError("Deckard is under load. "
                                                 "Other errors might be false negatives. "
                                                 "Consider retrying the job later.")
