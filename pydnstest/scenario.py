@@ -209,6 +209,8 @@ class DNSReplyRaw(DNSBlob):
         assert wire is not None
         self.wire = wire
         if copy_id:
+            if query is None:
+                raise ValueError("query must be provided to adjust copy_id")
             self.adjust_reply(query, copy_id)
 
     def adjust_reply(
