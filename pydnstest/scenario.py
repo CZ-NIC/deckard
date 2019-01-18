@@ -1,15 +1,12 @@
-# FIXME pylint: disable=too-many-lines
 from abc import ABC
 import binascii
 import calendar
 from datetime import datetime
-import errno
 import logging
 import os
 import posixpath
 import random
 import socket
-import string
 import struct
 import time
 from typing import Optional
@@ -23,6 +20,7 @@ import dns.tsigkeyring
 
 import pydnstest.augwrap
 import pydnstest.matchpart
+import pydnstest.mock_client
 
 
 def str2bool(v):
@@ -33,109 +31,6 @@ def str2bool(v):
 # Global statistics
 g_rtt = 0.0
 g_nqueries = 0
-
-
-def recvfrom_msg(stream, raw=False):
-    """
-    Receive DNS message from TCP/UDP socket.
-
-    Returns:
-        if raw == False: (DNS message object, peer address)
-        if raw == True: (blob, peer address)
-    """
-    if stream.type & socket.SOCK_DGRAM:
-        data, addr = stream.recvfrom(4096)
-    elif stream.type & socket.SOCK_STREAM:
-        data = stream.recv(2)
-        if not data:
-            return None, None
-        msg_len = struct.unpack_from("!H", data)[0]
-        data = b""
-        received = 0
-        while received < msg_len:
-            next_chunk = stream.recv(4096)
-            if not next_chunk:
-                return None, None
-            data += next_chunk
-            received += len(next_chunk)
-        addr = stream.getpeername()[0]
-    else:
-        raise NotImplementedError("[recvfrom_msg]: unknown socket type '%i'" % stream.type)
-    if raw:
-        return data, addr
-    else:
-        msg = dns.message.from_wire(data, one_rr_per_rrset=True)
-        return msg, addr
-
-
-def sendto_msg(stream, message, addr=None):
-    """ Send DNS/UDP/TCP message. """
-    try:
-        if stream.type & socket.SOCK_DGRAM:
-            if addr is None:
-                stream.send(message)
-            else:
-                stream.sendto(message, addr)
-        elif stream.type & socket.SOCK_STREAM:
-            data = struct.pack("!H", len(message)) + message
-            stream.send(data)
-        else:
-            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % stream.type)
-    except socket.error as ex:
-        if ex.errno != errno.ECONNREFUSED:  # TODO Investigate how this can happen
-            raise
-
-
-def replay_rrs(rrs, nqueries, destination, args=None):
-    """ Replay list of queries and report statistics. """
-    if args is None:
-        args = []
-    navail, queries = len(rrs), []
-    chunksize = 16
-    for i in range(nqueries if 'RAND' in args else navail):
-        rr = rrs[i % navail]
-        name = rr.name
-        if 'RAND' in args:
-            prefix = ''.join([random.choice(string.ascii_letters + string.digits)
-                              for _ in range(8)])
-            name = prefix + '.' + rr.name.to_text()
-        msg = dns.message.make_query(name, rr.rdtype, rr.rdclass)
-        if 'DO' in args:
-            msg.want_dnssec(True)
-        queries.append(msg.to_wire())
-    # Make a UDP connected socket to the destination
-    family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
-    sock = socket.socket(family, socket.SOCK_DGRAM)
-    sock.connect(destination)
-    sock.setblocking(False)
-    # Play the query set
-    # @NOTE: this is only good for relative low-speed replay
-    rcvbuf = bytearray('\x00' * 512)
-    nsent, nrcvd, nwait, navail = 0, 0, 0, len(queries)
-    fdset = [sock]
-    import select
-    while nsent - nwait < nqueries:
-        to_read, to_write, _ = select.select(fdset, fdset if nwait < chunksize else [], [], 0.5)
-        if to_write:
-            try:
-                while nsent < nqueries and nwait < chunksize:
-                    sock.send(queries[nsent % navail])
-                    nwait += 1
-                    nsent += 1
-            except socket.error:
-                pass  # EINVAL
-        if to_read:
-            try:
-                while nwait > 0:
-                    sock.recv_into(rcvbuf)
-                    nwait -= 1
-                    nrcvd += 1
-            except socket.error:
-                pass
-        if not to_write and not to_read:
-            nwait = 0  # Timeout, started dropping packets
-            break
-    return nsent, nrcvd
 
 
 class DNSBlob(ABC):
@@ -260,8 +155,7 @@ class Entry:
         self.fired = 0
 
         # RAW
-        self.raw_data = None  # type: Optional[bytes]
-        self.is_raw_data_entry = self.process_raw()
+        self.raw_data = self.process_raw()
 
         # MATCH
         self.match_fields = self.process_match()
@@ -286,10 +180,9 @@ class Entry:
 
     def process_raw(self):
         try:
-            self.raw_data = binascii.unhexlify(self.node["/raw"].value)
-            return True
+            return binascii.unhexlify(self.node["/raw"].value)
         except KeyError:
-            return False
+            return None
 
     def process_match(self):
         try:
@@ -374,7 +267,7 @@ class Entry:
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
-        if not self.is_raw_data_entry:
+        if self.raw_data is None:
             txt += 'MATCH {0}\n'.format(' '.join(self.match_fields))
         txt += 'ADJUST {0}\n'.format(' '.join(self.adjust_fields))
         txt += 'REPLY {rcode} {flags}\n'.format(
@@ -390,7 +283,7 @@ class Entry:
             for rr in sect:
                 txt += str(rr)
                 txt += '\n'
-        if self.is_raw_data_entry:
+        if self.raw_data is not None:
             txt += 'RAW\n'
             if self.raw_data:
                 txt += binascii.hexlify(self.raw_data)
@@ -459,7 +352,7 @@ class Entry:
                 raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr))
 
     def cmp_raw(self, raw_value):
-        assert self.is_raw_data_entry
+        assert self.raw_data is not None
         expected = None
         if self.raw_data is not None:
             expected = binascii.hexlify(self.raw_data)
@@ -472,7 +365,7 @@ class Entry:
     def reply(self, query) -> Optional[DNSBlob]:
         if 'do_not_answer' in self.adjust_fields:
             return None
-        if self.is_raw_data_entry:
+        if self.raw_data is not None:
             copy_id = 'raw_data' in self.adjust_fields
             assert self.raw_data is not None
             return DNSReplyRaw(self.raw_data, query, copy_id)
@@ -610,20 +503,6 @@ class Step:
         self.pause_if_fail = 0
         self.next_if_fail = -1
 
-        # TODO Parser currently can't parse CHECK_ANSWER args, player doesn't understand them anyway
-        # if type == 'CHECK_ANSWER':
-        #     for arg in extra_args:
-        #         param = arg.split('=')
-        #         try:
-        #             if param[0] == 'REPEAT':
-        #                 self.repeat_if_fail = int(param[1])
-        #             elif param[0] == 'PAUSE':
-        #                 self.pause_if_fail = float(param[1])
-        #             elif param[0] == 'NEXT':
-        #                 self.next_if_fail = int(param[1])
-        #         except Exception as e:
-        #             raise Exception('step %d - wrong %s arg: %s' % (self.id, param[0], str(e)))
-
     def __str__(self):
         txt = '\nSTEP {i} {t}'.format(i=self.id, t=self.type)
         if self.repeat_if_fail:
@@ -649,8 +528,8 @@ class Step:
             self.log.info('')
             self.log.debug(self.data[0].message.to_text())
             # Parse QUERY-specific parameters
-            choice, tcp, source = None, False, None
-            return self.__query(ctx, tcp=tcp, choice=choice, source=source)
+            choice, tcp = None, False
+            return self.__query(ctx, tcp=tcp, choice=choice)
         elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
             return None
@@ -663,16 +542,6 @@ class Step:
         elif self.type == 'REPLY' or self.type == 'MOCK':
             self.log.info('')
             return None
-        # Parser currently doesn't support step types LOG, REPLAY and ASSERT.
-        # No test uses them.
-        # elif self.type == 'LOG':
-        #     if not ctx.log:
-        #         raise Exception('scenario has no log interface')
-        #     return ctx.log.match(self.args)
-        # elif self.type == 'REPLAY':
-        #     self.__replay(ctx)
-        # elif self.type == 'ASSERT':
-        #     self.__assert(ctx)
         else:
             raise NotImplementedError('step %03d type %s unsupported' % (self.id, self.type))
 
@@ -681,7 +550,7 @@ class Step:
         if not self.data:
             raise ValueError("response definition required")
         expected = self.data[0]
-        if expected.is_raw_data_entry is True:
+        if expected.raw_data is not None:
             self.log.debug("raw answer: %s", ctx.last_raw_answer.to_text())
             expected.cmp_raw(ctx.last_raw_answer)
         else:
@@ -690,30 +559,7 @@ class Step:
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    # def __replay(self, ctx, chunksize=8):
-    #     nqueries = len(self.queries)
-    #     if len(self.args) > 0 and self.args[0].isdigit():
-    #         nqueries = int(self.args.pop(0))
-    #     destination = ctx.client[ctx.client.keys()[0]]
-    #     self.log.info('replaying %d queries to %s@%d (%s)',
-    #                   nqueries, destination[0], destination[1], ' '.join(self.args))
-    #     if 'INTENSIFY' in os.environ:
-    #         nqueries *= int(os.environ['INTENSIFY'])
-    #     tstart = datetime.now()
-    #     nsent, nrcvd = replay_rrs(self.queries, nqueries, destination, self.args)
-    #     # Keep/print the statistics
-    #     rtt = (datetime.now() - tstart).total_seconds() * 1000
-    #     pps = 1000 * nrcvd / rtt
-    #     self.log.debug('sent: %d, received: %d (%d ms, %d p/s)', nsent, nrcvd, rtt, pps)
-    #     tag = None
-    #     for arg in self.args:
-    #         if arg.upper().startswith('PRINT'):
-    #             _, tag = tuple(arg.split('=')) if '=' in arg else (None, 'replay')
-    #     if tag:
-    #         self.log.info('[ REPLAY ] test: %s pps: %5d time: %4d sent: %5d received: %5d',
-    #                       tag.ljust(11), pps, rtt, nsent, nrcvd)
-
-    def __query(self, ctx, tcp=False, choice=None, source=None):
+    def __query(self, ctx, tcp=False, choice=None):
         """
         Send query and wait for an answer (if the query is not RAW).
 
@@ -721,7 +567,7 @@ class Step:
         """
         if not self.data:
             raise ValueError("query definition required")
-        if self.data[0].is_raw_data_entry is True:
+        if self.data[0].raw_data is not None:
             data_to_wire = self.data[0].raw_data
         else:
             # Don't use a message copy as the EDNS data portion is not copied.
@@ -730,45 +576,24 @@ class Step:
             choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
             raise ValueError('step %03d invalid QUERY target: %s' % (self.id, choice))
-        # Create socket to test subject
-        sock = None
-        destination = ctx.client[choice]
-        family = socket.AF_INET6 if ':' in destination[0] else socket.AF_INET
-        sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        if tcp:
-            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
-        sock.settimeout(3)
-        if source:
-            sock.bind((source, 0))
-        sock.connect(destination)
-        # Send query to client and wait for response
+
         tstart = datetime.now()
-        while True:
-            try:
-                sendto_msg(sock, data_to_wire)
-                break
-            except OSError as ex:
-                # ENOBUFS, throttle sending
-                if ex.errno == errno.ENOBUFS:
-                    time.sleep(0.1)
-        # Wait for a response for a reasonable time
+
+        # Send query and wait for answer
         answer = None
-        if not self.data[0].is_raw_data_entry:
-            while True:
-                if (datetime.now() - tstart).total_seconds() > 5:
-                    raise RuntimeError("Server took too long to respond")
-                try:
-                    answer, _ = recvfrom_msg(sock, True)
-                    break
-                except OSError as ex:
-                    if ex.errno == errno.ENOBUFS:
-                        time.sleep(0.1)
+        sock = pydnstest.mock_client.setup_socket(ctx.client[choice][0],
+                                                  ctx.client[choice][1],
+                                                  tcp)
+        pydnstest.mock_client.send_query(sock, data_to_wire)
+        if self.data[0].raw_data is None:
+            answer = pydnstest.mock_client.get_answer(sock)
+
         # Track RTT
         rtt = (datetime.now() - tstart).total_seconds() * 1000
         global g_rtt, g_nqueries
         g_nqueries += 1
         g_rtt += rtt
+
         # Remember last answer for checking later
         self.raw_answer = answer
         ctx.last_raw_answer = answer
@@ -790,20 +615,6 @@ class Step:
             time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
             time_file.flush()
         os.replace(file_next, file_old)
-
-    # def __assert(self, ctx):
-    #     """ Assert that a passed expression evaluates to True. """
-    #     result = eval(' '.join(self.args), {'SCENARIO': ctx, 'RANGE': ctx.ranges})
-    #     # Evaluate subexpressions for clarity
-    #     subexpr = []
-    #     for expr in self.args:
-    #         try:
-    #             ee = eval(expr, {'SCENARIO': ctx, 'RANGE': ctx.ranges})
-    #             subexpr.append(str(ee))
-    #         except:
-    #             subexpr.append(expr)
-    #     assert result is True, '"%s" assertion fails (%s)' % (
-    #                            ' '.join(self.args), ' '.join(subexpr))
 
 
 class Scenario:
