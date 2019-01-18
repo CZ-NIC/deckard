@@ -5,7 +5,7 @@
 import posixpath
 import logging
 import os
-import collections
+import collections.abc
 
 from augeas import Augeas
 
@@ -122,7 +122,7 @@ class AugeasWrapper:
             yield AugeasNode(self._aug, matched_path)
 
 
-class AugeasNode(collections.MutableMapping):
+class AugeasNode(collections.abc.MutableMapping):
     """One Augeas tree node with dict-like interface."""
 
     def __init__(self, aug, path):
