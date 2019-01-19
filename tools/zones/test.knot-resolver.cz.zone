@@ -1,0 +1,50 @@
+;; Zone dump (Knot DNS 2.7.5)
+test.knot-resolver.cz.	3600	SOA	dns1.example.com. hostmaster.example.com. 2010111238 21600 3600 604800 86400
+test.knot-resolver.cz.	3600	A	217.31.192.130
+test.knot-resolver.cz.	3600	TXT	"Davku ve me o pln uvitani stari s tvuj neda? Tik kufr u traslo uf tabuli znaky mesity bimbal vyrvat vydelal pobezi zahajil a tajnosti. By 77 dusic ach prazdna kasari k zac platne potiz. O hon 30 otazek jiz post i rad zeleninu vyhrknu bhutanu nezdalo. I tr" "ida, ptat lzes vypadla newton, utal hm je bas samymi u sobe ukaz kazne medove u placeny ke ah jo zpola o ocich. Sul trimesicni kontrolujte v predstirana po nej mit za devetadevadesati eh mi lezu slava vuz v me smery. Tri akt dlazbu dal lamu, kavkam on zas" "luhy, sad muzikant vek. Paty neme radili trunil docist tech obou zari. My ze 11 tlusti jsemvidel. Podivej i prs kralik at ted o vynahradit ti si ma charakterni nehybny tulak poskytl rad! Muz ztuhla, ci ah propatral misce! Slz eh at? Zenou dilo intuici. Le" "su pud povesti, i jamou tej. V az vdanou zrejmo za ctil 81 kolika u ustrnule malicherny holemi nekradla jinych morfia: pocasi poplaseny zpovidat az dne vyjimecna zidovskem stejny sluzek tajemny hlidat u ruzovym pry jestli vyslychalo zem nerozbrecte farare" " strhla v mem tabule pije a odkraglujem otisky nebot. Ex povidani pusta duse eh zvalel, o pak ma bryle luzka: u posluhovi neudela 30 ze ctverce brovninku. 411 se vi rypaje nova to per ba zchoulostivil remenem. Vaze to lujzou styky, te? Ne me by pazeni tro" "ubil i srovnala dejoveho a prvnich me o zime hlasy nevsimnou. Jejim zajiste za porotam valka sekt. Oni vuli co ryb pruvod. Ode jehoz od lasce ve slouzilo co jektal hryzal lamparny. Zvlastnich ne vybil brejlil uz ah? Husa trit mu straze s zivaje abys chute" " pane ci nepochybujte ubiha k babe ach okoli zle okna deji dverim! Vymyslim do falesne. Pokaceneho leti oka krk. Nohy stejny u vykaslu, rinkotem ondyno, laureat z zabije."
+test.knot-resolver.cz.	0	CDNSKEY	257 3 13 xrbuMAmJy3GlxUF46tJgP64cmExKWQBgiRGeLhfub9x3DV69D+2m1zom+CyqHsYYVDIjYOueGzj/8XFucg1bDw==
+test.knot-resolver.cz.	0	CDS	60526 13 2 9E526A3D1D1D3F78BD11ABDCE8DE5A6CF9212CD2575D28FC10EBC046F001AEA8
+test.knot-resolver.cz.	3600	DNSKEY	256 3 13 b5ZQUzN5iD9ercgxPeeEh9qI8UzazMa6vo8GCART4iQNzAcsB6xPYVopHKcjyssHMUiDoQgrjVd6hOLWQqnCtg==
+test.knot-resolver.cz.	3600	DNSKEY	257 3 13 xrbuMAmJy3GlxUF46tJgP64cmExKWQBgiRGeLhfub9x3DV69D+2m1zom+CyqHsYYVDIjYOueGzj/8XFucg1bDw==
+_version.test.knot-resolver.cz.	3600	TXT	"1"
+good-a.test.knot-resolver.cz.	3600	A	217.31.192.130
+nsec.test.knot-resolver.cz.	3600	NS	localhost.
+nsec.test.knot-resolver.cz.	3600	DS	2123 13 2 F23E0FCCCEB3C78BE65556BA219EA31B94F705D752878F86F0D5B69CD6D65B16
+nsec3.test.knot-resolver.cz.	3600	NS	localhost.
+nsec3.test.knot-resolver.cz.	3600	DS	1555 13 2 7C670A7F143BEAB01163F9A1DD7928E6E4345CB7B80478839377826F0618CFA0
+weird-type.test.knot-resolver.cz. 3600	TYPE20025	\# 4 DEADBEEF
+*.wild.test.knot-resolver.cz.	3600	A	217.31.192.130
+*.wildc.test.knot-resolver.cz.	3600	CNAME	target.wild.nsec3.test.knot-resolver.cz.
+;; DNSSEC signatures
+test.knot-resolver.cz.	3600	RRSIG	A 13 3 3600 20370101093230 20190118080230 58 test.knot-resolver.cz. TEGT+vENDSfJ+dnu5sgUMF/BLCawEXW2G/bwhqtFla21Xie0985B+UU22unpmUdsQuZy92LeWCyANeFs0glEKA==
+test.knot-resolver.cz.	3600	RRSIG	SOA 13 3 3600 20370101150847 20190118133847 58 test.knot-resolver.cz. GUqVZTOcnhm/eOvQc/sq9CEZsRo8h2gKbHBzmWvk4bDhgVi4yIuYOBJWlO+wWRwNaFumZrqFIYi6Gx8Eu4ULfg==
+test.knot-resolver.cz.	3600	RRSIG	TXT 13 3 3600 20370101093230 20190118080230 58 test.knot-resolver.cz. xZtk0SqCX/68Ezf94EUvsHjRw27QhzubKcgbgE5W873jZo2FaQNWOtUDK9wEqqih3osxiVR1qgyUXW7ouBfVDw==
+test.knot-resolver.cz.	86400	RRSIG	NSEC 13 3 86400 20370101093230 20190118080230 58 test.knot-resolver.cz. tumtHbzoscGbMzck+RxH88ZpID6f8GGj9dAfvmK9/HxUxdMTYaIw9Mz/wGtNVKg/O1g+p7UNdiiJfF7In2psTA==
+test.knot-resolver.cz.	3600	RRSIG	DNSKEY 13 3 3600 20370101093230 20190118080230 60526 test.knot-resolver.cz. xjyl77lNvJyl36iYphIOEHIBP4AWCtJTYYIY0IHKK89MsZwgi9kpoD/Cl8Iv0O20eyrnMI5ivBs7W9CIAMRemQ==
+test.knot-resolver.cz.	0	RRSIG	CDS 13 3 0 20370101093230 20190118080230 60526 test.knot-resolver.cz. WKx9uVlOmXx4nTbicpl7zCvOt/2LXTgNlNo+DFgEEOyYkjgBUJpcLFoBXJPDYDS8znUR/U4FxGoycj7ZWDHRjw==
+test.knot-resolver.cz.	0	RRSIG	CDNSKEY 13 3 0 20370101093230 20190118080230 60526 test.knot-resolver.cz. BudDkCPx5WHIznVuGlUhcvApj0MMB0iqWNgtU6FatMUNezZCHfjfx5G6byrm8TJqtcPEp3SlrTgij/qIGSOZwg==
+_version.test.knot-resolver.cz.	3600	RRSIG	TXT 13 4 3600 20370101093230 20190118080230 58 test.knot-resolver.cz. fCWhPTc0zfkXUVjGpCA/np2+u8uLzcQh4MEaA2MMqKanEQW2XgBC+J/zgw5wk3nV1cnirV0QQzu/Ki/30tVHjQ==
+_version.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101141706 20190118124706 58 test.knot-resolver.cz. +pwpYGeosZlvQaP5MSE7lW7MhIXPDW6AZTe5tYKtC3ebw43vBqRDx5lcQbVWnSl5oEspGbArCQ7rbjhqy/qvHw==
+good-a.test.knot-resolver.cz.	3600	RRSIG	A 13 4 3600 20370101093230 20190118080230 58 test.knot-resolver.cz. 0Kr6dt/wA3av/POqxrTT+VNvGV2S/DS/SJB4DKDMVP8kgEHWVnPz+xkT0oe4esac+VDNFuy7IZ33bXXV/eQ/rg==
+good-a.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101150847 20190118133847 58 test.knot-resolver.cz. zuc0kawpnO8eH5m6z9/+4+aroSs/whmR6mpa127hCvuaRkqcpVVkSlWBiVyuVNCFkH0GMUKLOtXPCLs7IvIGCg==
+nsec.test.knot-resolver.cz.	3600	RRSIG	DS 13 4 3600 20370101150847 20190118133847 58 test.knot-resolver.cz. qQNvb0ZAOxJjZqzlcM2OCJ/7UgyHgVtaPhSCgdE/RRJyKpGFrovFe5pqgDoP/FeoEy/m4V7aXokZ2aom0v3oOA==
+nsec.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101150847 20190118133847 58 test.knot-resolver.cz. GGEBzO175FY7IgkudtsKzDLRxiDrXbQPcezO1cjGUKDTQHWsnrJK0FNkyoV4bGONaVf3Rd/kmfw3GQuDHoWkog==
+nsec3.test.knot-resolver.cz.	3600	RRSIG	DS 13 4 3600 20370101145014 20190118132014 58 test.knot-resolver.cz. Km8mOENUVB0SWa+pg/oJ1zHDWY6OTrvxX3OmMqeSK1e+DfoD4hrqAvIOju5wUapoGQBp1FYtirLnrJgpACHeKA==
+nsec3.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101144333 20190118131333 58 test.knot-resolver.cz. e8YCGaBft+7FSUPvTIF/nZz46jdzz0yPYxfLW0Mqe/VAbBi6htRRTUydb++iAgMhewvSKApLOO61WPmAU1grig==
+weird-type.test.knot-resolver.cz. 86400	RRSIG	NSEC 13 4 86400 20370101145949 20190118132949 58 test.knot-resolver.cz. Rm06ziLkmJ9nq71RCp3EXBOzu6IG36uQ+ynPFEl2yGWZlpY2UoAoj8xve5mMWKEtXBgl016SrljoYx5B2IjlwQ==
+weird-type.test.knot-resolver.cz. 3600	RRSIG	TYPE20025 13 4 3600 20370101141706 20190118124706 58 test.knot-resolver.cz. gNrt1NAPJ2/BPSresC8GC2ww5g+QOji/XW0FHiSymYIJPo/KZ0OglKg6xmak1mYwxCIDB+DYb2wiYcWeK+OuVw==
+*.wild.test.knot-resolver.cz.	3600	RRSIG	A 13 4 3600 20370101145949 20190118132949 58 test.knot-resolver.cz. +eQNJ7UlUn+URgO2T8tvfw1E8bte7l18b4v1bMBebk6Rei4xUfUbQknfMbHsc7NaPDUvZtT06mpkuxErKaHTjg==
+*.wild.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101145949 20190118132949 58 test.knot-resolver.cz. Y2/Q0S9d8js6JnT/+Pio6n0yq1LgF0CVM1sJ4SwFr/1Uh79wzETlSEu8FpjgQ8cX//Nmti88WmRrTi51nEejeQ==
+*.wildc.test.knot-resolver.cz.	3600	RRSIG	CNAME 13 4 3600 20370101145949 20190118132949 58 test.knot-resolver.cz. uWZuSigxxdgm5SFpKGGUVzgNywiOQJIzMAO2PXMSR0RmiJ4/MpGpdNkdhru3g70q4R2zwn+Hb2Pa7JwdxRJHdQ==
+*.wildc.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101145949 20190118132949 58 test.knot-resolver.cz. vDD9OP+vukiKxqTzVGWrJ8mSXGEHmta62jC+tBl1ZPWq7Rg7V7oHM2RQlbhRwnL3hm52jto21NX6sGTlJ0/noA==
+;; DNSSEC NSEC chain
+test.knot-resolver.cz.	86400	NSEC	_version.test.knot-resolver.cz. A SOA TXT RRSIG NSEC DNSKEY CDS CDNSKEY
+_version.test.knot-resolver.cz.	86400	NSEC	good-a.test.knot-resolver.cz. TXT RRSIG NSEC
+good-a.test.knot-resolver.cz.	86400	NSEC	nsec.test.knot-resolver.cz. A RRSIG NSEC
+nsec.test.knot-resolver.cz.	86400	NSEC	nsec3.test.knot-resolver.cz. NS DS RRSIG NSEC
+nsec3.test.knot-resolver.cz.	86400	NSEC	weird-type.test.knot-resolver.cz. NS DS RRSIG NSEC
+weird-type.test.knot-resolver.cz. 86400	NSEC	*.wild.test.knot-resolver.cz. RRSIG NSEC TYPE20025
+*.wild.test.knot-resolver.cz.	86400	NSEC	*.wildc.test.knot-resolver.cz. A RRSIG NSEC
+*.wildc.test.knot-resolver.cz.	86400	NSEC	test.knot-resolver.cz. CNAME RRSIG NSEC
+;; Written 45 records
+;; Time 2019-01-18 16:08:47 CET

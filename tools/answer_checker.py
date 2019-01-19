@@ -18,19 +18,25 @@ def send_and_check(question: Union[dns.message.Message, bytes],
     Returns True on success, raises an exceptions on failure.
     """
 
-    sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
-    pydnstest.mock_client.send_query(sock, question)
-    answer = pydnstest.mock_client.get_dns_message(sock)
+    answer = get_answer(question, server, port, tcp)
 
     for field in match_fields:
         pydnstest.matchpart.match_part(expected, answer, field)
 
     return True
 
+def get_answer(question: Union[dns.message.Message, bytes],
+               server: Union[IPv4Address, IPv6Address],
+               port: int = 53,
+               tcp: bool = False) -> dns.message.Message:
+    sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
+    pydnstest.mock_client.send_query(sock, question)
+    return pydnstest.mock_client.get_dns_message(sock)
+
 def _print_answer(question: Union[dns.message.Message, bytes],
-                   server: Union[IPv4Address, IPv6Address],
-                   port: int = 53,
-                   tcp: bool = False) -> None:
+                  server: Union[IPv4Address, IPv6Address],
+                  port: int = 53,
+                  tcp: bool = False) -> None:
     """
     Prints answer of a server. Good for generating tests.
     """
@@ -50,36 +56,34 @@ if __name__ == "__main__":
 
     # Expected answer has to be a dns.message.Message (otherwise matching would not work).
     expected_answer = dns.message.from_text("""id 26843
-    opcode QUERY
-    rcode NOERROR
-    flags QR RD RA AD
-    edns 0
-    eflags DO
-    payload 512
-    ;QUESTION
-    test.knot-resolver.cz. IN DS
-    ;ANSWER
-    test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
-    test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 3uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
-    ;AUTHORITY
-    ;ADDITIONAL
-    """)
+opcode QUERY
+rcode NOERROR
+flags QR RD RA AD
+edns 0
+eflags DO
+payload 512
+;QUESTION
+test.knot-resolver.cz. IN DS
+;ANSWER
+test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
+test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 3uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
+;AUTHORITY
+;ADDITIONAL""")
 
     answer_with_changed_RRSIG = dns.message.from_text("""id 26843
-    opcode QUERY
-    rcode NOERROR
-    flags QR RD RA AD
-    edns 0
-    eflags DO
-    payload 512
-    ;QUESTION
-    test.knot-resolver.cz. IN DS
-    ;ANSWER
-    test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
-    test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 4uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
-    ;AUTHORITY
-    ;ADDITIONAL
-    """)
+opcode QUERY
+rcode NOERROR
+flags QR RD RA AD
+edns 0
+eflags DO
+payload 512
+;QUESTION
+test.knot-resolver.cz. IN DS
+;ANSWER
+test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
+test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 4uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
+;AUTHORITY
+;ADDITIONAL""")
 
     # Server is specified simply by its IP Adress
     resolver_4 = IPv4Address("1.1.1.1")

@@ -1,0 +1,26 @@
+;; Zone dump (Knot DNS 2.7.5)
+nsec.test.knot-resolver.cz.	3600	SOA	dns1.example.com. hostmaster.example.com. 2010111238 21600 3600 604800 86400
+nsec.test.knot-resolver.cz.	3600	A	217.31.192.130
+nsec.test.knot-resolver.cz.	0	CDNSKEY	257 3 13 sHDhYIE8HqMd4NVhncn62xS//6cW1Il4S1YzjbmqXFutQ9ykv86jxc6iuDH4AChztiWu8ixYOo+SQi7Y6czxWQ==
+nsec.test.knot-resolver.cz.	0	CDS	2123 13 2 F23E0FCCCEB3C78BE65556BA219EA31B94F705D752878F86F0D5B69CD6D65B16
+nsec.test.knot-resolver.cz.	3600	DNSKEY	256 3 13 EpCNzYX7CEnERsL+c6XxjW5KpnLgXhHrjlgGxo8bcsZzsBCXGMYzX1l56jKWN6dYT+ahX/RiKQqvs1g2x/x0TA==
+nsec.test.knot-resolver.cz.	3600	DNSKEY	257 3 13 sHDhYIE8HqMd4NVhncn62xS//6cW1Il4S1YzjbmqXFutQ9ykv86jxc6iuDH4AChztiWu8ixYOo+SQi7Y6czxWQ==
+*.wild.nsec.test.knot-resolver.cz. 3600	A	217.31.192.130
+*.wildc.nsec.test.knot-resolver.cz. 3600	CNAME	target.wild.nsec.test.knot-resolver.cz.
+;; DNSSEC signatures
+nsec.test.knot-resolver.cz.	3600	RRSIG	A 13 4 3600 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. EBH5Bz2kNOoyEn7Dc7GK/HFz20sbZ5WbyV8DGYecvuiadTCqvFa2wc57xPTAl1Zj2i8UaDAE+UHKg5ZU0Hk2jg==
+nsec.test.knot-resolver.cz.	3600	RRSIG	SOA 13 4 3600 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. YlGILkcuX6EpClR9YBmNZP/2G6UaCWLFB2LxLMfU40h+qARSMwsaaRrBPt9mO7kMS1e6r/vG9muP/tkgIPmEJA==
+nsec.test.knot-resolver.cz.	86400	RRSIG	NSEC 13 4 86400 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. KW0+kxkT04fFPAAAacIOTvd05m4wGMDOrBl5cSWef4Gxg0haOt8x9c/jKSROsi66kvOTZG2oMQNqTY1x3BirJA==
+nsec.test.knot-resolver.cz.	3600	RRSIG	DNSKEY 13 4 3600 20370101153211 20190118140211 2123 nsec.test.knot-resolver.cz. M00SP8HAYBvyWJdBvDRUGtoFNHSGlvRBnz1UM2+jOFMbNRKREr00t0dM3ctEJNt3vvuV/sagzGLpIgRXVSIVKw==
+nsec.test.knot-resolver.cz.	0	RRSIG	CDS 13 4 0 20370101153211 20190118140211 2123 nsec.test.knot-resolver.cz. ICM8Nm9XuL4QX9Cqu/4AmuhdixH8CvmxHfsr7yCdez60q8zFaiVpPNkeAcaqmkoMdQyPlERaGCC4s26MDH5pRQ==
+nsec.test.knot-resolver.cz.	0	RRSIG	CDNSKEY 13 4 0 20370101153211 20190118140211 2123 nsec.test.knot-resolver.cz. QgMz/YVlAy7sKrr1Wf9KF/TS/RAXxn74Hm/l0dVewqjJi4OzigSMJbBz0diEwaDRfyR1fAFZitg1d/CZuK/KsA==
+*.wild.nsec.test.knot-resolver.cz. 3600	RRSIG	A 13 5 3600 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. kL0Pxu+8tPOW1s7T/zOU6rPgp6252gFAiGVLvkEkwUgN6A5DzBdLeyz2gAhRH6U0kRTh8iM5FA3dAQxjLB2c8w==
+*.wild.nsec.test.knot-resolver.cz. 86400	RRSIG	NSEC 13 5 86400 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. HnNsj0OoA82ltnf+iFEdyvUqpw/3DSkeZCGGKKCbvvP0ENgT6jeRP8euL19WBVvloPTb8LUMQWb9FhgauuRtmg==
+*.wildc.nsec.test.knot-resolver.cz. 3600	RRSIG	CNAME 13 5 3600 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. on43Es6pz+0DaZ/ZoEoM2UIl3anYYbVJ769SmJhI112UqdViHHsm7QIeLtc58GVez6Rxji4UP1M+ddpWxMsdRw==
+*.wildc.nsec.test.knot-resolver.cz. 86400	RRSIG	NSEC 13 5 86400 20370101153211 20190118140211 25023 nsec.test.knot-resolver.cz. rbFDZXGXSY1J4wWzeIN+EqnKCjr6ZsA/9lZV/yy5ILzi9K2z4IxIp09uKS2qasK/nVuWAdqonFgLteCLuUew6g==
+;; DNSSEC NSEC chain
+nsec.test.knot-resolver.cz.	86400	NSEC	*.wild.nsec.test.knot-resolver.cz. A SOA RRSIG NSEC DNSKEY CDS CDNSKEY
+*.wild.nsec.test.knot-resolver.cz. 86400	NSEC	*.wildc.nsec.test.knot-resolver.cz. A RRSIG NSEC
+*.wildc.nsec.test.knot-resolver.cz. 86400	NSEC	nsec.test.knot-resolver.cz. CNAME RRSIG NSEC
+;; Written 21 records
+;; Time 2019-01-18 16:32:11 CET
