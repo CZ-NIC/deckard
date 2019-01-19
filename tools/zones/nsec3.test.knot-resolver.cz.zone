@@ -1,0 +1,33 @@
+;; Zone dump (Knot DNS 2.7.5)
+nsec3.test.knot-resolver.cz.	3600	SOA	dns1.example.com. hostmaster.example.com. 2010111235 21600 3600 604800 86400
+nsec3.test.knot-resolver.cz.	3600	A	217.31.192.130
+nsec3.test.knot-resolver.cz.	0	CDNSKEY	257 3 13 ++02TH2Bgdt/G9fK+zYhQCQvRBVmR3u5xsvnf+sqaKW0uaRfXMdtOvfokJfKHRRAwI7TyIB0JsQESP6KR1YA/A==
+nsec3.test.knot-resolver.cz.	0	CDS	1555 13 2 7C670A7F143BEAB01163F9A1DD7928E6E4345CB7B80478839377826F0618CFA0
+nsec3.test.knot-resolver.cz.	3600	DNSKEY	256 3 13 QyMWuQmewJ8tl9JgHv7Apy5dCsHEWe3olvAC70C/pat6Vl6QiZyHLRudiNrg6dp8IQ4IYGcCoDG9o2bwrQANuA==
+nsec3.test.knot-resolver.cz.	3600	DNSKEY	257 3 13 ++02TH2Bgdt/G9fK+zYhQCQvRBVmR3u5xsvnf+sqaKW0uaRfXMdtOvfokJfKHRRAwI7TyIB0JsQESP6KR1YA/A==
+nsec3.test.knot-resolver.cz.	0	NSEC3PARAM	1 0 10 9B987E46196CD181
+*.wild.nsec3.test.knot-resolver.cz. 3600	A	217.31.192.130
+*.wildc.nsec3.test.knot-resolver.cz. 3600	CNAME	target.wild.nsec3.test.knot-resolver.cz.
+;; DNSSEC signatures
+nsec3.test.knot-resolver.cz.	3600	RRSIG	A 13 4 3600 20370101135758 20190118122758 52462 nsec3.test.knot-resolver.cz. ouEBkDSWqWDuRDoLz1jrgLc9iDQp+DdHIIvRZIudObvl8qMS65joSR2LErRc7z996Gs9kXB9tZX808TaXLcWRw==
+nsec3.test.knot-resolver.cz.	3600	RRSIG	SOA 13 4 3600 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. +pEwmb5EfBtBaIeT3Yp/IPGLAzStT+zsKVEjnqo7awbEof4gx9cZWV9z6jhkHKe15+nRmQXp1f5bvADJil1vWw==
+nsec3.test.knot-resolver.cz.	3600	RRSIG	DNSKEY 13 4 3600 20370101135758 20190118122758 1555 nsec3.test.knot-resolver.cz. ZkPlYegxi6CaLz2QCs7GkihK9qRXCW7Z3z4ov1/RPSfRiEX8RSN98nybZYBVcGAtUHWTlWcDV4Zck7Emic0WSA==
+nsec3.test.knot-resolver.cz.	0	RRSIG	NSEC3PARAM 13 4 0 20370101135758 20190118122758 52462 nsec3.test.knot-resolver.cz. 85cdyTbg6bnbb1D62WTae5iVLlIL8bBtKvJG3YWRgV7NROkreHxZdEXYvei3wKcJByLB5fvNQX5A8Dw0s9czhA==
+nsec3.test.knot-resolver.cz.	0	RRSIG	CDS 13 4 0 20370101135758 20190118122758 1555 nsec3.test.knot-resolver.cz. DkKfIv09E3OXFd+fKehHATc8CWYYJRdkDSsfnY7j6dBPt3uf3f6/WiDBy9bWSyR9fcVOL1baM9a7f59T/PfLUA==
+nsec3.test.knot-resolver.cz.	0	RRSIG	CDNSKEY 13 4 0 20370101135758 20190118122758 1555 nsec3.test.knot-resolver.cz. vUHUjEAtyQ1g3Xxg/MNdL9KYihKuuiEkJV9USwGoRTCKEV8Tu8dYej8P7eMtMMB+mhRi8jMTfHLI0K4yvLDi1A==
+*.wild.nsec3.test.knot-resolver.cz. 3600	RRSIG	A 13 5 3600 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. Rat0od2n28B53FTnegwIXB6lRHUUIILvVhdwqS8xXJTE5CE1avP7DK2VpJW2DJcNMpU0rnXRxUk3c4se6WvV7w==
+*.wildc.nsec3.test.knot-resolver.cz. 3600	RRSIG	CNAME 13 5 3600 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. 2kyXyJFo9gt0BARuaHQXDR5ioHDAFrs3SLtiQ/gVAhFW9ubnoS3azibZzor3wP3ir3P4uDDIbrGGwfyoXdL1Wg==
+;; DNSSEC NSEC3 chain
+6j18444t948b3ij9dlakm317q132ccii.nsec3.test.knot-resolver.cz. 86400	NSEC3	1 0 10 9B987E46196CD181 7au17g8oik9ht7044vecl7e53cjdj79e 
+7au17g8oik9ht7044vecl7e53cjdj79e.nsec3.test.knot-resolver.cz. 86400	NSEC3	1 0 10 9B987E46196CD181 af4kdouqgq3k3j0boq2bqlf4hi14c8qa 
+af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400	NSEC3	1 0 10 9B987E46196CD181 druje9e1goigmosgk4m6iv7gbktg143a CNAME RRSIG
+druje9e1goigmosgk4m6iv7gbktg143a.nsec3.test.knot-resolver.cz. 86400	NSEC3	1 0 10 9B987E46196CD181 mn71vn3kbnse5hkqqs7kc062nf9jna3u A RRSIG
+mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400	NSEC3	1 0 10 9B987E46196CD181 6j18444t948b3ij9dlakm317q132ccii A SOA RRSIG DNSKEY NSEC3PARAM CDS CDNSKEY
+;; DNSSEC NSEC3 signatures
+6j18444t948b3ij9dlakm317q132ccii.nsec3.test.knot-resolver.cz. 86400	RRSIG	NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. JekbTnsSKECVGfWEo85HWKfTZ0PoytvvsaWOsT6K2DzPy2ki0O6qyM7MVKgxv5zoUMg9y+WIa6DKV7TBSdijQw==
+7au17g8oik9ht7044vecl7e53cjdj79e.nsec3.test.knot-resolver.cz. 86400	RRSIG	NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. Lag6hRU3QWMYwwpJq73U5QT3clPjyl1ZpqFv3zUFmveEjyVnxS86xCOR5xLkP/sQgPdSmnp3+I+CuSET0DrAOg==
+af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400	RRSIG	NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. PZcI6R68gjwNQBQ5DXY+WstesMCSnXR7eg5y5AtplrUIzE6VNGM6PXrvmwr8I2UOCDBjF2Cn/cr/bY5YSK5oaw==
+druje9e1goigmosgk4m6iv7gbktg143a.nsec3.test.knot-resolver.cz. 86400	RRSIG	NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. YnBivAsfjO2Al38rQ1x7BAJ8phxaVV61RigISoaOgyPXagmmXF4dbEg8cUuk9KAX1aRBOMSiENfMEh8upqVDMQ==
+mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400	RRSIG	NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. urWKiAuNdUocco7sN8G0a6QjGyxiTlH7k8Z/5P/hq1i5GH4iIwWgRTtcWJ/3mtpMLWDB4z4Eg4BPnNzGV0Y0Ew==
+;; Written 27 records
+;; Time 2019-01-18 15:31:04 CET
