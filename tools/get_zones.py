@@ -51,11 +51,12 @@ def add_all_from_entry(entry, zones):
 
     for record in records:
         if record["/type"].value == "RRSIG": #TODO: duplicity
+            rrsig = dns.rdata.from_text(dns.rdataclass.from_text(record["/class"].value), dns.rdatatype.from_text(record["/type"].value), record["/data"].value)
             rrsig_data = record["/data"].value.split()
-            signer = rrsig_data[7] #TODO: dnspython
+            signer = rrsig.signer.to_text()
             add_record_to_zone(zones, signer, record)
 
-            covered_type = rrsig_data[0]  #TODO: dnspython
+            covered_type = dns.rdatatype.to_text(rrsig.type_covered)
             covered_domain = record["/domain"].value
             for record2 in records:
                 if (record2["/type"].value == covered_type
