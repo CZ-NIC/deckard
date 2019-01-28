@@ -152,6 +152,16 @@ def add_signed(zone, name, rdataset):
             add_default_to_zone(zone, name, type_covered, rdclass)
 
 
+def types_from_nsec(nsec):
+    types = []
+    for (window, bitmap) in nsec.windows:
+        for i in range(0, len(bitmap)):
+            byte = bitmap[i]
+            for j in range(0, 8):
+                if byte & (0x80 >> j):
+                    types.append(window * 256 + i * 8 + j)
+    return types
+
 def add_from_nsec(zone, name, rdataset):
     """
     Add some record of the type which is mentioned in NSEC if it is not in the test
@@ -164,12 +174,14 @@ def add_from_nsec(zone, name, rdataset):
 
     rdclass = rdataset.rdclass
     for rdata in rdataset.items:
-        data = rdata.to_text().split()
-        for rrtype in data[1:]:  #TODO: dnspython
+        covered_types = types_from_nsec(rdata)
+        for rrtype in covered_types:
             if zone.get_rdataset(name, rrtype) is None:
-                add_default_to_zone(zone, name, dns.rdatatype.from_text(rrtype), rdclass)
-        if zone.get_node(data[0]) is None:  #TODO: dnspython
-            add_default_to_zone(zone, data[0], dns.rdatatype.TXT, rdclass)  #TODO: dnspython
+                add_default_to_zone(zone, name, rrtype, rdclass)
+                
+
+        if zone.get_node(rdata.next) is None:
+            add_default_to_zone(zone, rdata.next, dns.rdatatype.TXT, rdclass)
 
 
 def add_if_is_not_in_zone(zone, rdtype):
