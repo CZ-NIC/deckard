@@ -1,4 +1,5 @@
 from ipaddress import IPv4Address, IPv6Address
+import random
 from typing import Optional, Union, Set
 
 import dns.message
@@ -25,6 +26,7 @@ def send_and_check(question: Union[dns.message.Message, bytes],
 
     return True
 
+
 def get_answer(question: Union[dns.message.Message, bytes],
                server: Union[IPv4Address, IPv6Address],
                port: int = 53,
@@ -32,6 +34,7 @@ def get_answer(question: Union[dns.message.Message, bytes],
     sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
     pydnstest.mock_client.send_query(sock, question)
     return pydnstest.mock_client.get_dns_message(sock)
+
 
 def _print_answer(question: Union[dns.message.Message, bytes],
                   server: Union[IPv4Address, IPv6Address],
@@ -44,6 +47,26 @@ def _print_answer(question: Union[dns.message.Message, bytes],
     sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
     pydnstest.mock_client.send_query(sock, question)
     print(pydnstest.mock_client.get_dns_message(sock).to_text())
+
+
+def randomize_case(label: bytes) -> str:
+    chars = list(label.decode("ascii"))
+    print(chars)
+    output = []
+    for c in chars:
+        if random.randint(0,1):
+            c = c.upper()
+        else:
+            c = c.lower()
+        output.append(c)
+    return "".join(output).encode("ascii")
+
+
+def make_query(name: str, *args, **kwargs) -> dns.message.Message:
+    query = dns.message.make_query(name, *args, **kwargs)
+    for label in query.question[0].name.labels:
+        label = randomize_case(label)
+    return query
 
 
 

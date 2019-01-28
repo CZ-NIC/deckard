@@ -19,15 +19,14 @@ _version.test.knot-resolver.cz. 3600 IN TXT "1"
 ;AUTHORITY
 ;ADDITIONAL
 """)
-
 def test_zone_version():
     return answer_checker.send_and_check(VERSION_QUERY,
                                          VERSION_ANSWER,
                                          AUTHORITATIVE_SERVER,
-                                         ALL)
+                                         ALL - {"flags"})
 
 
-QUERY = dns.message.make_query("test.knot-resolver.cz", "A", want_dnssec=True, payload=4096)
+QUERY = answer_checker.make_query("test.knot-resolver.cz", "A", want_dnssec=True, payload=4096)
 ANSWER = dns.message.from_text("""id 30776
 opcode QUERY
 rcode NOERROR
@@ -43,7 +42,6 @@ test.knot-resolver.cz.	3600	IN	RRSIG	A 13 3 3600 20370101093230 20190118080230 5
 ;AUTHORITY
 ;ADDITIONAL
 """)
-
 def test_remote_udp_53():
     return answer_checker.send_and_check(QUERY,
                                          ANSWER,
@@ -59,7 +57,7 @@ def test_remote_tcp_53():
                                          tcp=True)
 
 
-LONG_QUERY = dns.message.make_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=4096, want_dnssec=True)
+LONG_QUERY = answer_checker.make_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=4096, want_dnssec=True)
 LONG_ANSWER = dns.message.from_text("""id 17570
 opcode QUERY
 rcode NOERROR
@@ -75,13 +73,14 @@ test.knot-resolver.cz.	3600	IN	RRSIG	TXT 13 3 3600 20370101093230 20190118080230
 ;ADDITIONAL
 """)
 
+
 def test_udp_fragmentation():
     return answer_checker.send_and_check(LONG_QUERY,
                                          LONG_ANSWER,
                                          AUTHORITATIVE_SERVER,
                                          ALL)
 
-QUERY_WITH_SMALL_PAYLOAD = dns.message.make_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=1280, want_dnssec=True)
+QUERY_WITH_SMALL_PAYLOAD = answer_checker.make_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=1280, want_dnssec=True)
 TRUNCATED_ANSWER = dns.message.from_text("""id 17570
 opcode QUERY
 rcode NOERROR
