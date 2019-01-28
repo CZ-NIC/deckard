@@ -2,12 +2,13 @@
 # pylint: disable=C0301,C0111
 # flake8: noqa
 import ipaddress
+import pytest
 
 import dns.message
 
 import answer_checker
 
-AUTHORITATIVE_SERVER = ipaddress.IPv4Address("127.0.0.1")
+AUTHORITATIVE_SERVERS = [ipaddress.IPv4Address("127.0.0.1"), ipaddress.IPv6Address("::1")]
 ALL = {"opcode", "qtype", "qname", "flags", "rcode", "answer", "authority", "additional"}
 
 VERSION_QUERY = dns.message.make_query("_version.test.knot-resolver.cz", "TXT")
@@ -24,10 +25,11 @@ _version.test.knot-resolver.cz. 3600 IN TXT "1"
 """)
 
 
-def test_zone_version():
+@pytest.mark.parametrize("server", AUTHORITATIVE_SERVERS)
+def test_zone_version(server):
     return answer_checker.send_and_check(VERSION_QUERY,
                                          VERSION_ANSWER,
-                                         AUTHORITATIVE_SERVER,
+                                         server,
                                          ALL - {"flags"})
 
 
@@ -49,17 +51,19 @@ test.knot-resolver.cz.	3600	IN	RRSIG	A 13 3 3600 20370101093230 20190118080230 5
 """)
 
 
-def test_remote_udp_53():
+@pytest.mark.parametrize("server", AUTHORITATIVE_SERVERS)
+def test_remote_udp_53(server):
     return answer_checker.send_and_check(QUERY,
                                          ANSWER,
-                                         AUTHORITATIVE_SERVER,
+                                         server,
                                          ALL)
 
 
-def test_remote_tcp_53():
+@pytest.mark.parametrize("server", AUTHORITATIVE_SERVERS)
+def test_remote_tcp_53(server):
     return answer_checker.send_and_check(QUERY,
                                          ANSWER,
-                                         AUTHORITATIVE_SERVER,
+                                         server,
                                          ALL,
                                          tcp=True)
 
@@ -81,10 +85,11 @@ test.knot-resolver.cz.	3600	IN	RRSIG	TXT 13 3 3600 20370101093230 20190118080230
 """)
 
 
-def test_udp_fragmentation():
+@pytest.mark.parametrize("server", AUTHORITATIVE_SERVERS)
+def test_udp_fragmentation(server):
     return answer_checker.send_and_check(LONG_QUERY,
                                          LONG_ANSWER,
-                                         AUTHORITATIVE_SERVER,
+                                         server,
                                          ALL)
 
 
@@ -103,8 +108,9 @@ test.knot-resolver.cz. IN TXT
 """)
 
 
-def test_udp_fragmentation_truncated():
+@pytest.mark.parametrize("server", AUTHORITATIVE_SERVERS)
+def test_udp_fragmentation_truncated(server):
     return answer_checker.send_and_check(QUERY_WITH_SMALL_PAYLOAD,
                                          TRUNCATED_ANSWER,
-                                         AUTHORITATIVE_SERVER,
+                                         server,
                                          ALL)

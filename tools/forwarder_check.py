@@ -9,10 +9,15 @@ import pytest
 import answer_checker
 import network_check
 
-FORWARDER = ipaddress.IPv4Address("127.0.0.1")
 ALL = {"opcode", "qtype", "qname", "flags", "rcode", "answer", "authority", "additional"}
 
-test_zone_version = network_check.test_zone_version
+
+def test_zone_version(forwarder):
+    return answer_checker.send_and_check(network_check.VERSION_QUERY,
+                                         network_check.VERSION_ANSWER,
+                                         forwarder,
+                                         ALL - {"flags"})
+
 
 SIMPLE_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A")
 SIMPLE_ANSWER = dns.message.from_text("""id 12757
@@ -31,16 +36,16 @@ good-a.test.knot-resolver.cz. 3600 IN A 217.31.192.130
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_simple_answers(tcp):
-    return answer_checker.send_and_check(SIMPLE_QUERY, SIMPLE_ANSWER, FORWARDER, ALL, tcp=tcp)
+def test_supports_simple_answers(forwarder, tcp):
+    return answer_checker.send_and_check(SIMPLE_QUERY, SIMPLE_ANSWER, forwarder, ALL, tcp=tcp)
 
 
 EDNS_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A", use_edns=0)
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_EDNS0(tcp):
-    answer = answer_checker.get_answer(EDNS_QUERY, FORWARDER, tcp=tcp)
+def test_supports_EDNS0(forwarder, tcp):
+    answer = answer_checker.get_answer(EDNS_QUERY, forwarder, tcp=tcp)
     if answer.edns != 0:
         raise ValueError("EDNS0 not supported")
 
@@ -49,8 +54,8 @@ DO_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A", want_d
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_DO(tcp):
-    answer = answer_checker.get_answer(DO_QUERY, FORWARDER, tcp=tcp)
+def test_supports_DO(forwarder, tcp):
+    answer = answer_checker.get_answer(DO_QUERY, forwarder, tcp=tcp)
     if not answer.flags & dns.flags.DO:
         raise ValueError("DO bit sent, but not recieved")
 
@@ -60,8 +65,8 @@ CD_QUERY.flags += dns.flags.CD
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_CD(tcp):
-    answer = answer_checker.get_answer(CD_QUERY, FORWARDER, tcp=tcp)
+def test_supports_CD(forwarder, tcp):
+    answer = answer_checker.get_answer(CD_QUERY, forwarder, tcp=tcp)
     if not answer.flags & dns.flags.DO:
         raise ValueError("CD bit sent, but not recieved")
 
@@ -85,8 +90,8 @@ good-a.test.knot-resolver.cz. 3600 IN RRSIG A 13 4 3600 20370101093230 201901180
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_returns_RRSIG(tcp):
-    return answer_checker.send_and_check(RRSIG_QUERY, RRSIG_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
+def test_returns_RRSIG(forwarder, tcp):
+    return answer_checker.send_and_check(RRSIG_QUERY, RRSIG_ANSWER, forwarder, {"answertypes"}, tcp=tcp)
 
 
 DNSKEY_QUERY = answer_checker.make_query("test.knot-resolver.cz", "DNSKEY", want_dnssec=True)
@@ -109,8 +114,8 @@ test.knot-resolver.cz. 3600 IN RRSIG DNSKEY 13 3 3600 20370101093230 20190118080
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_DNSKEY(tcp):
-    return answer_checker.send_and_check(DNSKEY_QUERY, DNSKEY_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
+def test_supports_DNSKEY(forwarder, tcp):
+    return answer_checker.send_and_check(DNSKEY_QUERY, DNSKEY_ANSWER, forwarder, {"answertypes"}, tcp=tcp)
 
 
 DS_QUERY = answer_checker.make_query("cz", "DS", want_dnssec=True)
@@ -132,8 +137,8 @@ cz. 81506 IN RRSIG DS 8 1 86400 20190131050000 20190118040000 16749 . unZZj5veyq
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_supports_DS(tcp):
-    return answer_checker.send_and_check(DS_QUERY, DS_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
+def test_supports_DS(forwarder, tcp):
+    return answer_checker.send_and_check(DS_QUERY, DS_ANSWER, forwarder, {"answertypes"}, tcp=tcp)
 
 
 NSEC_NEGATIVE_QUERY = answer_checker.make_query("nonexistent.nsec.test.knot-resolver.cz", "A", want_dnssec=True)
@@ -156,10 +161,10 @@ nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 201901
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_negative_nsec_answers(tcp):
+def test_negative_nsec_answers(forwarder, tcp):
     return answer_checker.send_and_check(NSEC_NEGATIVE_QUERY,
                                          NSEC_NEGATIVE_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          {"authority"}, tcp=tcp)
 
 
@@ -186,10 +191,10 @@ af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSE
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_negative_nsec3_answers(tcp):
+def test_negative_nsec3_answers(forwarder, tcp):
     return answer_checker.send_and_check(NSEC3_NEGATIVE_QUERY,
                                          NSEC3_NEGATIVE_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          {"authority"}, tcp=tcp)
 
 
@@ -208,10 +213,10 @@ weird-type.test.knot-resolver.cz. 3600 IN TYPE20025 \# 4 deadbeef
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_unknown_rrtypes(tcp):
+def test_unknown_rrtypes(forwarder, tcp):
     return answer_checker.send_and_check(UNKNOWN_TYPE_QUERY,
                                          UNKNOWN_TYPE_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -236,10 +241,10 @@ unsigned.nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 5 86400 203701111133
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_delegation_from_nsec_to_unsigned_zone(tcp):
+def test_delegation_from_nsec_to_unsigned_zone(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_DS_DELEGATION_NSEC_QUERY,
                                          NONEXISTENT_DS_DELEGATION_NSEC_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -264,10 +269,10 @@ gk65ucsupb4m139fn027ci6pl01fk5gs.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSE
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_delegation_from_nsec3_to_unsigned_zone(tcp):
+def test_delegation_from_nsec3_to_unsigned_zone(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_DS_DELEGATION_NSEC3_QUERY,
                                          NONEXISTENT_DS_DELEGATION_NSEC3_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -291,10 +296,10 @@ nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 201901
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_nonexistent_delegation_from_nsec(tcp):
+def test_nonexistent_delegation_from_nsec(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_DELEGATION_FROM_NSEC_QUERY,
                                          NONEXISTENT_DELEGATION_FROM_NSEC_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -321,10 +326,10 @@ af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSE
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_nonexistent_delegation_from_nsec3(tcp):
+def test_nonexistent_delegation_from_nsec3(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_DELEGATION_FROM_NSEC3_QUERY,
                                          NONEXISTENT_DELEGATION_FROM_NSEC3_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -348,10 +353,10 @@ mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSE
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_nonexistent_type_nsec3(tcp):
+def test_nonexistent_type_nsec3(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_TYPE_NSEC3_QUERY,
                                          NONEXISTENT_TYPE_NSEC3_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
 
 
@@ -376,8 +381,8 @@ nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 201901
 
 
 @pytest.mark.parametrize("tcp", [True, False])
-def test_nonexistent_type_nsec(tcp):
+def test_nonexistent_type_nsec(forwarder, tcp):
     return answer_checker.send_and_check(NONEXISTENT_TYPE_NSEC_QUERY,
                                          NONEXISTENT_TYPE_NSEC_ANSWER,
-                                         FORWARDER,
+                                         forwarder,
                                          ALL, tcp=tcp)
