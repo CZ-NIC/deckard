@@ -226,8 +226,7 @@ def parseargs():
     argparser.add_argument("test",
                            help="path to .rpl test to make zones from")
     argparser.add_argument("-s", "--storage",
-                           help="directory where the zones will be stored",
-                           nargs=1, default=".")
+                           help="directory where the zones will be stored", default=".")
     args = argparser.parse_args()
     if os.path.isfile(args.test):
         test = args.test
