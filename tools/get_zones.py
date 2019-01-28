@@ -64,7 +64,7 @@ def add_all_from_entry(entry, zones):
                     add_record_to_zone(zones, signer, record2)
 
 
-def add_default_to_zone(zone, domain, rrtype, rdclass):
+def add_default_to_zone(zone, domain, rdtype):
     """
     Add a record of given type to a zone
 
@@ -129,10 +129,8 @@ def add_default_to_zone(zone, domain, rrtype, rdclass):
         dns.rdatatype.URI: "10 1 \"record.added.for.resign.\""
     }
 
-    if isinstance(rdclass, str):
-        rdclass = dns.rdataclass.from_text(rdclass)
-    rdata = dns.rdata.from_text(rdclass, rrtype, default_data[rrtype])
-    dataset = zone.get_rdataset(domain, rrtype, create=True)
+    rdata = dns.rdata.from_text(zone.rdclass, rdtype, default_data[rdtype])
+    dataset = zone.get_rdataset(domain, rdtype, create=True)
     dataset.add(rdata)
 
 
@@ -172,25 +170,23 @@ def add_from_nsec(zone, name, rdataset):
         rdataset(dns.rdataset.Rdataset) NSEC rdataset
     """
 
-    rdclass = rdataset.rdclass
     for rdata in rdataset.items:
         covered_types = types_from_nsec(rdata)
         for rrtype in covered_types:
-            if zone.get_rdataset(name, rrtype) is None:
-                add_default_to_zone(zone, name, rrtype, rdclass)
+            add_if_is_not_in_zone(zone, name, rrtype)
                 
 
         if zone.get_node(rdata.next) is None:
-            add_default_to_zone(zone, rdata.next, dns.rdatatype.TXT, rdclass)
+            add_default_to_zone(zone, rdata.next, dns.rdatatype.TXT)
 
 
-def add_if_is_not_in_zone(zone, rdtype):
+def add_if_is_not_in_zone(zone, owner, rdtype):
     """
     Add a record to the zone if it is missing
 
     """
     if zone.get_rdataset(zone.origin, rdtype) is None:
-        add_default_to_zone(zone, zone.origin, rdtype, zone.rdclass)
+        add_default_to_zone(zone, zone.origin, rdtype)
 
 
 def zonefiles_from_rpl(rpl, directory):
@@ -218,8 +214,8 @@ def zonefiles_from_rpl(rpl, directory):
                     add_signed(zone, name, rdataset)
                 if rdataset.rdtype == dns.rdatatype.NSEC:
                     add_from_nsec(zone, name, rdataset)
-        add_if_is_not_in_zone(zone, dns.rdatatype.SOA)
-        add_if_is_not_in_zone(zone, dns.rdatatype.NS)
+        add_if_is_not_in_zone(zone, zone.origin, dns.rdatatype.SOA)
+        add_if_is_not_in_zone(zone, zone.origin, dns.rdatatype.NS)
 
     for zone in zones.values():
         filename = zone.origin.to_text()
