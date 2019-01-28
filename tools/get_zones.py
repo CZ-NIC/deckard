@@ -41,7 +41,7 @@ def add_record_to_zone(zones, zone_name, added_record):
     domain = added_record["/domain"].value
     rdclass = dns.rdataclass.from_text(added_record["/class"].value)
     rdata = dns.rdata.from_text(rdclass, rdtype, added_record["/data"].value)
-    dataset = zones[zone_name].get_rdataset(domain, rdtype, create=True)
+    dataset = zones[zone_name].get_rdataset(domain, rdtype, covers=rdata.covers(), create=True)
     dataset.add(rdata)
 
 def add_all_from_entry(entry, zones):
@@ -50,7 +50,7 @@ def add_all_from_entry(entry, zones):
     records.extend(list(entry.match("/section/additional/record")))
 
     for record in records:
-        if record["/type"].value == "RRSIG": #TODO: duplicity
+        if record["/type"].value == "RRSIG":
             rrsig = dns.rdata.from_text(dns.rdataclass.from_text(record["/class"].value), dns.rdatatype.from_text(record["/type"].value), record["/data"].value)
             rrsig_data = record["/data"].value.split()
             signer = rrsig.signer.to_text()
