@@ -1,3 +1,6 @@
+"""Test suite to test forwarders"""
+# pylint: disable=C0301,C0111,C0103
+# flake8: noqa
 import ipaddress
 
 import dns.message
@@ -9,6 +12,7 @@ import network_check
 FORWARDER = ipaddress.IPv4Address("127.0.0.1")
 ALL = {"opcode", "qtype", "qname", "flags", "rcode", "answer", "authority", "additional"}
 
+test_zone_version = network_check.test_zone_version
 
 SIMPLE_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A")
 SIMPLE_ANSWER = dns.message.from_text("""id 12757
@@ -25,7 +29,6 @@ good-a.test.knot-resolver.cz. 3600 IN A 217.31.192.130
 ;ADDITIONAL
 """)
 
-test_zone_version = network_check.test_zone_version
 
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_simple_answers(tcp):
@@ -33,6 +36,8 @@ def test_supports_simple_answers(tcp):
 
 
 EDNS_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A", use_edns=0)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_EDNS0(tcp):
     answer = answer_checker.get_answer(EDNS_QUERY, FORWARDER, tcp=tcp)
@@ -41,6 +46,8 @@ def test_supports_EDNS0(tcp):
 
 
 DO_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A", want_dnssec=True)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_DO(tcp):
     answer = answer_checker.get_answer(DO_QUERY, FORWARDER, tcp=tcp)
@@ -50,6 +57,8 @@ def test_supports_DO(tcp):
 
 CD_QUERY = answer_checker.make_query("good-a.test.knot-resolver.cz", "A", want_dnssec=True)
 CD_QUERY.flags += dns.flags.CD
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_CD(tcp):
     answer = answer_checker.get_answer(CD_QUERY, FORWARDER, tcp=tcp)
@@ -73,6 +82,8 @@ good-a.test.knot-resolver.cz. 3600 IN RRSIG A 13 4 3600 20370101093230 201901180
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_returns_RRSIG(tcp):
     return answer_checker.send_and_check(RRSIG_QUERY, RRSIG_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
@@ -95,6 +106,8 @@ test.knot-resolver.cz. 3600 IN RRSIG DNSKEY 13 3 3600 20370101093230 20190118080
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_DNSKEY(tcp):
     return answer_checker.send_and_check(DNSKEY_QUERY, DNSKEY_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
@@ -116,6 +129,8 @@ cz. 81506 IN RRSIG DS 8 1 86400 20190131050000 20190118040000 16749 . unZZj5veyq
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_supports_DS(tcp):
     return answer_checker.send_and_check(DS_QUERY, DS_ANSWER, FORWARDER, {"answertypes"}, tcp=tcp)
@@ -137,8 +152,9 @@ nsec.test.knot-resolver.cz. 3600 IN SOA dns1.example.com. hostmaster.example.com
 nsec.test.knot-resolver.cz. 86400 IN NSEC unsigned.nsec.test.knot-resolver.cz. A SOA RRSIG NSEC DNSKEY CDS CDNSKEY
 nsec.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. IDA6arVYLCd54OPJeGVPEeIxvzi9fdje sz3sHMV4dCsOy0UXIDq9z+amGNK9y2l+ 3o4SoxbruGWh1/JVnkmUtg==
 nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. nWIaYBfbCz3HAmZ0ePdjcaa0xIzvbRMb OkEmoARSw6JvfamEWAz2hUeLihg/jcmZ X+/9dbpf3L3apbllfv3QOw==
-;ADDITIONAL"""
-)
+;ADDITIONAL""")
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_negative_nsec_answers(tcp):
     return answer_checker.send_and_check(NSEC_NEGATIVE_QUERY,
@@ -166,8 +182,9 @@ nsec3.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111111240 20190128
 mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. urWKiAuNdUocco7sN8G0a6QjGyxiTlH7 k8Z/5P/hq1i5GH4iIwWgRTtcWJ/3mtpM LWDB4z4Eg4BPnNzGV0Y0Ew==
 af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. PZcI6R68gjwNQBQ5DXY+WstesMCSnXR7 eg5y5AtplrUIzE6VNGM6PXrvmwr8I2UO CDBjF2Cn/cr/bY5YSK5oaw==
 ;ADDITIONAL
-"""
-)
+""")
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_negative_nsec3_answers(tcp):
     return answer_checker.send_and_check(NSEC3_NEGATIVE_QUERY,
@@ -188,6 +205,8 @@ weird-type.test.knot-resolver.cz. 3600 IN TYPE20025 \# 4 deadbeef
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_unknown_rrtypes(tcp):
     return answer_checker.send_and_check(UNKNOWN_TYPE_QUERY,
@@ -214,6 +233,8 @@ nsec.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111113325 201901281
 unsigned.nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 5 86400 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. NSd7tozIhhmjVuh9xa9VglTXkFn35i6L PC+sq8sryt8jQb/kN83WctQ+daoAvxGj ogoPvSAf4SCKgxUlLsgPIg==
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_delegation_from_nsec_to_unsigned_zone(tcp):
     return answer_checker.send_and_check(NONEXISTENT_DS_DELEGATION_NSEC_QUERY,
@@ -240,6 +261,8 @@ nsec3.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111111240 20190128
 gk65ucsupb4m139fn027ci6pl01fk5gs.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSEC3 13 5 86400 20370111111240 20190128094240 52462 nsec3.test.knot-resolver.cz. aLfrvzn8UjBdAE2YB72igoUe8XmN0gGs MW2cAjEVPwICZQIFlrhmy90HvKO08AfA jTflykbeis+/WRnisvVbjg==
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_delegation_from_nsec3_to_unsigned_zone(tcp):
     return answer_checker.send_and_check(NONEXISTENT_DS_DELEGATION_NSEC3_QUERY,
@@ -265,6 +288,8 @@ nsec.test.knot-resolver.cz. 86400 IN NSEC unsigned.nsec.test.knot-resolver.cz. A
 nsec.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. IDA6arVYLCd54OPJeGVPEeIxvzi9fdje sz3sHMV4dCsOy0UXIDq9z+amGNK9y2l+ 3o4SoxbruGWh1/JVnkmUtg==
 nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. nWIaYBfbCz3HAmZ0ePdjcaa0xIzvbRMb OkEmoARSw6JvfamEWAz2hUeLihg/jcmZ X+/9dbpf3L3apbllfv3QOw==
 ;ADDITIONAL""")
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_nonexistent_delegation_from_nsec(tcp):
     return answer_checker.send_and_check(NONEXISTENT_DELEGATION_FROM_NSEC_QUERY,
@@ -293,6 +318,8 @@ mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSE
 af4kdouqgq3k3j0boq2bqlf4hi14c8qa.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. PZcI6R68gjwNQBQ5DXY+WstesMCSnXR7 eg5y5AtplrUIzE6VNGM6PXrvmwr8I2UO CDBjF2Cn/cr/bY5YSK5oaw==
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_nonexistent_delegation_from_nsec3(tcp):
     return answer_checker.send_and_check(NONEXISTENT_DELEGATION_FROM_NSEC3_QUERY,
@@ -318,6 +345,8 @@ mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400 IN NSEC3 1 0
 nsec3.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111111240 20190128094240 52462 nsec3.test.knot-resolver.cz. j9xYhEPpCURzd1rF4NnwL1/nipjup8fO z0Tg3POXaYQr/9ovMBz6Upnt1nvAJ8zM yukkWNwbhNQJBsHUxX/PWw==
 mn71vn3kbnse5hkqqs7kc062nf9jna3u.nsec3.test.knot-resolver.cz. 86400 IN RRSIG NSEC3 13 5 86400 20370101143104 20190118130104 52462 nsec3.test.knot-resolver.cz. urWKiAuNdUocco7sN8G0a6QjGyxiTlH7 k8Z/5P/hq1i5GH4iIwWgRTtcWJ/3mtpM LWDB4z4Eg4BPnNzGV0Y0Ew==
 ;ADDITIONAL""")
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_nonexistent_type_nsec3(tcp):
     return answer_checker.send_and_check(NONEXISTENT_TYPE_NSEC3_QUERY,
@@ -344,6 +373,8 @@ nsec.test.knot-resolver.cz. 3600 IN RRSIG SOA 13 4 3600 20370111113325 201901281
 nsec.test.knot-resolver.cz. 86400 IN RRSIG NSEC 13 4 86400 20370111113325 20190128100325 25023 nsec.test.knot-resolver.cz. nWIaYBfbCz3HAmZ0ePdjcaa0xIzvbRMb OkEmoARSw6JvfamEWAz2hUeLihg/jcmZ X+/9dbpf3L3apbllfv3QOw==
 ;ADDITIONAL
 """)
+
+
 @pytest.mark.parametrize("tcp", [True, False])
 def test_nonexistent_type_nsec(tcp):
     return answer_checker.send_and_check(NONEXISTENT_TYPE_NSEC_QUERY,

@@ -1,3 +1,6 @@
+"""Test suite to determine conditions of current network in regards to DNS traffic."""
+# pylint: disable=C0301,C0111
+# flake8: noqa
 import ipaddress
 
 import dns.message
@@ -19,6 +22,8 @@ _version.test.knot-resolver.cz. 3600 IN TXT "1"
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 def test_zone_version():
     return answer_checker.send_and_check(VERSION_QUERY,
                                          VERSION_ANSWER,
@@ -42,6 +47,8 @@ test.knot-resolver.cz.	3600	IN	RRSIG	A 13 3 3600 20370101093230 20190118080230 5
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
+
 def test_remote_udp_53():
     return answer_checker.send_and_check(QUERY,
                                          ANSWER,
@@ -80,6 +87,7 @@ def test_udp_fragmentation():
                                          AUTHORITATIVE_SERVER,
                                          ALL)
 
+
 QUERY_WITH_SMALL_PAYLOAD = answer_checker.make_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=1280, want_dnssec=True)
 TRUNCATED_ANSWER = dns.message.from_text("""id 17570
 opcode QUERY
@@ -93,6 +101,7 @@ test.knot-resolver.cz. IN TXT
 ;AUTHORITY
 ;ADDITIONAL
 """)
+
 
 def test_udp_fragmentation_truncated():
     return answer_checker.send_and_check(QUERY_WITH_SMALL_PAYLOAD,

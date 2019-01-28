@@ -1,13 +1,18 @@
+"""Functions for easily send DNS queries and check recieved answers"""
+# pylint: disable=C0301
+# flake8: noqa
+
 from ipaddress import IPv4Address, IPv6Address
 import random
-from typing import Optional, Union, Set
+from typing import Union, Set
 
 import dns.message
 
 import pydnstest.matchpart
 import pydnstest.mock_client
 
-def send_and_check(question: Union[dns.message.Message, bytes],
+
+def send_and_check(question: Union[dns.message.Message, bytes],  # pylint: disable=R0913
                    expected: dns.message.Message,
                    server: Union[IPv4Address, IPv6Address],
                    match_fields: Set[str],
@@ -31,6 +36,7 @@ def get_answer(question: Union[dns.message.Message, bytes],
                server: Union[IPv4Address, IPv6Address],
                port: int = 53,
                tcp: bool = False) -> dns.message.Message:
+    """Get an DNS message with answer with specific query"""
     sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
     pydnstest.mock_client.send_query(sock, question)
     return pydnstest.mock_client.get_dns_message(sock)
@@ -49,75 +55,23 @@ def _print_answer(question: Union[dns.message.Message, bytes],
     print(pydnstest.mock_client.get_dns_message(sock).to_text())
 
 
-def randomize_case(label: bytes) -> str:
+def randomize_case(label: bytes) -> bytes:
+    """Randomize case in a DNS name label"""
     chars = list(label.decode("ascii"))
     print(chars)
     output = []
-    for c in chars:
-        if random.randint(0,1):
-            c = c.upper()
+    for char in chars:
+        if random.randint(0, 1):
+            char = char.upper()
         else:
-            c = c.lower()
-        output.append(c)
+            char = char.lower()
+        output.append(char)
     return "".join(output).encode("ascii")
 
 
 def make_query(name: str, *args, **kwargs) -> dns.message.Message:
+    """Proxy for dns.message.make_query with rANdoM-cASe"""
     query = dns.message.make_query(name, *args, **kwargs)
     for label in query.question[0].name.labels:
         label = randomize_case(label)
     return query
-
-
-
-if __name__ == "__main__":
-    # Queries can be dns.message.Message…
-    query_message = dns.message.make_query("test.knot-resolver.cz", "DS", want_dnssec=True)
-
-    # …or a bytes object in a byte format (same query as the one above)
-    query_raw = b'\xb8F\x01\x00\x00\x01\x00\x00\x00\x00\x00\x01\x04test\rknot-resolver\x02cz\x00\x00+\x00\x01\x00\x00)\x05\x00\x00\x00\x80\x00\x00\x00'
-
-    # Expected answer has to be a dns.message.Message (otherwise matching would not work).
-    expected_answer = dns.message.from_text("""id 26843
-opcode QUERY
-rcode NOERROR
-flags QR RD RA AD
-edns 0
-eflags DO
-payload 512
-;QUESTION
-test.knot-resolver.cz. IN DS
-;ANSWER
-test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
-test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 3uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
-;AUTHORITY
-;ADDITIONAL""")
-
-    answer_with_changed_RRSIG = dns.message.from_text("""id 26843
-opcode QUERY
-rcode NOERROR
-flags QR RD RA AD
-edns 0
-eflags DO
-payload 512
-;QUESTION
-test.knot-resolver.cz. IN DS
-;ANSWER
-test.knot-resolver.cz. 1799 IN DS 29017 8 2 482653368ca59cd628d26e169fdf0eb8278a438264d1f50da85324d30676869f
-test.knot-resolver.cz. 1799 IN RRSIG DS 13 3 1800 20181227073000 20181213060000 44033 knot-resolver.cz. 4uM+sFMYC1yrndNMER74As/vgaQmkNke 6jtBECM+UHs35Ti+qzFTlY8D5EZ+fENh ko5tgAyuqBL7fzDknUC9SQ==
-;AUTHORITY
-;ADDITIONAL""")
-
-    # Server is specified simply by its IP Adress
-    resolver_4 = IPv4Address("1.1.1.1")
-    resolver_6 = IPv6Address("2606:4700:4700::1111")
-
-
-    # Match fields should be some subset of pydnstest.matchpart.MATCH.keys()
-    fields = {"opcode", "qname", "qtype", "answer"}
-
-    # Returns True
-    print(send_and_check(query_message, expected_answer, resolver_4, fields))
-
-    # Throws an exception
-    print(send_and_check(query_raw, answer_with_changed_RRSIG, resolver_6, fields))
