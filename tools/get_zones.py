@@ -1,3 +1,7 @@
+"""
+Make zonefiles from all signed records from .rpl file
+"""
+
 import argparse
 import logging
 import os
@@ -13,7 +17,11 @@ logger = logging.getLogger(__name__)
 
 
 def parse_test(test):
-    """ Parse the test """
+    """ Parse the test
+
+    Attributes:
+        test (str)  path to .rpl file
+    """
     _, config = pydnstest.scenario.parse_file(os.path.realpath(test))
     load_path = os.path.dirname(__file__)
     if load_path:
@@ -32,8 +40,9 @@ def add_record_to_zone(zones, zone_name, added_record):
     Add a record from test to a zone
 
     Attributes:
-        zone_name (str)    zone name
-        added_record (str) augeas record node
+        zones (dict of dns.zone.Zone objects indexed by zone names)
+        zone_name (str)             zone name
+        added_record (AugeasNode)   augeas record node
     """
     if zone_name not in zones:
         zones[zone_name] = dns.zone.Zone(origin=zone_name)
@@ -44,33 +53,43 @@ def add_record_to_zone(zones, zone_name, added_record):
     dataset = zones[zone_name].get_rdataset(domain, rdtype, covers=rdata.covers(), create=True)
     dataset.add(rdata)
 
+
 def add_all_from_entry(entry, zones):
+    """
+    Add all signed records in a entry to their zones
+
+    Attributes:
+        entry (AugeasNode) augeas entry node
+        zones (dict of dns.zone.Zone objects indexed by zone names)
+    """
     records = list(entry.match("/section/answer/record"))
     records.extend(list(entry.match("/section/authority/record")))
     records.extend(list(entry.match("/section/additional/record")))
 
     for record in records:
         if record["/type"].value == "RRSIG":
-            rrsig = dns.rdata.from_text(dns.rdataclass.from_text(record["/class"].value), dns.rdatatype.from_text(record["/type"].value), record["/data"].value)
-            rrsig_data = record["/data"].value.split()
+            rrsig = dns.rdata.from_text(dns.rdataclass.from_text(record["/class"].value),
+                                        dns.rdatatype.from_text(record["/type"].value),
+                                        record["/data"].value)
             signer = rrsig.signer.to_text()
             add_record_to_zone(zones, signer, record)
 
             covered_type = dns.rdatatype.to_text(rrsig.type_covered)
             covered_domain = record["/domain"].value
             for record2 in records:
-                if (record2["/type"].value == covered_type
-                        and record2["/domain"].value == covered_domain):
+                if (record2["/type"].value == covered_type and
+                        record2["/domain"].value == covered_domain):
                     add_record_to_zone(zones, signer, record2)
 
 
 def add_default_to_zone(zone, domain, rdtype):
     """
-    Add a record of given type to a zone
+    Add some record of given type to a zone
 
     Attributes:
-        zone_name (str) zone name
-        rrtype (str)    rrtype
+        zone (dns.zone.Zone)    zone oobject
+        domain (str)            owner of the record
+        rdtype (int)            rdata type
     """
     default_data = {
         dns.rdatatype.A: "1.1.1.1",
@@ -143,22 +162,32 @@ def add_signed(zone, name, rdataset):
         name(str)                       owner of the RRSIG
         rdataset(dns.rdataset.Rdataset) RRSIG rdataset
     """
-    rdclass = rdataset.rdclass
+
     for rdata in rdataset.items:
         type_covered = rdata.covers()
-        if zone.get_rdataset(name, type_covered) is None:
-            add_default_to_zone(zone, name, type_covered, rdclass)
+        add_if_is_not_in_zone(zone, name, type_covered)
 
 
 def types_from_nsec(nsec):
+    """
+    Return list of types in NSEC record
+
+    Attributes:
+        nsec (dns.rdtypes.ANY.NSEC.NSEC)    NSEC record
+
+    Returns:
+        list of ints    types mentioned in NSEC
+    """
+
     types = []
     for (window, bitmap) in nsec.windows:
-        for i in range(0, len(bitmap)):
+        for i, byte in enumerate(bitmap):
             byte = bitmap[i]
             for j in range(0, 8):
                 if byte & (0x80 >> j):
                     types.append(window * 256 + i * 8 + j)
     return types
+
 
 def add_from_nsec(zone, name, rdataset):
     """
@@ -174,7 +203,6 @@ def add_from_nsec(zone, name, rdataset):
         covered_types = types_from_nsec(rdata)
         for rrtype in covered_types:
             add_if_is_not_in_zone(zone, name, rrtype)
-                
 
         if zone.get_node(rdata.next) is None:
             add_default_to_zone(zone, rdata.next, dns.rdatatype.TXT)
@@ -182,8 +210,12 @@ def add_from_nsec(zone, name, rdataset):
 
 def add_if_is_not_in_zone(zone, owner, rdtype):
     """
-    Add a record to the zone if it is missing
+    Add a record of given type to the zone if it is missing
 
+    Attributes:
+        zone (dns.zone.Zone)    zone to add record to
+        owner (str)             name of owner of the record
+        rdtype (int)            rdata type
     """
     if zone.get_rdataset(owner, rdtype) is None:
         add_default_to_zone(zone, owner, rdtype)
@@ -198,8 +230,6 @@ def zonefiles_from_rpl(rpl, directory):
         directory (str) path to the directory where the zonefiles will be stored
     """
 
-
-    # Parse test
     _, node = parse_test(rpl)
 
     zones = {}
@@ -228,13 +258,15 @@ def parseargs():
 
     Return:
         test (str)      path to test file to take zones from
-        storage(str)    directory where the zones will be stored
+        storage(str)    path to a directory where the zonefiles will be stored,
+                        default is working directory
     """
     argparser = argparse.ArgumentParser()
     argparser.add_argument("test",
                            help="path to .rpl test to make zones from")
     argparser.add_argument("-s", "--storage",
-                           help="directory where the zones will be stored", default=".")
+                           help="path to a directory where the zonefiles will be stored",
+                           default=".")
     args = argparser.parse_args()
     if os.path.isfile(args.test):
         test = args.test
@@ -245,9 +277,17 @@ def parseargs():
 
 
 def main():
+    """
+    Get zonefiles from rpl test from command line.
+
+    Command line arguments:
+        test        path to .rpl file
+        -s STORAGE  path to a directory where the zonefiles will be stored
+    """
     test, storage = parseargs()
     if not os.path.exists(storage):
         os.makedirs(storage)
     zonefiles_from_rpl(test, storage)
+
 
 main()
