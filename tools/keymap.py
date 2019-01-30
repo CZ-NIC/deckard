@@ -57,11 +57,11 @@ def get_dnskey_set(zonefile):
         zone (str)      path to zonefile to take keys from
 
     Return:
-        dns.rdataset.Rdataset   rdataset of DNSKEYs
+        dns.rrset.RRset   RRset of DNSKEYs
     """
     origin = dns.name.from_text(zonefile.split("/")[-1][:-5])
     zone = dns.zone.from_file(zonefile, origin, relativize=False)
-    return zone.find_rdataset(zone.origin, dns.rdatatype.DNSKEY)
+    return zone.find_rrset(zone.origin, dns.rdatatype.DNSKEY)
 
 
 def key_tag(dnskey):
@@ -104,21 +104,22 @@ def unique_tags(keys):
     return len(tags) == len(keys)
 
 
-def make_key_map(key_collection, map_path):
+def make_key_map(rrset, map_path):
     """
     Put information about keys to a file
 
     Attributes:
-        keys (collection of dns.rdtypes.ANY.DNSKEY)
+        rrset (dns.rrset.RRset of dns.rdtypes.ANY.DNSKEY)
         map_path (str)      path to the file
     """
 
     keys = []
-    for key in key_collection:
+    for key in rrset:
         key_dict = {}
         key_dict["tag"] = key_tag(key)
         key_dict["algorithm"] = key.algorithm
         key_dict["flags"] = key.flags
+        key_dict["owner"] = rrset.name.to_text()
         keys.append(key_dict)
 
     with open(map_path, "w") as map_file:
