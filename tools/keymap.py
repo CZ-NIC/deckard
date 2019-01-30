@@ -43,6 +43,9 @@ def parseargs():
     else:
         logger.error("%s is not a file.")
         sys.exit(1)
+    if not zone.endswith(".zone"):
+        logger.error("%s does not have the standart zonefile name format.")
+        sys.exit(1)
     return zone, args.map
 
 
@@ -56,8 +59,9 @@ def get_dnskey_set(zonefile):
     Return:
         dns.rdataset.Rdataset   rdataset of DNSKEYs
     """
-    zone = dns.zone.from_file(zonefile, zonefile.split("/")[-1][:-5], relativize=False)
-    return zone.get_rdataset(zone.origin, dns.rdatatype.DNSKEY)
+    origin = dns.name.from_text(zonefile.split("/")[-1][:-5])
+    zone = dns.zone.from_file(zonefile, origin, relativize=False)
+    return zone.find_rdataset(zone.origin, dns.rdatatype.DNSKEY)
 
 
 def key_tag(dnskey):
@@ -96,9 +100,7 @@ def unique_tags(keys):
     Return:
         True if the tags are unique, False if not
     """
-    tags = set()
-    for key in keys:
-        tags.add(key_tag(key))
+    tags = {key_tag(key) for key in keys}
     return len(tags) == len(keys)
 
 
@@ -119,9 +121,8 @@ def make_key_map(key_collection, map_path):
         key_dict["flags"] = key.flags
         keys.append(key_dict)
 
-    map_file = open(map_path, "w")
-    json.dump(keys, map_file, indent=4, separators=(',', ': '))
-    map_file.close()
+    with open(map_path, "w") as map_file:
+        json.dump(keys, map_file, indent=4)
 
 
 def main():
