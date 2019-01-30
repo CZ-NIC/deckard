@@ -22,7 +22,6 @@ def parse_test(test):
     Attributes:
         test (str)  path to .rpl file
     """
-    _, config = pydnstest.scenario.parse_file(os.path.realpath(test))
     load_path = os.path.dirname(__file__)
     if load_path:
         load_path += "/"
@@ -32,7 +31,7 @@ def parse_test(test):
                                           loadpath=load_path)
 
     node = aug.tree
-    return config, node
+    return node
 
 
 def add_record_to_zone(zones, zone_name, added_record):
@@ -230,7 +229,7 @@ def zonefiles_from_rpl(rpl, directory):
         directory (str) path to the directory where the zonefiles will be stored
     """
 
-    _, node = parse_test(rpl)
+    node = parse_test(rpl)
 
     zones = {}
     for entry in node.match("/scenario/range/entry"):
