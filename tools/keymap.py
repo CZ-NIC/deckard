@@ -27,7 +27,7 @@ def parseargs():
 
     Return:
         zone (str)      path to zonefile to take keys from
-        storage(str)    path to a directory where the keymap will be stored,
+        map (str)    path to a directory where the keymap will be stored,
                         default is working directory
     """
     argparser = argparse.ArgumentParser()
@@ -35,8 +35,8 @@ def parseargs():
                            help="path to zonefile to take keys from")
     argparser.add_argument("-m", "--map",
                            help="""path to a file where the keymap will be stored,
-                           default is key_map in working directory""",
-                           default="key_map")
+                           default is key_map.json in working directory""",
+                           default="key_map.json")
     args = argparser.parse_args()
     if os.path.isfile(args.zone):
         zone = args.zone
