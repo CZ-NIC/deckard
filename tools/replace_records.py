@@ -48,6 +48,7 @@ def parseargs():
         sys.exit(1)
     if not args.zone.endswith(".zone.signed"):
         logger.error("%s does not have the standart signed zonefile name format.", args.zone)
+        sys.exit(1)
     return args.key_json, args.zone, args.rpl
 
 
