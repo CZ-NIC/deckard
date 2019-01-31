@@ -63,7 +63,7 @@ def remove_dnskeys(zonefile, keys):
     dnskeys = zone.get_rdataset(origin, dns.rdatatype.DNSKEY, create=True)
     for key in dnskeys:
         if keytag.from_dnskey(key) in keys:
-            dnskeys.delitem(key)
+            dnskeys.remove(key)
     zone.to_file(zonefile, relativize=False)
 
 
