@@ -1,3 +1,8 @@
+"""
+Change records from zone in .rpl file
+"""
+
+
 import argparse
 import json
 import logging
@@ -42,7 +47,7 @@ def parseargs():
         logger.error("%s is not a file.", args.rpl)
         sys.exit(1)
     if not args.zone.endswith(".zone.signed"):
-        logger.error("%s does not have the standart zonefile name format.", args.zone)
+        logger.error("%s does not have the standart signed zonefile name format.", args.zone)
     return args.key_json, args.zone, args.rpl
 
 
@@ -63,12 +68,18 @@ def parse_test(test):
 
 
 def get_keys(key_json):
+    """
+    Transform list of dictionaries from json file to dictionary in form old_tag:new_tag
+    """
     with open(key_json) as json_file:
         keys_from_json = json.load(json_file)
     return {key["old"]:key["new"] for key in keys_from_json}
 
 
 def parse_zonefile(zonefile):
+    """
+    Get zone object from zonefile
+    """
     origin = dns.name.from_text(zonefile.split("/")[-1][:-12])
     return dns.zone.from_file(zonefile, origin, relativize=False, check_origin=False)
 
@@ -78,9 +89,10 @@ def get_rrsig(owner, rrsig, keys, zone):
     Find corresponding RRSIG from zone
 
     Attributes:
-        record      augeas record node of RRSIG
-        keys        mapping of old keytags to new ones
-        zone        zonefile with new records
+        owner (dns.name.Name)   owner of the RRSIG
+        rrsig (dns.drtypes.ANY.RRSIG.RRSIG)
+        keys                    mapping of old keytags to new ones
+        zone                    zonefile with new records
 
     Return:
         new RRSIG data (str)
@@ -96,9 +108,10 @@ def get_dnskey(owner, dnskey, keys, zone):
     Find corresponding DNSKEY from zone
 
     Attributes:
-        record      augeas record node of DNSKEY
-        keys        mapping of old keytags to new ones
-        zone        zonefile with new records
+        owner (dns.name.Name)   owner of the DNSKEY
+        rrsig (dns.drtypes.ANY.DNESKEY.DNSKEY)
+        keys                    mapping of old keytags to new ones
+        zone                    zonefile with new records
 
     Return:
         new DNSKEY data (str)
@@ -114,7 +127,8 @@ def get_ds(owner, ds, keys, zone):
     Find corresponding DNSKEY from zone
 
     Attributes:
-        record      augeas record node of DS TODO:edit
+        owner (dns.name.Name)   owner of the DS
+        rrsig (dns.drtypes.ANY.DS.DS)
         keys        mapping of old keytags to new ones
         zone        zonefile with new records
 
@@ -128,6 +142,14 @@ def get_ds(owner, ds, keys, zone):
 
 
 def replace_in_augtree(tree, keys, zone):
+    """
+    Replace RRSIG, DNSKEY and DS records with new ones from a zone
+
+    Attributes:
+        tree                Augeas tree
+        keys ({int:int})    mapping of old keytags to new ones
+        zone (dns.zone.Zone)
+    """
     for entry in tree.match("/scenario/range/entry"):
         records = list(entry.match("/section/answer/record"))
         records.extend(list(entry.match("/section/authority/record")))
@@ -147,6 +169,9 @@ def replace_in_augtree(tree, keys, zone):
 
 
 def main():
+    """
+    Change records from zone in .rpl file
+    """
     key_json, zonefile, rpl = parseargs()
     aug = parse_test(rpl)
     keys = get_keys(key_json)
