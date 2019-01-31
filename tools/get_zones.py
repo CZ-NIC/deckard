@@ -220,6 +220,16 @@ def add_if_is_not_in_zone(zone, owner, rdtype):
         add_default_to_zone(zone, owner, rdtype)
 
 
+def update_zone(zone, other):
+    """
+    Add all rdatas in other to zone.
+    """
+    for name in other:
+        for rdataset_other in other[name]:
+            rdataset = zone.get_rdataset(name, rdataset_other.rdtype, create=True)
+            rdataset.update(rdataset_other)
+
+
 def zonefiles_from_rpl(rpl, directory):
     """
     Create zonefiles used in test
@@ -236,15 +246,17 @@ def zonefiles_from_rpl(rpl, directory):
         add_all_from_entry(entry, zones)
 
     for zone in zones.values():
+        zone2 = dns.zone.Zone(zone.origin, relativize=False)
         for name in zone:
             node = zone[name]
             for rdataset in node:
                 if rdataset.rdtype == dns.rdatatype.RRSIG:
                     add_signed(zone, name, rdataset)
                 if rdataset.rdtype == dns.rdatatype.NSEC:
-                    add_from_nsec(zone, name, rdataset)
+                    add_from_nsec(zone2, name, rdataset)
         add_if_is_not_in_zone(zone, zone.origin, dns.rdatatype.SOA)
         add_if_is_not_in_zone(zone, zone.origin, dns.rdatatype.NS)
+        update_zone(zone, zone2)
 
     for zone in zones.values():
         filename = zone.origin.to_text()
