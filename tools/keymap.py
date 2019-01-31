@@ -2,9 +2,9 @@
 Take DNSKEYs from a zonefile and put info about them to a file
 
 Command line arguments:
-        test        path to zonefile
+        zone        path to zonefile
         -m MAP      path to a file where the keymap will be stored,
-                    default is key_map in working directory
+                    default is key_map.json in working directory
 """
 
 import json
