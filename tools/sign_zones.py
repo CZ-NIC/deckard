@@ -77,7 +77,8 @@ def include_keys(zone, keys):
     """
     with open(zone, "a+") as zonefile:
         for key in keys:
-            zonefile.write("$INCLUDE " + key + "\n")
+            with open(key) as keyfile:
+                zonefile.write(keyfile.read())
 
 
 def sign_zone(zone, key_dir):
@@ -106,7 +107,7 @@ def main():
     with open(key_json) as key_file:
         keys = json.load(key_file)
     remove_dnskeys(zone, {key["old"] for key in keys})
-    include_keys(zone, [key["file"] for key in keys])
+    include_keys(zone, [key_dir + "/" + key["file"] for key in keys])
     sign_zone(zone, key_dir)
 
 
