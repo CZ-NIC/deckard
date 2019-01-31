@@ -73,7 +73,7 @@ def get_keys(key_json):
     """
     with open(key_json) as json_file:
         keys_from_json = json.load(json_file)
-    return {key["old"]:key["new"] for key in keys_from_json}
+    return {key["old"]: key["new"] for key in keys_from_json}
 
 
 def parse_zonefile(zonefile):
@@ -101,6 +101,8 @@ def get_rrsig(owner, rrsig, keys, zone):
     for new_rrsig in rdataset:
         if new_rrsig.key_tag == keys[rrsig.key_tag]:
             return new_rrsig.to_text()
+    logger.error("Didn't find matching record to %s in the zone.", rrsig.to_text())
+    sys.exit(1)
 
 
 def get_dnskey(owner, dnskey, keys, zone):
@@ -109,7 +111,7 @@ def get_dnskey(owner, dnskey, keys, zone):
 
     Attributes:
         owner (dns.name.Name)   owner of the DNSKEY
-        rrsig (dns.drtypes.ANY.DNESKEY.DNSKEY)
+        dnskey (dns.drtypes.ANY.DNESKEY.DNSKEY)
         keys                    mapping of old keytags to new ones
         zone                    zonefile with new records
 
@@ -120,6 +122,8 @@ def get_dnskey(owner, dnskey, keys, zone):
     for new_dnskey in rdataset:
         if keytag.from_dnskey(new_dnskey) == keys[keytag.from_dnskey(dnskey)]:
             return new_dnskey.to_text()
+    logger.error("Didn't find matching record to %s in the zone.", dnskey.to_text())
+    sys.exit(1)
 
 
 def get_ds(owner, ds, keys, zone):
@@ -128,7 +132,7 @@ def get_ds(owner, ds, keys, zone):
 
     Attributes:
         owner (dns.name.Name)   owner of the DS
-        rrsig (dns.drtypes.ANY.DS.DS)
+        ds          (dns.drtypes.ANY.DS.DS)
         keys        mapping of old keytags to new ones
         zone        zonefile with new records
 
@@ -139,6 +143,8 @@ def get_ds(owner, ds, keys, zone):
     for new_ds in rdataset:
         if new_ds.key_tag == keys[ds.key_tag] and new_ds.digest_type == ds.digest_type:
             return new_ds.to_text()
+    logger.error("Didn't find matching record to %s in the zone.", ds.to_text())
+    sys.exit(1)
 
 
 def replace_in_augtree(tree, keys, zone):

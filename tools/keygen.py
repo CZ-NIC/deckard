@@ -68,7 +68,7 @@ def parseargs():
     args = argparser.parse_args()
 
     if not os.path.isfile(args.key_map):
-        logger.error("%s is not a file.")
+        logger.error("%s is not a file.", args.key_map)
         sys.exit(1)
     if not os.path.exists(args.key_dir):
         os.makedirs(args.key_dir)
@@ -107,7 +107,7 @@ def generate_key(key, blacklist, key_dir):
     keygen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     keygen_output = keygen.communicate()
     if keygen.returncode != 0:
-        logger.error("Cannot generate key:\n" + keygen_output[1].decode("utf-8"))
+        logger.error("Cannot generate key:\n%s", keygen_output[1].decode("utf-8"))
         sys.exit(1)
     filename = keygen_output[0].decode("utf-8").split("\n")[-2]
     tag = int(filename.split("+")[-1])
