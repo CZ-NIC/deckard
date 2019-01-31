@@ -271,7 +271,7 @@ def parseargs():
     if os.path.isfile(args.test):
         test = args.test
     else:
-        logger.error("%s is not a file.")
+        logger.error("%s is not a file.", args.test)
         sys.exit(1)
     return test, args.storage
 

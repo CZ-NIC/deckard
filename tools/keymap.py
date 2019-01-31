@@ -41,10 +41,10 @@ def parseargs():
     if os.path.isfile(args.zone):
         zone = args.zone
     else:
-        logger.error("%s is not a file.")
+        logger.error("%s is not a file.", args.zone)
         sys.exit(1)
     if not zone.endswith(".zone"):
-        logger.error("%s does not have the standart zonefile name format.")
+        logger.error("%s does not have the standart zonefile name format.", zone)
         sys.exit(1)
     return zone, args.map
 
