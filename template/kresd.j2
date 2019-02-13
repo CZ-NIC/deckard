@@ -25,6 +25,8 @@ mode('permissive')
 -- Always retry failing resolver
 option('NO_THROTTLE', true)
 
+-- make sure that value specified at compile-type does not break tests
+trust_anchors.keyfile_default = nil
 {% for TAF in TRUST_ANCHOR_FILES %}
 trust_anchors.add_file('{{TAF}}')
 {% endfor %}
