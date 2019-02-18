@@ -42,7 +42,7 @@ def get_answer(question: Union[dns.message.Message, bytes],
     return pydnstest.mock_client.get_dns_message(sock)
 
 
-def _print_answer(question: Union[dns.message.Message, bytes],
+def _string_answer(question: Union[dns.message.Message, bytes],
                   server: Union[IPv4Address, IPv6Address],
                   port: int = 53,
                   tcp: bool = False) -> None:
@@ -52,13 +52,12 @@ def _print_answer(question: Union[dns.message.Message, bytes],
 
     sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
     pydnstest.mock_client.send_query(sock, question)
-    print(pydnstest.mock_client.get_dns_message(sock).to_text())
+    return pydnstest.mock_client.get_dns_message(sock).to_text()
 
 
 def randomize_case(label: bytes) -> bytes:
     """Randomize case in a DNS name label"""
     chars = list(label.decode("ascii"))
-    print(chars)
     output = []
     for char in chars:
         if random.randint(0, 1):
