@@ -45,7 +45,7 @@ def get_answer(question: Union[dns.message.Message, bytes],
 def string_answer(question: Union[dns.message.Message, bytes],
                   server: Union[IPv4Address, IPv6Address],
                   port: int = 53,
-                  tcp: bool = False) -> None:
+                  tcp: bool = False) -> str:
     """
     Prints answer of a server. Good for generating tests.
     """
