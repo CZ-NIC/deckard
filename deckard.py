@@ -113,6 +113,7 @@ def setup_common_env(ctx):
         if os.path.lexists(tmpdir):
             raise ValueError('SOCKET_WRAPPER_DIR "%s" must not exist' % tmpdir)
     else:
+        # uses TMPDIR environment variable (if dir exists)
         tmpdir = tempfile.mkdtemp(suffix='', prefix='tmpdeckard')
 
     # Set up libfaketime
