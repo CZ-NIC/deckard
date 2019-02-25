@@ -366,7 +366,7 @@ class Entry:
         if 'do_not_answer' in self.adjust_fields:
             return None
         if self.raw_data is not None:
-            copy_id = 'raw_data' in self.adjust_fields
+            copy_id = 'raw_id' in self.adjust_fields
             assert self.raw_data is not None
             return DNSReplyRaw(self.raw_data, query, copy_id)
         copy_id = 'copy_id' in self.adjust_fields
