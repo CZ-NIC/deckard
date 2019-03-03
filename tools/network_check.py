@@ -9,8 +9,8 @@ import dns.message
 
 import answer_checker
 
-# These are IPs of master-dns.labs.nic.cz
-AUTHORITATIVE_SERVERS = [ipaddress.IPv4Address("217.31.192.131"), ipaddress.IPv6Address("2001:1488:ac15:ff90::131")]
+# These are IPs of a.ns.nic.cz
+AUTHORITATIVE_SERVERS = [ipaddress.IPv4Address("194.0.12.1"), ipaddress.IPv6Address("2001:678:f::1")]
 ALL = {"opcode", "qtype", "qname", "flags", "rcode", "answer", "authority", "additional"}
 
 VERSION_QUERY = dns.message.make_query("_version.test.knot-resolver.cz", "TXT")
