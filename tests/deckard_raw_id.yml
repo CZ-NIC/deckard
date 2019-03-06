@@ -1,0 +1,7 @@
+programs:
+- name: raw_id
+  binary: python3
+  additional:
+    - ./tests/test_raw_id.py
+  templates: []
+  configs: []
