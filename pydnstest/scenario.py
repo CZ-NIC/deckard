@@ -111,9 +111,9 @@ class DNSReplyRaw(DNSBlob):
     def adjust_reply(
                 self,
                 query: dns.message.Message,
-                copy_id: bool = True
+                raw_id: bool = True
             ) -> None:
-        if copy_id:
+        if raw_id:
             if len(self.wire) < 2:
                 raise ValueError(
                     'wire data must contain at least 2 bytes to adjust query id')
@@ -366,9 +366,9 @@ class Entry:
         if 'do_not_answer' in self.adjust_fields:
             return None
         if self.raw_data is not None:
-            copy_id = 'raw_data' in self.adjust_fields
+            raw_id = 'raw_id' in self.adjust_fields
             assert self.raw_data is not None
-            return DNSReplyRaw(self.raw_data, query, copy_id)
+            return DNSReplyRaw(self.raw_data, query, raw_id)
         copy_id = 'copy_id' in self.adjust_fields
         copy_query = 'copy_query' in self.adjust_fields
         return DNSReply(self.message, query, copy_id, copy_query)

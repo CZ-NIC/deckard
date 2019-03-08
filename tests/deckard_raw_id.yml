@@ -1,0 +1,6 @@
+programs:
+- name: raw_id
+  binary: test_raw_id.py
+  additional: []
+  templates: []
+  configs: []
