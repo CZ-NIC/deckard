@@ -4,10 +4,14 @@ import sys
 
 import dns.message
 
-sys.path.append("tools")
-
-import answer_checker
+from pydnstest import mock_client
 
 q = dns.message.make_query("anything", "A")
+qid = q.id.to_bytes(2, "big", signed=False)
+sock = mock_client.setup_socket("1.2.3.4", 53)
+mock_client.send_query(sock, q)
 
-answer_checker.send_and_check(q, q, ipaddress.ip_address("127.0.0.127"), {"id"})
+if mock_client.get_answer(sock) == qid:
+    sys.exit(0)
+else:
+    sys.exit(1)
