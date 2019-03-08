@@ -1,8 +1,8 @@
-stub-addr: 127.0.0.127
+stub-addr: 1.2.3.4
 CONFIG_END
 SCENARIO_BEGIN Sanity check for Deckard's "ADJUST raw_id" option
 RANGE_BEGIN 0 100
-ADDRESS 127.0.0.127
+ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode
 ADJUST raw_id
