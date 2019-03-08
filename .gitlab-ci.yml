@@ -44,6 +44,13 @@ test:unittests:
   script:
     - make check
 
+# There are no tests in the repo which use this feature but others do
+# and do not want to cause them breakage
+test:sanity:raw_id:
+  <<: *test
+  script:
+    - ci/raw_id_check.sh
+
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
   <<: *test
