@@ -83,31 +83,238 @@ def test_nonexistent_addres(non_existent_server):
     return False
 
 
-LONG_QUERY = answer_checker.make_random_case_query("test.knot-resolver.cz", "TXT", use_edns=0, payload=4096, want_dnssec=True)
+LONG_QUERY = answer_checker.make_random_case_query("Ns103.X4058.x4090.Rs.DNS-oarc.nET", "A", use_edns=0, payload=4096, want_dnssec=True)
 answer_checker.unset_flag(LONG_QUERY, dns.flags.RD)
 LONG_ANSWER = dns.message.from_text(""";
+id 6040
 opcode QUERY
 rcode NOERROR
 flags QR AA
 edns 0
 payload 4096
 ;QUESTION
-test.knot-resolver.cz. IN TXT
+Ns103.X4058.x4090.Rs.DNS-oarc.nET. IN A
 ;ANSWER
-test.knot-resolver.cz. 3600 IN TXT "Davku ve me o pln uvitani stari s tvuj neda? Tik kufr u traslo uf tabuli znaky mesity bimbal vyrvat vydelal pobezi zahajil a tajnosti. By 77 dusic ach prazdna kasari k zac platne potiz. O hon 30 otazek jiz post i rad zeleninu vyhrknu bhutanu nezdalo. I tr" "ida, ptat lzes vypadla newton, utal hm je bas samymi u sobe ukaz kazne medove u placeny ke ah jo zpola o ocich. Sul trimesicni kontrolujte v predstirana po nej mit za devetadevadesati eh mi lezu slava vuz v me smery. Tri akt dlazbu dal lamu, kavkam on zas" "luhy, sad muzikant vek. Paty neme radili trunil docist tech obou zari. My ze 11 tlusti jsemvidel. Podivej i prs kralik at ted o vynahradit ti si ma charakterni nehybny tulak poskytl rad! Muz ztuhla, ci ah propatral misce! Slz eh at? Zenou dilo intuici. Le" "su pud povesti, i jamou tej. V az vdanou zrejmo za ctil 81 kolika u ustrnule malicherny holemi nekradla jinych morfia: pocasi poplaseny zpovidat az dne vyjimecna zidovskem stejny sluzek tajemny hlidat u ruzovym pry jestli vyslychalo zem nerozbrecte farare" " strhla v mem tabule pije a odkraglujem otisky nebot. Ex povidani pusta duse eh zvalel, o pak ma bryle luzka: u posluhovi neudela 30 ze ctverce brovninku. 411 se vi rypaje nova to per ba zchoulostivil remenem. Vaze to lujzou styky, te? Ne me by pazeni tro" "ubil i srovnala dejoveho a prvnich me o zime hlasy nevsimnou. Jejim zajiste za porotam valka sekt. Oni vuli co ryb pruvod. Ode jehoz od lasce ve slouzilo co jektal hryzal lamparny. Zvlastnich ne vybil brejlil uz ah? Husa trit mu straze s zivaje abys chute" " pane ci nepochybujte ubiha k babe ach okoli zle okna deji dverim! Vymyslim do falesne. Pokaceneho leti oka krk. Nohy stejny u vykaslu, rinkotem ondyno, laureat z zabije."
-test.knot-resolver.cz. 3600 IN RRSIG TXT 13 3 3600 20370119135450 20190205122450 58 test.knot-resolver.cz. YYzbiOgNyIe2YcUHUbA8LNrqUYPSHEUA U7tAOLJx54kSlTMYDB5VrnqsAIgp2PtV C1gELBVK4Xtwxrx3ajeLhA==
+Ns103.X4058.x4090.Rs.DNS-oarc.nET. 59 IN CNAME rst.x4066.x4090.Rs.DNS-oarc.nET.
 ;AUTHORITY
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns00.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns01.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns02.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns03.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns04.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns05.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns06.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns07.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns08.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns09.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns10.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns11.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns12.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns13.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns14.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns15.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns16.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns17.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns18.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns19.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns20.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns21.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns22.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns23.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns24.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns25.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns26.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns27.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns28.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns29.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns30.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns31.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns32.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns33.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns34.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns35.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns36.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns37.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns38.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns39.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns40.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns41.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns42.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns43.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns44.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns45.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns46.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns47.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns48.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns49.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns50.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns51.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns52.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns53.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns54.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns55.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns56.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns57.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns58.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns59.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns60.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns61.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns62.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns63.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns64.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns65.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns66.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns67.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns68.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns69.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns70.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns71.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns72.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns73.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns74.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns75.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns76.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns77.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns78.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns79.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns80.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns81.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns82.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns83.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns84.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns85.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns86.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns87.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns88.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns89.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns90.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns91.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns92.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns93.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns94.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns95.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns96.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns97.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns98.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns99.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns100.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns101.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns102.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns103.x4066.x4090.Rs.DNS-oarc.nET.
+x4066.x4090.Rs.DNS-oarc.nET. 59 IN NS ns104.x4066.x4090.Rs.DNS-oarc.nET.
 ;ADDITIONAL
+ns00.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns01.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns02.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns03.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns04.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns05.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns06.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns07.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns08.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns09.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns10.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns11.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns12.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns13.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns14.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns15.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns16.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns17.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns18.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns19.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns20.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns21.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns22.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns23.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns24.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns25.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns26.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns27.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns28.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns29.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns30.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns31.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns32.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns33.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns34.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns35.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns36.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns37.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns38.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns39.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns40.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns41.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns42.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns43.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns44.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns45.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns46.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns47.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns48.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns49.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns50.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns51.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns52.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns53.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns54.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns55.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns56.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns57.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns58.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns59.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns60.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns61.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns62.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns63.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns64.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns65.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns66.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns67.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns68.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns69.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns70.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns71.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns72.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns73.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns74.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns75.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns76.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns77.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns78.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns79.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns80.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns81.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns82.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns83.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns84.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns85.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns86.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns87.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns88.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns89.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns90.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns91.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns92.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns93.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns94.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns95.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns96.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns97.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns98.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns99.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns100.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns101.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns102.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns103.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
+ns104.x4066.x4090.Rs.DNS-oarc.nET. 59 IN A 64.191.0.135
 """)
 
 
-@pytest.mark.skip(reason="This doesn't work since a.ns.nic.cz (and all CZ.NIC's nameservers in that "
-                         "matter) have internal EDNS buffer size of 1232 bytes. The answer is "
-                         "unfortunately bigger. :(")
-def test_udp_fragmentation(server):
+def test_udp_fragmentation():
     return answer_checker.send_and_check(LONG_QUERY,
                                          LONG_ANSWER,
-                                         server,
+                                         ipaddress.ip_address("64.191.0.134"),
                                          ALL - {"authority"},
                                          unset_flags=[dns.flags.AD])
 
