@@ -78,6 +78,11 @@ modules.load( 'view')
 modules = { 'workarounds < iterate' }
 {% endif %}
 
+-- Disable RFC5011 TA update
+if ta_update then
+        modules.unload('ta_update')
+end
+
 -- Disable RFC8145 signaling, scenario doesn't provide expected ansers
 if ta_signal_query then
 	modules.unload('ta_signal_query')
