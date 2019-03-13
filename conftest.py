@@ -3,9 +3,9 @@ import glob
 import logging
 import os
 import re
-import yaml
 
 import pytest
+import yaml
 
 
 Scenario = namedtuple("Scenario", ["path", "qmin", "config"])

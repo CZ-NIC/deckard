@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/knot/knot-resolver/ci/debian-stable:knot-2.7
+image: $CI_REGISTRY/knot/knot-resolver/ci/debian-buster:knot-2.8
 variables:
   LC_ALL: C.UTF-8
 
@@ -56,16 +56,17 @@ test:comparative:kresd:
   <<: *test
   script:
     # test kresd binary
-    - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
-    - GIT_DIR=/tmp/kresd-local-build/.git git log -1
-    - ( cd /tmp/kresd-local-build ; git submodule update --init --recursive )
-    - PREFIX=/tmp/.local make -C /tmp/kresd-local-build -k all
-    - PREFIX=/tmp/.local make -C /tmp/kresd-local-build install
+    - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
+    - pushd /tmp/kresd-local-build
+    - git log -1
+    - meson build_local --default-library=static --prefix=/tmp/.local
+    - ninja -C build_local install
+    - popd
     # compare results from latest Deckard with results from merge base
     - cp ci/common.sh /tmp
     - cp ci/compare-tests.sh /tmp
     - cp ci/junit-compare.py /tmp
-    - LD_LIBRARY_PATH=/tmp/.local/lib PATH=/tmp/.local/sbin:$PATH /tmp/compare-tests.sh $(pwd)/kresd_run.sh
+    - PATH=/tmp/.local/sbin:$PATH /tmp/compare-tests.sh $(pwd)/kresd_run.sh
   artifacts:
     when: always
     expire_in: '1 hour'
@@ -79,12 +80,13 @@ test:comparative:kresd:
 test:latest:kresd:
   <<: *test
   script:
-    - git clone --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
-    - GIT_DIR=$(pwd)/kresd-local-build/.git git log -1
-    - ( cd kresd-local-build ; git submodule update --init --recursive )
-    - PREFIX=$(pwd)/.local make -C kresd-local-build -k all
-    - PREFIX=$(pwd)/.local make -C kresd-local-build install
-    - TMPDIR=$(pwd) LD_LIBRARY_PATH=$(pwd)/.local/lib PATH=$(pwd)/.local/sbin:$PATH ./kresd_run.sh -n $(nproc)
+    - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
+    - pushd kresd-local-build
+    - git log -1
+    - meson build_local --default-library=static --prefix="$PWD/.local"
+    - ninja -C build_local install
+    - popd
+    - TMPDIR=$(pwd) PATH=$(pwd)/.local/sbin:$PATH ./kresd_run.sh -n $(nproc)
   artifacts:
     when: on_failure
     expire_in: 1 week
