@@ -5,7 +5,8 @@ Invoke with `python3 -m pytest forwarder_check.py --forwarder [IP of forwarder]`
 import ipaddress
 
 import dns.message
-import pytest
+# NOTE silence incorrectly reported error, may be removed once it passes in CI
+import pytest  # pylint: disable=wrong-import-order
 
 import answer_checker
 

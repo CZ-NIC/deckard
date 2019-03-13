@@ -3,8 +3,7 @@ import binascii
 import calendar
 from datetime import datetime
 import logging
-import os
-import posixpath
+import os  # requires posix
 import random
 import socket
 import struct
@@ -229,7 +228,7 @@ class Entry:
     def process_sections(self):
         sections = set()
         for section in self.node.match("/section/*"):
-            section_name = posixpath.basename(section.path)
+            section_name = os.path.basename(section.path)
             sections.add(section_name)
             for record in section.match("/record"):
                 owner = record['/domain'].value
@@ -867,5 +866,5 @@ def parse_file(path):
                 kv = [x.strip() for x in line.split(':', 1)]
                 if len(kv) >= 2:
                     config.append(kv)
-    scenario = Scenario(node["/scenario"], posixpath.basename(node.path))
+    scenario = Scenario(node["/scenario"], os.path.basename(node.path))
     return scenario, config
