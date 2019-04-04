@@ -25,8 +25,8 @@ mode('permissive')
 -- Always retry failing resolver
 option('NO_THROTTLE', true)
 
--- make sure that value specified at compile-type does not break tests
-trust_anchors.keyfile_default = nil
+-- make sure that value specified at compile-time does not break tests
+trust_anchors.remove('.')
 {% for TAF in TRUST_ANCHOR_FILES %}
 trust_anchors.add_file('{{TAF}}')
 {% endfor %}
@@ -77,6 +77,11 @@ modules.load( 'view')
 {% if FEATURES.workarounds is defined %}
 modules = { 'workarounds < iterate' }
 {% endif %}
+
+-- Disable RFC5011 TA update
+if ta_update then
+        modules.unload('ta_update')
+end
 
 -- Disable RFC8145 signaling, scenario doesn't provide expected ansers
 if ta_signal_query then

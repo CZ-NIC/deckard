@@ -2,10 +2,9 @@
 
 # Copyright (C) 2017
 
-import posixpath
-import logging
-import os
 import collections.abc
+import logging
+import os  # requires posix
 
 from augeas import Augeas
 
@@ -22,7 +21,7 @@ def join(*paths):
 
     FIXME: Beware: // is normalized to /
     """
-    norm_paths = [posixpath.normpath(path) for path in paths]
+    norm_paths = [os.path.normpath(path) for path in paths]
     # first path must be absolute
     assert norm_paths[0][0] == '/'
     new_paths = [norm_paths[0]]
@@ -31,9 +30,9 @@ def join(*paths):
         if path.startswith('/'):
             path = path[1:]
         new_paths.append(path)
-    new_path = posixpath.join(*new_paths)
+    new_path = os.path.join(*new_paths)
     log.debug("join: new_path %s", new_path)
-    return posixpath.normpath(new_path)
+    return os.path.normpath(new_path)
 
 
 class AugeasWrapper:
