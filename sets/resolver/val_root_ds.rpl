@@ -12,7 +12,7 @@ RANGE_BEGIN 0 10
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . DS
@@ -26,7 +26,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode question
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . DNSKEY
