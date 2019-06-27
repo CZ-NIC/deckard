@@ -19,7 +19,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -31,7 +31,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
@@ -43,7 +43,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -55,7 +55,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -72,7 +72,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 com. IN NS
@@ -84,7 +84,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
@@ -100,7 +100,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.12.94.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 net. IN NS
@@ -112,7 +112,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -124,7 +124,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -140,7 +140,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 example.net. IN NS
@@ -152,7 +152,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -164,7 +164,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -178,7 +178,7 @@ ENTRY_END
 ; sub.example.com.        3600    IN      DS      54180 5 1 67360E6697A9066D6904EE6E9879FB5990C6A724    
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 sub.example.com. IN DNSKEY
@@ -195,7 +195,7 @@ ENTRY_END
 ; response to query of interest
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
@@ -212,7 +212,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.55
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -224,7 +224,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -234,7 +234,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -243,7 +243,7 @@ ENTRY_END
 ; fine DNSKEY response.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION 
 example.com. IN DNSKEY  
@@ -258,7 +258,7 @@ ENTRY_END
 ; correct delegation with DS
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
@@ -275,7 +275,7 @@ ENTRY_END
 ; response for delegation to sub.example.com.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION 
 sub.example.com. IN DNSKEY
@@ -297,7 +297,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION 
 sub.example.com. IN NS
@@ -314,7 +314,7 @@ ENTRY_END
 ; sub.example.com.        3600    IN      DS      54180 5 1 67360E6697A9066D6904EE6E9879FB5990C6A724    
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 sub.example.com. IN DNSKEY
@@ -326,7 +326,7 @@ ENTRY_END
 ; response to query of interest
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
@@ -337,7 +337,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.sub.example.com. IN AAAA

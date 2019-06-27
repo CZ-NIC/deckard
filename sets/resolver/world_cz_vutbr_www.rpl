@@ -16,7 +16,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 .		IN	DNSKEY
@@ -67,7 +67,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 cz.		IN	DNSKEY
@@ -113,7 +113,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 vutbr.cz.		IN	NS
@@ -134,7 +134,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 vutbr.cz.		IN	DNSKEY
@@ -147,7 +147,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 www.vutbr.cz.			IN	A
@@ -176,7 +176,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 ro.vutbr.cz.       		IN      NS
@@ -200,7 +200,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 ro.vutbr.cz.       		IN      DS
@@ -212,7 +212,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 ro.vutbr.cz.       		IN      DNSKEY
@@ -225,7 +225,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA DO
 SECTION QUESTION
 piranha.ro.vutbr.cz.		IN	A

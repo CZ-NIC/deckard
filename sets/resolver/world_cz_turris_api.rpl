@@ -35,7 +35,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN NS
@@ -85,7 +85,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN DNSKEY
@@ -97,7 +97,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 cz. IN DS
@@ -143,7 +143,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 cz. IN NS
@@ -164,7 +164,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 cz. IN DNSKEY
@@ -177,7 +177,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 turris.cz. IN NS
@@ -190,7 +190,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 turris.cz. IN DS
@@ -201,7 +201,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 turris.cz. IN DNSKEY
@@ -213,7 +213,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 api.turris.cz. IN A
@@ -229,7 +229,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 api.turris.cz. IN AAAA

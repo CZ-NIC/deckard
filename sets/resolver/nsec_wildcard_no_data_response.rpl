@@ -16,7 +16,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -28,7 +28,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN A
@@ -38,7 +38,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns. IN AAAA
@@ -66,7 +66,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 example. IN NS
@@ -78,7 +78,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example. IN A
@@ -88,7 +88,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example. IN AAAA
@@ -116,7 +116,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 nsec.example. IN NS
@@ -130,7 +130,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.nsec.example. IN A
@@ -141,7 +141,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.nsec.example. IN AAAA
@@ -154,7 +154,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 nsec.example. IN DNSKEY
@@ -165,7 +165,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 local.nsec.example. IN A
@@ -180,7 +180,7 @@ ENTRY_END
 ; missing NSEC proof
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-nodata.local.nsec.example. IN CNAME
@@ -191,7 +191,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-nodata.local.nsec.example. IN RRSIG
@@ -202,7 +202,7 @@ ENTRY_END
 ; synthesized A record was removed and replaced with SOA but no NSEC
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-masked-data.local.nsec.example. IN A
@@ -213,7 +213,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 missing-nsec-masked-data.local.nsec.example. IN RRSIG
@@ -247,7 +247,7 @@ ENTRY_END
 STEP 11 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD RA AD NOERROR
 SECTION QUESTION
 aaa.local.nsec.example. IN CNAME
@@ -273,7 +273,7 @@ ENTRY_END
 STEP 31 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD RA SERVFAIL
 SECTION QUESTION
 missing-nsec-masked-data.local.nsec.example. IN A
