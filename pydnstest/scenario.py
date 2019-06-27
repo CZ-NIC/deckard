@@ -79,8 +79,8 @@ class DNSReply(DNSMessage):
         if copy_id:
             answer.id = query.id
             # Copy letter-case if the template has QD
-            if answer.question:
-                answer.question[0].name = query.question[0].name
+            # if answer.question:
+            #     answer.question[0].name = query.question[0].name
         if copy_query:
             answer.question = query.question
         # Re-set, as the EDNS might have reset the ext-rcode

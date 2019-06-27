@@ -13,7 +13,7 @@ RANGE_BEGIN 1 2
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.com.    IN  A
@@ -26,7 +26,7 @@ RANGE_BEGIN 4 8
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.com.    IN  A
@@ -44,7 +44,7 @@ RANGE_BEGIN 9 10
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.cz.    IN  A
@@ -57,7 +57,7 @@ RANGE_BEGIN 12 16
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR RD NOERROR
 SECTION QUESTION
 example.cz.    IN  A

@@ -11,7 +11,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -53,7 +53,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.cz. IN A

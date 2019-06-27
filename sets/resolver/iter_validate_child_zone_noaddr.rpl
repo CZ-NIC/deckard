@@ -16,7 +16,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 198.41.0.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN NS
@@ -41,7 +41,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 . IN DNSKEY
@@ -53,7 +53,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 nic.cz. IN MX
@@ -67,7 +67,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 nic.cz. IN DS
@@ -81,7 +81,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 nic.cz. IN DNSKEY
@@ -100,7 +100,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 194.0.12.1
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 cz. IN DNSKEY
@@ -114,7 +114,7 @@ ENTRY_END
 ; a.ns.nic.cz.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 nic.cz. IN MX
@@ -137,7 +137,7 @@ ENTRY_END
 ; a.ns.nic.cz.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 nic.cz. IN DS
@@ -149,7 +149,7 @@ ENTRY_END
 ;a.ns.nic.cz.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 nic.cz. IN DNSKEY
