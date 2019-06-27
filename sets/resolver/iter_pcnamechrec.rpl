@@ -13,7 +13,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -54,7 +54,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -82,7 +82,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.12.94.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR NOERROR
 SECTION QUESTION
 net. IN NS
@@ -111,7 +111,7 @@ RANGE_BEGIN 0 50
 	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 example.net. IN NS
@@ -123,7 +123,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -135,7 +135,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -147,7 +147,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -160,7 +160,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -173,7 +173,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -186,7 +186,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -201,7 +201,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A
@@ -245,7 +245,7 @@ RANGE_BEGIN 50 100
 	ADDRESS 1.2.3.55
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 example.net. IN NS
@@ -257,7 +257,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN A
@@ -269,7 +269,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.net. IN AAAA
@@ -281,7 +281,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -294,7 +294,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -307,7 +307,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -320,7 +320,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -335,7 +335,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY AA QR NOERROR
 SECTION QUESTION
 mail.example.com. IN A

@@ -7,7 +7,7 @@ SCENARIO_BEGIN fail.net has two NSs in different zones. One of them suddently st
 RANGE_BEGIN 1 100 193.0.14.129; root
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 .	NS
@@ -45,7 +45,7 @@ RANGE_END
 RANGE_BEGIN 1 100 192.55.83.30; net
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 net	NS
@@ -57,7 +57,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 m.gtld-servers.net.	A
@@ -82,7 +82,7 @@ RANGE_END
 RANGE_BEGIN 1 100 192.5.6.30; com
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 com	NS
@@ -94,7 +94,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	A
@@ -118,7 +118,7 @@ RANGE_END
 RANGE_BEGIN 1 10 1.1.1.1; fail.net
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.net	NS
@@ -131,7 +131,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.net	A
@@ -141,7 +141,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.net	AAAA
@@ -150,7 +150,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.net	A
@@ -162,7 +162,7 @@ RANGE_END
 RANGE_BEGIN 1 100 1.1.2.1;  fail.com & fail.net
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.net	NS
@@ -175,7 +175,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.net	A
@@ -185,7 +185,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.net	AAAA
@@ -206,7 +206,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.com	A
@@ -216,7 +216,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.fail.com	AAAA
@@ -225,7 +225,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.net	A
@@ -235,7 +235,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 fail.com	A
