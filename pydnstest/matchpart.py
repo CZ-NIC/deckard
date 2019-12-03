@@ -17,16 +17,41 @@ class DataMismatch(Exception):
         self.got_val = got_val
 
     @staticmethod
+    def format_diff(exp: MismatchValue, got: MismatchValue) -> str:
+        if isinstance(exp, list):
+            # hack for unhashable RRsets
+            exp = list(str(val) for val in exp)
+            got = list(str(val) for val in got)
+            extra = set(got) - set(exp)
+            missing = set(exp) - set(got)
+            notes = []
+            if extra:
+                notes.append(
+                        '; got unexpected values {}'.format(DataMismatch.format_value(list(extra))))
+            if missing:
+                notes.append(
+                        '; missing expected values {}'.format(DataMismatch.format_value(list(missing))))
+            return ', '.join(notes)
+        else:
+            return ''
+
+
+    @staticmethod
     def format_value(value: MismatchValue) -> str:
         if isinstance(value, list):
-            return ' '.join([str(val) for val in value])
+            if len(value) != len(set(str(item) for item in value)):
+                note = ' (duplicite!) '
+            else:
+                note = ''
+            return ' '.join([str(val) for val in value]) + note
         else:
             return str(value)
 
     def __str__(self) -> str:
-        return 'expected "{}" got "{}"'.format(
+        return 'expected "{}" got "{}"{}'.format(
             self.format_value(self.exp_val),
-            self.format_value(self.got_val))
+            self.format_value(self.got_val),
+            self.format_diff(self.exp_val, self.got_val))
 
     def __eq__(self, other):
         return (isinstance(other, DataMismatch)
