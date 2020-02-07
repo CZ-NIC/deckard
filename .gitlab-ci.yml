@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/knot/knot-resolver/ci/debian-buster:knot-2.8
+image: $CI_REGISTRY/knot/knot-resolver/ci/debian-buster:knot-2.9
 variables:
   LC_ALL: C.UTF-8
 
@@ -59,7 +59,7 @@ test:comparative:kresd:
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
     - pushd /tmp/kresd-local-build
     - git log -1
-    - meson build_local --default-library=static --prefix=/tmp/.local
+    - meson build_local --default-library=static --prefix=/tmp/.local -Dsendmmsg=disabled
     - ninja -C build_local install
     - popd
     # compare results from latest Deckard with results from merge base
@@ -83,7 +83,7 @@ test:latest:kresd:
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - pushd kresd-local-build
     - git log -1
-    - meson build_local --default-library=static --prefix="$PWD/../.local"
+    - meson build_local --default-library=static --prefix="$PWD/../.local" -Dsendmmsg=disabled
     - ninja -C build_local install
     - popd
     - TMPDIR=$(pwd) PATH=$(pwd)/.local/sbin:$PATH ./kresd_run.sh -n $(nproc)

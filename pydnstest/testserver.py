@@ -180,8 +180,12 @@ class TestServer:
                 return srv_sock.getsockname()
 
         sock = socket.socket(family, socktype, proto)
-        sock.bind(address)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind(address)
+        except Exception as ex:
+            print(ex, address)
+            raise
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
         self.srv_socks.append(sock)
