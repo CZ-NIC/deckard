@@ -11,3 +11,4 @@ programs:
   configs:
     - unbound.conf
     - hints.zone
+noclean: true

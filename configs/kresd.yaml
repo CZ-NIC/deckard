@@ -8,3 +8,4 @@ programs:
     - template/kresd.j2
   configs:
     - config
+noclean: true

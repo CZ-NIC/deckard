@@ -13,3 +13,4 @@ programs:
     - dnssec.lua
    # SIGTERM leads to return code -15 instead of clean 0 so we have to ignore it
   ignore_exit_code: true
+noclean: true
