@@ -10,7 +10,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -53,7 +53,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.cz. IN A
@@ -68,7 +68,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.cz. IN AAAA
@@ -79,7 +79,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www6.example.cz. IN AAAA
@@ -100,7 +100,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR REFUSED
 SECTION QUESTION
 fail6.example.cz. IN AAAA
