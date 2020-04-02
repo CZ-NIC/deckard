@@ -9,7 +9,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 .	IN	NS
@@ -61,7 +61,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns.com.	IN	A
@@ -71,7 +71,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns.com.	IN	AAAA
@@ -99,7 +99,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 3.3.3.3
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 net.	IN	NS
@@ -111,7 +111,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns.net.	IN	A
@@ -121,7 +121,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns.net.	IN	AAAA
@@ -141,7 +141,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN	A
@@ -151,7 +151,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN	AAAA
@@ -161,7 +161,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns-a.net.	IN	A
@@ -171,7 +171,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns-obsolete.net.	IN	A
@@ -182,7 +182,7 @@ ENTRY_END
 ; no IPv6
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns-a.net.	IN	AAAA
@@ -192,7 +192,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ns-obsolete.net.	IN	AAAA
@@ -208,7 +208,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qname qtype
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 a.com.	IN	NS
@@ -222,7 +222,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 ; phony target used to pollute resolver's cache

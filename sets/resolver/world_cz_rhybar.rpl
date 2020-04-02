@@ -41,7 +41,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN NS
@@ -91,7 +91,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 . IN DS
@@ -104,7 +104,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA
 SECTION QUESTION
 . IN DNSKEY
@@ -116,7 +116,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 cz. IN DS
@@ -166,7 +166,7 @@ RANGE_BEGIN 0 100
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 cz. IN DNSKEY
@@ -179,7 +179,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rhybar.cz. IN NS
@@ -191,7 +191,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rhybar.cz. IN RRSIG
@@ -201,7 +201,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rhybar.cz. IN DS
@@ -212,7 +212,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rhybar.cz. IN DNSKEY
@@ -226,7 +226,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 rhybar.cz. IN A
@@ -239,7 +239,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY NOERROR QR AA DO
 SECTION QUESTION
 www.rhybar.cz. IN A

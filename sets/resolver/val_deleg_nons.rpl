@@ -20,7 +20,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -48,7 +48,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -60,7 +60,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -85,7 +85,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -98,7 +98,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns3.example.com. IN AAAA
@@ -111,7 +111,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 ns.example.com. IN A
@@ -126,7 +126,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -141,7 +141,7 @@ ENTRY_END
 ; response to DNSKEY priming query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN DNSKEY
@@ -159,7 +159,7 @@ ENTRY_END
 ; response to query of interest
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 foo.www.example.com. IN A
@@ -171,7 +171,7 @@ ENTRY_END
 ; DS query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 www.example.com. IN DS
@@ -192,7 +192,7 @@ ENTRY_END
 ; DS query for foo.www.example.com returns the referral without record.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 foo.www.example.com. IN DS
@@ -239,7 +239,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.5
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 foo.www.example.com. IN DS
