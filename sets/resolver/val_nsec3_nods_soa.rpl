@@ -21,7 +21,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -49,7 +49,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 com. IN NS
@@ -77,7 +77,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA SERVFAIL
 SECTION QUESTION
 ns.example.com. IN A
@@ -86,7 +86,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA SERVFAIL
 SECTION QUESTION
 ns.example.com. IN AAAA
@@ -95,7 +95,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
@@ -110,7 +110,7 @@ ENTRY_END
 ; response to DNSKEY priming query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN DNSKEY
@@ -128,7 +128,7 @@ ENTRY_END
 ; response to query of interest
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.example.com. IN A
@@ -144,7 +144,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN DS
@@ -183,7 +183,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.10
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA REFUSED
 SECTION QUESTION
 ns.sub.example.com. IN A
@@ -191,7 +191,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA REFUSED
 SECTION QUESTION
 ns.sub.example.com. IN AAAA
@@ -200,7 +200,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR REFUSED
 SECTION QUESTION
 sub.example.com. IN NS
@@ -210,7 +210,7 @@ ENTRY_END
 ; response to DNSKEY priming query
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 sub.example.com. IN DNSKEY
@@ -222,7 +222,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 www.sub.example.com. IN A
