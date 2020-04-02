@@ -11,7 +11,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 193.0.14.129 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -35,7 +35,7 @@ ENTRY_END
 ; root-servers.net.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 root-servers.net. IN NS
@@ -57,7 +57,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	A
@@ -68,7 +68,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 k.root-servers.net.	IN 	AAAA
@@ -79,7 +79,7 @@ ENTRY_END
 ; gtld-servers.net.
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 gtld-servers.net. IN NS
@@ -101,7 +101,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	A
@@ -112,7 +112,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.gtld-servers.net.	IN 	AAAA
@@ -123,7 +123,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 x.gtld-servers.net.	IN 	A
@@ -134,7 +134,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 x.gtld-servers.net.	IN 	AAAA

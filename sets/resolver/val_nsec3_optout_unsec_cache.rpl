@@ -12,7 +12,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 202.12.27.33 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 . IN NS
@@ -37,7 +37,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD RA AD
 SECTION QUESTION
 . IN DNSKEY
@@ -51,7 +51,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.b.sample.net.	IN	A
@@ -69,7 +69,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.5.6.30
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 net.     	IN DNSKEY
@@ -83,7 +83,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.b.sample.net.	IN	A
@@ -100,7 +100,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 sample.net.     	IN DS
@@ -120,7 +120,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 192.0.2.1
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR NOERROR
 SECTION QUESTION
 a.b.sample.net.		IN	A
@@ -133,7 +133,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 b.sample.net.     	IN DS
@@ -148,7 +148,7 @@ RANGE_BEGIN 10 10
 	ADDRESS 192.0.2.2
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 a.b.sample.net.	IN	A
@@ -164,7 +164,7 @@ RANGE_BEGIN 30 30
 	ADDRESS 192.0.2.2
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 a.b.sample.net.	IN	A
@@ -179,7 +179,7 @@ RANGE_BEGIN 50 50
 	ADDRESS 192.0.2.2
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR AA NOERROR
 SECTION QUESTION
 a.b.sample.net.	IN	A

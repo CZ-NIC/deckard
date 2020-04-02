@@ -9,7 +9,7 @@ RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.4 
 ENTRY_BEGIN
 MATCH opcode qtype qname
-ADJUST copy_id copy_query
+ADJUST copy_id
 REPLY QR RD RA NOERROR
 SECTION QUESTION
 www.example.cz. IN A
