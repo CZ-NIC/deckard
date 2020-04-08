@@ -4,7 +4,6 @@
 	trust-anchor: "example.com.		IN DS 438 10 2 33F8133EB48EDB093839E985600EB7B7009EB5AC312D11CCA9007F6B 71D94D7B"
 	val-override-date: "20160308103040"
 	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
-	query-minimization: off
 CONFIG_END
 
 SCENARIO_BEGIN CNAME with invalid RRSIG to unsigned subzone must produce SERVFAIL
@@ -141,7 +140,6 @@ ns.sub.example.com.			      3600 IN A		1.2.3.5
 ENTRY_END
 
 ENTRY_BEGIN
-MANDATORY
 MATCH opcode qtype qname
 ADJUST copy_id
 REPLY QR AA NOERROR
@@ -173,6 +171,7 @@ ENTRY_END
 RANGE_END
 
 
+; empty cache
 STEP 10 QUERY
 ENTRY_BEGIN
 REPLY RD DO
