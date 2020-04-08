@@ -2,8 +2,7 @@ programs:
 - name: kresd
   binary: kresd
   additional:
-    - -f
-    - "1"
+    - -n
   templates:
     - template/kresd.j2
   configs:
