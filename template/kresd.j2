@@ -1,9 +1,12 @@
 net = { '{{SELF_ADDR}}' }
 modules = {'stats', 'policy', 'hints'}
+
+-- extra verbose logging for all operations
+verbose(true)
+policy.add(policy.all(policy.DEBUG_ALWAYS))
+
 -- test. domain is used by some tests, allow it
 policy.add(policy.suffix(policy.PASS, {todname('test.')}))
--- extra verbose logging for answers received from network
-policy.add(policy.all(policy.QTRACE))
 cache.size = 2*MB
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
 {% if QMIN == "false" %}
@@ -97,8 +100,6 @@ end
 if detect_time_skew then
 	modules.unload('detect_time_skew')
 end
-
-verbose(true)
 
 -- Self-checks on globals
 assert(help() ~= nil)
