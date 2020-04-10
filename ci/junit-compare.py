@@ -11,8 +11,8 @@ def parse_junit_xml(filename):
     (test description, file name, test result)
     """
     results = set()
-    root = xml.parse(filename).getroot()
-    for case in root:
+    suite = xml.parse(filename).getroot().get("testsuite")
+    for case in suite:
         if case.find("failure") is not None:  # Because empty XML elements are falsey
             results.add((case.get("name"), case.get("name").split("'")[1], "FAILED"))
         elif case.find("skipped") is not None:
