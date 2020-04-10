@@ -4,8 +4,9 @@ import contextlib
 import ctypes
 import errno
 import os
-import pytest
 import signal
+
+import pytest
 
 # All allowed namespace types
 NAMESPACE_FLAGS = dict(mnt=0x00020000,
@@ -29,7 +30,7 @@ def keep_directory():
         os.chdir(pwd)
 
 
-class LinuxNamespace(object):
+class LinuxNamespace:
     """Combine several namespaces into one.
     This gets a list of namespace types to create and combine into one. The
     combined namespace can be used as a context manager to enter all the
@@ -102,7 +103,7 @@ class LinuxNamespace(object):
                     continue
             break
 
-        os._exit(0)
+        os._exit(0)  # Adopted code. pylint: disable=protected-access
 
     def fd(self, namespace):
         """Return the file descriptor associated to a namespace"""
