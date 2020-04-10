@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
-from datetime import datetime
 import errno
-import ipaddress
 import logging
 import logging.config
 import os
 import shutil
 import socket
 import subprocess
-import tempfile
 import time
+from datetime import datetime
 from typing import Set  # noqa
 
-import dpkt
 import jinja2
 
 from pydnstest import scenario, testserver
-
 
 # path to Deckard files
 INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
@@ -29,9 +25,9 @@ class DeckardUnderLoadError(Exception):
 
 
 def setup_internal_addresses(config):
-    config["DECKARD_IP"] = config["lo_manager"].add_internal_address(config["_SOCKET_FAMILY"])
+    config["DECKARD_IP"] = config["if_manager"].add_internal_address(config["_SOCKET_FAMILY"])
     for program in config["programs"]:
-        program["address"] = config["lo_manager"].add_internal_address(config["_SOCKET_FAMILY"])
+        program["address"] = config["if_manager"].add_internal_address(config["_SOCKET_FAMILY"])
 
 
 def write_timestamp_file(path, tst):
@@ -96,6 +92,7 @@ def create_trust_anchor_files(ta_files, work_dir):
 
 
 def generate_from_templates(program_config, global_config):
+    """Generate configuration for the program"""
     config = global_config.copy()
     config.update(program_config)
 
@@ -143,7 +140,6 @@ def conncheck_daemon(process, cfg, sockfamily):
             logger.error(open(cfg['log']).read())
             raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
         try:
-            print("trying to connect to: ", sock, cfg['address'])
             sock.connect((cfg['address'], 53))
         except socket.error:
             continue
@@ -171,78 +167,17 @@ def setup_daemons(config):
     return daemons
 
 
-def check_for_icmp(pcap_path):
-    """ Checks Deckards's PCAP for ICMP packets """
-    # Deckard's responses to resolvers might be delayed due to load which
-    # leads the resolver to close the port and to the test failing in the
-    # end. We partially detect these by checking the PCAP for ICMP packets.
-    udp_seen = False
-    with open(pcap_path, "rb") as f:
-        pcap = dpkt.pcap.Reader(f)
-        for _, packet in pcap:
-            packet = dpkt.ethernet.Ethernet(packet)
-            try:
-                ip = dpkt.ip.IP(packet)
-            except dpkt.dpkt.UnpackError:
-                ip = dpkt.ip6.IP6(packet)
-            if isinstance(ip.data, dpkt.udp.UDP):
-                udp_seen = True
-
-            if udp_seen:
-                if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
-                    raise DeckardUnderLoadError("Deckard is under load. "
-                                                "Other errors might be false negatives. "
-                                                "Consider retrying the job later.")
-        return False
-
-
 def check_for_reply_steps(case: scenario.Scenario) -> bool:
     return any(s.type == "REPLY" for s in case.steps)
 
 
-def check_for_unknown_servers(case: scenario.Scenario, pcap_path, lo_manager) -> None:
-    """ Checks Deckards's PCAP for packets going to servers not present in scenario """
-    asked_servers = set()
-    with open(pcap_path, "rb") as f:
-        pcap = dpkt.pcap.Reader(f)
-        for _, packet in pcap:
-            try:
-                ip = dpkt.ethernet.Ethernet(packet).data
-            except dpkt.dpkt.NeedData:
-                continue
-            if isinstance(ip, bytes):
-                continue
-            # pylint: disable=no-member
-            dest = ipaddress.ip_address(int.from_bytes(ip.dst, byteorder="big"))
-            # pylint: enable=no-member
-
-            if dest not in lo_manager.ip4_internal_range and dest not in lo_manager.ip6_internal_range:
-                asked_servers.add(dest)
-
-    scenario_ips = set()  # type: Set[str]
-    for r in case.ranges:
-        scenario_ips |= r.addresses
-
-    scenario_servers = {ipaddress.ip_address(ip) for ip in scenario_ips}
-
-    servers_not_in_scenario = asked_servers - scenario_servers
-
-    if servers_not_in_scenario:
-        if not check_for_reply_steps(case):
-            raise RuntimeError("Binary in test asked an IP address not present in scenario %s"
-                               % servers_not_in_scenario)
-
-
 def run_testcase(case, daemons, config, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
-    server = testserver.TestServer(case, config["ROOT_ADDR"], config["_SOCKET_FAMILY"], config["DECKARD_IP"], config["lo_manager"])
+    server = testserver.TestServer(case, config["ROOT_ADDR"], config["_SOCKET_FAMILY"], config["DECKARD_IP"], config["if_manager"])
     server.start()
 
     try:
         server.play(prog_under_test_ip)
-    except ValueError as e:
-        if not check_for_icmp(config["pcap"]):
-            raise e
     finally:
         server.stop()
 
@@ -261,11 +196,9 @@ def run_testcase(case, daemons, config, prog_under_test_ip):
             if daemon['proc'].returncode != 0 and not ignore_exit:
                 raise ValueError('process %s terminated with return code %s'
                                  % (daemon['cfg']['name'], daemon['proc'].returncode))
-            check_for_unknown_servers(case, config["pcap"], config["lo_manager"])
 
     if server.undefined_answers > 0:
-        if not check_for_icmp(config["pcap"]):
-            raise ValueError('the scenario does not define all necessary answers (see error log)')
+        raise ValueError('the scenario does not define all necessary answers (see error log)')
 
 
 def process_file(path, qmin, config):
@@ -293,12 +226,6 @@ def process_file(path, qmin, config):
         daemons = setup_daemons(config)
         run_testcase(case, daemons, config, prog_under_test_ip)
 
-        if config.get('noclean'):
-            # Do not clear files if the server crashed (for analysis)
-            logging.getLogger('deckard.hint').info(
-                'test working directory %s', config["tmpdir"])
-        else:
-            shutil.rmtree(config["tmpdir"])
     except Exception:
         logging.getLogger('deckard.hint').error(
             'test failed, inspect working directory %s', config["tmpdir"])

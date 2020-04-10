@@ -1,14 +1,13 @@
-from collections import namedtuple, OrderedDict
 import glob
 import logging
 import os
 import re
+from collections import namedtuple
 
 import pytest
 import yaml
 
 from namespaces import LinuxNamespace
-
 
 Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
 
@@ -135,5 +134,6 @@ def pytest_configure(config):
             log_level = logging.getLevelName(log_level)
         check_log_level_xdist(log_level)
 
-def pytest_runtest_setup(item):
+
+def pytest_runtest_setup(item):  # pylint: disable=unused-argument
     LinuxNamespace("user").__enter__()
