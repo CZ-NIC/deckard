@@ -7,6 +7,12 @@ CONFIG_END
 
 SCENARIO_BEGIN Disable EDNS0 and fancy stuff when the server replies with FORMERR.
 
+; Compability range since the test uses STEP REPLY
+RANGE_BEGIN 0 0
+	ADDRESS 168.192.2.2
+	ADDRESS 10.20.30.40
+RANGE_END
+
 STEP 10 QUERY
 ENTRY_BEGIN
 REPLY RD
