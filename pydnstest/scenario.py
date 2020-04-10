@@ -836,11 +836,10 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
         "INSTALL_DIR": installdir,
         "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
-        "TRUST_ANCHOR_FILES": trust_anchor_files.keys()
+        "TRUST_ANCHOR_FILES": trust_anchor_files
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr
-        print("config:", stub_addr)
         # determine and verify socket family for specified root address
         gai = socket.getaddrinfo(stub_addr, 53, sockfamily, 0,
                                  socket.IPPROTO_UDP, socket.AI_NUMERICHOST)
@@ -851,7 +850,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     ctx['_SOCKET_FAMILY'] = sockfamily
     if override_timestamp:
         ctx['_OVERRIDE_TIMESTAMP'] = override_timestamp
-    return (ctx, trust_anchor_files)
+    return ctx
 
 
 def parse_file(path, deckard_address=None):

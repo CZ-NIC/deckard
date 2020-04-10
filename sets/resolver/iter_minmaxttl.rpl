@@ -3,6 +3,7 @@
     features: max_ttl = 600
     ; the test is purely about cache so we do not need qmin complexity
     query-minimization: off
+    stub-addr: 1.2.3.4
 CONFIG_END
 
 SCENARIO_BEGIN Test configurable minimum and maximum TTL
