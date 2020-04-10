@@ -527,8 +527,8 @@ class Step:
             self.log.info('')
             self.log.debug(self.data[0].message.to_text())
             # Parse QUERY-specific parameters
-            choice, tcp = None, False
-            return self.__query(ctx, tcp=tcp, choice=choice)
+            choice, tcp, src_address = None, False, ctx.deckard_address
+            return self.__query(ctx, tcp=tcp, choice=choice, src_address=src_address)
         elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
             return None
@@ -558,7 +558,7 @@ class Step:
             self.log.debug("answer: %s", ctx.last_answer.to_text())
             expected.match(ctx.last_answer)
 
-    def __query(self, ctx, tcp=False, choice=None):
+    def __query(self, ctx, tcp=False, choice=None, src_address=None):
         """
         Send query and wait for an answer (if the query is not RAW).
 
@@ -582,7 +582,8 @@ class Step:
         answer = None
         sock = pydnstest.mock_client.setup_socket(ctx.client[choice][0],
                                                   ctx.client[choice][1],
-                                                  tcp)
+                                                  tcp,
+                                                  src_address=src_address)
         pydnstest.mock_client.send_query(sock, data_to_wire)
         if self.data[0].raw_data is None:
             answer = pydnstest.mock_client.get_answer(sock)
@@ -619,7 +620,7 @@ class Step:
 class Scenario:
     log = logging.getLogger('pydnstest.scenatio.Scenario')
 
-    def __init__(self, node, filename):
+    def __init__(self, node, filename, deckard_address=None):
         """ Initialize scenario with description. """
         self.node = node
         self.info = node.value
@@ -629,6 +630,7 @@ class Scenario:
         self.steps = [Step(n) for n in node.match("/step")]
         self.current_step = None
         self.client = {}
+        self.deckard_address = deckard_address
 
     def __str__(self):
         txt = 'SCENARIO_BEGIN'
@@ -674,6 +676,7 @@ class Scenario:
         """ Play given scenario. """
         # Store test subject => address mapping
         self.client = paddr
+        print("paddr", paddr)
 
         step = None
         i = 0
@@ -834,6 +837,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr
+        print("config:", stub_addr)
         # determine and verify socket family for specified root address
         gai = socket.getaddrinfo(stub_addr, 53, sockfamily, 0,
                                  socket.IPPROTO_UDP, socket.AI_NUMERICHOST)
@@ -847,7 +851,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     return (ctx, trust_anchor_files)
 
 
-def parse_file(path):
+def parse_file(path, deckard_address=None):
     """ Parse scenario from a file. """
 
     aug = pydnstest.augwrap.AugeasWrapper(
@@ -864,5 +868,5 @@ def parse_file(path):
                 kv = [x.strip() for x in line.split(':', 1)]
                 if len(kv) >= 2:
                     config.append(kv)
-    scenario = Scenario(node["/scenario"], os.path.basename(node.path))
+    scenario = Scenario(node["/scenario"], os.path.basename(node.path), deckard_address)
     return scenario, config

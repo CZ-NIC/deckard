@@ -18,7 +18,7 @@ from pydnstest import scenario, mock_client
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, test_scenario, root_addr, addr_family):
+    def __init__(self, test_scenario, root_addr, addr_family, deckard_address=None):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -28,6 +28,7 @@ class TestServer:
         self.active_lock = threading.Lock()
         self.condition = threading.Condition()
         self.scenario = test_scenario
+        self.scenario.deckard_address = deckard_address
         self.addr_map = []
         self.start_iface = 2
         self.cur_iface = self.start_iface
