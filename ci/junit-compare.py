@@ -21,7 +21,7 @@ def parse_junit_xml(filename):
             try:
                 results.add((case.get("name"), case.get("name").split("'")[1], "PASSED"))
             except IndexError as e:
-                print(case.get("name"))
+                print("hi", case, case.get("name"))
                 raise e
 
     return results
