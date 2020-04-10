@@ -676,7 +676,6 @@ class Scenario:
         """ Play given scenario. """
         # Store test subject => address mapping
         self.client = paddr
-        print("paddr", paddr)
 
         step = None
         i = 0
@@ -706,8 +705,6 @@ class Scenario:
                                              (step.id, step.next_if_fail))
                     continue
                 else:
-                    print("play: hi")
-                    print(datetime.now())
                     raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
             i += 1
 

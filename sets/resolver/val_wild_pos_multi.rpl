@@ -9,13 +9,12 @@
 CONFIG_END
 
 SCENARIO_BEGIN Test validation of wildcard responses with multiple synthesized RRs.
-
 ; ns.
 RANGE_BEGIN 0 1000
 	ADDRESS 10.1.1.1
 	ADDRESS 10.2.2.2
 	ADDRESS 10.3.3.3
-	ADDRESS ::1
+	;ADDRESS ::1 ;FIXME: can't use ::1 in tests since the transition to linux namespaces
 	ADDRESS ::2
 	ADDRESS ::3
 
