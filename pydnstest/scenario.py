@@ -676,7 +676,6 @@ class Scenario:
         """ Play given scenario. """
         # Store test subject => address mapping
         self.client = paddr
-        print("paddr", paddr)
 
         step = None
         i = 0
