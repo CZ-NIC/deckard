@@ -702,8 +702,7 @@ class Scenario:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
                                              (step.id, step.next_if_fail))
                     continue
-                else:
-                    raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+                raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
             i += 1
 
         for r in self.ranges:
@@ -734,8 +733,7 @@ def get_next(file_in, skip_empty=True):
         if not tokens:
             if skip_empty:
                 continue
-            else:
-                return '', []
+            return '', []
         op = tokens.pop(0)
         return op, tokens
 

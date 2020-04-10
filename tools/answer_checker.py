@@ -32,7 +32,7 @@ def send_and_check(question: Union[dns.message.Message, bytes],  # pylint: disab
 
     Returns True on success, raises an exceptions on failure.
     """
-    print("Sending query:\n%s\n" % question)
+    print("Sending query:\n%s\n" % str(question))
     answer = get_answer(question, server, port, tcp, timeout=timeout)
 
     for flag in unset_flags:
