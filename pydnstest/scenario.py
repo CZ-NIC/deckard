@@ -676,7 +676,6 @@ class Scenario:
         """ Play given scenario. """
         # Store test subject => address mapping
         self.client = paddr
-        print("paddr", paddr)
 
         step = None
         i = 0
@@ -705,7 +704,12 @@ class Scenario:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
                                              (step.id, step.next_if_fail))
                     continue
+<<<<<<< HEAD
                 raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+=======
+                else:
+                    raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+>>>>>>> 0ee45fc... post swrap cleanup iteration 2
             i += 1
 
         for r in self.ranges:
