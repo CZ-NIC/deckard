@@ -18,7 +18,8 @@ from pydnstest import scenario, mock_client
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, test_scenario, root_addr, addr_family):
+    def __init__(self, test_scenario, root_addr, addr_family,
+                 deckard_address=None, if_manager=None):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -28,12 +29,14 @@ class TestServer:
         self.active_lock = threading.Lock()
         self.condition = threading.Condition()
         self.scenario = test_scenario
+        self.scenario.deckard_address = deckard_address
         self.addr_map = []
         self.start_iface = 2
         self.cur_iface = self.start_iface
         self.kroot_local = root_addr
         self.addr_family = addr_family
         self.undefined_answers = 0
+        self.if_manager = if_manager
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -181,11 +184,21 @@ class TestServer:
 
         sock = socket.socket(family, socktype, proto)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        # Add address to interface when running from Deckard
+        if self.if_manager is not None:
+            self.if_manager.add_address(address[0])
+
         try:
             sock.bind(address)
         except Exception as ex:
+            # If this becomes a problem in CI, consider adding retries for `sock.bind`.
+            # A lot of addresses are added to the interface while runnning from Deckard in
+            # the small amount of time which caused ocassional hiccups while binding to them
+            # right afterwards in testing.
             print(ex, address)
             raise
+
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
         self.srv_socks.append(sock)
@@ -236,7 +249,7 @@ def standalone_self_test():
     Self-test code
 
     Usage:
-    LD_PRELOAD=libsocket_wrapper.so SOCKET_WRAPPER_DIR=/tmp $PYTHON -m pydnstest.testserver --help
+    TMPDIR=/tmp unshare -rn $PYTHON -m pydnstest.testserver --help
     """
     logging.basicConfig(level=logging.DEBUG)
     argparser = argparse.ArgumentParser()
@@ -247,7 +260,7 @@ def standalone_self_test():
     args = argparser.parse_args()
     if args.scenario:
         test_scenario, test_config_text = scenario.parse_file(args.scenario)
-        test_config, _ = scenario.parse_config(test_config_text, True, os.getcwd())
+        test_config = scenario.parse_config(test_config_text, True, os.getcwd())
     else:
         test_scenario, test_config = empty_test_case()
 
