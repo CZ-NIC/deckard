@@ -18,7 +18,11 @@ def parse_junit_xml(filename):
         elif case.find("skipped") is not None:
             results.add((case.get("name"), case.get("name").split("'")[1], "SKIPPED"))
         else:
-            results.add((case.get("name"), case.get("name").split("'")[1], "PASSED"))
+            try:
+                results.add((case.get("name"), case.get("name").split("'")[1], "PASSED"))
+            except IndexError as e:
+                print(case.get("name"))
+                raise e
 
     return results
 
