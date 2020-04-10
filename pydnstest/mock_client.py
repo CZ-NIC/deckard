@@ -96,11 +96,14 @@ def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) 
 
 def setup_socket(address: str,
                  port: int,
-                 tcp: bool = False) -> socket.socket:
+                 tcp: bool = False,
+                 src_address: str = None) -> socket.socket:
     family = dns.inet.af_for_address(address)
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
     if tcp:
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
+    if src_address is not None:
+        sock.bind((src_address, port))
     sock.settimeout(SOCKET_OPERATION_TIMEOUT)
     sock.connect((address, port))
     return sock

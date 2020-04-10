@@ -7,6 +7,8 @@ import re
 import pytest
 import yaml
 
+from namespaces import LinuxNamespace
+
 
 Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
 
@@ -154,3 +156,6 @@ def pytest_configure(config):
         except ValueError:
             log_level = logging.getLevelName(log_level)
         check_log_level_xdist(log_level)
+
+def pytest_runtest_setup(item):
+    LinuxNamespace("user").__enter__()
