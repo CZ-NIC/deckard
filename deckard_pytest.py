@@ -11,6 +11,7 @@ import pytest
 
 import deckard
 from namespaces import LinuxNamespace
+import networking
 
 
 def set_coverage_env(path, qmin):
@@ -40,17 +41,12 @@ check_platform()
 class TCPDump:
     def __init__(self, config):
         self.config = config
-        self.tmpdir = self.get_tmpdir()
+        self.config["tmpdir"] = self.get_tmpdir()
         self.tcpdump = None
-        self.pcap_path = os.path.join(self.tmpdir, "deckard.pcap")
-        os.environ["SOCKET_WRAPPER_PCAP_FILE"] = self.pcap_path
+        self.config["pcap"] = os.path.join(self.config["tmpdir"], "deckard.pcap")
 
     def __enter__(self):
-        try:
-            subprocess.run("ip link set dev lo up", check=True, shell=True)
-        except subprocess.CalledProcessError:
-            raise RuntimeError(f"Couldn't set lo device up.")
-        cmd = shlex.split("dumpcap -i lo -q -P -w %s" % self.pcap_path)
+        cmd = shlex.split("dumpcap -i lo -q -P -w %s" % self.config["pcap"])
         self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def __exit__(self, *exc):
@@ -64,8 +60,6 @@ class TCPDump:
         else:
             tmpdir = tempfile.mkdtemp(suffix='', prefix='tmpdeckard')
 
-        # TODO: Rewrite so no data is passed via enviroment variables
-        os.environ["SOCKET_WRAPPER_DIR"] = tmpdir
         print(tmpdir)
         return tmpdir
 
@@ -77,6 +71,7 @@ def run_test(path, qmin, config, max_retries, retries=0):
         pass
     try:
         with LinuxNamespace("net"):
+            config["lo_manager"] = networking.LoopbackManager()
             with TCPDump(config):
                 deckard.process_file(path, qmin, config)
     except deckard.DeckardUnderLoadError as e:

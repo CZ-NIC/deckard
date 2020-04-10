@@ -18,7 +18,7 @@ from pydnstest import scenario, mock_client
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, test_scenario, root_addr, addr_family, deckard_address=None):
+    def __init__(self, test_scenario, root_addr, addr_family, deckard_address=None, lo_manager=None):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -35,6 +35,7 @@ class TestServer:
         self.kroot_local = root_addr
         self.addr_family = addr_family
         self.undefined_answers = 0
+        self.lo_manager = lo_manager
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -182,6 +183,11 @@ class TestServer:
 
         sock = socket.socket(family, socktype, proto)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        # Add address to loopback when running from Deckard
+        if self.lo_manager is not None:
+            self.lo_manager.add_address(address[0])
+
         try:
             sock.bind(address)
         except Exception as ex:
