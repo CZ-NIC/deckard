@@ -192,7 +192,10 @@ class TestServer:
         try:
             sock.bind(address)
         except Exception as ex:
-            # If this becomes a problem, consider adding retries for `sock.bind`
+            # If this becomes a problem in CI, consider adding retries for `sock.bind`.
+            # A lot of addresses are added to the interface while runnning from Deckard in
+            # the small amount of time which caused ocassional hiccups while binding to them
+            # right afterwards in testing.
             print(ex, address)
             raise
 
