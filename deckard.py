@@ -24,10 +24,11 @@ class DeckardUnderLoadError(Exception):
     pass
 
 
-def setup_internal_addresses(config):
-    config["DECKARD_IP"] = config["if_manager"].add_internal_address(config["_SOCKET_FAMILY"])
-    for program in config["programs"]:
-        program["address"] = config["if_manager"].add_internal_address(config["_SOCKET_FAMILY"])
+def setup_internal_addresses(context):
+    context["DECKARD_IP"] = context["if_manager"].assign_internal_address(context["_SOCKET_FAMILY"])
+    for program in context["programs"]:
+        program["address"] = context["if_manager"].assign_internal_address(
+            context["_SOCKET_FAMILY"])
 
 
 def write_timestamp_file(path, tst):
