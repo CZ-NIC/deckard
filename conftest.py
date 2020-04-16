@@ -7,7 +7,7 @@ from collections import namedtuple
 import pytest
 import yaml
 
-from namespaces import LinuxNamespace
+from contrib.namespaces import LinuxNamespace
 
 Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
 

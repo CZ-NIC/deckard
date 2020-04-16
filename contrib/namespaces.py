@@ -1,5 +1,6 @@
-"""Taken from
-https://github.com/vincentbernat/lldpd/blob/master/tests/integration/fixtures/namespaces.py"""
+# SPDX-License-Identifier: ISC
+# Source: https://vincentbernat.github.io/lldpd/
+# Copyright (c) 2008-2017, Vincent Bernat <vincent@bernat.im>
 
 import contextlib
 import ctypes
