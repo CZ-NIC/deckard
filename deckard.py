@@ -25,9 +25,9 @@ class DeckardUnderLoadError(Exception):
 
 
 def setup_internal_addresses(config):
-    config["DECKARD_IP"] = config["if_manager"].asign_internal_address(config["_SOCKET_FAMILY"])
+    config["DECKARD_IP"] = config["if_manager"].assign_internal_address(config["_SOCKET_FAMILY"])
     for program in config["programs"]:
-        program["address"] = config["if_manager"].asign_internal_address(config["_SOCKET_FAMILY"])
+        program["address"] = config["if_manager"].assign_internal_address(config["_SOCKET_FAMILY"])
 
 
 def write_timestamp_file(path, tst):

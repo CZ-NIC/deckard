@@ -42,7 +42,7 @@ class InterfaceManager:
         # Set the loopback up as well since some of the packets go through there.
         subprocess.run(["ip", "link", "set", "dev", "lo", "up"], check=True)
 
-    def asign_internal_address(self, sockfamily) -> str:
+    def assign_internal_address(self, sockfamily) -> str:
         """Add and return new address from the internal range"""
         try:
             if sockfamily == AF_INET:
