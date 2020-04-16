@@ -12,7 +12,7 @@ import dpkt
 import pytest
 
 import deckard
-from namespaces import LinuxNamespace
+from contrib.namespaces import LinuxNamespace
 from networking import InterfaceManager
 
 
