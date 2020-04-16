@@ -23,21 +23,24 @@ class InterfaceManager:
             raise RuntimeError(f"Couldn't set interface `{self.interface}` up.")
 
     def _setup_interface(self):
-        subprocess.run(f"ip link add dev {self.interface} type dummy",
-                       check=True, shell=True)
-        subprocess.run(f"ip link set dev {self.interface} up",
-                       check=True, shell=True)
-        subprocess.run(f"ip nei add 169.254.1.1 lladdr 21:21:21:21:21:21 dev {self.interface}",
-                       check=True, shell=True)
-        subprocess.run(f"ip -6 nei add fe80::1 lladdr 21:21:21:21:21:21 dev {self.interface}",
-                       check=True, shell=True)
-        subprocess.run(f"ip addr add 169.254.1.2/24 dev {self.interface}",
-                       check=True, shell=True)
-        subprocess.run(f"ip route add default via 169.254.1.1 dev {self.interface}",
-                       check=True, shell=True)
-        subprocess.run(f"ip -6 route add default via fe80::1 dev {self.interface}",
-                       check=True, shell=True)
-        subprocess.run(f"ip link set dev lo up", check=True, shell=True)
+        """Set up a dummy interface with default route as well as loopback.
+           This is done so the resulting PCAP contains as much of the communication
+           as possible (including ICMP Destination unreachable packets etc.)."""
+        # Create and set the interface up.
+        subprocess.run(["ip", "link", "add", "dev", self.interface, "type", "dummy"], check=True)
+        subprocess.run(["ip", "link", "set", "dev", self.interface, "up"], check=True)
+        # Set up default route for both IPv6 and IPv4
+        subprocess.run(["ip", "nei", "add", "169.254.1.1", "lladdr", "21:21:21:21:21:21", "dev",
+                        self.interface], check=True)
+        subprocess.run(["ip", "-6", "nei", "add", "fe80::1", "lladdr", "21:21:21:21:21:21", "dev",
+                        self.interface], check=True)
+        subprocess.run(["ip", "addr", "add", "169.254.1.2/24", "dev", self.interface], check=True)
+        subprocess.run(["ip", "route", "add", "default", "via", "169.254.1.1", "dev",
+                        self.interface], check=True)
+        subprocess.run(["ip", "-6", "route", "add", "default", "via", "fe80::1", "dev",
+                        self.interface], check=True)
+        # Set the loopback up as well since some of the packets go through there.
+        subprocess.run(["ip", "link", "set", "dev", "lo", "up"], check=True)
 
     def add_internal_address(self, sockfamily) -> str:
         """Add and return new address from the internal range"""
