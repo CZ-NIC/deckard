@@ -1,7 +1,6 @@
 import logging
 import os
 import random
-import shlex
 import shutil
 import subprocess
 import sys
@@ -50,8 +49,9 @@ class TCPDump:
     """This context manager captures a PCAP file and than checks it for obvious errors."""
 
     # -f option filters out all ICMP messages that are not Destination Unreachable
-    DUMPCAP_CMD = "dumpcap -i any -q -f 'not icmp6[0]==135 and not icmp6[0]==133 " \
-                  "and not (ip6[6]==0 and ip6[40]==58)' -P -w {}"
+    DUMPCAP_CMD = ["dumpcap", "-i", "any", "-q", "-f",
+                   "not icmp6[0]==135 and not icmp6[0]==133 and not (ip6[6]==0 and ip6[40]==58)",
+                   "-P", "-w"]
 
     def __init__(self, config):
         self.config = config
@@ -60,7 +60,8 @@ class TCPDump:
         self.config["pcap"] = os.path.join(self.config["tmpdir"], "deckard.pcap")
 
     def __enter__(self):
-        cmd = shlex.split(self.DUMPCAP_CMD.format(self.config["pcap"]))
+        cmd = self.DUMPCAP_CMD.copy()
+        cmd.append(self.config["pcap"])
         self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def __exit__(self, _, exc_value, __):
