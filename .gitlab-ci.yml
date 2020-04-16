@@ -12,6 +12,13 @@ stages:
     - linux
     - amd64
 
+.privileged_test: &privileged_test
+  stage: test
+  tags:
+    - docker
+    - linux
+    - amd64
+
 test:augeas:
   <<: *test
   script:
@@ -47,13 +54,13 @@ test:unittests:
 # There are no tests in the repo which use this feature but others do
 # and do not want to cause them breakage
 test:sanity:raw_id:
-  <<: *test
+  <<: *privileged_test
   script:
     - ci/raw_id_check.sh
 
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
-  <<: *test
+  <<: *privileged_test
   script:
     # test kresd binary
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
@@ -78,7 +85,7 @@ test:comparative:kresd:
 # Run all tests on the latest kresd version to ensure that we not push tests
 # which do not work on latest kresd. It would lead to breakage in kresd CI.
 test:latest:kresd:
-  <<: *test
+  <<: *privileged_test
   script:
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - pushd kresd-local-build
@@ -97,7 +104,7 @@ test:latest:kresd:
 # I've selected the only tests which are working
 # on kresd and Unbound 1.5.8 as well as 1.6.0
 test:sanity:unbound:
-  <<: *test
+  <<: *privileged_test
   script:
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_hint_lame.rpl
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_lame_root.rpl
@@ -114,7 +121,7 @@ test:sanity:unbound:
 # I've selected couple tests which are working
 # on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
 test:sanity:pdnsrecursor:
-  <<: *test
+  <<: *privileged_test
   script:
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_recurse.rpl
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_tcbit.rpl
