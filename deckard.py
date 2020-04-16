@@ -38,7 +38,7 @@ def write_timestamp_file(path, tst):
     time_file.close()
 
 
-def setup_faketime(config):
+def setup_faketime(context):
     """
     Setup environment shared between Deckard and binaries under test.
 
@@ -50,20 +50,20 @@ def setup_faketime(config):
     """
     # Set up libfaketime
     os.environ["FAKETIME_NO_CACHE"] = "1"
-    os.environ["FAKETIME_TIMESTAMP_FILE"] = os.path.join(config["tmpdir"], ".time")
+    os.environ["FAKETIME_TIMESTAMP_FILE"] = os.path.join(context["tmpdir"], ".time")
     os.unsetenv("FAKETIME")
 
     write_timestamp_file(os.environ["FAKETIME_TIMESTAMP_FILE"],
-                         config.get('_OVERRIDE_TIMESTAMP', time.time()))
+                         context.get('_OVERRIDE_TIMESTAMP', time.time()))
 
 
-def setup_daemon_environment(program_config, global_config):
-    program_config["WORKING_DIR"] = os.path.join(global_config["tmpdir"], program_config["name"])
+def setup_daemon_environment(program_config, context):
+    program_config["WORKING_DIR"] = os.path.join(context["tmpdir"], program_config["name"])
     os.mkdir(program_config['WORKING_DIR'])
     program_config["DAEMON_NAME"] = program_config["name"]
     program_config['SELF_ADDR'] = program_config['address']
     program_config['TRUST_ANCHOR_FILES'] = create_trust_anchor_files(
-        global_config["TRUST_ANCHOR_FILES"], program_config['WORKING_DIR'])
+        context["TRUST_ANCHOR_FILES"], program_config['WORKING_DIR'])
 
 
 def create_trust_anchor_files(ta_files, work_dir):
@@ -92,18 +92,18 @@ def create_trust_anchor_files(ta_files, work_dir):
     return full_paths
 
 
-def generate_from_templates(program_config, global_config):
+def generate_from_templates(program_config, context):
     """Generate configuration for the program"""
-    config = global_config.copy()
-    config.update(program_config)
+    template_ctx = context.copy()
+    template_ctx.update(program_config)
 
     j2template_loader = jinja2.FileSystemLoader(searchpath=os.getcwd())
     j2template_env = jinja2.Environment(loader=j2template_loader)
 
-    for template_name, config_name in zip(config['templates'], config['configs']):
+    for template_name, config_name in zip(template_ctx['templates'], template_ctx['configs']):
         j2template = j2template_env.get_template(template_name)
-        cfg_rendered = j2template.render(config)
-        with open(os.path.join(config['WORKING_DIR'], config_name), 'w') as output:
+        cfg_rendered = j2template.render(template_ctx)
+        with open(os.path.join(template_ctx['WORKING_DIR'], config_name), 'w') as output:
             output.write(cfg_rendered)
 
 
@@ -149,19 +149,19 @@ def conncheck_daemon(process, cfg, sockfamily):
     sock.close()
 
 
-def setup_daemons(config):
+def setup_daemons(context):
     """Configure daemons and start them"""
     # Setup daemon environment
     daemons = []
 
-    for program_config in config['programs']:
-        setup_daemon_environment(program_config, config)
-        generate_from_templates(program_config, config)
+    for program_config in context['programs']:
+        setup_daemon_environment(program_config, context)
+        generate_from_templates(program_config, context)
 
         daemon_proc = run_daemon(program_config)
         daemons.append({'proc': daemon_proc, 'cfg': program_config})
         try:
-            conncheck_daemon(daemon_proc, program_config, config['_SOCKET_FAMILY'])
+            conncheck_daemon(daemon_proc, program_config, context['_SOCKET_FAMILY'])
         except:  # noqa  -- bare except might be valid here?
             daemon_proc.terminate()
             raise
@@ -173,10 +173,10 @@ def check_for_reply_steps(case: scenario.Scenario) -> bool:
     return any(s.type == "REPLY" for s in case.steps)
 
 
-def run_testcase(case, daemons, config, prog_under_test_ip):
+def run_testcase(case, daemons, context, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
-    server = testserver.TestServer(case, config["ROOT_ADDR"], config["_SOCKET_FAMILY"],
-                                   config["DECKARD_IP"], config["if_manager"])
+    server = testserver.TestServer(case, context["ROOT_ADDR"], context["_SOCKET_FAMILY"],
+                                   context["DECKARD_IP"], context["if_manager"])
     server.start()
 
     try:
@@ -206,29 +206,33 @@ def run_testcase(case, daemons, config, prog_under_test_ip):
 
 def process_file(path, qmin, config):
     """Parse scenario from a file object and create workdir."""
+
+    # Preserve original configuration
+    context = config.copy()
+
     # Parse scenario
     case, case_config_text = scenario.parse_file(os.path.realpath(path))
     case_config = scenario.parse_config(case_config_text, qmin, INSTALLDIR)
 
     # Merge global and scenario configs
-    config.update(case_config)
+    context.update(case_config)
 
     # Asign addresses to the programs and Deckard itself
-    setup_internal_addresses(config)
+    setup_internal_addresses(context)
 
     # Deckard will communicate with first program
-    prog_under_test_ip = config['programs'][0]['address']
+    prog_under_test_ip = context['programs'][0]['address']
 
-    setup_faketime(config)
+    setup_faketime(context)
 
     # Copy the scenario to tmpdir for future reference
-    shutil.copy2(path, os.path.join(config["tmpdir"]))
+    shutil.copy2(path, os.path.join(context["tmpdir"]))
 
     try:
-        daemons = setup_daemons(config)
-        run_testcase(case, daemons, config, prog_under_test_ip)
+        daemons = setup_daemons(context)
+        run_testcase(case, daemons, context, prog_under_test_ip)
 
     except Exception:
         logging.getLogger('deckard.hint').error(
-            'test failed, inspect working directory %s', config["tmpdir"])
+            'test failed, inspect working directory %s', context["tmpdir"])
         raise
