@@ -1,12 +1,11 @@
-# Taken from https://github.com/vincentbernat/lldpd/blob/master/tests/integration/fixtures/namespaces.py
+"""Taken from
+https://github.com/vincentbernat/lldpd/blob/master/tests/integration/fixtures/namespaces.py"""
 
 import contextlib
 import ctypes
 import errno
 import os
 import signal
-
-import pytest
 
 # All allowed namespace types
 NAMESPACE_FLAGS = dict(mnt=0x00020000,

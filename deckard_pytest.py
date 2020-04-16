@@ -50,7 +50,8 @@ class TCPDump:
     """This context manager captures a PCAP file and than checks it for obvious errors."""
 
     # -f option filters out all ICMP messages that are not Destination Unreachable
-    DUMPCAP_CMD = "dumpcap -i any -q -f 'not icmp6[0]==135 and not icmp6[0]==133 and not (ip6[6]==0 and ip6[40]==58)' -P -w {}"
+    DUMPCAP_CMD = "dumpcap -i any -q -f 'not icmp6[0]==135 and not icmp6[0]==133 " \
+                  "and not (ip6[6]==0 and ip6[40]==58)' -P -w {}"
 
     def __init__(self, config):
         self.config = config
@@ -125,7 +126,8 @@ class TCPDump:
                     unknown_addresses.add(dest)
 
         if unknown_addresses:
-            raise RuntimeError("Binary under test queried an IP address not present in scenario %s" % unknown_addresses)
+            raise RuntimeError("Binary under test queried an IP address not present"
+                               " in scenario %s" % unknown_addresses)
 
 
 def run_test(path, qmin, config, max_retries, retries=0):
