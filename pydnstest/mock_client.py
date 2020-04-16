@@ -70,7 +70,6 @@ def recvfrom_blob(sock: socket.socket,
                 raise
 
 
-
 def recvfrom_msg(sock: socket.socket,
                  timeout: int = SOCKET_OPERATION_TIMEOUT) -> Tuple[dns.message.Message, str]:
     data, addr = recvfrom_blob(sock, timeout=timeout)

@@ -62,7 +62,7 @@ def setup_daemon_environment(program_config, global_config):
     program_config["DAEMON_NAME"] = program_config["name"]
     program_config['SELF_ADDR'] = program_config['address']
     program_config['TRUST_ANCHOR_FILES'] = create_trust_anchor_files(
-    global_config["TRUST_ANCHOR_FILES"], program_config['WORKING_DIR'])
+        global_config["TRUST_ANCHOR_FILES"], program_config['WORKING_DIR'])
 
 
 def create_trust_anchor_files(ta_files, work_dir):
@@ -115,8 +115,9 @@ def run_daemon(program_config):
     program_config['args'] = [program_config['binary']] + program_config['additional']
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', program_config['args'])
     try:
-        proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file, stderr=subprocess.STDOUT,
-                                cwd=program_config['WORKING_DIR'], start_new_session=True)
+        proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
+                                stderr=subprocess.STDOUT, cwd=program_config['WORKING_DIR'],
+                                start_new_session=True)
     except subprocess.CalledProcessError:
         logger = logging.getLogger('deckard.daemon_log.%s' % name)
         logger.exception("Can't start '%s'", program_config['args'])
@@ -173,7 +174,8 @@ def check_for_reply_steps(case: scenario.Scenario) -> bool:
 
 def run_testcase(case, daemons, config, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
-    server = testserver.TestServer(case, config["ROOT_ADDR"], config["_SOCKET_FAMILY"], config["DECKARD_IP"], config["if_manager"])
+    server = testserver.TestServer(case, config["ROOT_ADDR"], config["_SOCKET_FAMILY"],
+                                   config["DECKARD_IP"], config["if_manager"])
     server.start()
 
     try:
@@ -214,7 +216,6 @@ def process_file(path, qmin, config):
     setup_internal_addresses(config)
 
     # Deckard will communicate with first program
-    prog_under_test = config['programs'][0]['name']
     prog_under_test_ip = config['programs'][0]['address']
 
     setup_faketime(config)
