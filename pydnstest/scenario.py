@@ -704,8 +704,7 @@ class Scenario:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
                                              (step.id, step.next_if_fail))
                     continue
-                else:
-                    raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+                raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
             i += 1
 
         for r in self.ranges:
