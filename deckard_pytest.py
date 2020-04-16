@@ -48,10 +48,7 @@ class DeckardUnderLoadError(Exception):
 class TCPDump:
     """This context manager captures a PCAP file and than checks it for obvious errors."""
 
-    # -f option filters out all ICMP messages that are not Destination Unreachable
-    DUMPCAP_CMD = ["dumpcap", "-i", "any", "-q", "-f",
-                   "not icmp6[0]==135 and not icmp6[0]==133 and not (ip6[6]==0 and ip6[40]==58)",
-                   "-P", "-w"]
+    DUMPCAP_CMD = ["dumpcap", "-i", "any", "-q", "-P", "-w"]
 
     def __init__(self, config):
         self.config = config
