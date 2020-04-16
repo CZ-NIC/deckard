@@ -1,0 +1,10 @@
+SPDXVersion: SPDX-2.1
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: lldpd-namespaces
+DocumentNamespace: http://spdx.org/spdxdocs/spdx-v2.1-ab80d102-398e-43c0-b978-7a9559f5a76b
+
+PackageName: lldpd-namespaces
+PackageDownloadLocation: git+https://github.com/vincentbernat/lldpd.git@987454994be604a3b8c27e58d68ff7d88fcf24de#tests/integration/fixtures/namespaces.py
+PackageOriginator: Person: Vincent Bernat (vincent@bernat.im)
+PackageLicenseDeclared: ISC
