@@ -48,12 +48,16 @@ test:unittests:
 # and do not want to cause them breakage
 test:sanity:raw_id:
   <<: *test
+  tags:
+    - privileged
   script:
     - ci/raw_id_check.sh
 
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
   <<: *test
+  tags:
+    - privileged
   script:
     # test kresd binary
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git /tmp/kresd-local-build
@@ -79,6 +83,8 @@ test:comparative:kresd:
 # which do not work on latest kresd. It would lead to breakage in kresd CI.
 test:latest:kresd:
   <<: *test
+  tags:
+    - privileged
   script:
     - git clone --recurse-submodules -j8 --depth=1 https://gitlab.labs.nic.cz/knot/knot-resolver.git kresd-local-build
     - pushd kresd-local-build
@@ -98,6 +104,8 @@ test:latest:kresd:
 # on kresd and Unbound 1.5.8 as well as 1.6.0
 test:sanity:unbound:
   <<: *test
+  tags:
+    - privileged
   script:
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_hint_lame.rpl
     - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_lame_root.rpl
@@ -115,6 +123,8 @@ test:sanity:unbound:
 # on kresd and PowerDNS recursor 4.0.0~alpha2 as well as 4.0.4
 test:sanity:pdnsrecursor:
   <<: *test
+  tags:
+    - privileged
   script:
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_recurse.rpl
     - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_tcbit.rpl
