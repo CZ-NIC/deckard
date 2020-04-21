@@ -73,7 +73,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname opcode
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 shortloop. IN DS
@@ -97,7 +97,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname opcode
-ADJUST copy_id
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 x.		IN	DS
