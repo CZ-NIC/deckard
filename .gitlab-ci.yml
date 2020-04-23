@@ -15,9 +15,6 @@ stages:
 .privileged_test: &privileged_test
   stage: test
   tags:
-    - docker
-    - linux
-    - amd64
     - privileged
 
 test:augeas:
