@@ -119,7 +119,10 @@ class TCPDump:
             pcap = dpkt.pcap.Reader(f)
             for _, packet in pcap:
                 ip = dpkt.sll.SLL(packet).data
-                if ip.p != dpkt.ip.IP_PROTO_TCP or ip.p != dpkt.ip.IP_PROTO_UDP:
+                try:
+                    if ip.p != dpkt.ip.IP_PROTO_TCP or ip.p != dpkt.ip.IP_PROTO_UDP:
+                        continue
+                except AttributeError:
                     continue
                 dest = str(ip_address(ip.dst))
                 if dest not in self.config["if_manager"].added_addresses:
