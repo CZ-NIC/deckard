@@ -118,7 +118,12 @@ class TCPDump:
         with open(self.config["pcap"], "rb") as f:
             pcap = dpkt.pcap.Reader(f)
             for _, packet in pcap:
-                ip = dpkt.sll.SLL(packet).data
+                try:
+                    ip = dpkt.sll.SLL(packet).data
+                    if ip.p != dpkt.ip.IP_PROTO_TCP or ip.p != dpkt.ip.IP_PROTO_UDP:
+                        continue
+                except (AttributeError, dpkt.dpkt.NeedData):
+                    continue
                 dest = str(ip_address(ip.dst))
                 if dest not in self.config["if_manager"].added_addresses:
                     unknown_addresses.add(dest)
