@@ -59,7 +59,7 @@ class TCPDump:
     def __enter__(self):
         cmd = self.DUMPCAP_CMD.copy()
         cmd.append(self.config["pcap"])
-        self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        self.tcpdump = subprocess.Popen(cmd) # , stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def __exit__(self, _, exc_value, __):
         if exc_value is not None or self.config.get('noclean'):
