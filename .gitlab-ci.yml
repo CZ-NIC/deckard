@@ -18,6 +18,7 @@ stages:
     - docker
     - linux
     - amd64
+    - privileged
 
 test:augeas:
   <<: *test
