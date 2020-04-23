@@ -2,6 +2,7 @@ import argparse
 import itertools
 import logging
 import os
+import random
 import signal
 import selectors
 import socket
@@ -17,6 +18,8 @@ from pydnstest import scenario, mock_client
 
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
+
+    RETRIES_ON_BIND = 3
 
     def __init__(self, test_scenario, root_addr, addr_family,
                  deckard_address=None, if_manager=None):
@@ -189,15 +192,22 @@ class TestServer:
         if self.if_manager is not None:
             self.if_manager.add_address(address[0])
 
-        try:
-            sock.bind(address)
-        except Exception as ex:
-            # If this becomes a problem in CI, consider adding retries for `sock.bind`.
-            # A lot of addresses are added to the interface while runnning from Deckard in
-            # the small amount of time which caused ocassional hiccups while binding to them
-            # right afterwards in testing.
+        # A lot of addresses are added to the interface while runnning from Deckard in
+        # the small amount of time which caused ocassional hiccups while binding to them
+        # right afterwards in testing. Therefore, we retry a few times.
+        for i in range(self.RETRIES_ON_BIND):
+            try:
+                sock.bind(address)
+                break
+            except OSError as ex:
+                # Exponential backoff
+                time.sleep((2 ** i) + random.random())
+                continue
+        else:
             print(ex, address)
-            raise
+            raise ex
+
+
 
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
