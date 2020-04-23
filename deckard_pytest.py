@@ -123,7 +123,8 @@ class TCPDump:
                 if dest not in self.config["if_manager"].added_addresses:
                     unknown_addresses.add(dest)
 
-        if unknown_addresses:
+        # If REPLY steps are involved we have no idea, what addresses should the resolver ask.
+        if unknown_addresses and not self.config.get("reply_steps"):
             raise RuntimeError("Binary under test queried an IP address not present"
                                " in scenario %s" % unknown_addresses)
 

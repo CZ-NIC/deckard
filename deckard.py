@@ -183,10 +183,6 @@ def run_testcase(case, daemons, context, prog_under_test_ip):
     finally:
         server.stop()
 
-        if check_for_reply_steps(case):
-            logging.warning("%s has REPLY steps in it. These are known to fail randomly. "
-                            "Errors might be false positives.", case.file)
-
         for daemon in daemons:
             daemon['proc'].terminate()
             daemon['proc'].wait()
@@ -212,6 +208,13 @@ def process_file(path, qmin, config):
     # Parse scenario
     case, case_config_text = scenario.parse_file(os.path.realpath(path))
     case_config = scenario.parse_config(case_config_text, qmin, INSTALLDIR)
+
+    if check_for_reply_steps(case):
+        logging.warning("%s has REPLY steps in it. These are known to fail randomly. "
+                        "Errors might be false positives.", case.file)
+        config["reply_steps"] = True
+    else:
+        config["reply_steps"] = False
 
     # Merge global and scenario configs
     context.update(case_config)
