@@ -260,7 +260,7 @@ def standalone_self_test():
     args = argparser.parse_args()
     if args.scenario:
         test_scenario, test_config_text = scenario.parse_file(args.scenario)
-        test_config, _ = scenario.parse_config(test_config_text, True, os.getcwd())
+        test_config = scenario.parse_config(test_config_text, True, os.getcwd())
     else:
         test_scenario, test_config = empty_test_case()
 
