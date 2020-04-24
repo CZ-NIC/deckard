@@ -13,5 +13,5 @@ def test_parse_config__trust_anchor():
                [u'trust-anchor', u'"{}"'.format(anchor2)],
                [u'trust-anchor', u'"{}"'.format(anchor3)]]
     args = (anchors, True, os.getcwd())
-    _, ta_files = parse_config(*args)
+    ta_files = parse_config(*args)["TRUST_ANCHOR_FILES"]
     assert sorted(ta_files.values()) == sorted([[anchor1, anchor3], [anchor2]])
