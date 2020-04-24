@@ -285,7 +285,8 @@ def standalone_self_test():
         test_scenario.current_step = test_scenario.steps[0]
 
     if_manager = InterfaceManager(interface="testserver")
-    server = TestServer(test_scenario, test_config['ROOT_ADDR'], test_config['_SOCKET_FAMILY'], if_manager=if_manager)
+    server = TestServer(test_scenario, test_config['ROOT_ADDR'],
+                        test_config['_SOCKET_FAMILY'], if_manager=if_manager)
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())
