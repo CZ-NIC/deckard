@@ -14,6 +14,7 @@ import dns.message
 import dns.rdatatype
 
 from pydnstest import scenario, mock_client
+from networking import InterfaceManager
 
 
 class TestServer:
@@ -259,7 +260,7 @@ def standalone_self_test():
     Self-test code
 
     Usage:
-    TMPDIR=/tmp unshare -rn $PYTHON -m pydnstest.testserver --help
+    unshare -rn $PYTHON -m pydnstest.testserver --help
     """
     logging.basicConfig(level=logging.DEBUG)
     argparser = argparse.ArgumentParser()
@@ -283,7 +284,9 @@ def standalone_self_test():
     else:
         test_scenario.current_step = test_scenario.steps[0]
 
-    server = TestServer(test_scenario, test_config['ROOT_ADDR'], test_config['_SOCKET_FAMILY'])
+    if_manager = InterfaceManager(interface="testserver")
+    server = TestServer(test_scenario, test_config['ROOT_ADDR'],
+                        test_config['_SOCKET_FAMILY'], if_manager=if_manager)
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())
