@@ -133,7 +133,7 @@ def conncheck_daemon(process, cfg, sockfamily):
     while True:
         time.sleep(0.1)
         if (datetime.now() - tstart).total_seconds() > 5:
-            raise RuntimeError("Server took too long to respond")
+            raise DeckardUnderLoadError("Starting server took too long to respond")
         # Check if the process is running
         if process.poll() is not None:
             msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])

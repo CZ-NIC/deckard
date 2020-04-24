@@ -62,11 +62,12 @@ class TCPDump:
         self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def __exit__(self, _, exc_value, __):
-        if exc_value is not None or self.config.get('noclean'):
-            # Wait for the PCAP to be finalized
+        # Wait for the PCAP to be finalized
+        while not os.path.exists(self.config["pcap"]):
             time.sleep(1)
 
         self.tcpdump.terminate()
+        self.tcpdump.wait()
 
         self.check_for_unknown_server()
 
