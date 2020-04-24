@@ -24,6 +24,7 @@ Requirements
 Deckard requires following software to be installed:
 
 - Python >= 3.6
+- Linux kernel >= 3.8
 - augeas_ - library for editing configuration files
 - dnspython_ - DNS library for Python
 - Jinja2_ - template engine for generating config files
