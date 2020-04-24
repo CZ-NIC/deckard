@@ -54,7 +54,7 @@ test:unittests:
 test:sanity:raw_id:
   <<: *privileged_test
   script:
-    - ci/raw_id_check.sh
+    - unshare -rn ci/raw_id_check.sh
 
 # changes in Deckard itself must not change result of tests
 test:comparative:kresd:
