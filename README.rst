@@ -10,7 +10,7 @@ In essence, it works like this:
 - When a binary attempts to contact another server, Deckard intercepts the communication and replies with scripted answer.
 - Deckard can simulate network issues, DNS environment changes, and fake time (for DNSSEC validation tests).
 
-No changes to real network setup are required because all network communications are redirected over UNIX sockets (and recorded to PCAP).
+No changes to real network setup are required because all network communications are made in a network namespace.
 
 Test cases are described by `scenarios <doc/scenario_guide.rst>`_ that contain:
 
@@ -23,7 +23,7 @@ Requirements
 
 Deckard requires following software to be installed:
 
-- Python >= 3.5
+- Python >= 3.6
 - augeas_ - library for editing configuration files
 - dnspython_ - DNS library for Python
 - Jinja2_ - template engine for generating config files
@@ -31,22 +31,18 @@ Deckard requires following software to be installed:
 - python-augeas_ - Python bindings for augeas API
 - pytest_ - testing framework for Python, used for running the test cases
 - pytest-xdist_ - module for pytest for distributed testing
-- custom C libraries (installed automatically, see below)
+- dumpcap_ - command line tool for network capture (part of Wireshark)
+- libfaketime_ - embedded because Deckard requires a rather recent version
 
 For convenient use it is strongly recommended to have a C compiler, Git, and ``make`` available.
-First execution of ``make`` will automatically download and compile following libraries:
-
-- libfaketime_ - embedded because Deckard requires a rather recent version
-- `modified socket_wrapper`_ - custom modification of `original socket_wrapper`_ library (part of the cwrap_ tool set for creating an isolated networks)
-
 
 Compatibility
 -------------
 
-Works well on Linux, Mac OS X [#]_ and probably all BSDs. Tested with `Knot DNS Resolver`_, `Unbound`_, and `PowerDNS Recursor`_. It should work with other software as well as long as all functions used by the binary under test are supported by our `modified socket_wrapper`_.
-
-.. [#] Python from Homebrew must be used, as the built-in Python is protected by the CSR_ from OS X 10.11 and prevents library injection.
-
+Deckard uses user and network namespaces to simulate the network environment
+so only Linux (with kernel version 3.8 or newer) is supported. It however is possible
+to run Deckard on other platforms in Docker. Just note that your container has to run as
+`--priviledged` for the namespaces to run properly.
 
 Usage
 -----
@@ -88,11 +84,9 @@ Happy testing.
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
 .. _`PyYAML`: http://pyyaml.org/
 .. _`Unbound`: https://www.unbound.net/
-.. _`cwrap`: https://cwrap.org/
 .. _`dnspython`: http://www.dnspython.org/
 .. _`libfaketime`: https://github.com/wolfcw/libfaketime
-.. _`modified socket_wrapper`: https://gitlab.labs.nic.cz/labs/socket_wrapper
-.. _`original socket_wrapper`: https://cwrap.org/socket_wrapper.html
 .. _`python-augeas`: https://pypi.org/project/python-augeas/
 .. _`pytest`: https://pytest.org/
 .. _`pytest-xdist`: https://pypi.python.org/pypi/pytest-xdist
+.. _`dumpcap`: https://www.wireshark.org/docs/man-pages/dumpcap.html
