@@ -2,6 +2,7 @@ import argparse
 import itertools
 import logging
 import os
+import random
 import signal
 import selectors
 import socket
@@ -13,12 +14,16 @@ import dns.message
 import dns.rdatatype
 
 from pydnstest import scenario, mock_client
+from networking import InterfaceManager
 
 
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
-    def __init__(self, test_scenario, root_addr, addr_family):
+    RETRIES_ON_BIND = 3
+
+    def __init__(self, test_scenario, root_addr, addr_family,
+                 deckard_address=None, if_manager=None):
         """ Initialize server instance. """
         self.thread = None
         self.srv_socks = []
@@ -28,12 +33,14 @@ class TestServer:
         self.active_lock = threading.Lock()
         self.condition = threading.Condition()
         self.scenario = test_scenario
+        self.scenario.deckard_address = deckard_address
         self.addr_map = []
         self.start_iface = 2
         self.cur_iface = self.start_iface
         self.kroot_local = root_addr
         self.addr_family = addr_family
         self.undefined_answers = 0
+        self.if_manager = if_manager
 
     def __del__(self):
         """ Cleanup after deletion. """
@@ -181,11 +188,28 @@ class TestServer:
 
         sock = socket.socket(family, socktype, proto)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        try:
-            sock.bind(address)
-        except Exception as ex:
+
+        # Add address to interface when running from Deckard
+        if self.if_manager is not None:
+            self.if_manager.add_address(address[0])
+
+        # A lot of addresses are added to the interface while runnning from Deckard in
+        # the small amount of time which caused ocassional hiccups while binding to them
+        # right afterwards in testing. Therefore, we retry a few times.
+        ex = None
+        for i in range(self.RETRIES_ON_BIND):
+            try:
+                sock.bind(address)
+                break
+            except OSError as e:
+                # Exponential backoff
+                time.sleep((2 ** i) + random.random())
+                ex = e
+                continue
+        else:
             print(ex, address)
-            raise
+            raise ex
+
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
         self.srv_socks.append(sock)
@@ -236,7 +260,7 @@ def standalone_self_test():
     Self-test code
 
     Usage:
-    LD_PRELOAD=libsocket_wrapper.so SOCKET_WRAPPER_DIR=/tmp $PYTHON -m pydnstest.testserver --help
+    unshare -rn $PYTHON -m pydnstest.testserver --help
     """
     logging.basicConfig(level=logging.DEBUG)
     argparser = argparse.ArgumentParser()
@@ -247,7 +271,7 @@ def standalone_self_test():
     args = argparser.parse_args()
     if args.scenario:
         test_scenario, test_config_text = scenario.parse_file(args.scenario)
-        test_config, _ = scenario.parse_config(test_config_text, True, os.getcwd())
+        test_config = scenario.parse_config(test_config_text, True, os.getcwd())
     else:
         test_scenario, test_config = empty_test_case()
 
@@ -260,7 +284,9 @@ def standalone_self_test():
     else:
         test_scenario.current_step = test_scenario.steps[0]
 
-    server = TestServer(test_scenario, test_config['ROOT_ADDR'], test_config['_SOCKET_FAMILY'])
+    if_manager = InterfaceManager(interface="testserver")
+    server = TestServer(test_scenario, test_config['ROOT_ADDR'],
+                        test_config['_SOCKET_FAMILY'], if_manager=if_manager)
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())

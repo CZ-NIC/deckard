@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
-from datetime import datetime
 import errno
-import ipaddress
 import logging
 import logging.config
 import os
 import shutil
 import socket
 import subprocess
-import tempfile
 import time
+from datetime import datetime
 from typing import Set  # noqa
 
-import dpkt
 import jinja2
 
 from pydnstest import scenario, testserver
-
 
 # path to Deckard files
 INSTALLDIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,66 +24,11 @@ class DeckardUnderLoadError(Exception):
     pass
 
 
-class IfaceManager:
-    """
-    Network interface allocation manager
-
-    Keeps mapping between 'name', interface number, and IP address.
-    """
-    def __init__(self, sockfamily):
-        """
-        Parameters:
-            sockfamily Address family used in given test scenatio
-                       (a constant from socket module)
-        """
-        if sockfamily not in {socket.AF_INET, socket.AF_INET6}:
-            raise NotImplementedError("address family not supported '%i'" % sockfamily)
-        self.sockfamily = sockfamily
-        self.free = list(range(40, 10, -1))  # range accepted by libswrap
-        self.name2iface = {}
-
-    def allocate(self, name):
-        """
-        Map name to a free interface number.
-        """
-        if name in self.name2iface:
-            raise ValueError('duplicate interface name %s' % name)
-        iface = str(self.free.pop())
-        self.name2iface[name] = iface
-        return iface
-
-    def getiface(self, name):
-        """
-        Map name to allocated interface number.
-
-        Returns:
-            Interface number as string (so it can be assigned to os.environ)
-        """
-        return self.name2iface[name]
-
-    def getipaddr(self, name):
-        """
-        Get default IP address assigned to interface allocated to given name.
-
-        Returns:
-            Address from address family specified during IfaceManager init.
-        """
-        iface = self.getiface(name)
-        if self.sockfamily == socket.AF_INET:
-            addr_local_pattern = "127.0.0.{}"
-        elif self.sockfamily == socket.AF_INET6:
-            addr_local_pattern = "fd00::5357:5f{:02X}"
-        return addr_local_pattern.format(int(iface))
-
-    def getalladdrs(self):
-        """
-        Get mapping from all names to all IP addresses.
-
-        Returns:
-            {name: IP address}
-        """
-        return {name: self.getipaddr(name)
-                for name in self.name2iface}
+def setup_internal_addresses(context):
+    context["DECKARD_IP"] = context["if_manager"].assign_internal_address(context["_SOCKET_FAMILY"])
+    for program in context["programs"]:
+        program["address"] = context["if_manager"].assign_internal_address(
+            context["_SOCKET_FAMILY"])
 
 
 def write_timestamp_file(path, tst):
@@ -97,7 +38,7 @@ def write_timestamp_file(path, tst):
     time_file.close()
 
 
-def setup_common_env(ctx):
+def setup_faketime(context):
     """
     Setup environment shared between Deckard and binaries under test.
 
@@ -107,83 +48,22 @@ def setup_common_env(ctx):
     Returns:
         path to working directory
     """
-    # working directory
-    if "SOCKET_WRAPPER_DIR" in os.environ:
-        tmpdir = os.environ["SOCKET_WRAPPER_DIR"]
-        if os.path.lexists(tmpdir):
-            raise ValueError('SOCKET_WRAPPER_DIR "%s" must not exist' % tmpdir)
-    else:
-        # uses TMPDIR environment variable (if dir exists)
-        tmpdir = tempfile.mkdtemp(suffix='', prefix='tmpdeckard')
-
     # Set up libfaketime
     os.environ["FAKETIME_NO_CACHE"] = "1"
-    os.environ["FAKETIME_TIMESTAMP_FILE"] = '%s/.time' % tmpdir
-    # fake initial time
+    os.environ["FAKETIME_TIMESTAMP_FILE"] = os.path.join(context["tmpdir"], ".time")
+    os.unsetenv("FAKETIME")
+
     write_timestamp_file(os.environ["FAKETIME_TIMESTAMP_FILE"],
-                         ctx.get('_OVERRIDE_TIMESTAMP', time.time()))
-
-    # Set up socket_wrapper
-    os.environ["SOCKET_WRAPPER_DIR"] = tmpdir
-    os.environ["SOCKET_WRAPPER_PCAP_FILE"] = '%s/deckard.pcap' % tmpdir
-
-    return tmpdir
+                         context.get('_OVERRIDE_TIMESTAMP', time.time()))
 
 
-def setup_daemon_env(prog_cfg, tmpdir):
-    """ Set up test environment and config """
-    name = prog_cfg['name']
-    log = logging.getLogger('deckard.daemon.%s.setup_env' % name)
-    # Set up child process env() to use socket wrapper interface
-    child_env = os.environ.copy()
-    child_env['SOCKET_WRAPPER_DEFAULT_IFACE'] = prog_cfg['iface']
-    prog_cfg['dir'] = os.path.join(tmpdir, name)
-    log.debug('directory: %s', prog_cfg['dir'])
-    child_env['SOCKET_WRAPPER_PCAP_FILE'] = '%s/pcap' % prog_cfg['dir']
-
-    return child_env
-
-
-def setup_network(sockfamily, prog_cfgs):
-    """Allocate fake interfaces and IP addresses to all entities.
-
-    Returns:
-    - SOCKET_WRAPPER_DEFAULT_IFACE will be set in os.environ
-    - Dict suitable for usage in Jinja2 templates will be returned
-        {
-         ROOT_ADDR: <DeckardIP>,
-         IPADDRS: {name: <IPaddress>}
-        }
-    """
-    net_config = {}
-    # assign interfaces and IP addresses to all involved programs
-    ifacemgr = IfaceManager(sockfamily)
-    # fake interface for Deckard itself
-    deckard_iface = ifacemgr.allocate('deckard')
-    os.environ['SOCKET_WRAPPER_DEFAULT_IFACE'] = deckard_iface
-    net_config['ROOT_ADDR'] = ifacemgr.getipaddr('deckard')
-
-    for prog_cfg in prog_cfgs['programs']:
-        prog_cfg['iface'] = ifacemgr.allocate(prog_cfg['name'])
-        prog_cfg['ipaddr'] = ifacemgr.getipaddr(prog_cfg['name'])
-    net_config['IPADDRS'] = ifacemgr.getalladdrs()
-
-    return net_config
-
-
-def _fixme_prebind_hack(sockfamily, childaddr):
-    """
-    Prebind to sockets to create necessary files
-
-    @TODO: this is probably a workaround for socket_wrapper bug
-    """
-    if 'NOPRELOAD' not in os.environ:
-        for sock_type in (socket.SOCK_STREAM, socket.SOCK_DGRAM):
-            sock = socket.socket(sockfamily, sock_type)
-            sock.setsockopt(sockfamily, socket.SO_REUSEADDR, 1)
-            sock.bind((childaddr, 53))
-            if sock_type & socket.SOCK_STREAM:
-                sock.listen(5)
+def setup_daemon_environment(program_config, context):
+    program_config["WORKING_DIR"] = os.path.join(context["tmpdir"], program_config["name"])
+    os.mkdir(program_config['WORKING_DIR'])
+    program_config["DAEMON_NAME"] = program_config["name"]
+    program_config['SELF_ADDR'] = program_config['address']
+    program_config['TRUST_ANCHOR_FILES'] = create_trust_anchor_files(
+        context["TRUST_ANCHOR_FILES"], program_config['WORKING_DIR'])
 
 
 def create_trust_anchor_files(ta_files, work_dir):
@@ -212,51 +92,36 @@ def create_trust_anchor_files(ta_files, work_dir):
     return full_paths
 
 
-def setup_daemon_files(prog_cfg, template_ctx, ta_files):
-    name = prog_cfg['name']
-    # add program-specific variables
-    subst = template_ctx.copy()
-    subst['DAEMON_NAME'] = name
+def generate_from_templates(program_config, context):
+    """Generate configuration for the program"""
+    template_ctx = context.copy()
+    template_ctx.update(program_config)
 
-    subst['WORKING_DIR'] = prog_cfg['dir']
-    os.mkdir(prog_cfg['dir'])
-    subst['SELF_ADDR'] = prog_cfg['ipaddr']
-
-    # daemons might write to TA files so every daemon gets its own copy
-    subst['TRUST_ANCHOR_FILES'] = create_trust_anchor_files(
-        ta_files, prog_cfg['dir'])
-
-    # generate configuration files
     j2template_loader = jinja2.FileSystemLoader(searchpath=os.getcwd())
-    print(os.path.abspath(os.getcwd()))
     j2template_env = jinja2.Environment(loader=j2template_loader)
-    logging.getLogger('deckard.daemon.%s.template' % name).debug(subst)
 
-    assert len(prog_cfg['templates']) == len(prog_cfg['configs'])
-    for template_name, config_name in zip(prog_cfg['templates'], prog_cfg['configs']):
+    for template_name, config_name in zip(template_ctx['templates'], template_ctx['configs']):
         j2template = j2template_env.get_template(template_name)
-        cfg_rendered = j2template.render(subst)
-        with open(os.path.join(prog_cfg['dir'], config_name), 'w') as output:
+        cfg_rendered = j2template.render(template_ctx)
+        with open(os.path.join(template_ctx['WORKING_DIR'], config_name), 'w') as output:
             output.write(cfg_rendered)
 
-    _fixme_prebind_hack(template_ctx['_SOCKET_FAMILY'], subst['SELF_ADDR'])
 
-
-def run_daemon(cfg, environ):
+def run_daemon(program_config):
     """Start binary and return its process object"""
-    name = cfg['name']
+    name = program_config['DAEMON_NAME']
     proc = None
-    cfg['log'] = os.path.join(cfg['dir'], 'server.log')
-    daemon_log_file = open(cfg['log'], 'w')
-    cfg['args'] = args = [cfg['binary']] + cfg['additional']
-    logging.getLogger('deckard.daemon.%s.env' % name).debug('%s', environ)
-    logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', args)
+    program_config['log'] = os.path.join(program_config["WORKING_DIR"], 'server.log')
+    daemon_log_file = open(program_config['log'], 'w')
+    program_config['args'] = [program_config['binary']] + program_config['additional']
+    logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', program_config['args'])
     try:
-        proc = subprocess.Popen(args, stdout=daemon_log_file, stderr=subprocess.STDOUT,
-                                cwd=cfg['dir'], env=environ, start_new_session=True)
+        proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
+                                stderr=subprocess.STDOUT, cwd=program_config['WORKING_DIR'],
+                                start_new_session=True)
     except subprocess.CalledProcessError:
         logger = logging.getLogger('deckard.daemon_log.%s' % name)
-        logger.exception("Can't start '%s'", args)
+        logger.exception("Can't start '%s'", program_config['args'])
         raise
     return proc
 
@@ -268,145 +133,54 @@ def conncheck_daemon(process, cfg, sockfamily):
     while True:
         time.sleep(0.1)
         if (datetime.now() - tstart).total_seconds() > 5:
-            raise RuntimeError("Server took too long to respond")
+            raise DeckardUnderLoadError("Starting server took too long to respond")
         # Check if the process is running
         if process.poll() is not None:
-            msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['dir'])
+            msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
             logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
             logger.critical(msg)
             logger.error(open(cfg['log']).read())
             raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
         try:
-            sock.connect((cfg['ipaddr'], 53))
+            sock.connect((cfg['address'], 53))
         except socket.error:
             continue
         break
     sock.close()
 
 
-def process_file(path, qmin, prog_cfgs):
-    """Parse scenario from a file object and create workdir."""
-    # Parse scenario
-    case, cfg_text = scenario.parse_file(os.path.realpath(path))
-    cfg_ctx, ta_files = scenario.parse_config(cfg_text, qmin, INSTALLDIR)
-    template_ctx = setup_network(cfg_ctx['_SOCKET_FAMILY'], prog_cfgs)
-    # merge variables from scenario with generated network variables (scenario has priority)
-    template_ctx.update(cfg_ctx)
-    # Deckard will communicate with first program
-    prog_under_test = prog_cfgs['programs'][0]['name']
-    prog_under_test_ip = template_ctx['IPADDRS'][prog_under_test]
-
-    # get working directory and environment variables
-    tmpdir = setup_common_env(cfg_ctx)
-    shutil.copy2(path, os.path.join(tmpdir))
-    try:
-        daemons = setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files)
-        run_testcase(daemons,
-                     case,
-                     template_ctx['ROOT_ADDR'],
-                     template_ctx['_SOCKET_FAMILY'],
-                     prog_under_test_ip)
-        if prog_cfgs.get('noclean'):
-            logging.getLogger('deckard.hint').info(
-                'test working directory %s', tmpdir)
-        else:
-            shutil.rmtree(tmpdir)
-    except Exception:
-        logging.getLogger('deckard.hint').error(
-            'test failed, inspect working directory %s', tmpdir)
-        raise
-
-
-def setup_daemons(tmpdir, prog_cfgs, template_ctx, ta_files):
-    """Configure daemons and run the test"""
+def setup_daemons(context):
+    """Configure daemons and start them"""
     # Setup daemon environment
     daemons = []
-    for prog_cfg in prog_cfgs['programs']:
-        daemon_env = setup_daemon_env(prog_cfg, tmpdir)
-        setup_daemon_files(prog_cfg, template_ctx, ta_files)
-        daemon_proc = run_daemon(prog_cfg, daemon_env)
-        daemons.append({'proc': daemon_proc, 'cfg': prog_cfg})
+
+    for program_config in context['programs']:
+        setup_daemon_environment(program_config, context)
+        generate_from_templates(program_config, context)
+
+        daemon_proc = run_daemon(program_config)
+        daemons.append({'proc': daemon_proc, 'cfg': program_config})
         try:
-            conncheck_daemon(daemon_proc, prog_cfg, template_ctx['_SOCKET_FAMILY'])
+            conncheck_daemon(daemon_proc, program_config, context['_SOCKET_FAMILY'])
         except:  # noqa  -- bare except might be valid here?
             daemon_proc.terminate()
             raise
+
     return daemons
-
-
-def check_for_icmp():
-    """ Checks Deckards's PCAP for ICMP packets """
-    # Deckard's responses to resolvers might be delayed due to load which
-    # leads the resolver to close the port and to the test failing in the
-    # end. We partially detect these by checking the PCAP for ICMP packets.
-    path = os.environ["SOCKET_WRAPPER_PCAP_FILE"]
-    udp_seen = False
-    with open(path, "rb") as f:
-        pcap = dpkt.pcap.Reader(f)
-        for _, packet in pcap:
-            try:
-                ip = dpkt.ip.IP(packet)
-            except dpkt.dpkt.UnpackError:
-                ip = dpkt.ip6.IP6(packet)
-            if isinstance(ip.data, dpkt.udp.UDP):
-                udp_seen = True
-
-            if udp_seen:
-                if isinstance(ip.data, (dpkt.icmp.ICMP, dpkt.icmp6.ICMP6)):
-                    raise DeckardUnderLoadError("Deckard is under load. "
-                                                "Other errors might be false negatives. "
-                                                "Consider retrying the job later.")
-        return False
 
 
 def check_for_reply_steps(case: scenario.Scenario) -> bool:
     return any(s.type == "REPLY" for s in case.steps)
 
 
-def check_for_unknown_servers(case: scenario.Scenario, daemon: dict) -> None:
-    """ Checks Deckards's PCAP for packets going to servers not present in scenario """
-    path = os.path.join(daemon["cfg"]["dir"], "pcap")
-    asked_servers = set()
-    with open(path, "rb") as f:
-        pcap = dpkt.pcap.Reader(f)
-        for _, packet in pcap:
-            try:
-                ip = dpkt.ip.IP(packet)
-            except dpkt.dpkt.UnpackError:
-                ip = dpkt.ip6.IP6(packet)
-            # pylint: disable=no-member
-            dest = ipaddress.ip_address(int.from_bytes(ip.dst, byteorder="big"))
-            # pylint: enable=no-member
-
-            # Socket wrapper asigns (random) link local addresses to the binary under test
-            # and Deckard itself. We have to filter them out of the pcap.
-            if dest.is_global:
-                asked_servers.add(dest)
-
-    scenario_ips = set()  # type: Set[str]
-    for r in case.ranges:
-        scenario_ips |= r.addresses
-
-    scenario_servers = {ipaddress.ip_address(ip) for ip in scenario_ips}
-
-    servers_not_in_scenario = asked_servers - scenario_servers
-
-    if servers_not_in_scenario:
-        if not check_for_reply_steps(case):
-            raise RuntimeError("Binary in test asked an IP address not present in scenario %s"
-                               % servers_not_in_scenario)
-
-
-def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
+def run_testcase(case, daemons, context, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
-    server = testserver.TestServer(case, root_addr, addr_family)
+    server = testserver.TestServer(case, context["ROOT_ADDR"], context["_SOCKET_FAMILY"],
+                                   context["DECKARD_IP"], context["if_manager"])
     server.start()
 
     try:
         server.play(prog_under_test_ip)
-    except ValueError as e:
-        if not check_for_icmp():
-            raise e
     finally:
         server.stop()
 
@@ -425,9 +199,40 @@ def run_testcase(daemons, case, root_addr, addr_family, prog_under_test_ip):
             if daemon['proc'].returncode != 0 and not ignore_exit:
                 raise ValueError('process %s terminated with return code %s'
                                  % (daemon['cfg']['name'], daemon['proc'].returncode))
-            check_for_unknown_servers(case, daemon)
 
-    # Do not clear files if the server crashed (for analysis)
     if server.undefined_answers > 0:
-        if not check_for_icmp():
-            raise ValueError('the scenario does not define all necessary answers (see error log)')
+        raise ValueError('the scenario does not define all necessary answers (see error log)')
+
+
+def process_file(path, qmin, config):
+    """Parse scenario from a file object and create workdir."""
+
+    # Preserve original configuration
+    context = config.copy()
+
+    # Parse scenario
+    case, case_config_text = scenario.parse_file(os.path.realpath(path))
+    case_config = scenario.parse_config(case_config_text, qmin, INSTALLDIR)
+
+    # Merge global and scenario configs
+    context.update(case_config)
+
+    # Asign addresses to the programs and Deckard itself
+    setup_internal_addresses(context)
+
+    # Deckard will communicate with first program
+    prog_under_test_ip = context['programs'][0]['address']
+
+    setup_faketime(context)
+
+    # Copy the scenario to tmpdir for future reference
+    shutil.copy2(path, os.path.join(context["tmpdir"]))
+
+    try:
+        daemons = setup_daemons(context)
+        run_testcase(case, daemons, context, prog_under_test_ip)
+
+    except Exception:
+        logging.getLogger('deckard.hint').error(
+            'test failed, inspect working directory %s', context["tmpdir"])
+        raise
