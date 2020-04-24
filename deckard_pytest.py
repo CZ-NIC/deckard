@@ -63,7 +63,8 @@ class TCPDump:
 
     def __exit__(self, _, exc_value, __):
         # Wait for the PCAP to be finalized
-        time.sleep(1)
+        while not os.path.exists(self.config["pcap"]):
+            time.sleep(1)
 
         self.tcpdump.terminate()
 
