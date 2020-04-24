@@ -61,6 +61,8 @@ def recvfrom_blob(sock: socket.socket,
             else:
                 raise NotImplementedError("[recvfrom_blob]: unknown socket type '%i'" % sock.type)
             return data, addr
+        except socket.timeout:
+            raise RuntimeError("Server took too long to respond")
         except OSError as ex:
             if ex.errno == errno.ENOBUFS:
                 time.sleep(0.1)
@@ -96,11 +98,14 @@ def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) 
 
 def setup_socket(address: str,
                  port: int,
-                 tcp: bool = False) -> socket.socket:
+                 tcp: bool = False,
+                 src_address: str = None) -> socket.socket:
     family = dns.inet.af_for_address(address)
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
     if tcp:
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
+    if src_address is not None:
+        sock.bind((src_address, port))
     sock.settimeout(SOCKET_OPERATION_TIMEOUT)
     sock.connect((address, port))
     return sock
