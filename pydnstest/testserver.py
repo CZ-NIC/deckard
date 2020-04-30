@@ -22,7 +22,7 @@ class TestServer:
 
     RETRIES_ON_BIND = 3
 
-    def __init__(self, test_scenario, root_addr, addr_family,
+    def __init__(self, test_scenario, addr_family,
                  deckard_address=None, if_manager=None):
         """ Initialize server instance. """
         self.thread = None
@@ -37,7 +37,6 @@ class TestServer:
         self.addr_map = []
         self.start_iface = 2
         self.cur_iface = self.start_iface
-        self.kroot_local = root_addr
         self.addr_family = addr_family
         self.undefined_answers = 0
         self.if_manager = if_manager
@@ -56,8 +55,7 @@ class TestServer:
                 raise Exception('TestServer already started')
         with self.active_lock:
             self.active = True
-        addr, _ = self.start_srv((self.kroot_local, port), self.addr_family)
-        self.start_srv(addr, self.addr_family, socket.IPPROTO_TCP)
+
         self._bind_sockets()
 
     def stop(self):
@@ -191,7 +189,8 @@ class TestServer:
 
         # Add address to interface when running from Deckard
         if self.if_manager is not None:
-            self.if_manager.add_address(address[0])
+            if address[0] not in self.if_manager.added_addresses:
+                self.if_manager.add_address(address[0])
 
         # A lot of addresses are added to the interface while runnning from Deckard in
         # the small amount of time which caused ocassional hiccups while binding to them
@@ -285,8 +284,7 @@ def standalone_self_test():
         test_scenario.current_step = test_scenario.steps[0]
 
     if_manager = InterfaceManager(interface="testserver")
-    server = TestServer(test_scenario, test_config['ROOT_ADDR'],
-                        test_config['_SOCKET_FAMILY'], if_manager=if_manager)
+    server = TestServer(test_scenario, test_config['_SOCKET_FAMILY'], if_manager=if_manager)
     server.start()
 
     logging.info("[==========] Mirror server running at %s", server.address())
