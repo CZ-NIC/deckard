@@ -48,7 +48,7 @@ class TestServer:
         if active:
             self.stop()
 
-    def start(self, port=53):
+    def start(self):
         """ Synchronous start """
         with self.active_lock:
             if self.active:
