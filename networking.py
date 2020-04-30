@@ -64,9 +64,9 @@ class InterfaceManager:
         if ip_address(address) in self.ip4_internal_range or \
            ip_address(address) in self.ip6_internal_range:
             raise ValueError(f"Address {address} in the internally reserved range.")
-        self._add_address(address, check_duplicate)
+        self._add_address(address)
 
-    def _add_address(self, address, check_duplicate=False):
+    def _add_address(self, address):
         try:
             subprocess.run(f"ip addr add {address} dev {self.interface}",
                            capture_output=True, check=True, shell=True)

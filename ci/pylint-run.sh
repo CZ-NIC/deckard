@@ -9,4 +9,4 @@ PYFILES=$(find . \
 	-name '*.py' -print -o \
 	-type f -exec grep -qsm1 '^#!.*\bpython' '{}' \; -print)
 
-${PYTHON} -m pylint -j 0 --rcfile pylintrc ${PYFILES}
+PYTHONPATH=. ${PYTHON} -m pylint -j 0 --rcfile pylintrc ${PYFILES}
