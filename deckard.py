@@ -175,7 +175,7 @@ def check_for_reply_steps(case: scenario.Scenario) -> bool:
 
 def run_testcase(case, daemons, context, prog_under_test_ip):
     """Run actual test and raise exception if the test failed"""
-    server = testserver.TestServer(case, context["ROOT_ADDR"], context["_SOCKET_FAMILY"],
+    server = testserver.TestServer(case, context["_SOCKET_FAMILY"],
                                    context["DECKARD_IP"], context["if_manager"])
     server.start()
 
