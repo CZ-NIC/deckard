@@ -44,9 +44,6 @@ def setup_faketime(context):
 
     Environment for child processes must be based on on.environ as modified
     by this function.
-
-    Returns:
-        path to working directory
     """
     # Set up libfaketime
     os.environ["FAKETIME_NO_CACHE"] = "1"
