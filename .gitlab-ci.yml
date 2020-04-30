@@ -47,7 +47,7 @@ test:rplint:
 test:unittests:
   <<: *privileged_test
   script:
-    - make check
+    - python3 -m pytest
 
 # There are no tests in the repo which use this feature but others do
 # and do not want to cause them breakage
