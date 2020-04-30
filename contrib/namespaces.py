@@ -114,7 +114,7 @@ class LinuxNamespace:
         with keep_directory():
             for n in self.next:
                 if libc.setns(n, 0) == -1:
-                    ns = self.namespaces[self.next.index(n)]  # NOQA
+                    ns = self.namespaces[self.next.index(n)]  # Adopted code. pylint: disable=unused-variable
                     e = ctypes.get_errno()
                     raise OSError(e, os.strerror(e))
 
