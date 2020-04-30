@@ -33,9 +33,7 @@ Deckard requires following software to be installed:
 - pytest_ - testing framework for Python, used for running the test cases
 - pytest-xdist_ - module for pytest for distributed testing
 - dumpcap_ - command line tool for network capture (part of Wireshark)
-- libfaketime_ - embedded because Deckard requires a rather recent version
-
-For convenient use it is strongly recommended to have a C compiler, Git, and ``make`` available.
+- faketime_ - used for faking the time in tests of DNSSEC
 
 Compatibility
 -------------
