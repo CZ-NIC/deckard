@@ -30,6 +30,10 @@ def setup_internal_addresses(context):
         program["address"] = context["if_manager"].assign_internal_address(
             context["_SOCKET_FAMILY"])
 
+    # The scenario might not specify a ROOT_ADDR but we need it later for testserver
+    if context.get("ROOT_ADDR") is None:
+        context["ROOT_ADDR"] = context["DECKARD_IP"]
+
 
 def write_timestamp_file(path, tst):
     time_file = open(path, 'w')
