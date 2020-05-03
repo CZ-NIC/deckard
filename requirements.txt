@@ -5,3 +5,4 @@ PyYAML
 python-augeas
 pytest>=3.4
 pytest-xdist
+pyroute2
