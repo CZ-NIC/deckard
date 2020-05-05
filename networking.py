@@ -1,6 +1,10 @@
-import subprocess
+import errno
 from ipaddress import IPv4Network, IPv6Network, ip_address
 from socket import AF_INET, AF_INET6
+
+from pyroute2 import IPRoute
+from pyroute2.netlink.rtnl import ndmsg
+from pyroute2.netlink.exceptions import NetlinkError
 
 
 class InterfaceManager:
@@ -17,30 +21,37 @@ class InterfaceManager:
         self.added_addresses = set()
         self.interface = interface
 
+        self._ip = IPRoute()
         try:
-            self._setup_interface()
-        except subprocess.CalledProcessError:
+            self._dev = self._setup_interface()
+        except NetlinkError:
             raise RuntimeError(f"Couldn't set interface `{self.interface}` up.")
 
     def _setup_interface(self):
         """Set up a dummy interface with default route as well as loopback.
            This is done so the resulting PCAP contains as much of the communication
            as possible (including ICMP Destination unreachable packets etc.)."""
+
         # Create and set the interface up.
-        subprocess.run(["ip", "link", "add", "dev", self.interface, "type", "dummy"], check=True)
-        subprocess.run(["ip", "link", "set", "dev", self.interface, "up"], check=True)
+        self._ip.link("add", ifname=self.interface, kind="dummy")
+        dev = self._ip.link_lookup(ifname=self.interface)[0]
+        self._ip.link("set", index=dev, state="up")
+
         # Set up default route for both IPv6 and IPv4
-        subprocess.run(["ip", "nei", "add", "169.254.1.1", "lladdr", "21:21:21:21:21:21", "dev",
-                        self.interface], check=True)
-        subprocess.run(["ip", "-6", "nei", "add", "fe80::1", "lladdr", "21:21:21:21:21:21", "dev",
-                        self.interface], check=True)
-        subprocess.run(["ip", "addr", "add", "169.254.1.2/24", "dev", self.interface], check=True)
-        subprocess.run(["ip", "route", "add", "default", "via", "169.254.1.1", "dev",
-                        self.interface], check=True)
-        subprocess.run(["ip", "-6", "route", "add", "default", "via", "fe80::1", "dev",
-                        self.interface], check=True)
+        self._ip.neigh("add", dst='169.254.1.1', lladdr='21:21:21:21:21:21',
+                       state=ndmsg.states['permanent'], ifindex=dev)
+        self._ip.neigh("add", family=AF_INET6, dst='fe80::1', lladdr='21:21:21:21:21:21',
+                       state=ndmsg.states['permanent'], ifindex=dev)
+        self._ip.addr("add", index=dev, address="169.254.1.2", mask=24)
+        self._ip.route("add", gateway="169.254.1.1", oif=dev)
+        self._ip.route("add", family=AF_INET6, gateway='fe80::1', oif=dev)
+
         # Set the loopback up as well since some of the packets go through there.
-        subprocess.run(["ip", "link", "set", "dev", "lo", "up"], check=True)
+        lo = self._ip.link_lookup(ifname="lo")[0]
+        self._ip.link("set", index=lo, state="up")
+
+        # Return internal interface ID for later use
+        return dev
 
     def assign_internal_address(self, sockfamily) -> str:
         """Add and return new address from the internal range"""
@@ -68,10 +79,9 @@ class InterfaceManager:
 
     def _add_address(self, address):
         try:
-            subprocess.run(f"ip addr add {address} dev {self.interface}",
-                           capture_output=True, check=True, shell=True)
-        except subprocess.CalledProcessError as e:
-            if e.stderr != b'RTNETLINK answers: File exists\n':
+            self._ip.addr("add", index=self._dev, address=address, mask=24, nodad=True)
+        except NetlinkError as e:
+            if e.code != errno.EEXIST:  # 'RTNETLINK answers: File exists' is OK here
                 raise ValueError(f"Couldn't add {address}")
 
         self.added_addresses.add(address)
