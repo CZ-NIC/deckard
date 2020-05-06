@@ -78,8 +78,12 @@ class InterfaceManager:
         self._add_address(address)
 
     def _add_address(self, address):
+        if ":" in address:
+            mask = 128
+        else:
+            mask = 32
         try:
-            self._ip.addr("add", index=self._dev, address=address, mask=24, nodad=True)
+            self._ip.addr("add", index=self._dev, address=address, mask=mask, nodad=True)
         except NetlinkError as e:
             if e.code != errno.EEXIST:  # 'RTNETLINK answers: File exists' is OK here
                 raise ValueError(f"Couldn't add {address}")
