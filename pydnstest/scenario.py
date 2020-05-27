@@ -248,7 +248,7 @@ class Entry:
                     rd = record['/data'].value.split()
                     if rd:
                         if rdtype == dns.rdatatype.DS:
-                            rd[1] = str(dns.dnssec.algorithm_from_text(rd[1]))
+                            rd[1] = '{}'.format(dns.dnssec.algorithm_from_text(rd[1]))
                         rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
                             rd), origin=dns.name.from_text(self.origin), relativize=False)
                     rr.add(rd)
