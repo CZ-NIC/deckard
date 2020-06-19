@@ -6,8 +6,7 @@ stages:
 test:minimal:
   stage: test
   tags:
-    - docker
-    - amd64
-    - linux
+    - privileged
+    - dind
   script:
     - echo "It works!"
