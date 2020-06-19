@@ -6,6 +6,8 @@ stages:
 test:minimal:
   stage: test
   tags:
-    - privileged
+    - docker
+    - amd64
+    - linux
   script:
     - echo "It works!"
