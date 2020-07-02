@@ -130,8 +130,8 @@ www.nic.mx.		300	IN	CNAME	www.nicmexico.mx.
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
+MATCH opcode qname
+ADJUST copy_id copy_query
 REPLY QR AA DO NOERROR
 SECTION QUESTION
 www.nic.mx.			IN	RRSIG
