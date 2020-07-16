@@ -53,8 +53,9 @@ def get_answer(question: Union[dns.message.Message, bytes],
                timeout: int = pydnstest.mock_client.SOCKET_OPERATION_TIMEOUT) -> dns.message.Message:
     """Get an DNS message with answer with specific query"""
     sock = pydnstest.mock_client.setup_socket(str(server), port, tcp=tcp)
-    pydnstest.mock_client.send_query(sock, question)
-    return pydnstest.mock_client.get_dns_message(sock, timeout=timeout)
+    with sock:
+        pydnstest.mock_client.send_query(sock, question)
+        return pydnstest.mock_client.get_dns_message(sock, timeout=timeout)
 
 
 def string_answer(question: Union[dns.message.Message, bytes],
