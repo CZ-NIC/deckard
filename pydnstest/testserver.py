@@ -195,19 +195,21 @@ class TestServer:
         # A lot of addresses are added to the interface while runnning from Deckard in
         # the small amount of time which caused ocassional hiccups while binding to them
         # right afterwards in testing. Therefore, we retry a few times.
-        ex = None
-        for i in range(self.RETRIES_ON_BIND):
-            try:
-                sock.bind(address)
-                break
-            except OSError as e:
-                # Exponential backoff
-                time.sleep((2 ** i) + random.random())
-                ex = e
-                continue
-        else:
-            print(ex, address)
-            raise ex
+        # ex = None
+        # for i in range(self.RETRIES_ON_BIND):
+        #     try:
+        #         sock.bind(address)
+        #         break
+        #     except OSError as e:
+        #         # Exponential backoff
+        #         time.sleep((2 ** i) + random.random())
+        #         ex = e
+        #         continue
+        # else:
+        #     print(ex, address)
+        #     raise ex
+
+        sock.bind(address)
 
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
