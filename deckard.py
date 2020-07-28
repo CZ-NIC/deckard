@@ -85,7 +85,7 @@ def create_trust_anchor_files(ta_files, work_dir):
             if ex.errno != errno.EEXIST:
                 raise
         with open(full_path, "w") as ta_file:
-            ta_file.writelines('{0}\n'.format(l) for l in ta_lines)
+            ta_file.writelines('{0}\n'.format(line) for line in ta_lines)
     return full_paths
 
 
