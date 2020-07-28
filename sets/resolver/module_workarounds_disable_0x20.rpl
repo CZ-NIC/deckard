@@ -31,13 +31,11 @@ ENTRY_END
 ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
-REPLY QR RD NOERROR
+REPLY QR RD AA NOERROR
 SECTION QUESTION
-com.	IN	NS
+com.	IN	A
 SECTION AUTHORITY
-com.	IN	NS	k.root-servers.net.
-SECTION ADDITIONAL
-k.root-servers.net.	IN	A	1.1.1.1
+com.	900	IN	SOA	k.root-servers.net. nic.root-servers.net. 0 1800 900 604800 86400
 ENTRY_END
 RANGE_END
 
