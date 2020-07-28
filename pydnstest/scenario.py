@@ -584,9 +584,10 @@ class Step:
                                                   ctx.client[choice][1],
                                                   tcp,
                                                   src_address=src_address)
-        pydnstest.mock_client.send_query(sock, data_to_wire)
-        if self.data[0].raw_data is None:
-            answer = pydnstest.mock_client.get_answer(sock)
+        with sock:
+            pydnstest.mock_client.send_query(sock, data_to_wire)
+            if self.data[0].raw_data is None:
+                answer = pydnstest.mock_client.get_answer(sock)
 
         # Track RTT
         rtt = (datetime.now() - tstart).total_seconds() * 1000

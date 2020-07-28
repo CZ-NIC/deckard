@@ -85,7 +85,7 @@ def create_trust_anchor_files(ta_files, work_dir):
             if ex.errno != errno.EEXIST:
                 raise
         with open(full_path, "w") as ta_file:
-            ta_file.writelines('{0}\n'.format(l) for l in ta_lines)
+            ta_file.writelines('{0}\n'.format(line) for line in ta_lines)
     return full_paths
 
 
@@ -126,23 +126,23 @@ def conncheck_daemon(process, cfg, sockfamily):
     """Wait until the server accepts TCP clients"""
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
     tstart = datetime.now()
-    while True:
-        time.sleep(0.1)
-        if (datetime.now() - tstart).total_seconds() > 5:
-            raise DeckardUnderLoadError("Starting server took too long to respond")
-        # Check if the process is running
-        if process.poll() is not None:
-            msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
-            logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
-            logger.critical(msg)
-            logger.error(open(cfg['log']).read())
-            raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
-        try:
-            sock.connect((cfg['address'], 53))
-        except socket.error:
-            continue
-        break
-    sock.close()
+    with sock:
+        while True:
+            time.sleep(0.1)
+            if (datetime.now() - tstart).total_seconds() > 5:
+                raise DeckardUnderLoadError("Starting server took too long to respond")
+            # Check if the process is running
+            if process.poll() is not None:
+                msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
+                logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
+                logger.critical(msg)
+                logger.error(open(cfg['log']).read())
+                raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
+            try:
+                sock.connect((cfg['address'], 53))
+            except socket.error:
+                continue
+            break
 
 
 def setup_daemons(context):
