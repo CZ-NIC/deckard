@@ -33,7 +33,7 @@ Deckard requires following software to be installed:
 - pytest_ - testing framework for Python, used for running the test cases
 - pytest-xdist_ - module for pytest for distributed testing
 - pyroute2_ - Python netlink library (managing IP addresses, routes,…)
-- dumpcap_ - command line tool for network capture (part of Wireshark)
+- tcpdump_ - command line tool for network capture
 - faketime_ - used for faking the time in tests of DNSSEC
 
 Compatibility
@@ -90,4 +90,4 @@ Happy testing.
 .. _`pytest`: https://pytest.org/
 .. _`pytest-xdist`: https://pypi.python.org/pypi/pytest-xdist
 .. _`pyroute2`: https://pyroute2.org/
-.. _`dumpcap`: https://www.wireshark.org/docs/man-pages/dumpcap.html
+.. _`tcpdump`: https://www.tcpdump.org/
