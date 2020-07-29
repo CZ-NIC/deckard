@@ -70,7 +70,9 @@ REPLY QR NOERROR
 SECTION QUESTION
 example.com. IN NS
 SECTION AUTHORITY
-example.com.    IN NS   ns.example.com.
+; intentionally short TTL (< 5 seconds) to convince kresd it is "expiring"
+; "expiring" conditions then allows kresd to accept a new NS set in steps below
+example.com.    3	IN NS   ns.example.com.
 SECTION ADDITIONAL
 ns.example.com. IN A 1.2.3.44
 ENTRY_END
@@ -98,15 +100,18 @@ REPLY QR NOERROR
 SECTION QUESTION
 example.net. IN NS
 SECTION AUTHORITY
-example.net.	IN NS	ns.example.net.
+; intentionally short TTL (< 5 seconds) to convince kresd it is "expiring"
+; "expiring" conditions then allows kresd to accept a new NS set in steps below
+example.net.	3	IN NS	ns.example.net.
 SECTION ADDITIONAL
 ns.example.net.		IN 	A	1.2.3.55
 ENTRY_END
 
 RANGE_END
 
-; the working version, until time 50.
-RANGE_BEGIN 0 50
+; ns.example.com.
+; the working server, until step 49
+RANGE_BEGIN 0 49
 	ADDRESS 1.2.3.44
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -214,20 +219,24 @@ ns.example.com. IN A 1.2.3.44
 ENTRY_END
 RANGE_END
 
+; ns.example.net.
 ; Broken.   Does not respond to anything (servfail instead
 ; of timeouts since this is easier to encode in .rpl file format).
-RANGE_BEGIN 0 50
+; broken in range 0-49, starts working at step 50
+RANGE_BEGIN 0 49
 	ADDRESS 1.2.3.55
 ENTRY_BEGIN
 MATCH opcode 
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
-example.net. IN NS
+ns.example.net. IN NS
 SECTION ANSWER
 ENTRY_END
 RANGE_END
 
+; ns.example.com.
+; works in range 0-49, breaks at step 50
 RANGE_BEGIN 50 100
 	ADDRESS 1.2.3.44
 ENTRY_BEGIN
@@ -235,11 +244,13 @@ MATCH opcode
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
-example.net. IN NS
+ns.example.com. IN NS
 SECTION ANSWER
 ENTRY_END
 RANGE_END
 
+; ns.example.net.
+; broken in range 0-49, starts working at step 50
 RANGE_BEGIN 50 100
 	ADDRESS 1.2.3.55
 ENTRY_BEGIN
