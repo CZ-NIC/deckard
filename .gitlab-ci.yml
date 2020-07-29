@@ -104,8 +104,8 @@ test:latest:kresd:
 test:sanity:unbound:
   <<: *privileged_test
   script:
-    - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_hint_lame.rpl
-    - TMPDIR=$(pwd) ./unbound_run.sh -k sets/resolver/iter_lame_root.rpl
+    - TMPDIR=$(pwd) ./unbound_run.sh --scenarios=sets/resolver/iter_hint_lame.rpl
+    - TMPDIR=$(pwd) ./unbound_run.sh --scenarios=sets/resolver/iter_lame_root.rpl
     # these do not work with Unbound 1.5.8 which is in CI container
       #- TESTS=sets/resolver/nsec_wildcard_answer_response.rpl ./unbound_run.sh
       #- TESTS=sets/resolver/world_cz_lidovky_www.rpl ./unbound_run.sh
@@ -121,8 +121,8 @@ test:sanity:unbound:
 test:sanity:pdnsrecursor:
   <<: *privileged_test
   script:
-    - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_recurse.rpl
-    - TMPDIR=$(pwd) ./pdns_run.sh -k sets/resolver/iter_tcbit.rpl
+    - TMPDIR=$(pwd) ./pdns_run.sh --scenarios=sets/resolver/iter_recurse.rpl
+    - TMPDIR=$(pwd) ./pdns_run.sh --scenarios=sets/resolver/iter_tcbit.rpl
   artifacts:
     when: on_failure
     expire_in: 1 week
