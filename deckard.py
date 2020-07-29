@@ -122,27 +122,36 @@ def run_daemon(program_config):
     return proc
 
 
+def log_fatal_daemon_error(cfg, msg):
+    logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
+    logger.critical(msg)
+    logger.critical('logs are in "%s"', cfg['WORKING_DIR'])
+    with open(cfg['log']) as logfile:
+        logger.error('daemon log follows:')
+        logger.error(logfile.read())
+
+
 def conncheck_daemon(process, cfg, sockfamily):
     """Wait until the server accepts TCP clients"""
     sock = socket.socket(sockfamily, socket.SOCK_STREAM)
-    tstart = datetime.now()
+    deadline = time.monotonic() + 5
     with sock:
         while True:
-            time.sleep(0.1)
-            if (datetime.now() - tstart).total_seconds() > 5:
-                raise DeckardUnderLoadError("Starting server took too long to respond")
             # Check if the process is running
             if process.poll() is not None:
-                msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
-                logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
-                logger.critical(msg)
-                logger.error(open(cfg['log']).read())
+                msg = 'process died, exit code %s' % process.poll()
+                log_fatal_daemon_error(cfg, msg)
                 raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
             try:
                 sock.connect((cfg['address'], 53))
+                return  # success
             except socket.error:
-                continue
-            break
+                if time.monotonic() > deadline:
+                    msg = 'server does not accept connections on TCP port 53'
+                    log_fatal_daemon_error(cfg, msg)
+                    raise DeckardUnderLoadError(msg)
+
+            time.sleep(0.1)
 
 
 def setup_daemons(context):
