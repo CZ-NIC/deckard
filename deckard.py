@@ -133,10 +133,12 @@ def conncheck_daemon(process, cfg, sockfamily):
                 raise DeckardUnderLoadError("Starting server took too long to respond")
             # Check if the process is running
             if process.poll() is not None:
-                msg = 'process died "%s", logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
+                msg = 'process named "%s" did not start, logs in "%s"' % (cfg['name'], cfg['WORKING_DIR'])
                 logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
                 logger.critical(msg)
-                logger.error(open(cfg['log']).read())
+                with open(cfg['log']) as logfile:
+                    logger.error('process logs follow:')
+                    logger.error(logfile.read())
                 raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
             try:
                 sock.connect((cfg['address'], 53))
