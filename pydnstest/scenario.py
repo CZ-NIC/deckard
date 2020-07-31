@@ -348,7 +348,7 @@ class Entry:
             except pydnstest.matchpart.DataMismatch as ex:
                 errstr = '%s in the response:\n%s' % (str(ex), msg.to_text())
                 # TODO: cisla radku
-                raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr))
+                raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr)) from None
 
     def cmp_raw(self, raw_value):
         assert self.raw_data is not None
@@ -705,7 +705,8 @@ class Scenario:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
                                              (step.id, step.next_if_fail))
                     continue
-                raise ValueError('%s step %d %s' % (self.file, step.id, str(ex)))
+                ex_details = (self.log.isEnabledFor(logging.DEBUG) and ex) or None
+                raise ValueError('%s step %d %s' % (self.file, step.id, str(ex))) from ex_details
             i += 1
 
         for r in self.ranges:
