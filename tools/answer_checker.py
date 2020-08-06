@@ -14,7 +14,6 @@ import pydnstest.mock_client
 
 def unset_flag(message: dns.message.Message, flag: int) -> dns.message.Message:
     """Unsets given flag in given DNS message."""
-    assert flag in dns.flags._by_value, "This is not a DNS flag"  # pylint: disable=W0212
     message.flags &= ~flag
     return message
 

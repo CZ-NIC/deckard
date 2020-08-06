@@ -705,7 +705,7 @@ class Scenario:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
                                              (step.id, step.next_if_fail))
                     continue
-                ex_details = (self.log.isEnabledFor(logging.DEBUG) and ex) or None
+                ex_details = ex if self.log.isEnabledFor(logging.DEBUG) else None
                 raise ValueError('%s step %d %s' % (self.file, step.id, str(ex))) from ex_details
             i += 1
 
