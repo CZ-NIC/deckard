@@ -72,7 +72,7 @@ class TCPDump:
         self.check_for_unknown_server()
 
         if exc_value is None:
-            if self.config.get('noclean'):
+            if self.config.get('noclean') or "DECKARD_NOCLEAN" in os.environ:
                 # Do not clear files if the server crashed (for analysis)
                 logging.getLogger('deckard.hint').info(
                     'test working directory %s', self.config["tmpdir"])
