@@ -268,6 +268,7 @@ Tips:
 - standard output and error from each binary is logged into log file in working directory
 - working directory can be explicitly specified in environment variable ``DECKARD_DIR`
 - command line argument ``--log-level DEBUG`` forces extra verbose logging, including logs from all binaries and packets handled by Deckard
+- environment variable ``DECKARD_NOCLEAN`` instructs Deckard not to remove working directories after successful tests
 
 
 Writting own scenarios
