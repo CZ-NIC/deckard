@@ -46,8 +46,8 @@ k.root-servers.net.     360000    IN      RRSIG   A 5 3 3600 20170315140518 2017
 ENTRY_END
 
 ENTRY_BEGIN
-MATCH qname qtype opcode
-ADJUST copy_id
+MATCH qname opcode
+ADJUST copy_id copy_query
 REPLY QR AA NOERROR
 SECTION QUESTION
 K.ROOT-SERVERS.NET. IN AAAA
@@ -119,7 +119,7 @@ SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
 ; attack! CNAME was modified to point elsewhere
-shortloop.x.x. IN CNAME K.ROOT-SERVERS.NET.
+shortloop.x.x.	3600	IN CNAME K.ROOT-SERVERS.NET.
 ENTRY_END
 
 ENTRY_BEGIN
@@ -132,7 +132,7 @@ SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
 ; attack! CNAME was modified to point elsewhere
-shortloop.x.x. IN CNAME K.ROOT-SERVERS.NET.
+shortloop.x.	3600	IN CNAME K.ROOT-SERVERS.NET.
 SECTION AUTHORITY
 .			86400	IN	SOA	. . 2017021500 1800 900 604800 86400
 shortloop.		86400	IN	NSEC	x. TXT RRSIG NSEC
@@ -157,6 +157,7 @@ SECTION QUESTION
 shortloop.x.x.	A
 ENTRY_END
 
+; attacker spoofed shortloop.x.x. CNAME so we end up with SERVFAIL
 STEP 221102 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
@@ -164,54 +165,67 @@ REPLY SERVFAIL QR RD RA
 SECTION QUESTION
 shortloop.x.x.	IN A
 SECTION ANSWER
-x.      3600    IN      DNAME   .
-x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
 ENTRY_END
 
 ;#  QNAME            owner  DNAME   target         result
 ;-- ---------------- -------------- -------------- -----------------
 ;12 shortloop.x.     x.             .              shortloop.
+
 STEP 221201 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-shortloop.x.	CNAME
+shortloop.x.x.	TXT
 ENTRY_END
 
+; We now reuse cached secure RRset x. DNAME . from the previous query
+; so we do not hit the bogus answer again. Of course we must get correct data
+; and not the spoofed entry.
 STEP 221202 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY SERVFAIL QR RD RA
+REPLY NOERROR QR RD RA AD
 SECTION QUESTION
-shortloop.x.	IN CNAME
+shortloop.x.x.	IN TXT
 SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
+shortloop.x.x. 3600 IN    CNAME   shortloop.x.
+shortloop.x. 3600 IN    CNAME   shortloop.
+shortloop.      3600    IN      TXT     "shortloop end"
+shortloop.      3600    IN      RRSIG   TXT 5 1 3600 20170315140518 20170215140518 37471 . EJaF7yRFRv01nvv6I9HYaxGukSu92cuRXHYQGTRUtj0TNVI53SmNNs89Vk+8L34vhtw+fy1e62WZ3JSat5xAVVRWVmvp220+RlF9FAYltqpPblVXKQraDACWkO31YftgI2obGqmwByAgh7yW1Kfwq6JgUzwjT8LKeove6HNMRc0jipDXXEIRsWd3I6Yjx66YewVeHU55/UrKCeeozOQ4lMJZF0OBQsmTukfq72j6wIXjrjS8vx6Dz8o3pgGy14LG8NQCKcYbQysD1tmtiDDKDbNmwDCfbu+AA3Xd1XNiQpZUjUOxQpWtOxYA/qG7nJmY9VMdoXJ2wIW91B2vv+xbxw==
 ENTRY_END
 
 STEP 221213 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-shortloop.x.	A
+shortloop.x.	TXT
 ENTRY_END
 
+; non-exact match
+; We again reuse cached secure RRset x. DNAME . from the first query
+; so we do not hit the bogus answer again. Of course we must get correct data
+; and not the spoofed entry.
 STEP 221214 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY SERVFAIL QR RD RA
+REPLY NOERROR QR RD RA AD
 SECTION QUESTION
-shortloop.x.	IN A
+shortloop.x.	IN TXT
 SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
+shortloop.x. 3600 IN    CNAME   shortloop.
+shortloop.      3600    IN      TXT     "shortloop end"
+shortloop.      3600    IN      RRSIG   TXT 5 1 3600 20170315140518 20170215140518 37471 . EJaF7yRFRv01nvv6I9HYaxGukSu92cuRXHYQGTRUtj0TNVI53SmNNs89Vk+8L34vhtw+fy1e62WZ3JSat5xAVVRWVmvp220+RlF9FAYltqpPblVXKQraDACWkO31YftgI2obGqmwByAgh7yW1Kfwq6JgUzwjT8LKeove6HNMRc0jipDXXEIRsWd3I6Yjx66YewVeHU55/UrKCeeozOQ4lMJZF0OBQsmTukfq72j6wIXjrjS8vx6Dz8o3pgGy14LG8NQCKcYbQysD1tmtiDDKDbNmwDCfbu+AA3Xd1XNiQpZUjUOxQpWtOxYA/qG7nJmY9VMdoXJ2wIW91B2vv+xbxw==
 ENTRY_END
 
 ; make sure all caches expired
 STEP 900000 TIME_PASSES ELAPSE 4000
 
 
-; simulate situaction when DNAME expires at different time than synthetized CNAMEs
+; simulate situation when DNAME expires at different time than synthetized CNAMEs
 ; put only the DNAME into the cache
 STEP 900001 QUERY
 ENTRY_BEGIN
@@ -240,7 +254,7 @@ STEP 900100 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-shortloop.x.	A
+shortloop.x.	TXT
 ENTRY_END
 
 STEP 900101 CHECK_ANSWER
@@ -248,7 +262,7 @@ ENTRY_BEGIN
 MATCH all
 REPLY NOERROR QR RD RA AD
 SECTION QUESTION
-shortloop.x.	IN A
+shortloop.x.	IN TXT
 SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
@@ -260,28 +274,26 @@ ENTRY_END
 ; let DNAME expire from cache but keep CNAMEs in cache
 STEP 900200 TIME_PASSES ELAPSE 2000
 
-; check that chain of synthetized CNAMEs is properly validated
-; bad things would happen if DNAME expired from cache (and was not renewed)
+; check that fake CNAME is properly validated even if DNAME if already expired
 STEP 900201 QUERY
 ENTRY_BEGIN
 REPLY RD DO
 SECTION QUESTION
-shortloop.x.	A
+shortloop.x.	TXT
 ENTRY_END
 
+; attacker spoofed shortloop.x. CNAME so we end up with SERVFAIL
 STEP 900202 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
 REPLY SERVFAIL QR RD RA
 SECTION QUESTION
-shortloop.x.	IN A
+shortloop.x.	IN TXT
 SECTION ANSWER
-x.      3600    IN      DNAME   .
-x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
 ENTRY_END
 
 
-; check that query for the synthetized CNAMEs is properly validated
+; check that query for the synthetized CNAMEs does not return the fake data
 STEP 900301 QUERY
 ENTRY_BEGIN
 REPLY RD DO
@@ -292,12 +304,13 @@ ENTRY_END
 STEP 900302 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
-REPLY SERVFAIL QR RD RA
+REPLY NOERROR QR RD RA AD
 SECTION QUESTION
 shortloop.x.	IN CNAME
 SECTION ANSWER
 x.      3600    IN      DNAME   .
 x.      3600    IN      RRSIG   DNAME 5 1 3600 20170315140518 20170215140518 37471 . ao9vqbmh78RP84/nOaFaI/bxPk+Y/Qsknt+WWtBIY2qcPZb1I+ZCxh9g9cYo1RKQuOriAJKrHkrv9ObAc9fse/2tNM+vtjemLWIGBvPtSo3vOwZGTTwI8spvFvMa+f6wnI5Oj9Phvdk17d+FnX9nIl6NRZb84bIxUjqSuhBIMJRmSGXWM0beQqEf0PNLQBTpeI6tUXsOwtFxrnG/zGzpB/W/1whh0nSmLf39lxyA+441H2o1OjSRu6ijmVrCDwOrbb/SXj+LZTGThEcIepbVb3ol+Mft2Kff5IcIhLM9I2YfBtgRwqHmue8v6z12AA9GuXBB/xvTkwFhUOXxNbSh+w==
+shortloop.x. 3600 IN    CNAME   shortloop.
 ENTRY_END
 
 SCENARIO_END
