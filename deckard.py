@@ -3,6 +3,7 @@ import errno
 import logging
 import logging.config
 import os
+import shlex
 import shutil
 import socket
 import subprocess
@@ -110,7 +111,11 @@ def run_daemon(program_config):
     proc = None
     program_config['log'] = os.path.join(program_config["WORKING_DIR"], 'server.log')
     daemon_log_file = open(program_config['log'], 'w')
-    program_config['args'] = [program_config['binary']] + program_config['additional']
+    program_config['args'] = (
+        shlex.split(os.environ.get('DECKARD_WRAPPER', ''))
+        + [program_config['binary']]
+        + program_config['additional']
+    )
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', program_config['args'])
     try:
         proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
