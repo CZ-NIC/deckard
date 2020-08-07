@@ -269,6 +269,7 @@ Tips:
 - working directory can be explicitly specified in environment variable ``DECKARD_DIR`
 - command line argument ``--log-level DEBUG`` forces extra verbose logging, including logs from all binaries and packets handled by Deckard
 - environment variable ``DECKARD_NOCLEAN`` instructs Deckard not to remove working directories after successful tests
+- environment variable ``DECKARD_WRAPPER`` is prepended to all commands to be executed, intended usage is to run binary under test with ``valgrind`` or ``rr record``
 
 
 Writting own scenarios
