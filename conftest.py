@@ -116,6 +116,13 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize("max_retries", [max_retries], ids=lambda id: "max-retries-"+str(id))
 
 
+def pytest_collection_modifyitems(items):
+    """We automatically mark test that need faking monotonic time and run them separately."""
+    for item in items:
+        if "monotonic" in item.nodeid:
+            item.add_marker(pytest.mark.monotonic)
+
+
 def check_log_level_xdist(level):
     if level < logging.ERROR:
         pytest.exit("Advanced logging not available while running with xdist "
