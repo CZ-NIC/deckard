@@ -1,6 +1,6 @@
 dnspython>=1.15
 dpkt
-Jinja2>=2.8
+Jinja2>=2.10.2
 PyYAML
 python-augeas
 pytest>=3.4
