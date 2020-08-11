@@ -152,15 +152,27 @@ def run_test(path, qmin, config, max_retries, retries=0):
             raise e
 
 
-def test_passes_qmin_on(scenario, max_retries):
+def test_passes_qmin_on(pytestconfig, scenario, max_retries):
+    if (pytestconfig.getoption('--mtime') is True and (scenario.mtime is not True)) \
+            or (pytestconfig.getoption('--mtime') is False and scenario.mtime is True) \
+            or (pytestconfig.getoption('--mtime') is None and scenario.mtime is True):
+        pytest.skip("Monotonic time")
+
+
     if scenario.qmin is True or scenario.qmin is None:
         run_test(scenario.path, True, scenario.config, max_retries)
     else:
         pytest.skip("Query minimization is off in test config")
 
 
-def test_passes_qmin_off(scenario, max_retries):
+def test_passes_qmin_off(pytestconfig, scenario, max_retries):
+    if (pytestconfig.getoption('--mtime') is True and (scenario.mtime is not True)) \
+            or (pytestconfig.getoption('--mtime') is False and scenario.mtime is True) \
+            or (pytestconfig.getoption('--mtime') is None and scenario.mtime is True):
+        pytest.skip("Monotonic time")
+
     if scenario.qmin is False or scenario.qmin is None:
         run_test(scenario.path, False, scenario.config, max_retries)
     else:
         pytest.skip("Query minimization is on in test config")
+

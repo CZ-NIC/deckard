@@ -823,6 +823,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                                % (v, str(ex)))
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
+        elif k == 'monotonic-time':
+            mtime = str2bool(v)
         else:
             raise NotImplementedError('unsupported CONFIG key "%s"' % k)
 

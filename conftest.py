@@ -9,7 +9,7 @@ import yaml
 
 from contrib.namespaces import LinuxNamespace
 
-Scenario = namedtuple("Scenario", ["path", "qmin", "config"])
+Scenario = namedtuple("Scenario", ["path", "qmin", "mtime", "config"])
 
 
 def config_sanity_check(config_dict, config_name):
@@ -44,6 +44,17 @@ def get_qmin_config(path):
                 return False
     return None
 
+def get_mtime_config(path):
+    """Reads configuration from the *.rpl file and determines monotonic time setting."""
+    with open(path) as f:
+        for line in f:
+            if re.search(r"^CONFIG_END", line) or re.search(r"^SCENARIO_BEGIN", line):
+                return None
+            if re.search(r"^\s*monotonic-time:\s*(on|yes)", line):
+                return True
+            if re.search(r"^\s*monotonic-time:\s*(off|no)", line):
+                return False
+    return None
 
 def scenarios(paths, configs):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
@@ -67,7 +78,7 @@ def scenarios(paths, configs):
             raise ValueError('no *.rpl files found in path "{}"'.format(path))
 
         for file in filelist:
-            scenario_list.append(Scenario(file, get_qmin_config(file), config_dict))
+            scenario_list.append(Scenario(file, get_qmin_config(file), get_mtime_config(file), config_dict))
 
     return scenario_list
 
@@ -87,6 +98,7 @@ def pytest_addoption(parser):
     parser.addoption("--scenarios", action="append", help="directory with .rpl files")
     parser.addoption("--retries", action="store", help=("number of retries per"
                                                         "test when Deckard is under load"))
+    parser.addoption("--mtime", action="store_const", const=True, default=False, help="Enable tests requiring monotonic time")
 
 
 def pytest_generate_tests(metafunc):
