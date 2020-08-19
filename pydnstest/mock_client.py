@@ -105,7 +105,7 @@ def setup_socket(address: str,
     if tcp:
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
     if src_address is not None:
-        sock.bind((src_address, port))
+        sock.bind((src_address, 0))  # random source port
     sock.settimeout(SOCKET_OPERATION_TIMEOUT)
     sock.connect((address, port))
     return sock
