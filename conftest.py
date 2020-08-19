@@ -123,24 +123,5 @@ def pytest_collection_modifyitems(items):
             item.add_marker(pytest.mark.monotonic)
 
 
-def check_log_level_xdist(level):
-    if level < logging.ERROR:
-        pytest.exit("Advanced logging not available while running with xdist "
-                    "(try ommiting -n option)")
-
-
-def pytest_configure(config):
-    # This means pytest-xdist is installed and enabled
-    if hasattr(config.option, "dist") and config.option.dist == "load":
-        log_level = config.option.log_level
-        if log_level is None:
-            return
-        try:
-            log_level = int(log_level)
-        except ValueError:
-            log_level = logging.getLevelName(log_level)
-        check_log_level_xdist(log_level)
-
-
 def pytest_runtest_setup(item):  # pylint: disable=unused-argument
     LinuxNamespace("user").__enter__()
