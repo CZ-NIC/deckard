@@ -159,7 +159,7 @@ class Entry:
         # MATCH
         self.match_fields = self.process_match()
 
-        # FLAGS
+        # FLAGS (old alias REPLY)
         self.process_reply_line()
 
         # ADJUST
@@ -204,12 +204,12 @@ class Entry:
 
     def process_reply_line(self):
         """Extracts flags, rcode and opcode from given node and adjust dns message accordingly"""
-        self.fields = [f.value for f in self.node.match("/reply")]
-        if 'DO' in self.fields:
+        fields = [f.value for f in self.node.match("/reply")]
+        if 'DO' in fields:
             self.message.want_dnssec(True)
-        opcode = self.get_opcode(fields=self.fields)
-        rcode = self.get_rcode(fields=self.fields)
-        self.message.flags = self.get_flags(fields=self.fields)
+        opcode = self.get_opcode(fields)
+        rcode = self.get_rcode(fields)
+        self.message.flags = self.get_flags(fields)
         if rcode is not None:
             self.message.set_rcode(rcode)
         if opcode is not None:
