@@ -109,6 +109,7 @@ class RplintTest:
             range_shadowing_match_rules,
             step_check_answer_no_match,
             step_query_match,
+            step_query_qr,
             step_section_unchecked,
             step_unchecked_match,
             step_unchecked_rcode,
@@ -214,6 +215,12 @@ def step_query_match(test: RplintTest) -> List[RplintFail]:
     """STEP QUERY has a MATCH rule"""
     return [RplintFail(test, step) for step in test.steps if step.type == "QUERY" and
             step.entry and step.entry.match]
+
+
+def step_query_qr(test: RplintTest) -> List[RplintFail]:
+    """STEP QUERY specified QR=1 flag (i.e. message is an answer)"""
+    return [RplintFail(test, step) for step in test.steps if step.type == "QUERY" and
+            step.entry and step.entry.reply and 'QR' in step.entry.reply]
 
 
 def step_check_answer_no_match(test: RplintTest) -> List[RplintFail]:
