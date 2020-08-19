@@ -170,11 +170,12 @@ def setup_daemons(context):
 
         daemon_proc = run_daemon(program_config)
         daemons.append({'proc': daemon_proc, 'cfg': program_config})
-        try:
-            conncheck_daemon(daemon_proc, program_config, context['_SOCKET_FAMILY'])
-        except:  # noqa  -- bare except might be valid here?
-            daemon_proc.terminate()
-            raise
+        if program_config.get('conncheck', True):
+            try:
+                conncheck_daemon(daemon_proc, program_config, context['_SOCKET_FAMILY'])
+            except:  # noqa  -- bare except might be valid here?
+                daemon_proc.terminate()
+                raise
 
     return daemons
 
