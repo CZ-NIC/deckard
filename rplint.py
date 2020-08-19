@@ -47,7 +47,9 @@ class Entry:
     def __init__(self, node: pydnstest.augwrap.AugeasNode) -> None:
         self.match = {m.value for m in node.match("/match")}
         self.adjust = {a.value for a in node.match("/adjust")}
+        self.answer = list(node.match("/section/answer/record"))
         self.authority = list(node.match("/section/authority/record"))
+        self.additional = list(node.match("/section/additional/record"))
         self.reply = {r.value for r in node.match("/reply")}
         self.records = list(node.match("/section/*/record"))
         self.node = node
@@ -109,6 +111,7 @@ class RplintTest:
             range_shadowing_match_rules,
             step_check_answer_no_match,
             step_query_match,
+            step_query_sections,
             step_query_qr,
             step_section_unchecked,
             step_unchecked_match,
@@ -215,6 +218,12 @@ def step_query_match(test: RplintTest) -> List[RplintFail]:
     """STEP QUERY has a MATCH rule"""
     return [RplintFail(test, step) for step in test.steps if step.type == "QUERY" and
             step.entry and step.entry.match]
+
+
+def step_query_sections(test: RplintTest) -> List[RplintFail]:
+    """STEP QUERY has some records in sections other than QUESTION"""
+    return [RplintFail(test, step) for step in test.steps if step.type == "QUERY" and
+            step.entry and (step.entry.answer or step.entry.authority or step.entry.additional)]
 
 
 def step_query_qr(test: RplintTest) -> List[RplintFail]:
