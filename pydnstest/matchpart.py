@@ -234,5 +234,5 @@ MATCH = {"opcode": match_opcode, "qtype": match_qtype, "qname": match_qname, "qc
 def match_part(exp, got, code):
     try:
         return MATCH[code](exp, got)
-    except KeyError:
-        raise NotImplementedError('unknown match request "%s"' % code)
+    except KeyError as ex:
+        raise NotImplementedError('unknown match request "%s"' % code) from ex

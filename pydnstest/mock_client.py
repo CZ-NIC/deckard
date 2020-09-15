@@ -61,8 +61,8 @@ def recvfrom_blob(sock: socket.socket,
             else:
                 raise NotImplementedError("[recvfrom_blob]: unknown socket type '%i'" % sock.type)
             return data, addr
-        except socket.timeout:
-            raise RuntimeError("Server took too long to respond")
+        except socket.timeout as ex:
+            raise RuntimeError("Server took too long to respond") from ex
         except OSError as ex:
             if ex.errno == errno.ENOBUFS:
                 time.sleep(0.1)

@@ -697,13 +697,13 @@ class Scenario:
                             j].id == step.next_if_fail]
                         if not next_steps:
                             raise ValueError('step %d: wrong NEXT value "%d"' %
-                                             (step.id, step.next_if_fail))
+                                             (step.id, step.next_if_fail)) from ex
                         next_step = next_steps[0]
                         if next_step < len(self.steps):
                             i = next_step
                         else:
                             raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
-                                             (step.id, step.next_if_fail))
+                                             (step.id, step.next_if_fail)) from ex
                     continue
                 ex_details = ex if self.log.isEnabledFor(logging.DEBUG) else None
                 raise ValueError('%s step %d %s' % (self.file, step.id, str(ex))) from ex_details
@@ -810,7 +810,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                         f_value = ""
                     features[f_key] = f_value
             except KeyError as ex:
-                raise KeyError("can't parse features (%s) in config section (%s)" % (v, str(ex)))
+                raise KeyError("can't parse features (%s) in config section (%s)"
+                               % (v, str(ex))) from ex
         elif k == 'feature-list':
             try:
                 f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
@@ -820,7 +821,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                 features[f_key].append(f_value)
             except KeyError as ex:
                 raise KeyError("can't parse feature-list (%s) in config section (%s)"
-                               % (v, str(ex)))
+                               % (v, str(ex))) from ex
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
         else:
