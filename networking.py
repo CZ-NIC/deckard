@@ -24,8 +24,8 @@ class InterfaceManager:
         self._ip = IPRoute()
         try:
             self._dev = self._setup_interface()
-        except NetlinkError:
-            raise RuntimeError(f"Couldn't set interface `{self.interface}` up.")
+        except NetlinkError as ex:
+            raise RuntimeError(f"Couldn't set interface `{self.interface}` up.") from ex
 
     def _setup_interface(self):
         """Set up a dummy interface with default route as well as loopback.
@@ -62,8 +62,8 @@ class InterfaceManager:
                 a = str(next(self.ip6_iterator))
             else:
                 raise ValueError(f"Unknown sockfamily {sockfamily}")
-        except StopIteration:
-            raise RuntimeError("Out of addresses.")
+        except StopIteration as ex:
+            raise RuntimeError("Out of addresses.") from ex
 
         self._add_address(a)
         return a
@@ -84,8 +84,8 @@ class InterfaceManager:
             mask = 32
         try:
             self._ip.addr("add", index=self._dev, address=address, mask=mask, nodad=True)
-        except NetlinkError as e:
-            if e.code != errno.EEXIST:  # 'RTNETLINK answers: File exists' is OK here
-                raise ValueError(f"Couldn't add {address}")
+        except NetlinkError as ex:
+            if ex.code != errno.EEXIST:  # 'RTNETLINK answers: File exists' is OK here
+                raise ValueError(f"Couldn't add {address}") from ex
 
         self.added_addresses.add(address)
