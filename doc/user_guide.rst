@@ -73,8 +73,7 @@ Commented contents of ``kresd.yaml`` follows:
   - name: kresd             # path to binary under test
     binary: kresd
     additional:             # list additional parameters for binary under test (e.g. path to configuration files)
-      - -f
-      - "1"                 # CAUTION: All parameters must be strings.
+      - --noninteractive
     conncheck: True         # wait until TCP port 53 accepts connections (enabled by default)
     templates:
       - template/kresd.j2   # list of Jinja2_ template files to generate configuration files
