@@ -48,7 +48,7 @@ class DeckardUnderLoadError(Exception):
 class TCPDump:
     """This context manager captures a PCAP file and than checks it for obvious errors."""
 
-    DUMPCAP_CMD = ["dumpcap", "-i", "any", "-q", "-P", "-w"]
+    TCPDUMP_CMD = ["tcpdump", "-i", "any", "--immediate-mode", "-w"]
 
     def __init__(self, config):
         self.config = config
@@ -57,7 +57,7 @@ class TCPDump:
         self.config["pcap"] = os.path.join(self.config["tmpdir"], "deckard.pcap")
 
     def __enter__(self):
-        cmd = self.DUMPCAP_CMD.copy()
+        cmd = self.TCPDUMP_CMD.copy()
         cmd.append(self.config["pcap"])
         self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
