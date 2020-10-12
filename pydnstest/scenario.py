@@ -758,6 +758,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     negative_ta_list = []
     stub_addr = None
     override_timestamp = None
+    do_ip6 = True
+    do_ip4 = True
 
     features = {}
     feature_list_delimiter = ';'
@@ -824,6 +826,10 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                                % (v, str(ex))) from ex
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
+        elif k == 'do-ip4':
+            do_ip4 = str2bool(v)
+        elif k == 'do-ip6':
+            do_ip6 = str2bool(v)
         else:
             raise NotImplementedError('unsupported CONFIG key "%s"' % k)
 
@@ -835,7 +841,9 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
         "INSTALL_DIR": installdir,
         "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
-        "TRUST_ANCHOR_FILES": trust_anchor_files
+        "TRUST_ANCHOR_FILES": trust_anchor_files,
+        "DO_IP6": str(do_ip6).lower(),
+        "DO_IP4": str(do_ip4).lower(),
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr

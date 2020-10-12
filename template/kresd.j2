@@ -39,6 +39,17 @@ trust_anchors.set_insecure({
 {% endfor %}
 })
 
+{% if DO_IP6 == "true" %}
+net.ipv6 = true
+{% else %}
+net.ipv6 = false
+{% endif %}
+
+{% if DO_IP4 == "true" %}
+net.ipv4 = true
+{% else %}
+net.ipv4 = false
+{% endif %}
 
 {% if FEATURES.min_ttl is defined %}
 cache.min_ttl({{FEATURES.min_ttl}})

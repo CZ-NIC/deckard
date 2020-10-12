@@ -200,7 +200,17 @@ server:
 	# do-ip4: yes
 
 	# Enable IPv6, "yes" or "no".
-	# do-ip6: yes
+	{% if DO_IP6 == "true" %}
+	do-ip6: yes
+	{% else %}
+	do-ip6: no
+	{% endif %}
+
+	{% if DO_IP4 == "true" %}
+	do-ip4: yes
+	{% else %}
+	do-ip4: no
+	{% endif %}
 
 	# Enable UDP, "yes" or "no".
 	# NOTE: if setting up an unbound on tls443 for public use, you might want to
