@@ -1,3 +1,5 @@
+do-ip6: no
+
 stub-addr: 193.0.14.129
 CONFIG_END
 SCENARIO_BEGIN Test iterative resolve with lame root.

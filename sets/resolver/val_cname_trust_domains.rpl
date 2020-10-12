@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ; The island of trust is at example.com and example.net; example.org is insecure
 trust-anchor: "example.com.	3600	IN	DS	11901 7 1 4b5c9e50ad931b35fc507e0a20d141a056c19227"

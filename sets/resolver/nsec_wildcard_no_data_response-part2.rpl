@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ;server:
 	trust-anchor: "nsec.example.           IN DS 41524 8 2 D6B102667845D6CDDC05B44466426D9CCC189989BF67ADB23605EED0 BFE2A443"

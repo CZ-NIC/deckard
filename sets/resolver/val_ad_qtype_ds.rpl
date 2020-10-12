@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
         stub-addr: 193.0.14.129
         trust-anchor: ".			IN DS 49060 8 2 E7B1EB56D7D5791B3D45630FEAA9C823DB84B385ACEEAC5F44DD0888 5C36700F"

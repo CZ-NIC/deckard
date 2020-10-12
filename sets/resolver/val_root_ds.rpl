@@ -1,3 +1,5 @@
+do-ip6: no
+
 stub-addr: 198.41.0.4 # a.root-servers.net
 trust-anchor: . 172800 IN DS 19036 8 2 49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f24e8fb5
 val-override-date: 20180410000000
