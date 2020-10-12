@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ;server:
 	trust-anchor: "example.com.    3600    IN      DS      63215 7 1 9B2A4B4CE971A6D1A2DFD23C03467F053F1D2D9C "

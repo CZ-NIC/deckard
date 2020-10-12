@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 	stub-addr: 1.2.3.4
 	trust-anchor: "example.com.		IN DS 438 10 2 33F8133EB48EDB093839E985600EB7B7009EB5AC312D11CCA9007F6B 71D94D7B"

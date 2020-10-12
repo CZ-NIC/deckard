@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ; The island of trust is at example.com
 ;server:

@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ;server:
 	trust-anchor: ". IN DS 41524 8 2 5175938255D97A88F9D16A5A46ED3AE373441DF5058C1666D953005D A6BD57F3"
