@@ -757,6 +757,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     trust_anchor_files = {}
     negative_ta_list = []
     stub_addr = None
+    stub_name = "k.root-servers.net"
     override_timestamp = None
     do_ip6 = True
     do_ip4 = True
@@ -799,6 +800,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
             override_timestamp = calendar.timegm(override_date)
         elif k == 'stub-addr':
             stub_addr = v.strip('"\'')
+        elif k == 'stub-name':
+            stub_name = v
         elif k == 'features':
             feature_list = v.split(feature_list_delimiter)
             try:
@@ -847,6 +850,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr
+        ctx['ROOT_NAME'] = stub_name
         # determine and verify socket family for specified root address
         gai = socket.getaddrinfo(stub_addr, 53, sockfamily, 0,
                                  socket.IPPROTO_UDP, socket.AI_NUMERICHOST)
