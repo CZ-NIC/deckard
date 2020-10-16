@@ -1,4 +1,5 @@
 stub-addr: 2001:503:ba3e::2:30
+stub-name: rootns.
 ; no trust-anchor for the root domain
 val-override-date: 20180601000000
 query-minimization: off
