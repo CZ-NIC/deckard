@@ -1,5 +1,6 @@
 stub-addr: 198.41.0.4
 trust-anchor: . IN DS 17002 8 2 775F52082C6A93154F15799C7BC9A47C0DA27C9828BA1EBAEAE5C1F685E69839
+stub-name: rootns.
 query-minimization: no
 val-override-date: 20170801000000
 CONFIG_END
