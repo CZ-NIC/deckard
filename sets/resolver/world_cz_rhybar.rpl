@@ -1,3 +1,5 @@
+do-ip4: no
+
 ; test with real world Internet data
 ; attempt to resolve www.rhybar.cz. A with CD first to populate BAD cache
 ; and then try to resolve without any DNSSEC flag to see if it validates

@@ -2,11 +2,12 @@
 	trust-anchor: ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D"
 	val-override-date: 20180727184403
 	stub-addr: 2001:7fe::53
+	do-ip4: no
 CONFIG_END
 
 SCENARIO_BEGIN qlist
 
-; Scope ".	
+; Scope ".
 
 ; Server names:
 ;	f.root-servers.net.
@@ -52,7 +53,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN DS
@@ -66,7 +67,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 hm. IN DNSKEY
@@ -80,12 +81,15 @@ SECTION ADDITIONAL
 ns1.registry.hm. 172800 IN A 208.70.79.25
 ns2.registry.hm. 172800 IN A 208.70.79.24
 ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 hm. IN A
@@ -99,12 +103,15 @@ SECTION ADDITIONAL
 ns1.registry.hm. 172800 IN A 208.70.79.25
 ns2.registry.hm. 172800 IN A 208.70.79.24
 ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 hm. IN SOA
@@ -118,12 +125,15 @@ SECTION ADDITIONAL
 ns1.registry.hm. 172800 IN A 208.70.79.25
 ns2.registry.hm. 172800 IN A 208.70.79.24
 ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NXDOMAIN
 SECTION QUESTION
 sk2. IN DS
@@ -139,7 +149,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NXDOMAIN
 SECTION QUESTION
 sk2. IN DNSKEY
@@ -155,7 +165,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NXDOMAIN
 SECTION QUESTION
 sk2. IN NS
@@ -171,7 +181,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NXDOMAIN
 SECTION QUESTION
 sk2. IN A
@@ -187,7 +197,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NXDOMAIN
 SECTION QUESTION
 sk2. IN AAAA
@@ -203,7 +213,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 cz. IN TYPE65535
@@ -228,7 +238,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 cz. IN DNSKEY
@@ -253,7 +263,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 cz. IN DS
@@ -265,7 +275,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 cz. IN A
@@ -290,7 +300,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 net. IN A
@@ -342,7 +352,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 net. IN DNSKEY
@@ -394,7 +404,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 net. IN DS
@@ -406,7 +416,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.root-servers.net. IN A
@@ -457,7 +467,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.root-servers.net. IN DNSKEY
@@ -468,7 +478,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.root-servers.net. IN NS
@@ -479,7 +489,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.root-servers.net. IN DS
@@ -490,7 +500,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.root-servers.net. IN AAAA
@@ -541,7 +551,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.root-servers.net. IN A
@@ -592,7 +602,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.root-servers.net. IN DNSKEY
@@ -603,7 +613,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.root-servers.net. IN NS
@@ -614,7 +624,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.root-servers.net. IN DS
@@ -625,7 +635,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.root-servers.net. IN AAAA
@@ -676,7 +686,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.root-servers.net. IN A
@@ -727,7 +737,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.root-servers.net. IN DNSKEY
@@ -738,7 +748,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.root-servers.net. IN NS
@@ -749,7 +759,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.root-servers.net. IN DS
@@ -760,7 +770,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.root-servers.net. IN AAAA
@@ -811,7 +821,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.root-servers.net. IN A
@@ -862,7 +872,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.root-servers.net. IN DNSKEY
@@ -873,7 +883,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.root-servers.net. IN NS
@@ -884,7 +894,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.root-servers.net. IN DS
@@ -895,7 +905,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.root-servers.net. IN AAAA
@@ -946,7 +956,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.root-servers.net. IN A
@@ -997,7 +1007,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.root-servers.net. IN DNSKEY
@@ -1008,7 +1018,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.root-servers.net. IN NS
@@ -1019,7 +1029,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.root-servers.net. IN DS
@@ -1030,7 +1040,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.root-servers.net. IN AAAA
@@ -1081,7 +1091,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.root-servers.net. IN A
@@ -1132,7 +1142,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.root-servers.net. IN DNSKEY
@@ -1143,7 +1153,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.root-servers.net. IN NS
@@ -1154,7 +1164,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.root-servers.net. IN DS
@@ -1165,7 +1175,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.root-servers.net. IN AAAA
@@ -1216,7 +1226,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.root-servers.net. IN A
@@ -1267,7 +1277,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.root-servers.net. IN DNSKEY
@@ -1278,7 +1288,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.root-servers.net. IN NS
@@ -1289,7 +1299,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.root-servers.net. IN DS
@@ -1300,7 +1310,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.root-servers.net. IN AAAA
@@ -1351,7 +1361,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.root-servers.net. IN A
@@ -1402,7 +1412,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.root-servers.net. IN DNSKEY
@@ -1413,7 +1423,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.root-servers.net. IN NS
@@ -1424,7 +1434,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.root-servers.net. IN DS
@@ -1435,7 +1445,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.root-servers.net. IN AAAA
@@ -1486,7 +1496,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.root-servers.net. IN A
@@ -1537,7 +1547,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.root-servers.net. IN DNSKEY
@@ -1548,7 +1558,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.root-servers.net. IN NS
@@ -1559,7 +1569,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.root-servers.net. IN DS
@@ -1570,7 +1580,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.root-servers.net. IN AAAA
@@ -1621,7 +1631,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.root-servers.net. IN A
@@ -1672,7 +1682,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.root-servers.net. IN DNSKEY
@@ -1683,7 +1693,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.root-servers.net. IN NS
@@ -1694,7 +1704,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.root-servers.net. IN DS
@@ -1705,7 +1715,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.root-servers.net. IN AAAA
@@ -1756,7 +1766,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.root-servers.net. IN A
@@ -1807,7 +1817,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.root-servers.net. IN DNSKEY
@@ -1818,7 +1828,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.root-servers.net. IN NS
@@ -1829,7 +1839,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.root-servers.net. IN DS
@@ -1840,7 +1850,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.root-servers.net. IN AAAA
@@ -1891,7 +1901,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.root-servers.net. IN A
@@ -1942,7 +1952,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.root-servers.net. IN DNSKEY
@@ -1953,7 +1963,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.root-servers.net. IN NS
@@ -1964,7 +1974,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.root-servers.net. IN DS
@@ -1975,7 +1985,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.root-servers.net. IN AAAA
@@ -2026,7 +2036,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.root-servers.net. IN A
@@ -2077,7 +2087,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.root-servers.net. IN DNSKEY
@@ -2088,7 +2098,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.root-servers.net. IN NS
@@ -2099,7 +2109,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.root-servers.net. IN DS
@@ -2110,7 +2120,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.root-servers.net. IN AAAA
@@ -2161,7 +2171,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 com. IN A
@@ -2213,7 +2223,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 com. IN DNSKEY
@@ -2265,7 +2275,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 com. IN DS
@@ -2277,7 +2287,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 . IN NS
@@ -2328,7 +2338,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 . IN DNSKEY
@@ -2342,7 +2352,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root-servers.net. IN DNSKEY
@@ -2417,6 +2427,9 @@ SECTION ADDITIONAL
 ns1.registry.hm. 172800 IN A 208.70.79.25
 ns2.registry.hm. 172800 IN A 208.70.79.24
 ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
@@ -2551,7 +2564,7 @@ ENTRY_END
 
 RANGE_END
 
-; Scope "com.	
+; Scope "com.
 
 ; Server names:
 ;	a.gtld-servers.net.
@@ -2597,7 +2610,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 root-servers.net. IN A
@@ -2651,7 +2664,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 root-servers.net. IN DNSKEY
@@ -2705,7 +2718,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root-servers.net. IN DS
@@ -2721,7 +2734,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 gtld-servers.net. IN A
@@ -2748,7 +2761,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 gtld-servers.net. IN DNSKEY
@@ -2775,7 +2788,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 gtld-servers.net. IN DS
@@ -2791,7 +2804,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 nstld.com. IN A
@@ -2818,7 +2831,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 nstld.com. IN DNSKEY
@@ -2845,7 +2858,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nstld.com. IN DS
@@ -2861,7 +2874,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 net. IN DNSKEY
@@ -2874,7 +2887,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 com. IN DNSKEY
@@ -3098,7 +3111,7 @@ ENTRY_END
 RANGE_END
 
 
-; Scope "nstld.com.	
+; Scope "nstld.com.
 
 ; Server names:
 ;	av1.nstld.com.
@@ -3117,7 +3130,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN A
@@ -3133,7 +3146,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN DNSKEY
@@ -3144,7 +3157,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN NS
@@ -3155,7 +3168,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN DS
@@ -3166,7 +3179,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.gtld-servers.net. IN AAAA
@@ -3182,7 +3195,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.gtld-servers.net. IN A
@@ -3198,7 +3211,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.gtld-servers.net. IN DNSKEY
@@ -3209,7 +3222,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.gtld-servers.net. IN NS
@@ -3220,7 +3233,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.gtld-servers.net. IN DS
@@ -3231,7 +3244,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 j.gtld-servers.net. IN AAAA
@@ -3247,7 +3260,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.gtld-servers.net. IN A
@@ -3263,7 +3276,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.gtld-servers.net. IN DNSKEY
@@ -3274,7 +3287,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.gtld-servers.net. IN NS
@@ -3285,7 +3298,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.gtld-servers.net. IN DS
@@ -3296,7 +3309,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 e.gtld-servers.net. IN AAAA
@@ -3312,7 +3325,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.gtld-servers.net. IN A
@@ -3328,7 +3341,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.gtld-servers.net. IN DNSKEY
@@ -3339,7 +3352,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.gtld-servers.net. IN NS
@@ -3350,7 +3363,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.gtld-servers.net. IN DS
@@ -3361,7 +3374,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 i.gtld-servers.net. IN AAAA
@@ -3377,7 +3390,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.gtld-servers.net. IN A
@@ -3393,7 +3406,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.gtld-servers.net. IN DNSKEY
@@ -3404,7 +3417,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.gtld-servers.net. IN NS
@@ -3415,7 +3428,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.gtld-servers.net. IN DS
@@ -3426,7 +3439,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.gtld-servers.net. IN AAAA
@@ -3442,7 +3455,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.gtld-servers.net. IN A
@@ -3458,7 +3471,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.gtld-servers.net. IN DNSKEY
@@ -3469,7 +3482,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.gtld-servers.net. IN NS
@@ -3480,7 +3493,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.gtld-servers.net. IN DS
@@ -3491,7 +3504,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 m.gtld-servers.net. IN AAAA
@@ -3507,7 +3520,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.gtld-servers.net. IN A
@@ -3523,7 +3536,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.gtld-servers.net. IN DNSKEY
@@ -3534,7 +3547,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.gtld-servers.net. IN NS
@@ -3545,7 +3558,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.gtld-servers.net. IN DS
@@ -3556,7 +3569,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 h.gtld-servers.net. IN AAAA
@@ -3572,7 +3585,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.gtld-servers.net. IN A
@@ -3588,7 +3601,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.gtld-servers.net. IN DNSKEY
@@ -3599,7 +3612,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.gtld-servers.net. IN NS
@@ -3610,7 +3623,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.gtld-servers.net. IN DS
@@ -3621,7 +3634,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.gtld-servers.net. IN AAAA
@@ -3637,7 +3650,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.gtld-servers.net. IN A
@@ -3653,7 +3666,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.gtld-servers.net. IN DNSKEY
@@ -3664,7 +3677,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.gtld-servers.net. IN NS
@@ -3675,7 +3688,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.gtld-servers.net. IN DS
@@ -3686,7 +3699,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 l.gtld-servers.net. IN AAAA
@@ -3702,7 +3715,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.gtld-servers.net. IN A
@@ -3718,7 +3731,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.gtld-servers.net. IN DNSKEY
@@ -3729,7 +3742,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.gtld-servers.net. IN NS
@@ -3740,7 +3753,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.gtld-servers.net. IN DS
@@ -3751,7 +3764,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 g.gtld-servers.net. IN AAAA
@@ -3767,7 +3780,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.gtld-servers.net. IN A
@@ -3783,7 +3796,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.gtld-servers.net. IN DNSKEY
@@ -3794,7 +3807,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.gtld-servers.net. IN NS
@@ -3805,7 +3818,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.gtld-servers.net. IN DS
@@ -3816,7 +3829,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.gtld-servers.net. IN AAAA
@@ -3832,7 +3845,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.gtld-servers.net. IN A
@@ -3848,7 +3861,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.gtld-servers.net. IN DNSKEY
@@ -3859,7 +3872,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.gtld-servers.net. IN NS
@@ -3870,7 +3883,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.gtld-servers.net. IN DS
@@ -3881,7 +3894,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 k.gtld-servers.net. IN AAAA
@@ -3897,7 +3910,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.gtld-servers.net. IN A
@@ -3913,7 +3926,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.gtld-servers.net. IN DNSKEY
@@ -3924,7 +3937,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.gtld-servers.net. IN NS
@@ -3935,7 +3948,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.gtld-servers.net. IN DS
@@ -3946,7 +3959,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 f.gtld-servers.net. IN AAAA
@@ -3962,7 +3975,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av1.nstld.com. IN A
@@ -3986,7 +3999,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av1.nstld.com. IN DNSKEY
@@ -3997,7 +4010,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av1.nstld.com. IN NS
@@ -4008,7 +4021,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av1.nstld.com. IN DS
@@ -4019,7 +4032,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av1.nstld.com. IN AAAA
@@ -4043,7 +4056,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av2.nstld.com. IN A
@@ -4067,7 +4080,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av2.nstld.com. IN DNSKEY
@@ -4078,7 +4091,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av2.nstld.com. IN NS
@@ -4089,7 +4102,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av2.nstld.com. IN DS
@@ -4100,7 +4113,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av2.nstld.com. IN AAAA
@@ -4124,7 +4137,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av3.nstld.com. IN A
@@ -4148,7 +4161,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av3.nstld.com. IN DNSKEY
@@ -4159,7 +4172,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av3.nstld.com. IN NS
@@ -4170,7 +4183,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av3.nstld.com. IN DS
@@ -4181,7 +4194,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av3.nstld.com. IN AAAA
@@ -4205,7 +4218,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av4.nstld.com. IN A
@@ -4229,7 +4242,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av4.nstld.com. IN DNSKEY
@@ -4240,7 +4253,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av4.nstld.com. IN NS
@@ -4251,7 +4264,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av4.nstld.com. IN DS
@@ -4262,7 +4275,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 av4.nstld.com. IN AAAA
@@ -4286,7 +4299,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 gtld-servers.net. IN DNSKEY
@@ -4297,7 +4310,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nstld.com. IN DNSKEY
@@ -4346,7 +4359,7 @@ ENTRY_END
 RANGE_END
 
 
-; Scope "cz.	
+; Scope "cz.
 
 ; Server names:
 ;	b.ns.nic.cz.
@@ -4366,7 +4379,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 root.cz. IN TYPE65535
@@ -4383,7 +4396,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 root.cz. IN DNSKEY
@@ -4400,7 +4413,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root.cz. IN DS
@@ -4412,7 +4425,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 iinfo.cz. IN A
@@ -4429,7 +4442,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 iinfo.cz. IN DNSKEY
@@ -4446,7 +4459,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 iinfo.cz. IN DS
@@ -4458,7 +4471,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 root.cz. IN A
@@ -4475,7 +4488,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nic.cz. IN A
@@ -4487,7 +4500,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nic.cz. IN DNSKEY
@@ -4501,7 +4514,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 nic.cz. IN DS
@@ -4513,7 +4526,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.nic.cz. IN A
@@ -4527,7 +4540,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.nic.cz. IN DNSKEY
@@ -4541,7 +4554,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.nic.cz. IN NS
@@ -4555,7 +4568,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.nic.cz. IN DS
@@ -4569,7 +4582,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.ns.nic.cz. IN A
@@ -4597,7 +4610,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.ns.nic.cz. IN DNSKEY
@@ -4611,7 +4624,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.ns.nic.cz. IN NS
@@ -4625,7 +4638,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.ns.nic.cz. IN DS
@@ -4639,7 +4652,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 a.ns.nic.cz. IN AAAA
@@ -4667,7 +4680,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.ns.nic.cz. IN A
@@ -4679,7 +4692,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.ns.nic.cz. IN DNSKEY
@@ -4693,7 +4706,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.ns.nic.cz. IN NS
@@ -4707,7 +4720,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.ns.nic.cz. IN DS
@@ -4721,7 +4734,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 b.ns.nic.cz. IN AAAA
@@ -4733,7 +4746,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.ns.nic.cz. IN A
@@ -4763,7 +4776,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.ns.nic.cz. IN DNSKEY
@@ -4777,7 +4790,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.ns.nic.cz. IN NS
@@ -4791,7 +4804,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.ns.nic.cz. IN DS
@@ -4805,7 +4818,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 c.ns.nic.cz. IN AAAA
@@ -4835,7 +4848,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.ns.nic.cz. IN A
@@ -4863,7 +4876,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.ns.nic.cz. IN DNSKEY
@@ -4877,7 +4890,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.ns.nic.cz. IN NS
@@ -4891,7 +4904,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.ns.nic.cz. IN DS
@@ -4905,7 +4918,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 d.ns.nic.cz. IN AAAA
@@ -4933,7 +4946,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 adminit.cz. IN A
@@ -4951,7 +4964,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR RD NOERROR
 SECTION QUESTION
 adminit.cz. IN DNSKEY
@@ -4969,7 +4982,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 adminit.cz. IN DS
@@ -4983,7 +4996,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 cz. IN DNSKEY
@@ -5099,7 +5112,7 @@ ENTRY_END
 RANGE_END
 
 
-; Scope "root.cz.	
+; Scope "root.cz.
 
 ; Server names:
 ;	ns6.adminit.cz.
@@ -5112,7 +5125,7 @@ RANGE_BEGIN 0 1000
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root.cz. IN A
@@ -5135,7 +5148,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root.cz. IN AAAA
@@ -5158,7 +5171,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root.cz. IN TYPE65535
@@ -5172,7 +5185,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.iinfo.cz. IN A
@@ -5193,7 +5206,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.iinfo.cz. IN DNSKEY
@@ -5207,7 +5220,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.iinfo.cz. IN NS
@@ -5221,7 +5234,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.iinfo.cz. IN DS
@@ -5235,7 +5248,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.iinfo.cz. IN AAAA
@@ -5256,7 +5269,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 blog.root.cz. IN A
@@ -5281,7 +5294,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 blog.root.cz. IN DNSKEY
@@ -5297,7 +5310,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 blog.root.cz. IN DS
@@ -5314,7 +5327,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 random1.blog.root.cz. IN A
@@ -5343,7 +5356,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 random1.blog.root.cz. IN DNSKEY
@@ -5364,7 +5377,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 random1.blog.root.cz. IN DS
@@ -5385,7 +5398,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 random1.blog.root.cz. IN AAAA
@@ -5414,7 +5427,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 blog.root.cz. IN AAAA
@@ -5439,7 +5452,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 blog.root.cz. IN TYPE65535
@@ -5456,7 +5469,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 random1.blog.root.cz. IN TYPE65535
@@ -5477,7 +5490,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns6.adminit.cz. IN A
@@ -5497,7 +5510,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns6.adminit.cz. IN DNSKEY
@@ -5508,7 +5521,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns6.adminit.cz. IN NS
@@ -5519,7 +5532,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns6.adminit.cz. IN DS
@@ -5530,7 +5543,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns6.adminit.cz. IN AAAA
@@ -5550,7 +5563,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.adminit.cz. IN A
@@ -5569,7 +5582,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.adminit.cz. IN DNSKEY
@@ -5580,7 +5593,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.adminit.cz. IN NS
@@ -5591,7 +5604,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.adminit.cz. IN DS
@@ -5602,7 +5615,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns.adminit.cz. IN AAAA
@@ -5613,7 +5626,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 root.cz. IN DNSKEY
@@ -5627,7 +5640,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 iinfo.cz. IN DNSKEY
@@ -5641,7 +5654,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 adminit.cz. IN DNSKEY
@@ -5760,7 +5773,7 @@ ENTRY_END
 RANGE_END
 
 
-; Scope "hm.	
+; Scope "hm.
 
 ; Server names:
 ;	ns1.registry.hm.
@@ -5770,10 +5783,13 @@ RANGE_BEGIN 0 1000
 	ADDRESS 208.70.79.24
 	ADDRESS 208.70.79.25
 	ADDRESS 128.199.180.188
+	ADDRESS 1::1
+	ADDRESS 1::2
+	ADDRESS 1::3
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN A
@@ -5784,7 +5800,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN DS
@@ -5795,7 +5811,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN AAAA
@@ -5806,7 +5822,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 registry.hm. IN A
@@ -5817,15 +5833,18 @@ registry.hm. 86400 IN NS ns1.registry.hm.
 registry.hm. 86400 IN NS ns2.registry.hm.
 registry.hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns2.registry.hm. 86400 IN A 208.70.79.24
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 registry.hm. IN DNSKEY
@@ -5836,7 +5855,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 registry.hm. IN DS
@@ -5847,7 +5866,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns1.registry.hm. IN A
@@ -5858,14 +5877,18 @@ registry.hm. 86400 IN NS ns1.registry.hm.
 registry.hm. 86400 IN NS ns2.registry.hm.
 registry.hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns2.registry.hm. 86400 IN A 208.70.79.24
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns1.registry.hm. IN DNSKEY
@@ -5876,7 +5899,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns1.registry.hm. IN NS
@@ -5887,7 +5910,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns1.registry.hm. IN DS
@@ -5898,18 +5921,18 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns1.registry.hm. IN AAAA
 SECTION AUTHORITY
-registry.hm. 3600 IN SOA ns1.registry.hm. hostmaster.registry.hm. 2015072302 10800 3600 604800 3600
+ns1.registry.hm. 86400 IN AAAA 1::1
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN SOA
@@ -5920,15 +5943,18 @@ hm. 86400 IN NS ns1.registry.hm.
 hm. 86400 IN NS ns2.registry.hm.
 hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns2.registry.hm. 86400 IN A 208.70.79.24
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns2.registry.hm. IN A
@@ -5939,14 +5965,18 @@ registry.hm. 86400 IN NS ns1.registry.hm.
 registry.hm. 86400 IN NS ns2.registry.hm.
 registry.hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns2.registry.hm. IN DNSKEY
@@ -5957,7 +5987,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns2.registry.hm. IN NS
@@ -5968,7 +5998,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns2.registry.hm. IN DS
@@ -5979,18 +6009,18 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns2.registry.hm. IN AAAA
 SECTION AUTHORITY
-registry.hm. 3600 IN SOA ns1.registry.hm. hostmaster.registry.hm. 2015072302 10800 3600 604800 3600
+ns2.registry.hm. 86400 IN AAAA 1::2
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns3.registry.hm. IN A
@@ -6001,14 +6031,18 @@ registry.hm. 86400 IN NS ns1.registry.hm.
 registry.hm. 86400 IN NS ns2.registry.hm.
 registry.hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns2.registry.hm. 86400 IN A 208.70.79.24
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns3.registry.hm. IN DNSKEY
@@ -6019,7 +6053,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns3.registry.hm. IN NS
@@ -6030,7 +6064,7 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns3.registry.hm. IN DS
@@ -6041,18 +6075,18 @@ ENTRY_END
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 ns3.registry.hm. IN AAAA
 SECTION AUTHORITY
-registry.hm. 3600 IN SOA ns1.registry.hm. hostmaster.registry.hm. 2015072302 10800 3600 604800 3600
+ns3.registry.hm. 86400 IN AAAA 1::3
 ENTRY_END
 
 
 ENTRY_BEGIN
 MATCH qname  qtype
-ADJUST copy_id 
+ADJUST copy_id
 REPLY QR AA RD NOERROR
 SECTION QUESTION
 hm. IN DNSKEY
@@ -6072,9 +6106,12 @@ registry.hm. 86400 IN NS ns1.registry.hm.
 registry.hm. 86400 IN NS ns2.registry.hm.
 registry.hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns2.registry.hm. 86400 IN A 208.70.79.24
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
@@ -6089,9 +6126,12 @@ hm. 86400 IN NS ns1.registry.hm.
 hm. 86400 IN NS ns2.registry.hm.
 hm. 86400 IN NS ns3.registry.hm.
 SECTION ADDITIONAL
-ns1.registry.hm. 86400 IN A 208.70.79.25
-ns2.registry.hm. 86400 IN A 208.70.79.24
-ns3.registry.hm. 86400 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN A 208.70.79.25
+ns2.registry.hm. 172800 IN A 208.70.79.24
+ns3.registry.hm. 172800 IN A 128.199.180.188
+ns1.registry.hm. 172800 IN AAAA 1::1
+ns2.registry.hm. 172800 IN AAAA 1::2
+ns3.registry.hm. 172800 IN AAAA 1::3
 ENTRY_END
 
 
