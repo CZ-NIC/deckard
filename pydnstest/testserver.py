@@ -224,6 +224,7 @@ class TestServer:
             for addr in r.addresses:
                 family = socket.AF_INET6 if ':' in addr else socket.AF_INET
                 self.start_srv((addr, 53), family)
+                self.start_srv((addr, 53), family, proto=socket.IPPROTO_TCP)
 
         # Bind addresses in ad-hoc REPLYs
         for s in self.scenario.steps:
@@ -236,8 +237,10 @@ class TestServer:
                     for rd in rr:
                         if rd.rdtype == dns.rdatatype.A:
                             self.start_srv((rd.address, 53), socket.AF_INET)
+                            self.start_srv((rd.address, 53), socket.AF_INET, proto=socket.IPPROTO_TCP)
                         elif rd.rdtype == dns.rdatatype.AAAA:
                             self.start_srv((rd.address, 53), socket.AF_INET6)
+                            self.start_srv((rd.address, 53), socket.AF_INET6, proto=socket.IPPROTO_TCP)
 
     def play(self, subject_addr):
         self.scenario.play({'': (subject_addr, 53)})
