@@ -1,3 +1,5 @@
+do-ip4: no
+
 ; test with real world Internet data
 ; attempt to resolve www.vutbr.cz. A leads to CNAME piranha.ro.vutbr.cz.
 ; sub-trees vutbr.cz and ro.vutbr.cz. are in separate zones
