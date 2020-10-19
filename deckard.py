@@ -95,6 +95,11 @@ def generate_from_templates(program_config, context):
     template_ctx = context.copy()
     template_ctx.update(program_config)
 
+    # public mapping program name -> program vars
+    template_ctx['PROGRAMS'] = {}
+    for cfg in template_ctx['programs']:
+        template_ctx['PROGRAMS'][cfg['name']] = cfg
+
     j2template_loader = jinja2.FileSystemLoader(searchpath=os.getcwd())
     j2template_env = jinja2.Environment(loader=j2template_loader)
 

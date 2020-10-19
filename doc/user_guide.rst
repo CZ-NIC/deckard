@@ -100,7 +100,7 @@ The YAML file contains **ordered** list of binaries and their parameters. Deckar
     binary: kresd               # kresd is first so it will receive queries from Deckard
     additional: []
     templates:
-      - template/kresd_fwd.j2   # this template uses variable IPADDRS['recursor']
+      - template/kresd_fwd.j2   # uses variable PROGRAMS['recursor']['address']
     configs:
       - config
   - name: recursor              # name of this Unbound instance
@@ -111,17 +111,17 @@ The YAML file contains **ordered** list of binaries and their parameters. Deckar
       - unbound.conf
     templates:
       - template/unbound.j2
-      - template/hints_zone.j2  # this template uses variable ROOT_ADDR
+      - template/hints_zone.j2  # uses variable ROOT_ADDR
     configs:
       - unbound.conf
       - hints.zone
       - ta.keys
 
-In this setup it is necessary to configure one binary to contact the other. IP addresses assigned by Deckard at run-time are accessible using ``IPADDRS`` `template variables`_ and symbolic names assigned to binaries in the YAML file. For example, template ``kresd_fwd.j2`` can use IP address of binary named ``recursor`` like this:
+In this setup it is necessary to configure one binary to contact the other. IP addresses assigned by Deckard at run-time are accessible using ``PROGRAMS`` `template variables`_ and symbolic names assigned to binaries in the YAML file. For example, template ``kresd_fwd.j2`` can use IP address of binary named ``recursor`` like this:
 
 .. code-block:: lua
 
-   policy.add(policy.all(policy.FORWARD("{{IPADDRS['recursor']}}")))
+   policy.add(policy.all(policy.FORWARD("{{PROGRAMS['recursor']['address']}}")))
 
 When all preparations are finished, run Deckard using following syntax:
 
@@ -202,9 +202,6 @@ List of variables for templates
 Addresses:
 
 - ``DAEMON_NAME``  - user-specified symbolic name of particular binary under test, e.g. ``recursor``
-- ``IPADDRS``      - dictionary with ``{symbolic name: IP address}`` mapping
-
-  - it is handy for cases where configuration for one binary under test has to refer to another binary under test
 
 - ``ROOT_ADDR``    - fake root server hint (Deckard is listening here; port is not expressed, must be 53)
 
@@ -225,6 +222,11 @@ DNS specifics:
 - ``QMIN``            [bool]_ - enables or disables query minimization respectively
 - ``TRUST_ANCHORS`` - list of trust anchors in form of a DS records, see `scenario guide <doc/scenario_guide.rst>`_
 - ``NEGATIVE_TRUST_ANCHORS`` - list of domain names with explicitly disabled DNSSEC validation
+
+Cross references:
+- ``PROGRAMS``      - dictionary of dictionaries with parameters for each binary under test
+  - it is handy for cases where configuration for one binary under test has to refer to another binary under test, e.g. ``PROGRAMS['recursor']['address']`` and ``PROGRAMS['forwarder']['address']``.
+
 
 .. [bool] boolean expressed as string ``true``/``false``
 
