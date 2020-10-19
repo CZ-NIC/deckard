@@ -180,9 +180,9 @@ class TestServer:
 
         for srv_sock in self.srv_socks:
             if (srv_sock.family == family
-                    and srv_sock.getsockname() == address
+                    and srv_sock.getsockname()[:2] == address
                     and srv_sock.proto == proto):
-                return srv_sock.getsockname()
+                return
 
         sock = socket.socket(family, socktype, proto)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -195,25 +195,23 @@ class TestServer:
         # A lot of addresses are added to the interface while runnning from Deckard in
         # the small amount of time which caused ocassional hiccups while binding to them
         # right afterwards in testing. Therefore, we retry a few times.
-        ex = None
+        final_ex = None
         for i in range(self.RETRIES_ON_BIND):
             try:
                 sock.bind(address)
                 break
-            except OSError as e:
+            except OSError as ex:
                 # Exponential backoff
                 time.sleep((2 ** i) + random.random())
-                ex = e
+                final_ex = ex
                 continue
         else:
-            print(ex, address)
-            raise ex
+            print(final_ex, address)
+            raise final_ex
 
         if proto == socket.IPPROTO_TCP:
             sock.listen(5)
         self.srv_socks.append(sock)
-        sockname = sock.getsockname()
-        return sockname, proto
 
     def _bind_sockets(self):
         """
@@ -224,6 +222,7 @@ class TestServer:
             for addr in r.addresses:
                 family = socket.AF_INET6 if ':' in addr else socket.AF_INET
                 self.start_srv((addr, 53), family)
+                self.start_srv((addr, 53), family, proto=socket.IPPROTO_TCP)
 
         # Bind addresses in ad-hoc REPLYs
         for s in self.scenario.steps:
@@ -236,8 +235,12 @@ class TestServer:
                     for rd in rr:
                         if rd.rdtype == dns.rdatatype.A:
                             self.start_srv((rd.address, 53), socket.AF_INET)
+                            self.start_srv((rd.address, 53), socket.AF_INET,
+                                           proto=socket.IPPROTO_TCP)
                         elif rd.rdtype == dns.rdatatype.AAAA:
                             self.start_srv((rd.address, 53), socket.AF_INET6)
+                            self.start_srv((rd.address, 53), socket.AF_INET6,
+                                           proto=socket.IPPROTO_TCP)
 
     def play(self, subject_addr):
         self.scenario.play({'': (subject_addr, 53)})
