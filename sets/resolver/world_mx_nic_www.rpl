@@ -1,3 +1,4 @@
+; skip: yes
 ; test with real world Internet data
 ; attempt to resolve www.nic.mx A leads to CNAME www.nicmexico.mx.
 ; sub-tree nic.mx is not signed and nixmexico.mx is signed.

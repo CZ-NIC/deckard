@@ -31,6 +31,14 @@ def config_sanity_check(config_dict, config_name):
                 % (cfg['name'], config_name)
 
 
+def optional_skip(path):
+    with open(path) as f:
+        line = next(f)
+        if line.startswith("; skip: yes"):
+            return True
+    return False
+
+
 def get_qmin_config(path):
     """Reads configuration from the *.rpl file and determines query-minimization setting."""
     with open(path) as f:
@@ -66,7 +74,8 @@ def scenarios(paths, configs):
             raise ValueError('no *.rpl files found in path "{}"'.format(path))
 
         for file in filelist:
-            scenario_list.append(Scenario(file, get_qmin_config(file), config_dict))
+            if not optional_skip(file):
+                scenario_list.append(Scenario(file, get_qmin_config(file), config_dict))
 
     return scenario_list
 
