@@ -309,7 +309,9 @@ server:
 
 	# file to read root hints from.
 	# get one from https://www.internic.net/domain/named.cache
+	{% if ROOT_ADDR %}
 	root-hints: "hints.zone"
+	{% endif %}
 
 	# enable to not answer id.server and hostname.bind queries.
 	# hide-identity: no
@@ -767,6 +769,14 @@ remote-control:
 # recursion to other nameservers. List zero or more nameservers by hostname
 # or by ipaddress. Use an entry with name "." to forward all queries.
 # If you enable forward-first, it attempts without the forward if it fails.
+
+{% if FORWARD_ADDR %}
+forward-zone:
+	name: "."
+	forward-addr: {{FORWARD_ADDR}}
+	forward-first: no
+{% endif %}
+
 # forward-zone:
 # 	name: "example.com"
 # 	forward-addr: 192.0.2.68

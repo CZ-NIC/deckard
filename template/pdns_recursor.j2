@@ -93,6 +93,9 @@ dont-query=
 # forward-zones	Zones for which we forward queries, comma separated domain=ip pairs
 #
 # forward-zones=
+{% if FORWARD_ADDR != None %}
+forward-zones=.={{FORWARD_ADDR}}
+{% endif %}
 
 #################################
 # forward-zones-file	File with (+)domain=ip pairs for forwarding
@@ -108,7 +111,9 @@ dont-query=
 # hint-file	If set, load root hints from this file
 #
 # hint-file=
+{% if ROOT_ADDR %}
 hint-file=hints.pdns
+{% endif %}
 
 #################################
 # ignore-rd-bit	Assume each packet requires recursion, for compatability
