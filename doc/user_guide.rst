@@ -199,16 +199,17 @@ Templates can use any of following variables:
 
 List of variables for templates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Addresses:
-
 - ``DAEMON_NAME``  - user-specified symbolic name of particular binary under test, e.g. ``recursor``
 
-- ``ROOT_ADDR``    - fake root server hint (Deckard is listening here; port is not expressed, must be 53)
+Addresses:
 
-  - IP version depends on settings in particular scenario
-  - templates must handle IPv4 and IPv6 as well
+- ``ROOT_ADDR``    - fake root server hint (an address declared in a RANGE)
+- ``FORWARD_ADDR`` - IP address where resolver should forward all queries (an address declared in a RANGE)
+- ``SELF_ADDR``    - address assigned to the binary under test
 
-- ``SELF_ADDR``    - address assigned to the binary under test (port is not expressed, must be 53)
+- port is not expressed, must be 53
+- IP version depends on settings in particular scenario
+- templates must handle IPv4 and IPv6 as well
 
 Path variables:
 

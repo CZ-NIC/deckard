@@ -758,6 +758,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
     negative_ta_list = []
     stub_addr = None
     override_timestamp = None
+    forward_addr = None
 
     features = {}
     feature_list_delimiter = ';'
@@ -824,6 +825,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                                % (v, str(ex))) from ex
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
+        elif k == 'forward-addr':  # currently forwards everything
+            forward_addr = v.strip('"\'')
         else:
             raise NotImplementedError('unsupported CONFIG key "%s"' % k)
 
@@ -835,7 +838,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
         "INSTALL_DIR": installdir,
         "QMIN": str(qmin).lower(),
         "TRUST_ANCHORS": trust_anchor_list,
-        "TRUST_ANCHOR_FILES": trust_anchor_files
+        "TRUST_ANCHOR_FILES": trust_anchor_files,
+        "FORWARD_ADDR": forward_addr,
     }
     if stub_addr:
         ctx['ROOT_ADDR'] = stub_addr
