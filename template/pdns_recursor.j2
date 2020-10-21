@@ -106,12 +106,17 @@ edns-outgoing-bufsize=4096
 # forward-zones-recurse	Zones for which we forward queries with recursion bit, comma separated domain=ip pairs
 #
 # forward-zones-recurse=
+{% if FORWARD_ADDR %}
+forward-zones-recurse=.={{FORWARD_ADDR}}
+{% endif %}
 
 #################################
 # hint-file	If set, load root hints from this file
 #
 # hint-file=
+{% if ROOT_ADDR %}
 hint-file=hints.pdns
+{% endif %}
 
 #################################
 # ignore-rd-bit	Assume each packet requires recursion, for compatability
