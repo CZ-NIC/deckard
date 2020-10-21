@@ -74,6 +74,9 @@ dnssec={% if TRUST_ANCHORS|length > 0 %}validate{%else%}process{%endif%}
 # dont-query=127.0.0.0/8, 10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fe80::/10
 dont-query=
 
+# prevent unnecessary fallbacks in Deckard
+edns-outgoing-bufsize=4096
+
 #################################
 # entropy-source	If set, read entropy from this file
 #

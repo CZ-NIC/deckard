@@ -1,4 +1,6 @@
 net = { '{{SELF_ADDR}}' }
+net.bufsize(4096)
+
 modules = {'stats', 'policy', 'hints'}
 
 -- extra verbose logging for all operations
