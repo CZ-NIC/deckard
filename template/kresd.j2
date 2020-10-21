@@ -15,8 +15,15 @@ policy.add(policy.all(policy.DEBUG_ALWAYS))
 
 -- test. domain is used by some tests, allow it
 policy.add(policy.suffix(policy.PASS, {todname('test.')}))
+{% if FORWARD_ADDR %}
+policy.add(policy.all(policy.FORWARD('{{FORWARD_ADDR}}')))
+{% endif %}
 cache.size = 2*MB
+
+{% if ROOT_ADDR %}
 hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
+{% endif %}
+
 {% if QMIN == "false" %}
 option('NO_MINIMIZE', true)
 {% else %}
