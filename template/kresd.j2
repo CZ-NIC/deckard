@@ -1,4 +1,10 @@
 net = { '{{SELF_ADDR}}' }
+{% if ':' in SELF_ADDR %}
+net.outgoing_v6('{{SELF_ADDR}}')
+{% else %}
+net.outgoing_v4('{{SELF_ADDR}}')
+{% endif %}
+
 net.bufsize(4096)
 
 modules = {'stats', 'policy', 'hints'}
