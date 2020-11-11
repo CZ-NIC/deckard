@@ -99,7 +99,7 @@ def compare_rrs_types(exp_val, got_val, skip_rrsigs):
 
 
 def check_question(question):
-    if len(question) > 2:
+    if len(question) > 1:
         raise NotImplementedError("More than one record in QUESTION SECTION.")
 
 
