@@ -147,6 +147,19 @@ def match_qcase(exp, got):
                        got.question[0].name.labels)
 
 
+def match_anyquestion(exp, got):
+    check_question(got.question)
+    if not exp.question and not got.question:
+        return True
+    if not exp.question:
+        raise DataMismatch("<empty question>", got.question[0].name)
+    if not got.question:
+        raise DataMismatch(exp.question[0].name, "<empty question>")
+    if got.question[0] in exp.question:
+        return True
+    raise DataMismatch(exp.question, got.question)
+
+
 def match_subdomain(exp, got):
     if not exp.question:
         return True
@@ -156,6 +169,19 @@ def match_subdomain(exp, got):
         qname = dns.name.root
     if exp.question[0].name.is_superdomain(qname):
         return True
+    raise DataMismatch(exp, got)
+
+
+def match_anysubdomain(exp, got):
+    if not exp.question:
+        return True
+    if got.question:
+        qname = got.question[0].name
+    else:
+        qname = dns.name.root
+    for exp_q in exp.question:
+        if exp_q.name.is_superdomain(qname):
+            return True
     raise DataMismatch(exp, got)
 
 
@@ -224,7 +250,9 @@ def match_nsid(exp, got):
 
 
 MATCH = {"opcode": match_opcode, "qtype": match_qtype, "qname": match_qname, "qcase": match_qcase,
-         "subdomain": match_subdomain, "flags": match_flags, "rcode": match_rcode,
+         "anyquestion": match_anyquestion,
+         "subdomain": match_subdomain, "anysubdomain": match_anysubdomain,
+         "flags": match_flags, "rcode": match_rcode,
          "answer": match_answer, "answertypes": match_answertypes,
          "answerrrsigs": match_answerrrsigs, "authority": match_authority,
          "additional": match_additional, "edns": match_edns,

@@ -364,7 +364,7 @@ RANGE_BEGIN 0 100
 	ENTRY_END
 
 	ENTRY_BEGIN
-		MATCH opcode subdomain
+		MATCH opcode anysubdomain
 		ADJUST copy_id copy_query
 		REPLY QR RD DO NOERROR
 		SECTION QUESTION

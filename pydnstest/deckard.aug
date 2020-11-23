@@ -32,7 +32,7 @@ let ip_re = /[0-9a-f.:]+/
 let hex_re = /[0-9a-fA-F]+/
 
 
-let match_option =  "opcode" | "qtype" | "qcase" | "qname" | "subdomain" | "flags" | "rcode" | "question" | "answer" | "authority" | "additional" | "all" | "edns"
+let match_option =  "opcode" | "qtype" | "qcase" | "qname" | "subdomain" | "anysubdomain" | "flags" | "rcode" | "question" | "anyquestion" | "answer" | "authority" | "additional" | "all" | "edns"
 let adjust_option = "copy_id" | "copy_query" | "raw_id" | "do_not_answer"
 let reply_option = "QR" | "TC" | "AA" | "AD" | "RD" | "RA" | "CD" | "DO" | "NOERROR" | "FORMERR" | "SERVFAIL" | "NXDOMAIN" | "NOTIMP" | "REFUSED" | "YXDOMAIN" | "YXRRSET" | "NXRRSET" | "NOTAUTH" | "NOTZONE" | "BADVERS" | "BADSIG" | "BADKEY" | "BADTIME" | "BADMODE" | "BADNAME" | "BADALG" | "BADTRUNC" | "BADCOOKIE"
 let step_option = "REPLY" | "QUERY" | "CHECK_ANSWER" | "CHECK_OUT_QUERY" | /TIME_PASSES[ \t]+ELAPSE/
@@ -49,7 +49,7 @@ let question = [label "record" . domain . tab . (class . tab)? . type . comment_
 let record = [label "record" . domain . tab . (ttl . tab)? . (class . tab)? . type . tab . data . comment_or_eol]
 
 let section_question = [ label "question" . del_str "SECTION QUESTION" .
-                       comment_or_eol . question? ]
+                       comment_or_eol . question* ]
 let section_answer = [ label "answer" . del_str "SECTION ANSWER" .
                        comment_or_eol . record* ]
 let section_authority = [ label "authority" . del_str "SECTION AUTHORITY" .
