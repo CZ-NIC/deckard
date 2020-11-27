@@ -6,6 +6,12 @@
 val-override-date: 20170124180319
 trust-anchor: ".	172800	IN	DS	19036 8 2 49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f24e8fb5"
 stub-addr: 2001:dc3::35
+stub-name: m.root-servers.net
+; we have added missing A/AAAA records for NS names too late
+; when validity of original RRSIGs expired
+; => we disable validation for mx. NS names to avoid need to resign whole test
+domain-insecure: mx-ns.mx.
+do-ip4: false
 CONFIG_END
 
 SCENARIO_BEGIN www.nic.mx. CNAME kresd issue #144
@@ -13,6 +19,58 @@ SCENARIO_BEGIN www.nic.mx. CNAME kresd issue #144
 ; DNS root ; M.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
 	ADDRESS 2001:dc3::35
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+m.root-servers.net. IN AAAA
+SECTION ANSWER
+m.root-servers.net. 3600 IN AAAA 2001:dc3::35
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+m.root-servers.net. IN A
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION ANSWER
+net. 3600 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+m.root-servers.net. 3600 IN AAAA 2001:dc3::35
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION ANSWER
+root-servers.net. 3600 IN NS m.root-servers.net.
+SECTION ADDITIONAL
+m.root-servers.net. 3600 IN AAAA 2001:dc3::35
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+net. IN DS
+SECTION ANSWER
+ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
@@ -50,6 +108,11 @@ o.mx-ns.mx.	172800	IN	A	200.23.1.1
 x.mx-ns.mx.	172800	IN	A	201.131.252.1
 c.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
 m.mx-ns.mx.	172800	IN	AAAA	2001:13c7:7000::1
+; added AAAA records to stop resolver from asking for them later
+o.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+i.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+x.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+e.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
 ENTRY_END
 ; end of M.ROOT-SERVERS.NET.
 RANGE_END
@@ -64,6 +127,79 @@ RANGE_BEGIN 0 100
 	ADDRESS 201.131.252.1
 	ADDRESS	2001:1258::1
 	ADDRESS	2001:13c7:7000::1
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+mx-ns.mx.			IN	NS
+SECTION ANSWER
+mx-ns.mx.		172800	IN	NS	c.mx-ns.mx.
+mx-ns.mx.		172800	IN	NS	m.mx-ns.mx.
+mx-ns.mx.		172800	IN	NS	e.mx-ns.mx.
+mx-ns.mx.		172800	IN	NS	i.mx-ns.mx.
+mx-ns.mx.		172800	IN	NS	o.mx-ns.mx.
+mx-ns.mx.		172800	IN	NS	x.mx-ns.mx.
+SECTION ADDITIONAL
+c.mx-ns.mx.	172800	IN	A	192.100.224.1
+e.mx-ns.mx.	172800	IN	A	189.201.244.1
+i.mx-ns.mx.	172800	IN	A	207.248.68.1
+m.mx-ns.mx.	172800	IN	A	200.94.176.1
+o.mx-ns.mx.	172800	IN	A	200.23.1.1
+x.mx-ns.mx.	172800	IN	A	201.131.252.1
+o.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+i.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+x.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+e.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+c.mx-ns.mx.	172800	IN	AAAA	2001:1258::1
+m.mx-ns.mx.	172800	IN	AAAA	2001:13c7:7000::1
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+mx-ns.mx.			IN	DS
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+i.mx-ns.mx. IN AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+e.mx-ns.mx. IN AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+x.mx-ns.mx. IN AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qname qtype
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+o.mx-ns.mx. IN AAAA
+SECTION ANSWER
+ENTRY_END
 
 ENTRY_BEGIN
 MATCH opcode qtype qname
