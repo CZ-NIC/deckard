@@ -213,12 +213,12 @@ sub.example.com. IN DS
 SECTION ANSWER
 sub.example.com.        3600    IN      DS      36540 5 1 040C7E6D3E183A894CDECC56F6A33086409692F2    
 sub.example.com.        3600    IN      RRSIG   DS 7 3 3600 20181230101911 20181130101911 34694 example.com. t8Ktq66BvanAwL00D3hzwIIJQXJ6NzsTBzi0Um8bESfFdxlN2WIjSVd5 hfNruVRDEsTCDlOd2r6cG3Q003NGDn7ulOUR8RLL29a4Tj9YkIJnizEw WrMUhdUU9CqbxZSq8aAKO8tIoI56NfK8FqYObZKR4aqXHOBPf0QkvPKr i+E=     ;{id = 2854}
-SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
-example.com.    3600    IN      RRSIG   NS 7 2 3600 20181230101911 20181130101911 34694 example.com. u92Oy+hcQjhnkA7+giV6gJlDovDUmmUrhwN3ayf9/de3EFymsGWns3rW uVBy9p9MiGuq5Gh1eBGYgBLsuxYjVQfiF3iqoXldc1La7VjmR+5YzTw0 CnTiabybAXUnEOLlyonnbCeNhN9cvn6nYLN87yPSRuzGeB2T3aFXgkUk p20=     ;{id = 2854}
-SECTION ADDITIONAL
-ns.example.com.		IN 	A	1.2.3.4
-ns.example.com. 3600    IN      RRSIG   A 7 3 3600 20181230101911 20181130101911 34694 example.com. a/cISMkpWJgOLQuAmo05DxcjxUwsets7jV2y+rYMkFn+KZh7pjUDRTvd 52pCzgWlDJPVKrBcNRUQn8D1xVwp+MO/4MjonQRuhGORwdsbuqfMD55+ zeAgEJGGi7ygt5/kFr2gioZejqj1A236IXbLfFiLTmlHtV1Y2A/mvWsP cTA=     ;{id = 2854}
+;SECTION AUTHORITY
+;example.com.	IN NS	ns.example.com.
+;example.com.    3600    IN      RRSIG   NS 7 2 3600 20181230101911 20181130101911 34694 example.com. u92Oy+hcQjhnkA7+giV6gJlDovDUmmUrhwN3ayf9/de3EFymsGWns3rW uVBy9p9MiGuq5Gh1eBGYgBLsuxYjVQfiF3iqoXldc1La7VjmR+5YzTw0 CnTiabybAXUnEOLlyonnbCeNhN9cvn6nYLN87yPSRuzGeB2T3aFXgkUk p20=     ;{id = 2854}
+;SECTION ADDITIONAL
+;ns.example.com.		IN 	A	1.2.3.4
+;ns.example.com. 3600    IN      RRSIG   A 7 3 3600 20181230101911 20181130101911 34694 example.com. a/cISMkpWJgOLQuAmo05DxcjxUwsets7jV2y+rYMkFn+KZh7pjUDRTvd 52pCzgWlDJPVKrBcNRUQn8D1xVwp+MO/4MjonQRuhGORwdsbuqfMD55+ zeAgEJGGi7ygt5/kFr2gioZejqj1A236IXbLfFiLTmlHtV1Y2A/mvWsP cTA=     ;{id = 2854}
 ENTRY_END
 
 SCENARIO_END

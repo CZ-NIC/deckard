@@ -73,6 +73,15 @@ a.gtld-servers.net.     IN      A       192.5.6.30
 ENTRY_END
 
 ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+ns.example.com. IN AAAA
+SECTION ANSWER
+ENTRY_END
+
+ENTRY_BEGIN
 MATCH opcode subdomain
 ADJUST copy_id copy_query
 REPLY QR NOERROR
@@ -82,15 +91,6 @@ SECTION AUTHORITY
 example.com.	IN NS	ns.example.com.
 SECTION ADDITIONAL
 ns.example.com.		IN 	A	1.2.3.4
-ENTRY_END
-
-ENTRY_BEGIN
-MATCH opcode qtype qname
-ADJUST copy_id
-REPLY QR AA NOERROR
-SECTION QUESTION
-ns.example.com. IN AAAA
-SECTION ANSWER
 ENTRY_END
 
 ENTRY_BEGIN
