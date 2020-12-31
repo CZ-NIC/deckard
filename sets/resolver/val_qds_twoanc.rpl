@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ; The island of trust is at example.com
 ;server:
@@ -212,12 +214,12 @@ sub.example.com. IN DS
 SECTION ANSWER
 sub.example.com.        3600    IN      DS      42960 5 1 C430C3DFF8F700A924DB9F0EB1589D47E804631B 
 sub.example.com.        3600    IN      RRSIG   DS 7 3 3600 20181230101913 20181130101913 56744 example.com. G/ri3P6noC+ftYdFA35MrhZv0D/gHUISBYSuLVBir2+Bt9JukeVhqd9i zdjSXCIrxUdJUaPwSSEyLHvVOXJpR8SdtjnHR97YcxM69RSoinBpvBc4 Ey1ahaG1pOH12ipqVIwkJRIlh9C08sdyFTDALw4MwHVd8P+K+oSTEpO/ 0V4=     ;{id = 2854}
-SECTION AUTHORITY
-example.com.	IN NS	ns.example.com.
-example.com.    3600    IN      RRSIG   NS 7 2 3600 20181230101913 20181130101913 56744 example.com. PbI0TTbOc1OZsplLREnmRXl3zYbj4CMIk7LgavRNp9+diDWksiR1nxWo szKMYfwjN6dxlwowAgL+frC6esvLvbV5BeDhR+emsf4ayKO6OSrCHJUK 5af7jtKkrLYuVCn3Ad1RZxlecv9IIJc6cjUg5FMm3+Riuq/PrekrDZqz Si0=     ;{id = 2854}
-SECTION ADDITIONAL
-ns.example.com.		IN 	A	1.2.3.4
-ns.example.com. 3600    IN      RRSIG   A 7 3 3600 20181230101913 20181130101913 56744 example.com. KgRA0DGIjVXsmx+oLWqWNrDhoTI4doL+wm1+BufgJkfcm8LstWnCre+M sY6rV9o+DM5RvtPj+5pwhrgAMJqaLgMTrEXCWsbFvEQU1jLhYpLRNJ5L 69AMOtfVUquxrdviPcXjzR8VbB+KvH5Vg1NlsuNlxtMbqS3Lex10LKlU NA0=     ;{id = 2854}
+;SECTION AUTHORITY
+;example.com.	IN NS	ns.example.com.
+;example.com.    3600    IN      RRSIG   NS 7 2 3600 20181230101913 20181130101913 56744 example.com. PbI0TTbOc1OZsplLREnmRXl3zYbj4CMIk7LgavRNp9+diDWksiR1nxWo szKMYfwjN6dxlwowAgL+frC6esvLvbV5BeDhR+emsf4ayKO6OSrCHJUK 5af7jtKkrLYuVCn3Ad1RZxlecv9IIJc6cjUg5FMm3+Riuq/PrekrDZqz Si0=     ;{id = 2854}
+;SECTION ADDITIONAL
+;ns.example.com.		IN 	A	1.2.3.4
+;ns.example.com. 3600    IN      RRSIG   A 7 3 3600 20181230101913 20181130101913 56744 example.com. KgRA0DGIjVXsmx+oLWqWNrDhoTI4doL+wm1+BufgJkfcm8LstWnCre+M sY6rV9o+DM5RvtPj+5pwhrgAMJqaLgMTrEXCWsbFvEQU1jLhYpLRNJ5L 69AMOtfVUquxrdviPcXjzR8VbB+KvH5Vg1NlsuNlxtMbqS3Lex10LKlU NA0=     ;{id = 2854}
 ENTRY_END
 
 SCENARIO_END

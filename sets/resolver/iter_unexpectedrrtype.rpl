@@ -1,3 +1,5 @@
+do-ip6: no
+
 stub-addr: 1.1.1.1
 CONFIG_END
  

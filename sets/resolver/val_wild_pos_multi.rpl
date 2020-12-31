@@ -6,6 +6,7 @@
 ;stub-zone:
 ;	name: "."
 	stub-addr: 10.1.1.1 	# ns.
+	stub-name: ns.
 CONFIG_END
 
 SCENARIO_BEGIN Test validation of wildcard responses with multiple synthesized RRs.

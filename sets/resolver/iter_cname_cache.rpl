@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ;	target-fetch-policy: "0 0 0 0 0"
 ;	name: "."
@@ -16,7 +18,7 @@ SCENARIO_BEGIN Test iterative resolve with cached cname for nameserver
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -92,7 +94,7 @@ SECTION ADDITIONAL
 ;;; but really a CNAME in child server
 ns.example.com.  1 IN A 1.2.3.4
 ns2.example.com.  IN A 1.2.3.5
-ns2.example.com.  IN AAAA 2002::5
+ns2.example.com.  IN A 2.0.2.5
 ENTRY_END
 
 ; lame answers back to root for .nl (.com server not authoritative for .nl)
@@ -207,7 +209,7 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.5
 ENTRY_BEGIN
-MATCH opcode 
+MATCH opcode
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
@@ -219,9 +221,9 @@ RANGE_END
 ; ns2.example.com "example.com"
 ; bad failing server
 RANGE_BEGIN 0 100
-	ADDRESS 2002::5
+	ADDRESS 2.0.2.5
 ENTRY_BEGIN
-MATCH opcode 
+MATCH opcode
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION
@@ -230,7 +232,7 @@ SECTION ANSWER
 ENTRY_END
 RANGE_END
 
-; get cname in cache.  use MX query 
+; get cname in cache.  use MX query
 STEP 1 QUERY
 ENTRY_BEGIN
 REPLY RD

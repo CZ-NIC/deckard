@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 	stub-addr: 1.2.3.4
         feature-list: policy=policy:add(policy.pattern(policy.PASS, todname('dummy.example.cz')))

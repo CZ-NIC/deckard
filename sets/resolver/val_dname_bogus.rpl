@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 trust-anchor: ".	IN	DS	37471 5 1 da74e4e0fe4067c2afd1d4a3cceb852a3c0d4401"
 stub-addr: 193.0.14.129         # K.ROOT-SERVERS.NET.

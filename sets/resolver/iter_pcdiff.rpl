@@ -1,3 +1,5 @@
+do-ip6: no
+
 ; config options
 ;server:
 ;	target-fetch-policy: "0 0 0 0 0"
@@ -12,7 +14,7 @@ SCENARIO_BEGIN Test resolution with recursion and parent child differ.
 
 ; K.ROOT-SERVERS.NET.
 RANGE_BEGIN 0 100
-	ADDRESS 193.0.14.129 
+	ADDRESS 193.0.14.129
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
@@ -177,7 +179,7 @@ RANGE_END
 RANGE_BEGIN 0 100
 	ADDRESS 1.2.3.55
 ENTRY_BEGIN
-MATCH opcode 
+MATCH opcode
 ADJUST copy_id copy_query
 REPLY QR SERVFAIL
 SECTION QUESTION

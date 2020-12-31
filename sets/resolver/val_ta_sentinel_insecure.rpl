@@ -1,4 +1,5 @@
 stub-addr: 2001:503:ba3e::2:30
+stub-name: rootns.
 trust-anchor: . IN DS 48409 8 2 3D63A0C25BCE86621DE63636F11B35B908EFE8E9381E0E3E9DEFD89EA952C27D
 val-override-date: 20180601000000
 ; avoid the mess with one server for both "." and "unsigned."

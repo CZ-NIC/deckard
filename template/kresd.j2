@@ -19,11 +19,7 @@ policy.add(policy.suffix(policy.PASS, {todname('test.')}))
 policy.add(policy.all(policy.FORWARD('{{FORWARD_ADDR}}')))
 {% endif %}
 cache.size = 2*MB
-
-{% if ROOT_ADDR %}
-hints.root({['k.root-servers.net'] = '{{ROOT_ADDR}}'})
-{% endif %}
-
+hints.root({['{{ROOT_NAME}}'] = '{{ROOT_ADDR}}'})
 {% if QMIN == "false" %}
 option('NO_MINIMIZE', true)
 {% else %}
@@ -54,6 +50,17 @@ trust_anchors.set_insecure({
 {% endfor %}
 })
 
+{% if DO_IP6 == "true" %}
+net.ipv6 = true
+{% else %}
+net.ipv6 = false
+{% endif %}
+
+{% if DO_IP4 == "true" %}
+net.ipv4 = true
+{% else %}
+net.ipv4 = false
+{% endif %}
 
 {% if FEATURES.min_ttl is defined %}
 cache.min_ttl({{FEATURES.min_ttl}})
