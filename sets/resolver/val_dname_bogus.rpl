@@ -4,6 +4,7 @@ do-ip6: no
 trust-anchor: ".	IN	DS	37471 5 1 da74e4e0fe4067c2afd1d4a3cceb852a3c0d4401"
 stub-addr: 193.0.14.129         # K.ROOT-SERVERS.NET.
 val-override-date: "20170301000000"
+domain-insecure: net.
 CONFIG_END
 
 SCENARIO_BEGIN Test DNAME validation
@@ -11,6 +12,28 @@ SCENARIO_BEGIN Test DNAME validation
 ; all the data are on the "root servers"
 RANGE_BEGIN 0 10000000
 	ADDRESS 193.0.14.129
+
+ENTRY_BEGIN
+MATCH qname qtype
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+net. IN NS
+SECTION ANSWER
+net. 3600 IN NS K.ROOT-SERVERS.NET.
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH qname qtype
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+root-servers.net. IN NS
+SECTION AUTHORITY
+.       86400   IN      SOA     . . 2017021500 1800 900 604800 86400
+.       86400   IN      RRSIG   SOA 5 0 86400 20170315140518 20170215140518 37471 . drrv7SjrOkuNwlILiziPxHTuIKs/tO2WcVEdipA/LNkt0h09zuWbr3Rk5gtEDTSECbZEXYTa4YaeJs3ODmikzVaJd5EVLsDdGnV3mZ/w7WYHA0Uc1GH5HZm1uQwA4DlwY5e5Ry80pIhInZ1Lqiz1ut9yWbHzODdcUOdpE+XiPzYCKR1hRWi099dIQtDhZYottvQNXXmsJDY41PwvWaxqbXGYgiQCX3cN/W5PM0hs7xMxAjanKh32PXKcHSfTeko87BvERMZnibc2O8efl7S62Zp68Q4guMfe4P++ue22PctjwfeR5nDi31c3+USi63ujrKSDGujaIsIMyIHNFm1/zQ==
+ENTRY_END
+
 ENTRY_BEGIN
 MATCH qname qtype opcode
 ADJUST copy_id

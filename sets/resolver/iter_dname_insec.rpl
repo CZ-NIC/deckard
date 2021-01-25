@@ -1004,6 +1004,16 @@ y.example.net. IN NS
 SECTION ANSWER
 ENTRY_END
 
+; empty non-terminal for QNAME minimization
+ENTRY_BEGIN
+MATCH opcode qname
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+b.example.net. IN NS
+SECTION ANSWER
+ENTRY_END
+
 ENTRY_BEGIN
 MATCH opcode qtype qname
 ADJUST copy_id
