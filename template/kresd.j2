@@ -36,8 +36,6 @@ mode('normal')
 {% else %}
 mode('permissive')
 {% endif %}
--- Always retry failing resolver
-option('NO_THROTTLE', true)
 
 -- make sure that value specified at compile-time does not break tests
 trust_anchors.remove('.')
