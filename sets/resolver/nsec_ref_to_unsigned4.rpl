@@ -1,0 +1,185 @@
+do-ip6: no
+
+; config options
+; The island of trust is at example.com
+;server:
+	trust-anchor: "example.com.		IN DS 10894 13 2 018DAFED10CA41546883B2590EEAC2641CDB19AF5564BBF1C1D6E1863F7D2785"
+	val-override-date: "20211022141500"
+	stub-addr: 193.0.14.129 	# K.ROOT-SERVERS.NET.
+	query-minimization: off
+CONFIG_END
+
+SCENARIO_BEGIN NSEC, referral to unsigned (sub)subzone, no ds, nsec, served by same auth.
+
+RANGE_BEGIN 0 100
+	ADDRESS 193.0.14.129
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+. IN NS
+SECTION ANSWER
+. IN NS	K.ROOT-SERVERS.NET.
+SECTION ADDITIONAL
+K.ROOT-SERVERS.NET.		IN A		193.0.14.129
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+K.ROOT-SERVERS.NET.	IN A
+SECTION ANSWER
+K.ROOT-SERVERS.NET.		IN A		193.0.14.129
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+com. IN A
+SECTION AUTHORITY
+com.	IN NS	a.gtld-servers.net.
+SECTION ADDITIONAL
+a.gtld-servers.net.		IN A		192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+a.gtld-servers.net.	IN a
+SECTION AUTHORITY
+a.gtld-servers.net.		IN A		192.5.6.30
+ENTRY_END
+RANGE_END
+
+; a.gtld-servers.net.
+RANGE_BEGIN 0 100
+	ADDRESS 192.5.6.30
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+com. IN NS
+SECTION ANSWER
+com.    			IN NS		a.gtld-servers.net.
+SECTION ADDITIONAL
+a.gtld-servers.net.     	IN A		192.5.6.30
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+example.com. IN A
+SECTION AUTHORITY
+example.com.			IN NS		ns.example.com.
+SECTION ADDITIONAL
+ns.example.com.			IN A		1.2.3.4
+ENTRY_END
+RANGE_END
+
+; ns.example.com.
+RANGE_BEGIN 0 100
+	ADDRESS 1.2.3.4
+ENTRY_BEGIN
+MATCH opcode subdomain
+ADJUST copy_id copy_query
+REPLY QR NOERROR
+SECTION QUESTION
+ns.example.com. IN A
+SECTION ADDITIONAL
+ns.example.com.			IN A		1.2.3.4
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+example.com.			IN NS
+SECTION ANSWER
+example.com.        	30	IN	NS	ns.example.com.
+example.com.        	30	IN	RRSIG	NS 13 2 30 20211105115913 20211022102913 43283 example.com. hn8V2A5Bq3ck0wog0uSY860wmjdu4F1VRz1t/nR1A1Owm16/ce6WskqIjfEN0mr7oK1RATqu/Sywxhkt6qZXsg==
+SECTION ADDITIONAL
+ns.example.com.     	30	IN	A	1.2.3.4
+ns.example.com.     	30	IN	RRSIG	A 13 3 30 20211105115913 20211022102913 43283 example.com. tRxIuoZPn7tzWSWRvE/i1Vw17bFDGeAvzvBF6M/Zs4ahlUzpjnD48tqo37GcZBKy4AF+0I/beD82UfJFOxVv1A==
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+sub.example.com.		IN DS
+SECTION AUTHORITY
+example.com.        	30	IN	SOA	ns.example.com. hostmaster.example.com. 2 21600 3600 604800 86400
+ns.example.com.     	30	IN	NSEC	sub.sub.example.com. A RRSIG NSEC
+example.com.        	30	IN	RRSIG	SOA 13 2 30 20211105115913 20211022102913 43283 example.com. CK4e+VjX2RS7U8OOmykgnZDEm6qk84mKHhC8ATEcQGvC66dzeZqWK0JRMLBssAupMx4tyGNv8LMGoeOxbOeO7w==
+ns.example.com.     	30	IN	RRSIG	NSEC 13 3 30 20211105115913 20211022102913 43283 example.com. 3GfnpVtVQ/OE8mD80Z4b1v55xXg54jsLSO1AvChDN6mZmpdQx7RpUxXX1CpUGlnyefjafxT6qqu3CB0nBi0y9Q==
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR NOERROR
+SECTION QUESTION
+sub.sub.example.com.		IN DS
+SECTION AUTHORITY
+example.com.        	30	IN	SOA	ns.example.com. hostmaster.example.com. 2 21600 3600 604800 86400
+sub.sub.example.com.	30	IN	NSEC	example.com. NS RRSIG NSEC
+example.com.        	30	IN	RRSIG	SOA 13 2 30 20211105115913 20211022102913 43283 example.com. CK4e+VjX2RS7U8OOmykgnZDEm6qk84mKHhC8ATEcQGvC66dzeZqWK0JRMLBssAupMx4tyGNv8LMGoeOxbOeO7w==
+sub.sub.example.com.	30	IN	RRSIG	NSEC 13 4 30 20211105115913 20211022102913 43283 example.com. mwVo5YBzAGjhLeu43FN2Cv3Xc9KDkM1F2kfXB4wMc1ykTIx7r6ysW2idbrxfLaBWl+bO8/XUPkOsm9LF0GfCjA==
+ENTRY_END
+
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+unsigned.sub.sub.example.com.		IN A
+SECTION ANSWER
+unsigned.sub.sub.example.com.	30	IN	A	9.8.7.6
+ENTRY_END
+
+; response to DNSKEY priming query
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id
+REPLY QR AA NOERROR
+SECTION QUESTION
+example.com. 			IN DNSKEY
+SECTION ANSWER
+example.com.        	30	IN	DNSKEY	256 3 13 SGdJe5tBaH+xLCJytPCkMPc7RqSDKUqXODePZYH82a92XtBB36XjhJ0FUDw5xH5upKmw+6DR+ludKLPFMW6RSQ==
+example.com.        	30	IN	DNSKEY	257 3 13 uJse3skouTvte35b6ZvKHsr5rHPZGlz3X3BAYXOKezE8ewnKUkoiE+3LX1BzPJ7Cbb2olS7kyp1ppy32ke8d4g==
+example.com.        	30	IN	RRSIG	DNSKEY 13 2 30 20211105115913 20211022102913 10894 example.com. ajToQZAPf1L6Hg2h7QDe77LkjXLHYj6UV+FEiqmzMdiXrmQYKrGt/ncuTyqFqYlI0LrQEl593UrtXw0LYrWFtg==
+ENTRY_END
+RANGE_END
+
+STEP 10 QUERY
+ENTRY_BEGIN
+REPLY RD DO
+SECTION QUESTION
+unsigned.sub.sub.example.com. 		IN A
+ENTRY_END
+
+STEP 20 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH opcode qname flags rcode question answer
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+unsigned.sub.sub.example.com.		IN A
+SECTION ANSWER
+unsigned.sub.sub.example.com.	30	IN A		9.8.7.6
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+
+SCENARIO_END
