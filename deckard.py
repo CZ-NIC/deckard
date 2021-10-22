@@ -33,10 +33,8 @@ def setup_internal_addresses(context):
 
 
 def write_timestamp_file(path, tst):
-    time_file = open(path, 'w')
-    time_file.write(datetime.fromtimestamp(tst).strftime('@%Y-%m-%d %H:%M:%S'))
-    time_file.flush()
-    time_file.close()
+    with open(path, 'w') as time_file:
+        time_file.write(datetime.fromtimestamp(tst).strftime('@%Y-%m-%d %H:%M:%S'))
 
 
 def setup_faketime(context):
@@ -115,20 +113,21 @@ def run_daemon(program_config):
     name = program_config['DAEMON_NAME']
     proc = None
     program_config['log'] = os.path.join(program_config["WORKING_DIR"], 'server.log')
-    daemon_log_file = open(program_config['log'], 'w')
     program_config['args'] = (
         shlex.split(os.environ.get('DECKARD_WRAPPER', ''))
         + [program_config['binary']]
         + program_config['additional']
     )
     logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', program_config['args'])
-    try:
-        proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
-                                stderr=subprocess.STDOUT, cwd=program_config['WORKING_DIR'])
-    except subprocess.CalledProcessError:
-        logger = logging.getLogger('deckard.daemon_log.%s' % name)
-        logger.exception("Can't start '%s'", program_config['args'])
-        raise
+    with open(program_config['log'], 'w') as daemon_log_file:
+        try:
+            # pylint: disable=consider-using-with
+            proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
+                                    stderr=subprocess.STDOUT, cwd=program_config['WORKING_DIR'])
+        except subprocess.CalledProcessError:
+            logger = logging.getLogger('deckard.daemon_log.%s' % name)
+            logger.exception("Can't start '%s'", program_config['args'])
+            raise
     return proc
 
 
