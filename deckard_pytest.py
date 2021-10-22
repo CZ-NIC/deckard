@@ -59,6 +59,7 @@ class TCPDump:
     def __enter__(self):
         cmd = self.DUMPCAP_CMD.copy()
         cmd.append(self.config["pcap"])
+        # pylint: disable=consider-using-with
         self.tcpdump = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def __exit__(self, _, exc_value, __):
