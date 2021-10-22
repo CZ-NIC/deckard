@@ -14,6 +14,7 @@ disable=
     global-statement,
     no-else-return,
     bad-continuation,
+    duplicate-code,
 
 
 [SIMILARITIES]
