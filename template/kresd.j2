@@ -9,8 +9,7 @@ net.bufsize(4096)
 
 modules = {'stats', 'policy', 'hints'}
 
--- extra verbose logging for all operations
-verbose(true)
+-- trace logging for all requests
 policy.add(policy.all(policy.DEBUG_ALWAYS))
 
 -- test. domain is used by some tests, allow it
