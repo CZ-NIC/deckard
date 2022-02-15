@@ -25,7 +25,8 @@ def parse_junit_xml(filename):
 
 new = sys.argv[1]
 old = sys.argv[2]
-modified_tests = [line.strip() for line in open(sys.argv[3]).readlines()]
+with open(sys.argv[3]) as f:
+    modified_tests = [line.strip() for line in f.readlines()]
 
 test_diffs = parse_junit_xml(old) ^ parse_junit_xml(new)
 errorneous_rpls = [diff[1] for diff in test_diffs

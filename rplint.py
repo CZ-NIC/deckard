@@ -28,10 +28,11 @@ class RplintError(ValueError):
 
 def get_line_number(file: str, char_number: int) -> int:
     pos = 0
-    for number, line in enumerate(open(file)):
-        pos += len(line)
-        if pos >= char_number:
-            return number + 2
+    with open(file) as f:
+        for number, line in enumerate(f):
+            pos += len(line)
+            if pos >= char_number:
+                return number + 2
     return 0
 
 

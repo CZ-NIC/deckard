@@ -2,9 +2,11 @@ import errno
 from ipaddress import IPv4Network, IPv6Network, ip_address
 from socket import AF_INET, AF_INET6
 
+# pylint: disable=no-name-in-module,import-error
 from pyroute2 import IPRoute
 from pyroute2.netlink.rtnl import ndmsg
 from pyroute2.netlink.exceptions import NetlinkError
+# pylint: enable=no-name-in-module,import-error
 
 
 class InterfaceManager:
