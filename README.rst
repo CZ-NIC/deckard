@@ -69,9 +69,9 @@ The original test case format is described in the `header file replay.h <http://
 Contacting us
 -------------
 
-Please report problems to our GitLab: https://gitlab.labs.nic.cz/knot/deckard/issues
+Please report problems to our GitLab: https://gitlab.nic.cz/knot/deckard/issues
 
-If you have any comments feel free to send e-mail to knot-dns@labs.nic.cz! Do not get confused by the name, we are happy if you want to use Deckard with any software.
+If you have any comments feel free to send e-mail to knot-resolver@labs.nic.cz! Do not get confused by the name, we are happy if you want to use Deckard with any software.
 
 Happy testing.
 
@@ -79,7 +79,7 @@ Happy testing.
 .. _`augeas`: http://augeas.net/
 .. _`CSR`: http://apple.stackexchange.com/questions/193368/what-is-the-rootless-feature-in-el-capitan-really
 .. _`Jinja2`: http://jinja.pocoo.org/
-.. _`Knot DNS Resolver`: https://gitlab.labs.nic.cz/knot/resolver/blob/master/README.md
+.. _`Knot Resolver`: https://gitlab.nic.cz/knot/resolver/blob/master/README.md
 .. _`NLnet Labs`: https://www.nlnetlabs.nl/
 .. _`PowerDNS Recursor`: https://doc.powerdns.com/md/recursor/
 .. _`PyYAML`: http://pyyaml.org/

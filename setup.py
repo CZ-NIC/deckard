@@ -14,7 +14,7 @@ setup(
     author='CZ.NIC',
     author_email='knot-dns-users@lists.nic.cz',
     license='BSD',
-    url='https://gitlab.labs.nic.cz/knot/deckard',
+    url='https://gitlab.nic.cz/knot/deckard',
     packages=['pydnstest'],
     python_requires='>=3.5',
     install_requires=[
