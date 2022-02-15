@@ -258,7 +258,7 @@ raw_id        query id will be copied into the first two bytes of RAW answer
 do_not_answer no response will be sent at all
 ============= ===========================================================================================
 
-.. [copy_id_bug] https://gitlab.labs.nic.cz/knot/deckard/issues/9
+.. [copy_id_bug] https://gitlab.nic.cz/knot/deckard/issues/9
 
 
 .. _`entry flags`:
