@@ -71,7 +71,7 @@ Contacting us
 
 Please report problems to our GitLab: https://gitlab.labs.nic.cz/knot/deckard/issues
 
-If you have any comments feel free to send e-mail to knot-dns@labs.nic.cz! Do not get confused by the name, we are happy if you want to use Deckard with any software.
+If you have any comments feel free to send e-mail to knot-resolver@labs.nic.cz! Do not get confused by the name, we are happy if you want to use Deckard with any software.
 
 Happy testing.
 
