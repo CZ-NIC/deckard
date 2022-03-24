@@ -1,0 +1,106 @@
+options {
+	querylog yes;
+
+{% if ':' in SELF_ADDR %}
+	listen-on-v6 { {{SELF_ADDR}}; };
+	query-source-v6 address {{SELF_ADDR}};
+{% else %}
+	listen-on { {{SELF_ADDR}}; };
+	query-source address {{SELF_ADDR}};
+{% endif %}
+
+	edns-udp-size 4096;
+	max-cache-size 2097152;
+
+{% if QMIN == "false" %}
+qname-minimization off;
+{% else %}
+qname-minimization strict;
+{% endif %}
+
+	// Disable RFC8145 signaling, scenario doesn't provide expected ansers
+	trust-anchor-telemetry no;
+
+{% if not TRUST_ANCHOR_FILES %}
+	dnssec-validation no;
+{% else %}
+unsupported as of yet
+-- make sure that value specified at compile-time does not break tests
+{% for TAF in TRUST_ANCHOR_FILES %}
+trust_anchors.add_file('{{TAF}}')
+{% endfor %}
+{% endif %}
+
+{% if NEGATIVE_TRUST_ANCHORS %}
+unsupported as of yet
+validate-except {
+{% for DI in NEGATIVE_TRUST_ANCHORS %}
+{{DI}}
+{% endfor %}
+};
+{% endif %}
+
+};
+
+
+{% if FORWARD_ADDR %}
+zone "." {
+	type forward;
+	forward only;
+	forwarders { {{FORWARD_ADDR}}; };
+};
+{% endif %}
+
+zone "." {
+	type hint;
+	file "hints.zone";
+};
+
+
+{% if DO_NOT_QUERY_LOCALHOST == "false" %}
+{% endif %}
+
+{% if HARDEN_GLUE == "true" %}
+{% endif %}
+
+
+{% if DO_IP6 == "true" %}
+{% else %}
+server ::/0 {
+	bogus true;
+};
+{% endif %}
+
+{% if DO_IP4 == "true" %}
+{% else %}
+server 0.0.0.0/0 {
+	bogus true;
+};
+{% endif %}
+
+{% if FEATURES.min_ttl is defined %}
+min-cache-ttl {FEATURES.min_ttl}};
+min-ncache-ttl {FEATURES.min_ttl}};
+{% endif %}
+
+{% if FEATURES.max_ttl is defined %}
+max-cache-ttl {{FEATURES.max_ttl}};
+{% endif %}
+
+{% if FEATURES.dns64_prefix is defined %}
+// dns64.config('{{FEATURES.dns64_prefix}}')
+{% endif %}
+
+{% if FEATURES.static_hint_name is defined %}
+static hint unsupported
+{% endif %}
+
+logging {
+	category resolver {
+		stderr;
+	};
+	channel stderr {
+		stderr;
+		severity debug 10;
+	};
+};

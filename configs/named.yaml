@@ -1,0 +1,15 @@
+programs:
+- name: named
+  binary: named
+  additional:
+    - -g
+    - -d
+    - "99"
+    - -c
+    - named.conf
+  templates:
+    - template/named.j2
+    - template/hints_zone.j2
+  configs:
+    - named.conf
+    - hints.zone
