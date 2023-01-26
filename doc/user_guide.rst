@@ -48,7 +48,7 @@ As mentioned above we use `py.test` to run the tests so all possible command lin
 
 Here is a list of the most useful ones:
 
-- ``-n number`` – runs the testing in parallel with ``number`` of processes (this requires `pytest-xdist` to be installed)
+- ``-n number`` – runs the testing in parallel with ``number`` of processes (this requires `pytest-xdist` and `pytest-forked` to be installed)
 - ``-k EXPRESSION`` – only run tests which match the given substring expression (e.g. ``./kresd_run -k "world_"`` will only run the scenarios with `world_` in their file name.
 - ``--collectonly`` – only print the names of selected tests, no tests will be run
 - ``--log-level DEBUG`` – print all debug information for failed tests

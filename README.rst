@@ -32,6 +32,7 @@ Deckard requires following software to be installed:
 - python-augeas_ - Python bindings for augeas API
 - pytest_ - testing framework for Python, used for running the test cases
 - pytest-xdist_ - module for pytest for distributed testing
+- pytest-forked_ - module for pytest for testing in forked subprocesses
 - pyroute2_ - Python netlink library (managing IP addresses, routes,…)
 - dumpcap_ - command line tool for network capture (part of Wireshark)
 - faketime_ - used for faking the time in tests of DNSSEC
@@ -89,5 +90,6 @@ Happy testing.
 .. _`python-augeas`: https://pypi.org/project/python-augeas/
 .. _`pytest`: https://pytest.org/
 .. _`pytest-xdist`: https://pypi.python.org/pypi/pytest-xdist
+.. _`pytest-forked`: https://pypi.python.org/pypi/pytest-forked
 .. _`pyroute2`: https://pyroute2.org/
 .. _`dumpcap`: https://www.wireshark.org/docs/man-pages/dumpcap.html
