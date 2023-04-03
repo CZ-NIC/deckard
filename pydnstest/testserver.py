@@ -110,7 +110,15 @@ class TestServer:
         else:
             log.debug('response: %s', message)
 
-        mock_client.sendto_msg(client, message.to_wire(), client_addr)
+        wire = message.to_wire()
+        wire_len = len(wire)
+        if query.payload > 0 and wire_len > query.payload:
+            log.warning('Reply length (%d B) is greater than the client\'s '
+                        'reported EDNS payload (%d B). The test may fail '
+                        'due to insufficient buffer size.',
+                        wire_len, query.payload)
+
+        mock_client.sendto_msg(client, wire, client_addr)
         return True
 
     def query_io(self):
