@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -o nounset -o xtrace -o errexit
 source "$(dirname "$(readlink -f "$0")")/common.sh"
 

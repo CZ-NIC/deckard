@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Sorts .rpl tests into several categories.
 # Takes a diretory with the tests as an argument and moves the test to its subdirectories.
@@ -48,20 +48,20 @@ mkdir -p "$DEST/sorted_tests/invaliddsa"
 for TEST in "$DEST/sorted_tests/"*.rpl
 do
     if ! python3 invalid_dsa.py "$TEST" >/dev/null 2>/dev/null
-    then 
+    then
         echo -e '\t' $(basename "$TEST")
         mv "$TEST" "$DEST/sorted_tests/invaliddsa"
     fi
 done
 
 
-# Working in selected script 
+# Working in selected script
 echo Working in $SCRIPT:
 mkdir -p "$DEST/sorted_tests/working"
 for TEST in "$DEST/sorted_tests/"*.rpl
 do
     if TESTS="$(readlink -m $TEST)" $SCRIPT >/dev/null 2>/dev/null
-    then 
+    then
         echo -e '\t' $(basename "$TEST")
         mv "$TEST" "$DEST/sorted_tests/working"
     fi
