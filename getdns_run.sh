@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -o errexit -o nounset
 
 # Below a summary of tests that failed including a reason for the failure.

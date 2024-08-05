@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 make depend
 cat env.sh
 source env.sh

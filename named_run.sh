@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -o errexit -o nounset
 named -V | grep --quiet -- '--without-jemalloc' || echo 'WARNING: Make sure BIND is compiled without jemalloc library; for 9.17+ use ./configure --without-jemalloc'
 MINOR="$(named -v | cut -d . -f 2)"

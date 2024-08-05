@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 MAKEDIR="$(dirname "$0")"
 
 # Currently there no tests requiring faking monotonic time in this repository (there are some elsewhere)

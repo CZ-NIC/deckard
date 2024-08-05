@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -o nounset -o errexit
 CIDIR="$(dirname "$0")"
 ORIGNAME="$(git symbolic-ref -q --short HEAD || git describe --all --always HEAD)"
