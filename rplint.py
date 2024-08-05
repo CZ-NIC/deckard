@@ -28,7 +28,7 @@ class RplintError(ValueError):
 
 def get_line_number(file: str, char_number: int) -> int:
     pos = 0
-    with open(file) as f:
+    with open(file, encoding='utf-8') as f:
         for number, line in enumerate(f):
             pos += len(line)
             if pos >= char_number:
@@ -77,11 +77,16 @@ class RplintFail:
         self.check = None  # type: Optional[Callable[[RplintTest], List[RplintFail]]]
 
     def __str__(self):
+        base_path = os.path.basename(self.path)
         if self.etc:
-            return "{}:{} {}: {} ({})".format(os.path.basename(self.path), self.line,
-                                              self.check.__name__, self.check.__doc__, self.etc)
-        return "{}:{} {}: {}".format(os.path.basename(self.path), self.line, self.check.__name__,
-                                     self.check.__doc__)
+            return (
+                f"{base_path}:{self.line} {self.check.__name__}: "
+                f"{self.check.__doc__} ({self.etc})"
+            )
+        return (
+            f"{base_path}:{self.line} {self.check.__name__}: "
+            f"{self.check.__doc__}"
+        )
 
 
 class RplintTest:
@@ -280,7 +285,7 @@ def range_overlapping_ips(test: RplintTest) -> List[RplintFail]:
         # If the ranges overlap
         if min(r1.b, r2.b) >= max(r1.a, r2.a):
             if r1.addresses & r2.addresses:
-                info = "previous range on line %d" % get_line_number(test.path, r1.node.char)
+                info = f"previous range on line {get_line_number(test.path, r1.node.char)}"
                 fails.append(RplintFail(test, r2, info))
     return fails
 
@@ -295,7 +300,7 @@ def range_shadowing_match_rules(test: RplintTest) -> List[RplintFail]:
             except ValueError:
                 pass
             else:
-                info = "previous entry on line %d" % get_line_number(test.path, e1.node.char)
+                info = f"previous entry on line {get_line_number(test.path, e1.node.char)}"
                 if e1.match_fields > e2.match_fields:
                     continue
                 if "subdomain" not in e1.match_fields and "subdomain" in e2.match_fields:
@@ -332,13 +337,13 @@ def main():
     try:
         test_path = sys.argv[1]
     except IndexError:
-        print("usage: %s <path to rpl file>" % sys.argv[0])
+        print(f"usage: {sys.argv[0]} <path to rpl file>")
         sys.exit(2)
     if not os.path.isfile(test_path):
         print("rplint.py works on single file only.")
         print("Use rplint.sh with --scenarios=<directory with rpls> to run on rpls.")
         sys.exit(2)
-    print("Linting %s" % test_path)
+    print(f"Linting {test_path}")
     t = RplintTest(test_path)
     passed = t.run_checks()
     t.print_fails()

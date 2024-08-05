@@ -33,7 +33,7 @@ def setup_internal_addresses(context):
 
 
 def write_timestamp_file(path, tst):
-    with open(path, 'w') as time_file:
+    with open(path, 'w', encoding='utf-8') as time_file:
         time_file.write(datetime.fromtimestamp(tst).strftime('@%Y-%m-%d %H:%M:%S'))
 
 
@@ -73,7 +73,7 @@ def create_trust_anchor_files(ta_files, work_dir):
     """
     full_paths = []
     for domain, ta_lines in ta_files.items():
-        file_name = u'{}.key'.format(domain)
+        file_name = f'{domain}.key'
         full_path = os.path.realpath(
             os.path.join(work_dir, TRUST_ANCHOR_SUBDIR, file_name))
         full_paths.append(full_path)
@@ -83,8 +83,8 @@ def create_trust_anchor_files(ta_files, work_dir):
         except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
-        with open(full_path, "w") as ta_file:
-            ta_file.writelines('{0}\n'.format(line) for line in ta_lines)
+        with open(full_path, "w", encoding="utf-8") as ta_file:
+            ta_file.writelines(f'{line}\n' for line in ta_lines)
     return full_paths
 
 
@@ -104,7 +104,8 @@ def generate_from_templates(program_config, context):
     for template_name, config_name in zip(template_ctx['templates'], template_ctx['configs']):
         j2template = j2template_env.get_template(template_name)
         cfg_rendered = j2template.render(template_ctx)
-        with open(os.path.join(template_ctx['WORKING_DIR'], config_name), 'w') as output:
+        config_path = os.path.join(template_ctx['WORKING_DIR'], config_name)
+        with open(config_path, 'w', encoding='utf-8') as output:
             output.write(cfg_rendered)
 
 
@@ -118,24 +119,24 @@ def run_daemon(program_config):
         + [program_config['binary']]
         + program_config['additional']
     )
-    logging.getLogger('deckard.daemon.%s.argv' % name).debug('%s', program_config['args'])
-    with open(program_config['log'], 'w') as daemon_log_file:
+    logging.getLogger(f'deckard.daemon.{name}.argv').debug('%s', program_config['args'])
+    with open(program_config['log'], 'w', encoding='utf-8') as daemon_log_file:
         try:
             # pylint: disable=consider-using-with
             proc = subprocess.Popen(program_config['args'], stdout=daemon_log_file,
                                     stderr=subprocess.STDOUT, cwd=program_config['WORKING_DIR'])
         except subprocess.CalledProcessError:
-            logger = logging.getLogger('deckard.daemon_log.%s' % name)
+            logger = logging.getLogger(f'deckard.daemon_log.{name}')
             logger.exception("Can't start '%s'", program_config['args'])
             raise
     return proc
 
 
 def log_fatal_daemon_error(cfg, msg):
-    logger = logging.getLogger('deckard.daemon_log.%s' % cfg['name'])
+    logger = logging.getLogger(f'deckard.daemon_log.{cfg["name"]}')
     logger.critical(msg)
     logger.critical('logs are in "%s"', cfg['WORKING_DIR'])
-    with open(cfg['log']) as logfile:
+    with open(cfg['log'], encoding='utf-8') as logfile:
         logger.error('daemon log follows:')
         logger.error(logfile.read())
 
@@ -147,8 +148,9 @@ def conncheck_daemon(process, cfg, sockfamily):
     with sock:
         while True:
             # Check if the process is running
-            if process.poll() is not None:
-                msg = 'process died, exit code %s' % process.poll()
+            ecode = process.poll()
+            if ecode is not None:
+                msg = f'process died, exit code {ecode}'
                 log_fatal_daemon_error(cfg, msg)
                 raise subprocess.CalledProcessError(process.returncode, cfg['args'], msg)
             try:
@@ -206,14 +208,14 @@ def run_testcase(case, daemons, context, prog_under_test_ip):
         for daemon in daemons:
             daemon['proc'].terminate()
             daemon['proc'].wait()
-            daemon_logger_log = logging.getLogger('deckard.daemon_log.%s' % daemon['cfg']['name'])
-            with open(daemon['cfg']['log']) as logf:
+            daemon_logger_log = logging.getLogger(f'deckard.daemon_log.{daemon["cfg"]["name"]}')
+            with open(daemon['cfg']['log'], encoding='utf-8') as logf:
                 for line in logf:
                     daemon_logger_log.debug(line.strip())
             ignore_exit = daemon["cfg"].get('ignore_exit_code', False)
             if daemon['proc'].returncode != 0 and not ignore_exit:
-                raise ValueError('process %s terminated with return code %s'
-                                 % (daemon['cfg']['name'], daemon['proc'].returncode))
+                raise ValueError(f"process {daemon['cfg']['name']} terminated "
+                                 f"with return code {daemon['proc'].returncode}")
 
     if server.undefined_answers > 0:
         raise ValueError('the scenario does not define all necessary answers (see error log)')

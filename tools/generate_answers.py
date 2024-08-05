@@ -23,4 +23,5 @@ d = {"SIMPLE_ANSWER" : answer_checker.make_random_case_query("good-a.test.knot-r
      "NONEXISTENT_TYPE_NSEC_ANSWER" : answer_checker.make_random_case_query("nsec.test.knot-resolver.cz", "TYPE65281", want_dnssec=True)}
 
 for k, v in d.items():
-    print('%s = dns.message.from_text("""%s""")\n' % (k, answer_checker.string_answer(v, ipaddress.IPv4Address("127.0.0.1"))))
+    str_answer = answer_checker.string_answer(v, ipaddress.IPv4Address("127.0.0.1"))
+    print(f'{k} = dns.message.from_text("""{str_answer}""")\n')

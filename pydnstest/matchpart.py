@@ -24,9 +24,10 @@ class DataMismatch(Exception):
             return str(value)
 
     def __str__(self) -> str:
-        return 'expected "{}" got "{}"'.format(
-            self.format_value(self.exp_val),
-            self.format_value(self.got_val))
+        return (
+            f'expected "{self.format_value(self.exp_val)}" '
+            f'got "{self.format_value(self.got_val)}"'
+        )
 
     def __eq__(self, other):
         return (isinstance(other, DataMismatch)
@@ -82,7 +83,7 @@ def compare_rrs_types(exp_val, got_val, skip_rrsigs):
         if not rrsig:
             return dns.rdatatype.to_text(rrtype)
         else:
-            return 'RRSIG(%s)' % dns.rdatatype.to_text(rrtype)
+            return f'RRSIG({dns.rdatatype.to_text(rrtype)})'
 
     if skip_rrsigs:
         exp_val = (rrset for rrset in exp_val
@@ -235,4 +236,4 @@ def match_part(exp, got, code):
     try:
         return MATCH[code](exp, got)
     except KeyError as ex:
-        raise NotImplementedError('unknown match request "%s"' % code) from ex
+        raise NotImplementedError(f'unknown match request "{code}"') from ex

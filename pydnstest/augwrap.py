@@ -63,7 +63,7 @@ class AugeasWrapper:
         # /augeas/load/{lens}
         aug_load_path = join(AUGEAS_LOAD_PATH, lens)
         # /augeas/load/{lens}/lens = {lens}.lns
-        self._aug.set(join(aug_load_path, 'lens'), '%s.lns' % lens)
+        self._aug.set(join(aug_load_path, 'lens'), f'{lens}.lns')
         # /augeas/load/{lens}/incl[0] = {confpath}
         self._aug.set(join(aug_load_path, 'incl[0]'), confpath)
         self._aug.load()
@@ -71,14 +71,14 @@ class AugeasWrapper:
         errors = self._aug.match(AUGEAS_ERROR_PATH)
         if errors:
             err_msg = '\n'.join(
-                ["{}: {}".format(e, self._aug.get(e)) for e in errors]
+                [f"{e}: {self._aug.get(e)}" for e in errors]
             )
             raise RuntimeError(err_msg)
 
         path = join(AUGEAS_FILES_PATH, confpath)
         paths = self._aug.match(path)
         if len(paths) != 1:
-            raise ValueError('path %s did not match exactly once' % path)
+            raise ValueError(f'path {path} did not match exactly once')
         self.tree = AugeasNode(self._aug, path)
         self._loaded = True
 
@@ -164,7 +164,7 @@ class AugeasNode(collections.abc.MutableMapping):
     @property
     def span(self):
         if self._span is None:
-            self._span = "char position %s" % self._aug.span(self._path)[5]
+            self._span = f"char position {self.char}"
         return self._span
 
     @property
@@ -183,13 +183,13 @@ class AugeasNode(collections.abc.MutableMapping):
     def __getitem__(self, key):
         if isinstance(key, int):
             # int is a shortcut to write [int]
-            target_path = '%s[%s]' % (self._path, key)
+            target_path = f'{self._path}[{key}]'
         else:
             target_path = self._path + key
         log.debug('tree getitem: target_path %s', target_path)
         paths = self._aug.match(target_path)
         if len(paths) != 1:
-            raise KeyError('path %s did not match exactly once' % target_path)
+            raise KeyError(f'path {target_path} did not match exactly once')
         return AugeasNode(self._aug, target_path)
 
     def __delitem__(self, key):
@@ -217,10 +217,10 @@ class AugeasNode(collections.abc.MutableMapping):
     def match(self, subpath):
         """Yield AugeasNodes matching given sub-expression."""
         assert subpath.startswith("/")
-        match_path = "%s%s" % (self._path, subpath)
+        match_path = f"{self._path}{subpath}"
         log.debug('tree match %s: %s', match_path, self._path)
         for matched_path in self._aug.match(match_path):
             yield AugeasNode(self._aug, matched_path)
 
     def __repr__(self):
-        return 'AugeasNode(%s)' % self._path
+        return f'AugeasNode({self._path})'

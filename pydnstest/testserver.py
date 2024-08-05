@@ -17,6 +17,14 @@ from pydnstest import scenario, mock_client
 from networking import InterfaceManager
 
 
+class TestServerError(Exception):
+    pass
+
+
+class QueryIoError(Exception):
+    pass
+
+
 class TestServer:
     """ This simulates UDP DNS server returning scripted or mirror DNS responses. """
 
@@ -52,7 +60,7 @@ class TestServer:
         """ Synchronous start """
         with self.active_lock:
             if self.active:
-                raise Exception('TestServer already started')
+                raise TestServerError('TestServer already started')
         with self.active_lock:
             self.active = True
 
@@ -126,7 +134,7 @@ class TestServer:
         self.undefined_answers = 0
         with self.active_lock:
             if not self.active:
-                raise Exception("[query_io] Test server not active")
+                raise QueryIoError("Test server not active")
         while True:
             with self.condition:
                 self.condition.notify()
@@ -152,12 +160,11 @@ class TestServer:
                             sock.close()
                             self.connections.remove(sock)
                     else:
-                        raise Exception(
-                            "[query_io] Socket IO internal error {}, exit"
-                            .format(sock.getsockname()))
+                        raise QueryIoError(
+                            f"[query_io] Socket IO internal error {sock.getsockname()}, exit"
+                        )
                 else:
-                    raise Exception("[query_io] Socket IO error {}, exit"
-                                    .format(sock.getsockname()))
+                    raise QueryIoError(f"[query_io] Socket IO error {sock.getsockname()}, exit")
 
     def start_srv(self, address, family, proto=socket.IPPROTO_UDP):
         """ Starts listening thread if necessary """
@@ -168,17 +175,16 @@ class TestServer:
         assert proto
         if family == socket.AF_INET6:
             if not socket.has_ipv6:
-                raise NotImplementedError("[start_srv] IPv6 is not supported by socket {0}"
-                                          .format(socket))
+                raise NotImplementedError(f"[start_srv] IPv6 is not supported by socket {socket}")
         elif family != socket.AF_INET:
-            raise NotImplementedError("[start_srv] unsupported protocol family {0}".format(family))
+            raise NotImplementedError(f"[start_srv] unsupported protocol family {family}")
 
         if proto == socket.IPPROTO_TCP:
             socktype = socket.SOCK_STREAM
         elif proto == socket.IPPROTO_UDP:
             socktype = socket.SOCK_DGRAM
         else:
-            raise NotImplementedError("[start_srv] unsupported protocol {0}".format(proto))
+            raise NotImplementedError(f"[start_srv] unsupported protocol {proto}")
 
         if self.thread is None:
             self.thread = threading.Thread(target=self.query_io)
@@ -290,7 +296,7 @@ def standalone_self_test():
             if step.id == args.step:
                 test_scenario.current_step = step
         if not test_scenario.current_step:
-            raise ValueError('step ID %s not found in scenario' % args.step)
+            raise ValueError(f'step ID {args.step} not found in scenario')
     else:
         test_scenario.current_step = test_scenario.steps[0]
 

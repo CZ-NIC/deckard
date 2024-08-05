@@ -16,7 +16,7 @@ def test_entry__get_flags():
     for flag in RCODE_FLAGS + OPCODE_FLAGS:
         rcode_flags = Entry.get_flags(FLAGS + [flag])
         assert rcode_flags == expected_flags, \
-            'Entry._get_flags does not filter out "{flag}"'.format(flag=flag)
+            f'Entry._get_flags does not filter out "{flag}"'
 
 
 def test_entry__get_rcode():
@@ -33,8 +33,7 @@ def test_entry__get_rcode():
 
     for rcode in RCODE_FLAGS:
         given_rcode = Entry.get_rcode(FLAGS + OPCODE_FLAGS + [rcode])
-        assert given_rcode is not None, 'Entry.get_rcode does not recognize {rcode}'.format(
-            rcode=rcode)
+        assert given_rcode is not None, f'Entry.get_rcode does not recognize {rcode}'
 
 
 def test_entry__get_opcode():
@@ -51,5 +50,4 @@ def test_entry__get_opcode():
 
     for opcode in OPCODE_FLAGS:
         given_rcode = Entry.get_opcode(FLAGS + RCODE_FLAGS + [opcode])
-        assert given_rcode is not None, 'Entry.get_opcode does not recognize {opcode}'.format(
-            opcode=opcode)
+        assert given_rcode is not None, f'Entry.get_opcode does not recognize {opcode}'

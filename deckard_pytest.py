@@ -89,7 +89,7 @@ class TCPDump:
         if "DECKARD_DIR" in os.environ:
             tmpdir = os.environ["DECKARD_DIR"]
             if os.path.lexists(tmpdir):
-                raise ValueError('DECKARD_DIR "%s" must not exist' % tmpdir)
+                raise ValueError(f'DECKARD_DIR "{tmpdir}" must not exist')
         else:
             tmpdir = tempfile.mkdtemp(suffix='', prefix='tmpdeckard')
 
@@ -132,7 +132,7 @@ class TCPDump:
 
         if unknown_addresses:
             raise RuntimeError("Binary under test queried an IP address not present"
-                               " in scenario %s" % unknown_addresses)
+                               f" in scenario {unknown_addresses}")
 
 
 def run_test(path, qmin, config, max_retries, retries=0):

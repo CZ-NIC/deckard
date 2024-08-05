@@ -59,7 +59,7 @@ def recvfrom_blob(sock: socket.socket,
                 data = recv_n_bytes_from_tcp(sock, msg_len, deadline)
                 addr = sock.getpeername()[0]
             else:
-                raise NotImplementedError("[recvfrom_blob]: unknown socket type '%i'" % sock.type)
+                raise NotImplementedError(f"[recvfrom_blob]: unknown socket type '{sock.type}'")
             return data, addr
         except socket.timeout as ex:
             raise RuntimeError("Server took too long to respond") from ex
@@ -89,7 +89,7 @@ def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) 
             data = struct.pack("!H", len(message)) + message
             sock.sendall(data)
         else:
-            raise NotImplementedError("[sendto_msg]: unknown socket type '%i'" % sock.type)
+            raise NotImplementedError(f"[sendto_msg]: unknown socket type '{sock.type}'")
     except OSError as ex:
         # Reference: http://lkml.iu.edu/hypermail/linux/kernel/0002.3/0709.html
         if ex.errno != errno.ECONNREFUSED:
@@ -99,7 +99,7 @@ def sendto_msg(sock: socket.socket, message: bytes, addr: Optional[str] = None) 
 def setup_socket(address: str,
                  port: int,
                  tcp: bool = False,
-                 src_address: str = None) -> socket.socket:
+                 src_address: Optional[str] = None) -> socket.socket:
     family = dns.inet.af_for_address(address)
     sock = socket.socket(family, socket.SOCK_STREAM if tcp else socket.SOCK_DGRAM)
     if tcp:

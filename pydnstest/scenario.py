@@ -75,7 +75,7 @@ class DNSReply(DNSMessage):
         answer = dns.message.from_wire(self.message.to_wire(),
                                        xfr=self.message.xfr,
                                        one_rr_per_rrset=True)
-        answer.use_edns(query.edns, query.ednsflags, options=self.message.options)
+        answer.use_edns(query.edns, query.ednsflags, options=list(self.message.options))
         if copy_id:
             answer.id = query.id
             # Copy letter-case if the template has QD
@@ -248,7 +248,7 @@ class Entry:
                     rd = record['/data'].value.split()
                     if rd:
                         if rdtype == dns.rdatatype.DS:
-                            rd[1] = '{}'.format(dns.dnssec.algorithm_from_text(rd[1]))
+                            rd[1] = f'{dns.dnssec.algorithm_from_text(rd[1])}'
                         rd = dns.rdata.from_text(rr.rdclass, rr.rdtype, ' '.join(
                             rd), origin=dns.name.from_text(self.origin), relativize=False)
                     rr.add(rd)
@@ -266,22 +266,30 @@ class Entry:
 
     def __str__(self):
         txt = 'ENTRY_BEGIN\n'
+
         if self.raw_data is None:
-            txt += 'MATCH {0}\n'.format(' '.join(self.match_fields))
-        txt += 'ADJUST {0}\n'.format(' '.join(self.adjust_fields))
-        txt += 'REPLY {rcode} {flags}\n'.format(
-            rcode=dns.rcode.to_text(self.message.rcode()),
-            flags=' '.join([dns.flags.to_text(self.message.flags),
-                            dns.flags.edns_to_text(self.message.ednsflags)])
-        )
+            match_fields = ' '.join(self.match_fields)
+            txt += f'MATCH {match_fields}\n'
+
+        adjust_fields = ' '.join(self.adjust_fields)
+        txt += f'ADJUST {adjust_fields}\n'
+
+        rcode = dns.rcode.to_text(self.message.rcode())
+        flags = ' '.join([
+            dns.flags.to_text(self.message.flags),
+            dns.flags.edns_to_text(self.message.ednsflags)
+        ])
+        txt += f'REPLY {rcode} {flags}\n'
+
         for sect_name in ['question', 'answer', 'authority', 'additional']:
             sect = getattr(self.message, sect_name)
             if not sect:
                 continue
-            txt += 'SECTION {n}\n'.format(n=sect_name.upper())
+            txt += f'SECTION {sect_name.upper()}\n'
             for rr in sect:
                 txt += str(rr)
                 txt += '\n'
+
         if self.raw_data is not None:
             txt += 'RAW\n'
             if self.raw_data:
@@ -289,6 +297,7 @@ class Entry:
             else:
                 txt += 'NULL'
             txt += '\n'
+
         txt += 'ENTRY_END\n'
         return txt
 
@@ -346,9 +355,9 @@ class Entry:
             try:
                 pydnstest.matchpart.match_part(self.message, msg, code)
             except pydnstest.matchpart.DataMismatch as ex:
-                errstr = '%s in the response:\n%s' % (str(ex), msg.to_text())
+                errstr = f'{ex} in the response:\n{msg.to_text()}'
                 # TODO: cisla radku
-                raise ValueError("%s, \"%s\": %s" % (self.node.span, code, errstr)) from None
+                raise ValueError(f"{self.node.span}, \"{code}\": {errstr}") from None
 
     def cmp_raw(self, raw_value):
         assert self.raw_data is not None
@@ -359,7 +368,7 @@ class Entry:
         if raw_value is not None:
             got = binascii.hexlify(raw_value)
         if expected != got:
-            raise ValueError("raw message comparsion failed: expected %s got %s" % (expected, got))
+            raise ValueError(f"raw message comparsion failed: expected {expected} got {got}")
 
     def reply(self, query) -> Optional[DNSBlob]:
         if 'do_not_answer' in self.adjust_fields:
@@ -430,9 +439,9 @@ class Range:
                       self.a, self.b, self.addresses, self.received, self.sent)
 
     def __str__(self):
-        txt = '\nRANGE_BEGIN {a} {b}\n'.format(a=self.a, b=self.b)
+        txt = f'\nRANGE_BEGIN {self.a} {self.b}\n'
         for addr in self.addresses:
-            txt += '        ADDRESS {0}\n'.format(addr)
+            txt += f'        ADDRESS {addr}\n'
 
         for entry in self.stored:
             txt += '\n'
@@ -472,7 +481,7 @@ class StepLogger(logging.LoggerAdapter):  # pylint: disable=too-few-public-metho
     Prepent Step identification before each log message.
     """
     def process(self, msg, kwargs):
-        return '[STEP %s %s] %s' % (self.extra['id'], self.extra['type'], msg), kwargs
+        return f'[STEP {self.extra["id"]} {self.extra["type"]}] {msg}', kwargs
 
 
 class Step:
@@ -503,13 +512,13 @@ class Step:
         self.next_if_fail = -1
 
     def __str__(self):
-        txt = '\nSTEP {i} {t}'.format(i=self.id, t=self.type)
+        txt = f'\nSTEP {self.id} {self.type}'
         if self.repeat_if_fail:
-            txt += ' REPEAT {v}'.format(v=self.repeat_if_fail)
+            txt += f' REPEAT {self.repeat_if_fail}'
         elif self.pause_if_fail:
-            txt += ' PAUSE {v}'.format(v=self.pause_if_fail)
+            txt += f' PAUSE {self.pause_if_fail}'
         elif self.next_if_fail != -1:
-            txt += ' NEXT {v}'.format(v=self.next_if_fail)
+            txt += f' NEXT {self.next_if_fail}'
         # if self.args:
         #     txt += ' '
         #     txt += ' '.join(self.args)
@@ -532,17 +541,17 @@ class Step:
         elif self.type == 'CHECK_OUT_QUERY':  # ignore
             self.log.info('')
             return None
-        elif self.type == 'CHECK_ANSWER' or self.type == 'ANSWER':
+        elif self.type in ('CHECK_ANSWER', 'ANSWER'):
             self.log.info('')
             return self.__check_answer(ctx)
         elif self.type == 'TIME_PASSES ELAPSE':
             self.log.info('')
             return self.__time_passes()
-        elif self.type == 'REPLY' or self.type == 'MOCK':
+        elif self.type in ('REPLY', 'MOCK'):
             self.log.info('')
             return None
         else:
-            raise NotImplementedError('step %03d type %s unsupported' % (self.id, self.type))
+            raise NotImplementedError(f'step {self.id:03} type {self.type} unsupported')
 
     def __check_answer(self, ctx):
         """ Compare answer from previously resolved query. """
@@ -574,7 +583,7 @@ class Step:
         if choice is None or not choice:
             choice = list(ctx.client.keys())[0]
         if choice not in ctx.client:
-            raise ValueError('step %03d invalid QUERY target: %s' % (self.id, choice))
+            raise ValueError(f'step {self.id:03} invalid QUERY target: {choice}')
 
         tstart = datetime.now()
 
@@ -608,11 +617,11 @@ class Step:
         """ Modify system time. """
         file_old = os.environ["FAKETIME_TIMESTAMP_FILE"]
         file_next = os.environ["FAKETIME_TIMESTAMP_FILE"] + ".next"
-        with open(file_old, 'r') as time_file:
+        with open(file_old, 'r', encoding='utf-8') as time_file:
             line = time_file.readline().strip()
         t = time.mktime(datetime.strptime(line, '@%Y-%m-%d %H:%M:%S').timetuple())
         t += self.delay
-        with open(file_next, 'w') as time_file:
+        with open(file_next, 'w', encoding='utf-8') as time_file:
             time_file.write(datetime.fromtimestamp(t).strftime('@%Y-%m-%d %H:%M:%S') + "\n")
             time_file.flush()
         os.replace(file_next, file_old)
@@ -636,7 +645,7 @@ class Scenario:
     def __str__(self):
         txt = 'SCENARIO_BEGIN'
         if self.info:
-            txt += ' {0}'.format(self.info)
+            txt += f' {self.info}'
         txt += '\n'
         for range_ in self.ranges:
             txt += str(range_)
@@ -696,24 +705,28 @@ class Scenario:
                         next_steps = [j for j in range(len(self.steps)) if self.steps[
                             j].id == step.next_if_fail]
                         if not next_steps:
-                            raise ValueError('step %d: wrong NEXT value "%d"' %
-                                             (step.id, step.next_if_fail)) from ex
+                            raise ValueError(
+                                f'step {step.id}: '
+                                f'wrong NEXT value "{step.next_if_fail}"'
+                            ) from ex
                         next_step = next_steps[0]
                         if next_step < len(self.steps):
                             i = next_step
                         else:
-                            raise ValueError('step %d: Can''t branch to NEXT value "%d"' %
-                                             (step.id, step.next_if_fail)) from ex
+                            raise ValueError(
+                                f'step {step.id}: '
+                                f'Can\'t branch to NEXT value "{step.next_if_fail}"'
+                            ) from ex
                     continue
                 ex_details = ex if self.log.isEnabledFor(logging.DEBUG) else None
-                raise ValueError('%s step %d %s' % (self.file, step.id, str(ex))) from ex_details
+                raise ValueError(f'{self.file} step {step.id} {ex}') from ex_details
             i += 1
 
         for r in self.ranges:
             for e in r.stored:
                 if e.mandatory and e.fired == 0:
                     # TODO: cisla radku
-                    raise ValueError('Mandatory section at %s not fired' % e.mandatory.span)
+                    raise ValueError(f'Mandatory section at {e.mandatory.span} not fired')
 
 
 def get_next(file_in, skip_empty=True):
@@ -794,8 +807,8 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
             ovr_hr = override_date_str[8:10]
             ovr_min = override_date_str[10:12]
             ovr_sec = override_date_str[12:]
-            override_date_str_arg = '{0} {1} {2} {3} {4} {5}'.format(
-                ovr_yr, ovr_mnt, ovr_day, ovr_hr, ovr_min, ovr_sec)
+            override_date_str_arg = \
+                f'{ovr_yr} {ovr_mnt} {ovr_day} {ovr_hr} {ovr_min} {ovr_sec}'
             override_date = time.strptime(override_date_str_arg, "%Y %m %d %H %M %S")
             override_timestamp = calendar.timegm(override_date)
         elif k == 'stub-addr':
@@ -815,8 +828,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                         f_value = ""
                     features[f_key] = f_value
             except KeyError as ex:
-                raise KeyError("can't parse features (%s) in config section (%s)"
-                               % (v, str(ex))) from ex
+                raise KeyError(f"can't parse features ({v}) in config section ({ex})") from ex
         elif k == 'feature-list':
             try:
                 f_key, f_value = [x.strip() for x in v.split(feature_pair_delimiter, 1)]
@@ -825,8 +837,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
                 f_value = f_value.replace("{{INSTALL_DIR}}", installdir)
                 features[f_key].append(f_value)
             except KeyError as ex:
-                raise KeyError("can't parse feature-list (%s) in config section (%s)"
-                               % (v, str(ex))) from ex
+                raise KeyError(f"can't parse feature-list ({v}) in config section ({ex})") from ex
         elif k == 'force-ipv6' and v.upper() == 'TRUE':
             sockfamily = socket.AF_INET6
         elif k == 'forward-addr':  # currently forwards everything
@@ -836,7 +847,7 @@ def parse_config(scn_cfg, qmin, installdir):  # FIXME: pylint: disable=too-many-
         elif k == 'do-ip6':
             do_ip6 = str2bool(v)
         else:
-            raise NotImplementedError('unsupported CONFIG key "%s"' % k)
+            raise NotImplementedError(f'unsupported CONFIG key "{k}"')
 
     ctx = {
         "DO_NOT_QUERY_LOCALHOST": str(do_not_query_localhost).lower(),
