@@ -21,7 +21,7 @@ allow-from=
 # auth-can-lower-ttl=off
 
 #################################
-# auth-zones	Zones for which we have authoritative data, comma separated domain=file pairs 
+# auth-zones	Zones for which we have authoritative data, comma separated domain=file pairs
 #
 # auth-zones=
 
@@ -219,17 +219,7 @@ max-cache-entries=1000000
 #################################
 # query-local-address	Source IP address for sending queries
 #
-{% if ':' in SELF_ADDR %}
-query-local-address=0.0.0.0
-query-local-address6={{SELF_ADDR}}
-{% else %}
 query-local-address={{SELF_ADDR}}
-query-local-address6=::
-{% endif %}
-
-#################################
-# query-local-address6	Source IPv6 address for sending queries
-# query-local-address6=::
 
 #################################
 # quiet	Suppress logging of questions and answers

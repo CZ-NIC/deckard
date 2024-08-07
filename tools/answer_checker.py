@@ -31,14 +31,14 @@ def send_and_check(question: Union[dns.message.Message, bytes],  # pylint: disab
 
     Returns True on success, raises an exceptions on failure.
     """
-    print("Sending query:\n%s\n" % str(question))
+    print(f"Sending query:\n{str(question)}\n")
     answer = get_answer(question, server, port, tcp, timeout=timeout)
 
     for flag in unset_flags:
         answer = unset_flag(answer, flag)
 
-    print("Got answer:\n%s\n" % answer)
-    print("Matching:\n%s\n%s\n" % (match_fields, expected))
+    print(f"Got answer:\n{answer}\n")
+    print(f"Matching:\n{match_fields}\n{expected}\n")
     for field in match_fields:
         pydnstest.matchpart.match_part(expected, answer, field)
 
