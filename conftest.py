@@ -1,4 +1,8 @@
+import logging
+import shutil
+import lief
 import glob
+import sys
 import os
 import re
 from collections import namedtuple
@@ -47,7 +51,21 @@ def get_qmin_config(path):
     return None
 
 
-def scenarios(paths, configs):
+def check_jemalloc_link(config_dict):
+    try:
+        binary = lief.parse(shutil.which(config_dict['programs'][0]['binary']))
+    except Exception as e:
+        logging.warning("check for jemalloc failed", e)
+        return
+
+    assert binary is not None
+    for lib in binary.libraries:
+        if re.search(r"libjemalloc.*", lib) is not None:
+            logging.error("Tested binary is dynamically linked to libjemalloc, --force-run to ignore")
+            sys.exit(77)
+
+
+def scenarios(paths, configs, force_run):
     """Returns list of *.rpl files from given path and packs them with their minimization setting"""
 
     assert len(paths) == len(configs), \
@@ -59,6 +77,9 @@ def scenarios(paths, configs):
         with open(config, encoding='utf-8') as f:
             config_dict = yaml.load(f, yaml.SafeLoader)
         config_sanity_check(config_dict, config)
+
+        if not force_run and "force-run" not in config_dict['programs'][0]['additional']:
+            check_jemalloc_link(config_dict)
 
         if os.path.isfile(path):
             filelist = [path]  # path to single file, accept it
@@ -89,6 +110,8 @@ def pytest_addoption(parser):
     parser.addoption("--scenarios", action="append", help="directory with .rpl files")
     parser.addoption("--retries", action="store", help=("number of retries per"
                                                         "test when Deckard is under load"))
+    parser.addoption("--force-run", action="store_true", default=False,
+                     help="disable libjemalloc link check")
 
 
 def pytest_generate_tests(metafunc):
@@ -107,7 +130,10 @@ def pytest_generate_tests(metafunc):
         else:
             paths = metafunc.config.option.scenarios
 
-        metafunc.parametrize("scenario", scenarios(paths, configs), ids=str)
+        metafunc.parametrize("scenario",
+                             scenarios(paths, configs, metafunc.config.getoption("--force-run")),
+                             ids=str)
+
     if 'rpl_path' in metafunc.fixturenames:
         paths = metafunc.config.option.scenarios
         metafunc.parametrize("rpl_path", rpls(paths), ids=str)
