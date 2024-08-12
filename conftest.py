@@ -1,11 +1,11 @@
+import glob
 import logging
 import shutil
-import lief
-import glob
 import sys
 import os
 import re
 from collections import namedtuple
+import lief
 
 import pytest
 import yaml
@@ -52,16 +52,12 @@ def get_qmin_config(path):
 
 
 def check_jemalloc_link(config_dict):
-    try:
-        binary = lief.parse(shutil.which(config_dict['programs'][0]['binary']))
-    except Exception as e:
-        logging.warning("check for jemalloc failed", e)
-        return
-
+    # pylint: disable=no-member
+    binary = lief.parse(shutil.which(config_dict['programs'][0]['binary']))
     assert binary is not None
     for lib in binary.libraries:
         if re.search(r"libjemalloc.*", lib) is not None:
-            logging.error("Tested binary is dynamically linked to libjemalloc, --force-run to ignore")
+            logging.error("Test binary is dynamically linked to libjemalloc, --force-run to ignore")
             sys.exit(77)
 
 
