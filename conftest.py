@@ -56,7 +56,7 @@ def check_jemalloc_link(config_dict):
     binary = lief.parse(shutil.which(config_dict['programs'][0]['binary']))
     assert binary is not None
     for lib in binary.libraries:
-        if re.search(r"libjemalloc.*", lib) is not None:
+        if re.search(r"libjemalloc\.so.*", lib) is not None:
             logging.error("Test binary is dynamically linked to libjemalloc, --force-run to ignore")
             pytest.skip("libjemalloc")
 
@@ -74,7 +74,7 @@ def scenarios(paths, configs, force_run):
             config_dict = yaml.load(f, yaml.SafeLoader)
         config_sanity_check(config_dict, config)
 
-        if not force_run and "force-run" not in config_dict['programs'][0]['additional']:
+        if not force_run:
             check_jemalloc_link(config_dict)
 
         if os.path.isfile(path):
