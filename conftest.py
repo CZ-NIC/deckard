@@ -58,7 +58,7 @@ def check_jemalloc_link(config_dict):
     for lib in binary.libraries:
         if re.search(r"libjemalloc.*", lib) is not None:
             logging.error("Test binary is dynamically linked to libjemalloc, --force-run to ignore")
-            sys.exit(77)
+            pytest.skip("libjemalloc")
 
 
 def scenarios(paths, configs, force_run):
