@@ -1,7 +1,6 @@
 import glob
 import logging
 import shutil
-import sys
 import os
 import re
 from collections import namedtuple
@@ -53,12 +52,15 @@ def get_qmin_config(path):
 
 def check_jemalloc_link(config_dict):
     # pylint: disable=no-member
-    binary = lief.parse(shutil.which(config_dict['programs'][0]['binary']))
-    assert binary is not None
-    for lib in binary.libraries:
-        if re.search(r"libjemalloc\.so.*", lib) is not None:
-            logging.error("Test binary is dynamically linked to libjemalloc, --force-run to ignore")
-            pytest.skip("libjemalloc")
+    for program in config_dict['programs']:
+        binary = lief.parse(shutil.which(program['binary']))
+        assert binary is not None
+        for lib in binary.libraries:
+            if re.search(r"libjemalloc\.so.*", lib) is not None:
+                logging.error("The binary '%s' is dynamically linked to "
+                              "libjemalloc, which is incompatible with faketime. "
+                              "Use --force-run to ignore this check", program['name'])
+                pytest.skip("libjemalloc")
 
 
 def scenarios(paths, configs, force_run):
