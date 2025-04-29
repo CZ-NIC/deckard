@@ -7,6 +7,7 @@ import shlex
 import shutil
 import socket
 import subprocess
+import sys
 import time
 from datetime import datetime
 from typing import Set  # noqa
@@ -162,7 +163,13 @@ def conncheck_daemon(process, cfg, sockfamily):
                     log_fatal_daemon_error(cfg, msg)
                     raise DeckardUnderLoadError(msg) from ex
 
-            time.sleep(0.1)
+            if sys.version_info < (3, 11):
+                time.sleep(0.1)
+            else:
+                # FIXME: sleep() won't work anymore until faketime > 0.9.10
+                # https://github.com/wolfcw/libfaketime/issues/426
+                # This is perhaps a bit CPU-wasteful here, but it works:
+                os.sched_yield()
 
 
 def setup_daemons(context):
