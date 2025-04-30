@@ -233,6 +233,16 @@ ENTRY_END
 
 ; recursion happens here.
 ; no AD flag on this because an optout NSEC3 is used.
+; It could be argued that the right answer is SERVFAIL. The reason is that
+; an NSEC3 opt-out range can only contain insecure delegations. Any
+; name with authoritative data has to have its own NSEC3 entry. So we can
+; conclude that example.com does not have any authoritative data for
+; sub.example.com. It is possible that sub.example.com is an insecure
+; delegation. However, in that case the resolver should have returned a SOA
+; record with sub.example.com as the owner, and should have left out the
+; NSEC3 records.
+; Note that the tests as is (NOERROR/NODATA) is what validating resolvers
+; return in practice.
 STEP 10 CHECK_ANSWER
 ENTRY_BEGIN
 MATCH all
