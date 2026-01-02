@@ -1,0 +1,112 @@
+features: min_ttl = 5 ; default in kresd
+do-ip6: no
+stub-addr: 193.0.14.129
+query-minimization: off ; the test is purely about cache; let's avoid qmin here
+CONFIG_END
+
+SCENARIO_BEGIN Test TTL for answers which contain no records (except OPT).
+
+RANGE_BEGIN 0 5
+	ADDRESS 193.0.14.129
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+example. IN A
+ENTRY_END
+
+; uh, Unbound also needed these two entries
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+. IN NS
+SECTION ANSWER
+. IN NS k.root-servers.net.
+ENTRY_END
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+k.root-servers.net. IN A
+SECTION ANSWER
+k.root-servers.net. IN A 193.0.14.129
+ENTRY_END
+RANGE_END
+
+;; initial query
+STEP 1 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example. IN A
+ENTRY_END
+
+STEP 2 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+
+;; only cache is available now
+STEP 11 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example. IN A
+ENTRY_END
+
+STEP 12 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example. IN A
+SECTION ANSWER
+SECTION AUTHORITY
+SECTION ADDITIONAL
+ENTRY_END
+
+
+RANGE_BEGIN 20 25
+	ADDRESS 193.0.14.129
+ENTRY_BEGIN
+MATCH opcode qtype qname
+ADJUST copy_id copy_query
+REPLY QR AA NOERROR
+SECTION QUESTION
+example. IN A
+SECTION ANSWER
+example. IN A 198.18.0.1
+ENTRY_END
+RANGE_END
+
+;; after short time the answer should expire (default min-TTL is 5s)
+STEP 20 TIME_PASSES ELAPSE 10
+
+STEP 21 QUERY
+ENTRY_BEGIN
+REPLY RD
+SECTION QUESTION
+example. IN A
+ENTRY_END
+
+STEP 22 CHECK_ANSWER
+ENTRY_BEGIN
+MATCH all
+REPLY QR RD RA NOERROR
+SECTION QUESTION
+example. IN A
+SECTION ANSWER
+example. IN A 198.18.0.1
+ENTRY_END
+
+SCENARIO_END
